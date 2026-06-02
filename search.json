@@ -65,58 +65,44 @@
   {
     "objectID": "posts/welcome/index.html",
     "href": "posts/welcome/index.html",
-    "title": "Welcome — what this blog is for",
+    "title": "Welcome, and what this blog is for",
     "section": "",
-    "text": "This blog is where I work mathematics out in the open. The goal is a small archive of self-contained, correct notes — results derived from first principles, papers digested into something I’d actually want to re-read, and numerical methods tested with code you can run yourself."
-  },
-  {
-    "objectID": "posts/welcome/index.html#how-posts-are-organized",
-    "href": "posts/welcome/index.html#how-posts-are-organized",
-    "title": "Welcome — what this blog is for",
-    "section": "How posts are organized",
-    "text": "How posts are organized\nEach post belongs to one of a few pillars:\n\nPure — analysis, algebra, topology, number theory\nApplied — numerical methods, optimization, probability, PDEs\nMeta — paper reviews, study notes, problem sets"
-  },
-  {
-    "objectID": "posts/welcome/index.html#a-standing-promise",
-    "href": "posts/welcome/index.html#a-standing-promise",
-    "title": "Welcome — what this blog is for",
-    "section": "A standing promise",
-    "text": "A standing promise\nEvery claim here is proved, cited, or explicitly flagged as intuition. When I get something wrong, I fix it — corrections are welcome via the repo’s issues.\nNext up: the Spectral Theorem note shows the formatting these posts use — theorems, proofs, citations, and runnable code."
+    "text": "I started this blog for a simple reason. Every time I finally understand a piece of mathematics, the understanding arrives as a picture, not as a formula. The formula was always there; what changes is that I can suddenly see why it had to look that way. I wanted a place to hold onto those pictures before they fade.\nSo that is the spirit of everything here. I try to begin with the simplest version of an idea, the one small enough to fit in your head all at once, and grow it slowly until the general result feels less like a surprise and more like something you could almost have guessed. Only then do I write down the careful proof, because rigour is what lets you trust the picture later.\nYou will find the notes grouped into a few themes:\n\nPure — analysis, algebra, topology, number theory.\nApplied — numerical methods, optimization, probability, differential equations.\nMeta — paper reviews, study notes, and the occasional reflection like this one.\n\nOne promise I want to keep: every claim here is either proved, cited, or openly flagged as intuition rather than fact. When I get something wrong, and I will, I would rather fix it in the open than quietly hope no one noticed. Corrections are genuinely welcome through the issue link on each page.\nIf you want a feel for how a full note reads, the next one, on the Spectral Theorem, walks through a complete argument the way I like to tell them: a picture first, then the proof."
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Math Notes",
     "section": "",
-    "text": "Welcome. This is where I work problems out in the open: theorems I’m re-deriving, papers I’m digesting, and numerical methods I’m putting to the test. Posts aim to be self-contained and correct, with runnable code where it sharpens intuition.\nBrowse by topic using the category filter, or subscribe via RSS.\n\n\n\n\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\nWelcome — what this blog is for\n\n\n\nmeta\n\n\n\nA short note on why this blog exists and how the notes are structured.\n\n\n\n\n\nJun 2, 2026\n\n1 min\n\n\n\n\n\n\nThe Spectral Theorem for Symmetric Matrices\n\n\n\npure\n\napplied\n\nlinear-algebra\n\n\n\nA from-first-principles proof that real symmetric matrices are orthogonally diagonalizable, with a numerical check.\n\n\n\n\n\nJun 1, 2026\n\n3 min\n\n\n\n\nNo matching items"
+    "text": "Most of the time, mathematics gets handed to us as a list of things to calculate. I have always been far more curious about the picture sitting underneath all that machinery: the reason a theorem has no choice but to be true, the quiet moment when a row of abstract symbols suddenly turns into something you can picture and almost touch.\nThis is where I work that out in the open. Each post starts from the simplest version of an idea I can find, builds up the intuition until the result feels inevitable, and only then writes down the formal proof. Where a picture or a few lines of runnable code make the idea easier to believe, I include them.\nI write these mostly for the version of me who was once stuck on the very same thing. If you happen to be stuck there too, I hope they help.\nBrowse by topic with the category filter, or subscribe through RSS.\n\n\n\n\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\nWelcome, and what this blog is for\n\n\n\nmeta\n\n\n\nA short note on why this blog exists and how I try to write these notes.\n\n\n\n\n\nJun 2, 2026\n\n2 min\n\n\n\n\n\n\nThe Spectral Theorem for Symmetric Matrices\n\n\n\npure\n\napplied\n\nlinear-algebra\n\n\n\nWhy every real symmetric matrix is secretly just a stretch along perpendicular axes, told as a picture first and a proof second.\n\n\n\n\n\nJun 1, 2026\n\n6 min\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "I’m Xihan Fang, a mathematics student interested in the connection between pure mathematical theory, computational methods, and quantitative modelling.\nMy academic interests lie across topology, analysis, network science, stochastic processes, optimization, and quantitative finance. I use this site as a long-term archive for mathematical notes, technical derivations, paper reviews, and reproducible computational experiments."
+    "text": "I’m Terry, a mathematics student who keeps getting pulled toward the place where pure theory, computation, and modelling meet. What I love most is the moment an abstract structure stops being a definition on a page and starts feeling like an object with a shape of its own.\nA lot of my curiosity lives between worlds: topology and analysis on one side, network science, stochastic processes, optimization, and quantitative finance on the other. I keep this site as a long-term home for the notes, derivations, and small experiments I build while trying to understand these things properly."
   },
   {
     "objectID": "about.html#research-interests",
     "href": "about.html#research-interests",
     "title": "About",
     "section": "Research interests",
-    "text": "Research interests\n\nPure mathematics: topology, analysis, algebra, and mathematical structures.\nApplied mathematics: network science, stochastic processes, optimization, and numerical methods.\nQuantitative finance: market modelling, risk, statistical learning, and systematic research workflows.\nMathematical modelling: model formulation, parameter estimation, sensitivity analysis, and computational verification."
+    "text": "Research interests\n\nPure mathematics: topology, analysis, algebra, and the structures that tie them together.\nApplied mathematics: network science, stochastic processes, optimization, and numerical methods.\nQuantitative finance: market modelling, risk, statistical learning, and systematic research.\nMathematical modelling: formulating models, estimating parameters, probing their sensitivity, and checking them against computation."
   },
   {
     "objectID": "about.html#what-youll-find-here",
     "href": "about.html#what-youll-find-here",
     "title": "About",
     "section": "What you’ll find here",
-    "text": "What you’ll find here\nThis blog collects notes and projects written with three aims:\n\nto make definitions, theorems, and proofs precise enough to revisit later;\nto connect abstract mathematics with computational and modelling problems;\nto document reproducible calculations, simulations, and research ideas.\n\nSome posts are study notes on topics such as topology, networks, probability, and optimization. Others are technical write-ups of modelling projects, numerical experiments, or papers that I am working through.\nThe emphasis is on clarity, self-contained exposition, and careful reasoning. Most posts are written for my future self, but I hope they may also be useful to other students working through similar mathematical material."
+    "text": "What you’ll find here\nThe notes here are written with three quiet ambitions:\n\nto state definitions, theorems, and proofs precisely enough that I can trust them again months later;\nto keep tracing the thread that connects abstract mathematics to computation and modelling;\nto leave a reproducible record of the calculations, simulations, and half-formed ideas along the way.\n\nSome posts are study notes on topics like topology, networks, probability, or optimization. Others are write-ups of a modelling project, a numerical experiment, or a paper I am slowly working through. Whatever the subject, the aim is the same: clarity, self-contained reasoning, and the occasional sense of wonder when an argument turns out to be more beautiful than it had any right to be.\nMost of it is written for my future self. If it turns out to be useful to another student walking the same path, all the better."
   },
   {
     "objectID": "about.html#elsewhere",
     "href": "about.html#elsewhere",
     "title": "About",
     "section": "Elsewhere",
-    "text": "Elsewhere\nYou can find my code and small projects on GitHub. I also maintain a LinkedIn profile for academic and professional updates. For questions, corrections, or academic correspondence, feel free to contact me by email."
+    "text": "Elsewhere\nMy code and smaller projects live on GitHub, and I keep a LinkedIn profile for academic and professional updates. For questions, corrections, or just a good conversation about mathematics, my inbox is always open."
   },
   {
     "objectID": "ideas.html",
@@ -144,42 +130,63 @@
     "href": "posts/spectral-theorem/index.html",
     "title": "The Spectral Theorem for Symmetric Matrices",
     "section": "",
-    "text": "This post is a template: it demonstrates every formatting feature these notes use — inline and display math, numbered equations, theorem/proof environments, cross-references, citations, and a runnable code cell. Copy this folder to start a new post."
+    "text": "Here is a claim that sounds almost too clean to be true. Take any real symmetric matrix, no matter how tangled its entries look, and there is always a way to turn your head so that the transformation it describes does nothing fancy at all. It just stretches space along a set of perpendicular axes, each by its own amount. No shearing, no twisting, no mixing of directions. That is the whole content of the spectral theorem, and the rest of this post is about why space has no choice but to behave this way."
   },
   {
-    "objectID": "posts/spectral-theorem/index.html#setup",
-    "href": "posts/spectral-theorem/index.html#setup",
+    "objectID": "posts/spectral-theorem/index.html#first-the-picture",
+    "href": "posts/spectral-theorem/index.html#first-the-picture",
     "title": "The Spectral Theorem for Symmetric Matrices",
-    "section": "Setup",
-    "text": "Setup\nLet \\(A \\in \\mathbb{R}^{n\\times n}\\) be symmetric, i.e. \\(A^\\top = A\\). We write the standard inner product as \\(\\langle x, y\\rangle = x^\\top y\\). Symmetry is equivalent to self-adjointness:\n\\[\n\\langle Ax, y\\rangle = \\langle x, Ay\\rangle \\qquad \\text{for all } x,y \\in \\mathbb{R}^n.\n\\tag{1}\\]\nThe whole theorem flows from Equation 1."
+    "section": "First, the picture",
+    "text": "First, the picture\nPicture a linear map in two dimensions. In general it can do unpleasant things: it can rotate, it can shear a square into a slanted parallelogram, it can stretch more in one diagonal direction than another. A generic matrix really does mix your coordinate axes together.\nSymmetry is the condition that quietly forbids all of that mixing, once you look from the right angle. The promise of the theorem is that for a symmetric matrix you can always find a fresh set of axes, still perfectly perpendicular to one another, in which the map becomes a pure diagonal stretch. Finding those special axes is the whole game, and they are exactly the eigenvectors."
   },
   {
-    "objectID": "posts/spectral-theorem/index.html#the-result",
-    "href": "posts/spectral-theorem/index.html#the-result",
+    "objectID": "posts/spectral-theorem/index.html#setting-it-up",
+    "href": "posts/spectral-theorem/index.html#setting-it-up",
     "title": "The Spectral Theorem for Symmetric Matrices",
-    "section": "The result",
-    "text": "The result\n\nTheorem 1 (Spectral Theorem) If \\(A \\in \\mathbb{R}^{n\\times n}\\) is symmetric, then there exist an orthogonal matrix \\(Q\\) (so \\(Q^\\top Q = I\\)) and a real diagonal matrix \\(\\Lambda = \\operatorname{diag}(\\lambda_1,\\dots,\\lambda_n)\\) such that \\[\nA = Q \\Lambda Q^\\top .\n\\tag{2}\\] Equivalently, \\(\\mathbb{R}^n\\) has an orthonormal basis of eigenvectors of \\(A\\), and every eigenvalue is real.\n\nWe build to it with two lemmas.\n\nLemma 1 (Eigenvalues are real) Every eigenvalue of a real symmetric \\(A\\) is real.\n\n\nProof. Let \\(Ax = \\lambda x\\) with \\(x \\neq 0\\), allowing complex \\(\\lambda, x\\). Using the conjugate transpose \\(x^*\\) and \\(A^\\top = A\\) with real entries, \\[\n\\lambda \\,\\langle x, x\\rangle = x^* A x = (A x)^* x \\big/ \\ \\cdots\\ = \\bar\\lambda\\, \\langle x, x\\rangle .\n\\] Since \\(\\langle x,x\\rangle = \\|x\\|^2 &gt; 0\\), we get \\(\\lambda = \\bar\\lambda\\), so \\(\\lambda \\in \\mathbb{R}\\). \\(\\qquad\\blacksquare\\)\n\n\nLemma 2 (Eigenvectors for distinct eigenvalues are orthogonal) If \\(Ax = \\lambda x\\) and \\(Ay = \\mu y\\) with \\(\\lambda \\neq \\mu\\), then \\(\\langle x, y\\rangle = 0\\).\n\n\nProof. By Equation 1, \\[\n\\lambda \\langle x, y\\rangle = \\langle Ax, y\\rangle = \\langle x, Ay\\rangle = \\mu \\langle x, y\\rangle,\n\\] so \\((\\lambda - \\mu)\\langle x, y\\rangle = 0\\). As \\(\\lambda \\neq \\mu\\), \\(\\langle x,y\\rangle = 0\\). \\(\\qquad\\blacksquare\\)\n\n\nProof (Proof of Theorem 1 (sketch)). Induct on \\(n\\). The base case \\(n=1\\) is immediate. For the step, Lemma 1 gives a real eigenvalue \\(\\lambda_1\\) with unit eigenvector \\(q_1\\). Its orthogonal complement \\(q_1^\\perp\\) is \\(A\\)-invariant (by Equation 1), so \\(A\\) restricts to a symmetric operator on an \\((n-1)\\)-dimensional space. The inductive hypothesis supplies an orthonormal eigenbasis there; adjoining \\(q_1\\) yields an orthonormal eigenbasis of \\(\\mathbb{R}^n\\). Collecting these vectors as columns of \\(Q\\) gives Equation 2. \\(\\qquad\\blacksquare\\)\n\nA complete treatment, including the self-adjoint operator version on Hilbert spaces, is in [1]; for the numerical side see [2]."
+    "section": "Setting it up",
+    "text": "Setting it up\nLet \\(A \\in \\mathbb{R}^{n\\times n}\\) be symmetric, meaning \\(A^\\top = A\\). Write the standard inner product as \\(\\langle x, y\\rangle = x^\\top y\\). The single fact that powers everything below is that symmetry lets you slide \\(A\\) from one side of an inner product to the other:\n\\[\n\\langle Ax, y\\rangle = \\langle x, Ay\\rangle \\qquad \\text{for all } x,y \\in \\mathbb{R}^n.\n\\tag{1}\\]\nThis is worth a moment. It says \\(A\\) treats both slots of the inner product identically, a property called self-adjointness. Everything that follows is really Equation 1 wearing different costumes."
   },
   {
-    "objectID": "posts/spectral-theorem/index.html#numerical-check",
-    "href": "posts/spectral-theorem/index.html#numerical-check",
+    "objectID": "posts/spectral-theorem/index.html#the-theorem",
+    "href": "posts/spectral-theorem/index.html#the-theorem",
     "title": "The Spectral Theorem for Symmetric Matrices",
-    "section": "Numerical check",
-    "text": "Numerical check\nDecompositions should be tested, not trusted. We build a random symmetric matrix, diagonalize it, and confirm Equation 2 holds to machine precision.\n\n\n\nimport numpy as np\n\nrng = np.random.default_rng(0)\nn = 6\nM = rng.standard_normal((n, n))\nA = (M + M.T) / 2                      # symmetrize\n\neigvals, Q = np.linalg.eigh(A)         # eigh exploits symmetry\nLambda = np.diag(eigvals)\n\nreconstruction_error = np.linalg.norm(A - Q @ Lambda @ Q.T)\northogonality_error  = np.linalg.norm(Q.T @ Q - np.eye(n))\n\nprint(f\"eigenvalues (all real): {np.round(eigvals, 4)}\")\nprint(f\"|A - Q Λ Qᵀ|  = {reconstruction_error:.2e}\")\nprint(f\"|QᵀQ - I|     = {orthogonality_error:.2e}\")\n\neigenvalues (all real): [-2.0037 -0.988   0.2761  0.4913  1.5001  1.8151]\n|A - Q Λ Qᵀ|  = 1.62e-15\n|QᵀQ - I|     = 1.39e-15\n\n\n\nFigure 1\n\n\n\nBoth residuals sit near \\(10^{-15}\\), confirming the decomposition numerically."
+    "section": "The theorem",
+    "text": "The theorem\n\nTheorem 1 (Spectral Theorem) If \\(A \\in \\mathbb{R}^{n\\times n}\\) is symmetric, then there exist an orthogonal matrix \\(Q\\) (so \\(Q^\\top Q = I\\)) and a real diagonal matrix \\(\\Lambda = \\operatorname{diag}(\\lambda_1,\\dots,\\lambda_n)\\) such that \\[\nA = Q \\Lambda Q^\\top .\n\\tag{2}\\] Equivalently, \\(\\mathbb{R}^n\\) has an orthonormal basis of eigenvectors of \\(A\\), and every eigenvalue is real.\n\nRead Equation 2 from right to left and it tells the same story as the picture. The matrix \\(Q^\\top\\) rotates you into the special axes, \\(\\Lambda\\) does the honest diagonal stretching, and \\(Q\\) rotates you back. We reach it through two small observations."
   },
   {
-    "objectID": "posts/spectral-theorem/index.html#takeaways",
-    "href": "posts/spectral-theorem/index.html#takeaways",
+    "objectID": "posts/spectral-theorem/index.html#two-small-facts",
+    "href": "posts/spectral-theorem/index.html#two-small-facts",
     "title": "The Spectral Theorem for Symmetric Matrices",
-    "section": "Takeaways",
-    "text": "Takeaways\n\nSymmetry \\(\\Rightarrow\\) self-adjointness (Equation 1) is the engine of the whole proof.\nReal eigenvalues (Lemma 1) and orthogonality (Lemma 2) are the two ingredients.\nIn practice, call a symmetry-aware routine like eigh, not the general eig."
+    "section": "Two small facts",
+    "text": "Two small facts\n\nLemma 1 (Eigenvalues are real) Every eigenvalue of a real symmetric \\(A\\) is real.\n\n\nProof. Let \\(Ax = \\lambda x\\) with \\(x \\neq 0\\), where for the moment we allow \\(\\lambda\\) and \\(x\\) to be complex. Write \\(x^{*}\\) for the conjugate transpose, so \\(\\langle x, x\\rangle = x^{*}x = \\|x\\|^2 &gt; 0\\). Because \\(A\\) has real entries and \\(A^\\top = A\\), it is Hermitian: \\(A^{*} = A\\). Now follow a single quantity, \\(x^{*}Ax\\), down two different paths: \\[\n\\lambda\\, \\langle x, x\\rangle = x^{*} A x = x^{*} A^{*} x = (Ax)^{*} x = \\bar\\lambda\\, \\langle x, x\\rangle .\n\\] The first equality uses \\(Ax = \\lambda x\\); the middle uses \\(A^{*}=A\\); the last uses \\(Ax = \\lambda x\\) again, now inside the conjugated slot. Since \\(\\langle x, x\\rangle &gt; 0\\) we may cancel it, leaving \\(\\lambda = \\bar\\lambda\\). A number equal to its own conjugate is real. \\(\\qquad\\blacksquare\\)\n\n\nLemma 2 (Eigenvectors for distinct eigenvalues are orthogonal) If \\(Ax = \\lambda x\\) and \\(Ay = \\mu y\\) with \\(\\lambda \\neq \\mu\\), then \\(\\langle x, y\\rangle = 0\\).\n\n\nProof. Slide \\(A\\) across the inner product using Equation 1: \\[\n\\lambda \\langle x, y\\rangle = \\langle Ax, y\\rangle = \\langle x, Ay\\rangle = \\mu \\langle x, y\\rangle .\n\\] Therefore \\((\\lambda - \\mu)\\langle x, y\\rangle = 0\\), and since \\(\\lambda \\neq \\mu\\) the only way out is \\(\\langle x, y\\rangle = 0\\). The special axes are automatically perpendicular, exactly as the picture demanded. \\(\\qquad\\blacksquare\\)"
+  },
+  {
+    "objectID": "posts/spectral-theorem/index.html#putting-it-together",
+    "href": "posts/spectral-theorem/index.html#putting-it-together",
+    "title": "The Spectral Theorem for Symmetric Matrices",
+    "section": "Putting it together",
+    "text": "Putting it together\nWe now assemble the theorem. The argument is an induction on the dimension \\(n\\), and each step leans on the two facts above.\n\nProof. The base case \\(n = 1\\) is immediate, since a \\(1\\times 1\\) matrix is already diagonal. For the inductive step, Lemma 1 hands us a genuine real eigenvalue \\(\\lambda_1\\) with a unit eigenvector \\(q_1\\). Consider its orthogonal complement \\(q_1^{\\perp}\\), the hyperplane of everything perpendicular to \\(q_1\\). Identity Equation 1 shows this hyperplane is \\(A\\)-invariant: if \\(v \\perp q_1\\) then \\(Av \\perp q_1\\) as well, so \\(A\\) never pushes you off the hyperplane. Restricted there, \\(A\\) is again symmetric but acts on a space of dimension \\(n-1\\), so the inductive hypothesis supplies an orthonormal eigenbasis of that smaller space. Adjoining \\(q_1\\) completes it to an orthonormal eigenbasis of all of \\(\\mathbb{R}^n\\). Lining those vectors up as the columns of \\(Q\\) gives exactly Equation 2. \\(\\qquad\\blacksquare\\)\n\nFor a complete and careful treatment, including the version for self-adjoint operators on infinite-dimensional Hilbert spaces, see [1]. For the numerical side of the story, [2] is the classic reference."
+  },
+  {
+    "objectID": "posts/spectral-theorem/index.html#a-numerical-check",
+    "href": "posts/spectral-theorem/index.html#a-numerical-check",
+    "title": "The Spectral Theorem for Symmetric Matrices",
+    "section": "A numerical check",
+    "text": "A numerical check\nA proof tells you a decomposition must exist; it is a different kind of satisfying to watch it appear. Let us build a random symmetric matrix, ask the computer for its eigenvalues and eigenvectors, and confirm that Equation 2 holds right down to floating-point roundoff.\n\nimport numpy as np\n\nrng = np.random.default_rng(0)\nn = 6\nM = rng.standard_normal((n, n))\nA = (M + M.T) / 2                      # force symmetry\n\neigvals, Q = np.linalg.eigh(A)         # eigh is built for symmetric matrices\nLambda = np.diag(eigvals)\n\nreconstruction_error = np.linalg.norm(A - Q @ Lambda @ Q.T)\northogonality_error  = np.linalg.norm(Q.T @ Q - np.eye(n))\n\nprint(f\"eigenvalues (all real): {np.round(eigvals, 4)}\")\nprint(f\"|A - Q L Q^T| = {reconstruction_error:.2e}\")\nprint(f\"|Q^T Q - I|   = {orthogonality_error:.2e}\")\n\neigenvalues (all real): [-2.0037 -0.988   0.2761  0.4913  1.5001  1.8151]\n|A - Q L Q^T| = 1.62e-15\n|Q^T Q - I|   = 1.39e-15\n\n\nBoth residuals sit around \\(10^{-15}\\), which is as close to zero as double-precision arithmetic ever gets. The eigenvalues come back real, the eigenvectors come back orthonormal, and the stretch-and-rotate story holds up."
+  },
+  {
+    "objectID": "posts/spectral-theorem/index.html#what-to-remember",
+    "href": "posts/spectral-theorem/index.html#what-to-remember",
+    "title": "The Spectral Theorem for Symmetric Matrices",
+    "section": "What to remember",
+    "text": "What to remember\nIf you keep only three things from this note, keep these. Symmetry is really self-adjointness, the identity Equation 1, and that one fact is the engine of the entire proof. From it follow real eigenvalues (Lemma 1) and perpendicular eigenvectors (Lemma 2), which together build the orthonormal frame the theorem promises. And in practice, when you actually compute, reach for a symmetry-aware routine like eigh rather than the general eig; it is faster and it guarantees the real, orthogonal answer the mathematics says you deserve."
   },
   {
     "objectID": "posts/spectral-theorem/index.html#how-to-cite",
     "href": "posts/spectral-theorem/index.html#how-to-cite",
     "title": "The Spectral Theorem for Symmetric Matrices",
     "section": "How to cite",
-    "text": "How to cite\n\nYour Name (2026). The Spectral Theorem for Symmetric Matrices. Retrieved from https://yourusername.github.io/posts/spectral-theorem/."
+    "text": "How to cite\n\nTerry (2026). The Spectral Theorem for Symmetric Matrices. Retrieved from https://terryfxh.github.io/math-notes/posts/spectral-theorem/."
   },
   {
     "objectID": "TODO.html",
