@@ -1,0 +1,43 @@
+/* ---- Typography ---- */
+:root {
+  --content-max-width: 820px;
+}
+
+body {
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+/* Comfortable reading measure for prose-heavy math posts */
+main.content {
+  max-width: var(--content-max-width);
+}
+
+/* ---- Math display spacing ---- */
+.MathJax_Display, mjx-container[display="true"] {
+  margin: 1.1em 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* ---- Theorem-style callouts get a subtle accent ---- */
+.callout.callout-style-default {
+  border-left-width: 4px;
+}
+
+/* ---- Code blocks ---- */
+pre.sourceCode {
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+/* ---- Listing cards ---- */
+.quarto-listing .listing-title {
+  font-weight: 600;
+}
+
+/* ---- Links ---- */
+a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}

@@ -1,0 +1,9 @@
+# Defaults applied to every post in posts/
+freeze: auto          # re-run code only when a post changes (fast, reproducible builds)
+title-block-banner: false
+
+format:
+  html:
+    toc: true
+    code-fold: false
+    code-tools: true

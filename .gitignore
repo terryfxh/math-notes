@@ -1,0 +1,20 @@
+# Quarto build artifacts
+/_site/
+/.quarto/
+*.html
+!index.html
+
+# Freeze (uncomment if you DON'T want to commit cached compute results)
+# /_freeze/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+**/*.quarto_ipynb

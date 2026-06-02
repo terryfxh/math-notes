@@ -1,0 +1,53 @@
+---
+title: "About"
+image: profile.jpg
+about:
+  template: trestles
+  links:
+    - icon: github
+      text: GitHub
+      href: https://github.com/terryfxh
+    - icon: envelope
+      text: Email
+      href: "mailto:fangxihan1@gmail.com"
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/xihan-fang/
+---
+
+I'm **Xihan Fang**, a mathematics student interested in the connection between
+pure mathematical theory, computational methods, and quantitative modelling.
+
+My academic interests lie across topology, analysis, network science, stochastic
+processes, optimization, and quantitative finance. I use this site as a long-term
+archive for mathematical notes, technical derivations, paper reviews, and reproducible
+computational experiments.
+
+## Research interests
+
+- **Pure mathematics:** topology, analysis, algebra, and mathematical structures.
+- **Applied mathematics:** network science, stochastic processes, optimization, and numerical methods.
+- **Quantitative finance:** market modelling, risk, statistical learning, and systematic research workflows.
+- **Mathematical modelling:** model formulation, parameter estimation, sensitivity analysis, and computational verification.
+
+## What you'll find here
+
+This blog collects notes and projects written with three aims:
+
+1. to make definitions, theorems, and proofs precise enough to revisit later;
+2. to connect abstract mathematics with computational and modelling problems;
+3. to document reproducible calculations, simulations, and research ideas.
+
+Some posts are study notes on topics such as topology, networks, probability, and
+optimization. Others are technical write-ups of modelling projects, numerical
+experiments, or papers that I am working through.
+
+The emphasis is on clarity, self-contained exposition, and careful reasoning. Most
+posts are written for my future self, but I hope they may also be useful to other
+students working through similar mathematical material.
+
+## Elsewhere
+
+You can find my code and small projects on GitHub. I also maintain a LinkedIn profile
+for academic and professional updates. For questions, corrections, or academic
+correspondence, feel free to contact me by email.

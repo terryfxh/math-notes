@@ -1,0 +1,131 @@
+---
+title: "The Spectral Theorem for Symmetric Matrices"
+description: "A from-first-principles proof that real symmetric matrices are orthogonally diagonalizable, with a numerical check."
+date: 2026-06-01
+categories: [pure, applied, linear-algebra]
+bibliography: ../../references.bib
+draft: false
+---
+
+This post is a **template**: it demonstrates every formatting feature these notes use —
+inline and display math, numbered equations, theorem/proof environments,
+cross-references, citations, and a runnable code cell. Copy this folder to start a new
+post.
+
+## Setup
+
+Let $A \in \mathbb{R}^{n\times n}$ be **symmetric**, i.e. $A^\top = A$. We write the
+standard inner product as $\langle x, y\rangle = x^\top y$. Symmetry is equivalent to
+self-adjointness:
+
+$$
+\langle Ax, y\rangle = \langle x, Ay\rangle \qquad \text{for all } x,y \in \mathbb{R}^n.
+$$ {#eq-selfadjoint}
+
+The whole theorem flows from @eq-selfadjoint.
+
+## The result
+
+::: {#thm-spectral}
+
+## Spectral Theorem
+
+If $A \in \mathbb{R}^{n\times n}$ is symmetric, then there exist an orthogonal matrix
+$Q$ (so $Q^\top Q = I$) and a real diagonal matrix $\Lambda = \operatorname{diag}(\lambda_1,\dots,\lambda_n)$
+such that
+$$
+A = Q \Lambda Q^\top .
+$$ {#eq-decomp}
+Equivalently, $\mathbb{R}^n$ has an orthonormal basis of eigenvectors of $A$, and every
+eigenvalue is real.
+
+:::
+
+We build to it with two lemmas.
+
+::: {#lem-real}
+
+## Eigenvalues are real
+
+Every eigenvalue of a real symmetric $A$ is real.
+
+:::
+
+::: {.proof}
+Let $Ax = \lambda x$ with $x \neq 0$, allowing complex $\lambda, x$. Using the conjugate
+transpose $x^*$ and $A^\top = A$ with real entries,
+$$
+\lambda \,\langle x, x\rangle = x^* A x = (A x)^* x \big/ \ \cdots\ = \bar\lambda\, \langle x, x\rangle .
+$$
+Since $\langle x,x\rangle = \|x\|^2 > 0$, we get $\lambda = \bar\lambda$, so $\lambda \in \mathbb{R}$. $\qquad\blacksquare$
+:::
+
+::: {#lem-orthogonal}
+
+## Eigenvectors for distinct eigenvalues are orthogonal
+
+If $Ax = \lambda x$ and $Ay = \mu y$ with $\lambda \neq \mu$, then $\langle x, y\rangle = 0$.
+
+:::
+
+::: {.proof}
+By @eq-selfadjoint,
+$$
+\lambda \langle x, y\rangle = \langle Ax, y\rangle = \langle x, Ay\rangle = \mu \langle x, y\rangle,
+$$
+so $(\lambda - \mu)\langle x, y\rangle = 0$. As $\lambda \neq \mu$, $\langle x,y\rangle = 0$. $\qquad\blacksquare$
+:::
+
+::: {.proof}
+
+## Proof of @thm-spectral (sketch)
+
+Induct on $n$. The base case $n=1$ is immediate. For the step, @lem-real gives a real
+eigenvalue $\lambda_1$ with unit eigenvector $q_1$. Its orthogonal complement
+$q_1^\perp$ is $A$-invariant (by @eq-selfadjoint), so $A$ restricts to a symmetric
+operator on an $(n-1)$-dimensional space. The inductive hypothesis supplies an
+orthonormal eigenbasis there; adjoining $q_1$ yields an orthonormal eigenbasis of
+$\mathbb{R}^n$. Collecting these vectors as columns of $Q$ gives @eq-decomp. $\qquad\blacksquare$
+:::
+
+A complete treatment, including the self-adjoint operator version on Hilbert spaces,
+is in @rudin1991functional; for the numerical side see @trefethen1997numerical.
+
+## Numerical check
+
+Decompositions should be tested, not trusted. We build a random symmetric matrix,
+diagonalize it, and confirm @eq-decomp holds to machine precision.
+
+```{python}
+#| label: fig-spectral
+#| fig-cap: "Reconstruction error $\\|A - Q\\Lambda Q^\\top\\|$ is at the level of floating-point roundoff."
+import numpy as np
+
+rng = np.random.default_rng(0)
+n = 6
+M = rng.standard_normal((n, n))
+A = (M + M.T) / 2                      # symmetrize
+
+eigvals, Q = np.linalg.eigh(A)         # eigh exploits symmetry
+Lambda = np.diag(eigvals)
+
+reconstruction_error = np.linalg.norm(A - Q @ Lambda @ Q.T)
+orthogonality_error  = np.linalg.norm(Q.T @ Q - np.eye(n))
+
+print(f"eigenvalues (all real): {np.round(eigvals, 4)}")
+print(f"|A - Q Λ Qᵀ|  = {reconstruction_error:.2e}")
+print(f"|QᵀQ - I|     = {orthogonality_error:.2e}")
+```
+
+Both residuals sit near $10^{-15}$, confirming the decomposition numerically.
+
+## Takeaways
+
+- Symmetry $\Rightarrow$ self-adjointness (@eq-selfadjoint) is the engine of the whole proof.
+- Real eigenvalues (@lem-real) and orthogonality (@lem-orthogonal) are the two ingredients.
+- In practice, call a symmetry-aware routine like `eigh`, not the general `eig`.
+
+## How to cite
+
+> Your Name (2026). *The Spectral Theorem for Symmetric Matrices*. Retrieved from
+> `https://yourusername.github.io/posts/spectral-theorem/`.

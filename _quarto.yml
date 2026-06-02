@@ -1,0 +1,55 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "(Terry) Xihan Fang — Math Notes"
+  description: "Self-contained notes in pure and applied mathematics, derived from first principles with runnable code where it helps."
+  site-url: https://terryfxh.github.io/math-notes   # project-page URL
+  repo-url: https://github.com/terryfxh/math-notes
+  repo-actions: [edit, issue]
+  open-graph: true
+  twitter-card: true
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+      - text: About
+        href: about.qmd
+      - text: Categories
+        href: index.qmd#category-listing
+    right:
+      - icon: github
+        href: https://github.com/terryfxh   # <-- change
+        aria-label: GitHub
+      - icon: rss
+        href: index.xml
+  page-footer:
+    left: "© 2026 Terry Fang"
+    right: "Built with [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme:
+      - cosmo
+      - styles.css
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+    html-math-method: mathjax
+    fig-cap-location: bottom
+    link-external-newwindow: true
+
+# Bibliography defaults (used by any post that cites)
+bibliography: references.bib
+csl: https://www.zotero.org/styles/ieee   # swap for your preferred citation style
+
+# Theorem/proof environments and cross-reference labels
+crossref:
+  thm-title: "Theorem"
+  lem-title: "Lemma"
+  cor-title: "Corollary"
+  def-title: "Definition"
+  prp-title: "Proposition"

@@ -1,0 +1,28 @@
+---
+title: "Welcome — what this blog is for"
+description: "A short note on why this blog exists and how the notes are structured."
+date: 2026-06-02
+categories: [meta]
+draft: false
+---
+
+This blog is where I work mathematics out in the open. The goal is a small archive of
+**self-contained, correct notes** — results derived from first principles, papers
+digested into something I'd actually want to re-read, and numerical methods tested with
+code you can run yourself.
+
+## How posts are organized
+
+Each post belongs to one of a few pillars:
+
+- **Pure** — analysis, algebra, topology, number theory
+- **Applied** — numerical methods, optimization, probability, PDEs
+- **Meta** — paper reviews, study notes, problem sets
+
+## A standing promise
+
+Every claim here is proved, cited, or explicitly flagged as intuition. When I get
+something wrong, I fix it — corrections are welcome via the repo's issues.
+
+Next up: the [Spectral Theorem note](../spectral-theorem/) shows the formatting these
+posts use — theorems, proofs, citations, and runnable code.
