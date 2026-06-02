@@ -1,47 +1,47 @@
 ---
 title: "The Spectral Theorem for Symmetric Matrices"
-description: "A from-first-principles proof that real symmetric matrices are orthogonally diagonalizable, with a numerical check."
+description: "Why every real symmetric matrix is secretly just a stretch along perpendicular axes, told as a picture first and a proof second."
 date: 2026-06-01
 categories: [pure, applied, linear-algebra]
 bibliography: ../../references.bib
 draft: false
 ---
 
-This post is a **template**: it demonstrates every formatting feature these notes use —
-inline and display math, numbered equations, theorem/proof environments,
-cross-references, citations, and a runnable code cell. Copy this folder to start a new
-post.
+Here is a claim that sounds almost too clean to be true. Take any real symmetric matrix, no matter how tangled its entries look, and there is always a way to turn your head so that the transformation it describes does nothing fancy at all. It just stretches space along a set of perpendicular axes, each by its own amount. No shearing, no twisting, no mixing of directions. That is the whole content of the spectral theorem, and the rest of this post is about why space has no choice but to behave this way.
 
-## Setup
+## First, the picture
 
-Let $A \in \mathbb{R}^{n\times n}$ be **symmetric**, i.e. $A^\top = A$. We write the
-standard inner product as $\langle x, y\rangle = x^\top y$. Symmetry is equivalent to
-self-adjointness:
+Picture a linear map in two dimensions. In general it can do unpleasant things: it can rotate, it can shear a square into a slanted parallelogram, it can stretch more in one diagonal direction than another. A generic matrix really does mix your coordinate axes together.
+
+Symmetry is the condition that quietly forbids all of that mixing, once you look from the right angle. The promise of the theorem is that for a symmetric matrix you can always find a fresh set of axes, still perfectly perpendicular to one another, in which the map becomes a pure diagonal stretch. Finding those special axes is the whole game, and they are exactly the eigenvectors.
+
+## Setting it up
+
+Let $A \in \mathbb{R}^{n\times n}$ be **symmetric**, meaning $A^\top = A$. Write the standard inner product as $\langle x, y\rangle = x^\top y$. The single fact that powers everything below is that symmetry lets you slide $A$ from one side of an inner product to the other:
 
 $$
 \langle Ax, y\rangle = \langle x, Ay\rangle \qquad \text{for all } x,y \in \mathbb{R}^n.
 $$ {#eq-selfadjoint}
 
-The whole theorem flows from @eq-selfadjoint.
+This is worth a moment. It says $A$ treats both slots of the inner product identically, a property called self-adjointness. Everything that follows is really @eq-selfadjoint wearing different costumes.
 
-## The result
+## The theorem
 
 ::: {#thm-spectral}
 
 ## Spectral Theorem
 
-If $A \in \mathbb{R}^{n\times n}$ is symmetric, then there exist an orthogonal matrix
-$Q$ (so $Q^\top Q = I$) and a real diagonal matrix $\Lambda = \operatorname{diag}(\lambda_1,\dots,\lambda_n)$
-such that
+If $A \in \mathbb{R}^{n\times n}$ is symmetric, then there exist an orthogonal matrix $Q$ (so $Q^\top Q = I$) and a real diagonal matrix $\Lambda = \operatorname{diag}(\lambda_1,\dots,\lambda_n)$ such that
 $$
 A = Q \Lambda Q^\top .
 $$ {#eq-decomp}
-Equivalently, $\mathbb{R}^n$ has an orthonormal basis of eigenvectors of $A$, and every
-eigenvalue is real.
+Equivalently, $\mathbb{R}^n$ has an orthonormal basis of eigenvectors of $A$, and every eigenvalue is real.
 
 :::
 
-We build to it with two lemmas.
+Read @eq-decomp from right to left and it tells the same story as the picture. The matrix $Q^\top$ rotates you into the special axes, $\Lambda$ does the honest diagonal stretching, and $Q$ rotates you back. We reach it through two small observations.
+
+## Two small facts
 
 ::: {#lem-real}
 
@@ -52,12 +52,11 @@ Every eigenvalue of a real symmetric $A$ is real.
 :::
 
 ::: {.proof}
-Let $Ax = \lambda x$ with $x \neq 0$, allowing complex $\lambda, x$. Using the conjugate
-transpose $x^*$ and $A^\top = A$ with real entries,
+Let $Ax = \lambda x$ with $x \neq 0$, where for the moment we allow $\lambda$ and $x$ to be complex. Write $x^{*}$ for the conjugate transpose, so $\langle x, x\rangle = x^{*}x = \|x\|^2 > 0$. Because $A$ has real entries and $A^\top = A$, it is Hermitian: $A^{*} = A$. Now follow a single quantity, $x^{*}Ax$, down two different paths:
 $$
-\lambda \,\langle x, x\rangle = x^* A x = (A x)^* x \big/ \ \cdots\ = \bar\lambda\, \langle x, x\rangle .
+\lambda\, \langle x, x\rangle = x^{*} A x = x^{*} A^{*} x = (Ax)^{*} x = \bar\lambda\, \langle x, x\rangle .
 $$
-Since $\langle x,x\rangle = \|x\|^2 > 0$, we get $\lambda = \bar\lambda$, so $\lambda \in \mathbb{R}$. $\qquad\blacksquare$
+The first equality uses $Ax = \lambda x$; the middle uses $A^{*}=A$; the last uses $Ax = \lambda x$ again, now inside the conjugated slot. Since $\langle x, x\rangle > 0$ we may cancel it, leaving $\lambda = \bar\lambda$. A number equal to its own conjugate is real. $\qquad\blacksquare$
 :::
 
 ::: {#lem-orthogonal}
@@ -69,63 +68,52 @@ If $Ax = \lambda x$ and $Ay = \mu y$ with $\lambda \neq \mu$, then $\langle x, y
 :::
 
 ::: {.proof}
-By @eq-selfadjoint,
+Slide $A$ across the inner product using @eq-selfadjoint:
 $$
-\lambda \langle x, y\rangle = \langle Ax, y\rangle = \langle x, Ay\rangle = \mu \langle x, y\rangle,
+\lambda \langle x, y\rangle = \langle Ax, y\rangle = \langle x, Ay\rangle = \mu \langle x, y\rangle .
 $$
-so $(\lambda - \mu)\langle x, y\rangle = 0$. As $\lambda \neq \mu$, $\langle x,y\rangle = 0$. $\qquad\blacksquare$
+Therefore $(\lambda - \mu)\langle x, y\rangle = 0$, and since $\lambda \neq \mu$ the only way out is $\langle x, y\rangle = 0$. The special axes are automatically perpendicular, exactly as the picture demanded. $\qquad\blacksquare$
 :::
+
+## Putting it together
+
+We now assemble the theorem. The argument is an induction on the dimension $n$, and each step leans on the two facts above.
 
 ::: {.proof}
-
-## Proof of @thm-spectral (sketch)
-
-Induct on $n$. The base case $n=1$ is immediate. For the step, @lem-real gives a real
-eigenvalue $\lambda_1$ with unit eigenvector $q_1$. Its orthogonal complement
-$q_1^\perp$ is $A$-invariant (by @eq-selfadjoint), so $A$ restricts to a symmetric
-operator on an $(n-1)$-dimensional space. The inductive hypothesis supplies an
-orthonormal eigenbasis there; adjoining $q_1$ yields an orthonormal eigenbasis of
-$\mathbb{R}^n$. Collecting these vectors as columns of $Q$ gives @eq-decomp. $\qquad\blacksquare$
+The base case $n = 1$ is immediate, since a $1\times 1$ matrix is already diagonal. For the inductive step, @lem-real hands us a genuine real eigenvalue $\lambda_1$ with a unit eigenvector $q_1$. Consider its orthogonal complement $q_1^{\perp}$, the hyperplane of everything perpendicular to $q_1$. Identity @eq-selfadjoint shows this hyperplane is $A$-invariant: if $v \perp q_1$ then $Av \perp q_1$ as well, so $A$ never pushes you off the hyperplane. Restricted there, $A$ is again symmetric but acts on a space of dimension $n-1$, so the inductive hypothesis supplies an orthonormal eigenbasis of that smaller space. Adjoining $q_1$ completes it to an orthonormal eigenbasis of all of $\mathbb{R}^n$. Lining those vectors up as the columns of $Q$ gives exactly @eq-decomp. $\qquad\blacksquare$
 :::
 
-A complete treatment, including the self-adjoint operator version on Hilbert spaces,
-is in @rudin1991functional; for the numerical side see @trefethen1997numerical.
+For a complete and careful treatment, including the version for self-adjoint operators on infinite-dimensional Hilbert spaces, see @rudin1991functional. For the numerical side of the story, @trefethen1997numerical is the classic reference.
 
-## Numerical check
+## A numerical check
 
-Decompositions should be tested, not trusted. We build a random symmetric matrix,
-diagonalize it, and confirm @eq-decomp holds to machine precision.
+A proof tells you a decomposition must exist; it is a different kind of satisfying to watch it appear. Let us build a random symmetric matrix, ask the computer for its eigenvalues and eigenvectors, and confirm that @eq-decomp holds right down to floating-point roundoff.
 
 ```{python}
-#| label: fig-spectral
-#| fig-cap: "Reconstruction error $\\|A - Q\\Lambda Q^\\top\\|$ is at the level of floating-point roundoff."
 import numpy as np
 
 rng = np.random.default_rng(0)
 n = 6
 M = rng.standard_normal((n, n))
-A = (M + M.T) / 2                      # symmetrize
+A = (M + M.T) / 2                      # force symmetry
 
-eigvals, Q = np.linalg.eigh(A)         # eigh exploits symmetry
+eigvals, Q = np.linalg.eigh(A)         # eigh is built for symmetric matrices
 Lambda = np.diag(eigvals)
 
 reconstruction_error = np.linalg.norm(A - Q @ Lambda @ Q.T)
 orthogonality_error  = np.linalg.norm(Q.T @ Q - np.eye(n))
 
 print(f"eigenvalues (all real): {np.round(eigvals, 4)}")
-print(f"|A - Q Λ Qᵀ|  = {reconstruction_error:.2e}")
-print(f"|QᵀQ - I|     = {orthogonality_error:.2e}")
+print(f"|A - Q L Q^T| = {reconstruction_error:.2e}")
+print(f"|Q^T Q - I|   = {orthogonality_error:.2e}")
 ```
 
-Both residuals sit near $10^{-15}$, confirming the decomposition numerically.
+Both residuals sit around $10^{-15}$, which is as close to zero as double-precision arithmetic ever gets. The eigenvalues come back real, the eigenvectors come back orthonormal, and the stretch-and-rotate story holds up.
 
-## Takeaways
+## What to remember
 
-- Symmetry $\Rightarrow$ self-adjointness (@eq-selfadjoint) is the engine of the whole proof.
-- Real eigenvalues (@lem-real) and orthogonality (@lem-orthogonal) are the two ingredients.
-- In practice, call a symmetry-aware routine like `eigh`, not the general `eig`.
+If you keep only three things from this note, keep these. Symmetry is really self-adjointness, the identity @eq-selfadjoint, and that one fact is the engine of the entire proof. From it follow real eigenvalues (@lem-real) and perpendicular eigenvectors (@lem-orthogonal), which together build the orthonormal frame the theorem promises. And in practice, when you actually compute, reach for a symmetry-aware routine like `eigh` rather than the general `eig`; it is faster and it guarantees the real, orthogonal answer the mathematics says you deserve.
 
 ## How to cite
 
-> Your Name (2026). *The Spectral Theorem for Symmetric Matrices*. Retrieved from
-> `https://yourusername.github.io/posts/spectral-theorem/`.
+> Terry (2026). *The Spectral Theorem for Symmetric Matrices*. Retrieved from `https://terryfxh.github.io/math-notes/posts/spectral-theorem/`.

@@ -1,6 +1,6 @@
 ---
 title: "Math Notes"
-subtitle: "Notes in pure & applied mathematics — derived from first principles."
+subtitle: "A place where I try to *see* mathematics, not just compute it."
 listing:
   contents: posts
   sort: "date desc"
@@ -14,8 +14,10 @@ page-layout: full
 title-block-banner: true
 ---
 
-Welcome. This is where I work problems out in the open: theorems I'm re-deriving,
-papers I'm digesting, and numerical methods I'm putting to the test. Posts aim to be
-self-contained and correct, with runnable code where it sharpens intuition.
+Most of the time, mathematics gets handed to us as a list of things to calculate. I have always been far more curious about the picture sitting underneath all that machinery: the reason a theorem has no choice but to be true, the quiet moment when a row of abstract symbols suddenly turns into something you can picture and almost touch.
 
-Browse by topic using the category filter, or subscribe via [RSS](index.xml).
+This is where I work that out in the open. Each post starts from the simplest version of an idea I can find, builds up the intuition until the result feels inevitable, and only then writes down the formal proof. Where a picture or a few lines of runnable code make the idea easier to believe, I include them.
+
+I write these mostly for the version of me who was once stuck on the very same thing. If you happen to be stuck there too, I hope they help.
+
+Browse by topic with the category filter, or subscribe through [RSS](index.xml).
