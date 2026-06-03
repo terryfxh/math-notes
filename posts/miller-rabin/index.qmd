@@ -1,0 +1,148 @@
+---
+title: "Miller–Rabin: How to Believe a Number Is Prime"
+description: "You can become as certain as you like that a 300-digit number is prime without ever finding a factor, by interrogating it with random witnesses. The idea rests on a single fact: in a field, one has only two square roots."
+date: 2026-06-03
+categories: [pure, applied, number-theory, computer-science, algorithms, cryptography]
+bibliography: ../../references.bib
+draft: false
+---
+
+::: {.epigraph}
+"The problem of distinguishing prime numbers from composite numbers ... is known to be one of the most important and useful in arithmetic."
+
+[— Carl Friedrich Gauss, *Disquisitiones Arithmeticae*, Art. 329 (1801)]{.attribution}
+:::
+
+Here is something that should feel slightly impossible. Hand me a number with three hundred digits and I can make you as confident as you wish that it is prime, confident past any doubt you could act on, without ever exhibiting a single factor and without coming anywhere near factoring it. The trick is not to search for divisors. It is to put the number on trial and call witnesses against it. A composite number, it turns out, cannot keep its story straight, and almost every witness we call will catch it in the lie.
+
+## A first attempt, and why it fails
+
+The natural place to start is Fermat's little theorem: if $n$ is prime, then for every base $a$ not divisible by $n$,
+$$
+a^{\,n-1} \equiv 1 \pmod{n}.
+$$
+Read by its contrapositive, this is already a test. Pick a base $a$, compute $a^{n-1} \bmod n$, and if the answer is anything other than $1$, then $n$ cannot be prime. The base $a$ is a *witness* to the compositeness of $n$, and it cost us one fast modular exponentiation to find.
+
+The trouble is the converse. Some composite numbers satisfy $a^{n-1} \equiv 1$ for *every* base coprime to them, and so they slip past the Fermat test no matter which base we try. These are the Carmichael numbers, the smallest being $561 = 3 \cdot 11 \cdot 17$, and they are not rare enough to ignore. Against such a number the Fermat test is almost completely blind, as we will see in a moment. We need a sharper question to ask.
+
+## The sharper question
+
+The sharper question comes from one clean fact about primes. When $n$ is prime, $\mathbb{Z}/n\mathbb{Z}$ is a field, and in a field the equation $x^2 = 1$ has only the two obvious solutions, $x \equiv 1$ and $x \equiv -1$. There is no third square root of one. A composite number, by contrast, usually has extra square roots of $1$ lurking about, and those extras are the thread we pull on.
+
+To use this, factor all the powers of two out of $n-1$. Write
+$$
+n - 1 = 2^{s}\, d, \qquad d \text{ odd}.
+$$
+Now instead of leaping straight to $a^{n-1}$, climb there one squaring at a time, through the chain
+$$
+a^{d},\ a^{2d},\ a^{4d},\ \dots,\ a^{2^{s} d} = a^{\,n-1}.
+$$
+Each term is the square of the one before it. If $n$ is prime, Fermat guarantees the chain ends at $1$, and the no-extra-square-roots fact tightly constrains how it can arrive there.
+
+::: {#thm-mr}
+
+## The witness condition
+
+Let $n$ be an odd prime and write $n - 1 = 2^{s} d$ with $d$ odd. Then for every base $a$ with $1 \le a \le n-1$, either
+$$
+a^{d} \equiv 1 \pmod{n}
+\qquad\text{or}\qquad
+a^{2^{r} d} \equiv -1 \pmod{n}\ \text{ for some } 0 \le r < s.
+$$
+
+:::
+
+::: {.proof}
+Since $n$ is prime and does not divide $a$, Fermat's little theorem gives $a^{2^{s} d} = a^{\,n-1} \equiv 1$. So the chain $a^{d}, a^{2d}, \dots, a^{2^{s} d}$ ends in $1$.
+
+Walk backward from that final $1$. Each step back takes a square root, and in the field $\mathbb{Z}/n\mathbb{Z}$ the only square roots of $1$ are $\pm 1$, because $x^2 - 1 = (x-1)(x+1)$ and a field has no zero divisors. So every time we step back from a $1$, we land on either $1$ or $-1$. Two things can happen. Either the whole chain is $1$ all the way down, in which case $a^{d} \equiv 1$ and we are in the first case. Or somewhere a value fails to be $1$; take the last such spot. The term just after it equals $1$ and is its square, so that term is a square root of $1$ other than $1$, hence $-1$. That is exactly $a^{2^{r} d} \equiv -1$ for some $r$, the second case. $\qquad\blacksquare$
+:::
+
+This gives the test its real shape. To examine an odd $n$, pick a base $a$, compute $a^d \bmod n$, and then square it up to $s$ times. If we never see $a^d \equiv 1$ and never see a $-1$ along the way, then @thm-mr has been violated, and $n$ is **certainly** composite. The base $a$ is again a witness, only now it is a far more demanding test than Fermat's, and Carmichael numbers no longer escape it.
+
+```{python}
+def decompose(n):
+    """Write n - 1 = 2^s * d with d odd."""
+    d, s = n - 1, 0
+    while d % 2 == 0:
+        d //= 2
+        s += 1
+    return s, d
+
+def is_witness(a, n):
+    """True if base a proves n composite (a is a Miller-Rabin witness)."""
+    s, d = decompose(n)
+    x = pow(a, d, n)
+    if x == 1 or x == n - 1:
+        return False                 # this base is fooled; not a witness
+    for _ in range(s - 1):
+        x = x * x % n
+        if x == n - 1:
+            return False
+    return True                      # neither condition met -> n is composite
+
+from math import gcd
+n = 561                              # the smallest Carmichael number
+fermat_fooled = sum(pow(a, n - 1, n) == 1 for a in range(1, n) if gcd(a, n) == 1)
+coprime_total = sum(gcd(a, n) == 1 for a in range(1, n))
+print(f"561 fools Fermat for {fermat_fooled} of {coprime_total} coprime bases")
+print(f"561 has a Miller-Rabin witness at a=2: {is_witness(2, 561)}")
+```
+
+The Fermat test is fooled by every base that shares no factor with $561$. The single base $a = 2$, asked the sharper question, convicts it at once.
+
+## How many bases can lie?
+
+A witness proves compositeness with certainty, but a *non*-witness proves nothing: a composite number might still slip past a few unlucky bases. The bases that fail to witness a composite $n$ are called its strong liars. Everything rests on there not being too many of them.
+
+::: {#thm-rabin}
+
+## Soundness (Rabin)
+
+If $n$ is an odd composite, then at most $\tfrac{1}{4}(n-1)$ of the bases $a \in \{1, \dots, n-1\}$ are strong liars. Equivalently, at least three quarters of all bases are witnesses.
+
+:::
+
+The proof is a careful count inside the group of units; see @rabin1980. The consequence is what makes the test practical. Choose $k$ bases independently at random. A composite survives one random base with probability at most $\tfrac14$, so it survives all $k$ with probability at most $4^{-k}$. Twenty random bases push the chance of being fooled below $10^{-12}$, smaller than the chance of a hardware error during the computation. We never reach certainty about primality this way, but we reach a confidence we are happy to act on, and we reach it cheaply.
+
+```{python}
+def strong_liars(n):
+    return sum(not is_witness(a, n) for a in range(1, n))
+
+for n in [561, 1105, 2047, 25326001]:
+    liars = strong_liars(n)
+    print(f"n = {n:>9}:  strong liars {liars:>7} / {n-1}  =  {liars/(n-1):.3f}   (bound 0.250)")
+```
+
+Every composite stays well under the one-quarter ceiling. The worst case here, $2047 = 23 \cdot 89$, still leaks only about $12\%$ of its bases, and it is a famous near-miss: $2$ alone is a strong liar for it, which is why a serious test never trusts a single fixed base on its own.
+
+## From confidence to certainty
+
+For numbers below a known bound, the randomness can be removed entirely. Because the strong liars are so sparse, a small fixed set of prime bases suffices to decide primality with no error at all. The twelve bases $2, 3, 5, \dots, 37$ are enough to classify *every* integer below $3{,}317{,}044{,}064{,}679{,}887{,}385{,}961{,}981$, a little over $3.3 \times 10^{24}$, correctly @sorenson2017. That comfortably covers $64$-bit integers and far beyond, so a deterministic, always-correct primality test fits in a few lines.
+
+```{python}
+def is_prime(n):
+    """Deterministic for n < 3.317e24; a strong probable-prime test above that."""
+    if n < 2:
+        return False
+    small_primes = (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37)
+    for p in small_primes:
+        if n % p == 0:
+            return n == p
+    return all(not is_witness(a, n) for a in small_primes)
+
+mersenne = 2**127 - 1            # a genuine 39-digit prime
+print(f"2^127 - 1 is prime: {is_prime(mersenne)}")
+print(f"2^127 - 1 + 2 is prime: {is_prime(mersenne + 2)}")
+print(f"(2^127 - 1) * (2^127 + 1) is prime: {is_prime(mersenne * (mersenne + 2))}")
+```
+
+In a handful of milliseconds we have certified a thirty-nine-digit prime, and exposed two composites of similar size, without factoring anything. This routine, give or take engineering details, is what stands behind the key generation in the cryptography running quietly underneath this page.
+
+## A closing thought on what a witness knows
+
+There is a small bonus hiding in the proof. When a base catches a composite by way of the second case failing, it does so by producing a square root of $1$ that is neither $1$ nor $-1$. Call it $x$. Then $n$ divides $x^2 - 1 = (x-1)(x+1)$ but divides neither factor, so $\gcd(x - 1, n)$ is a proper divisor of $n$. The witness, in other words, does not merely swear that $n$ is composite. It quietly knows a factor. That a randomized primality test brushes so close to factoring, the problem we insisted we were avoiding, is one of those quiet structural jokes that number theory keeps telling. The history of these ideas runs from @miller1976 to @rabin1980, and the puzzle Gauss called most important and useful turns out to have an answer that is fast, humble, and a little mischievous.
+
+## How to cite
+
+> Terry (2026). *Miller–Rabin: How to Believe a Number Is Prime*. Retrieved from `https://terryfxh.github.io/math-notes/posts/miller-rabin/`.
