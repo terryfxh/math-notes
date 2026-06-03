@@ -7,7 +7,7 @@ website:
   description: "Self-contained notes in pure and applied mathematics, derived from first principles with runnable code where it helps."
   site-url: https://terryfxh.github.io/math-notes   # project-page URL
   repo-url: https://github.com/terryfxh/math-notes
-  repo-actions: [edit, issue]
+  repo-actions: [issue]
   open-graph: true
   twitter-card: true
   navbar:
