@@ -10,7 +10,313 @@
 <atom:link href="https://terryfxh.github.io/math-notes/index.xml" rel="self" type="application/rss+xml"/>
 <description>Self-contained notes in pure and applied mathematics, derived from first principles with runnable code where it helps.</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Mon, 01 Jun 2026 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 02 Jun 2026 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Gram–Schmidt: Straightening a Tangle of Vectors</title>
+  <link>https://terryfxh.github.io/math-notes/posts/gram-schmidt/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p>“A mathematician, like a painter or a poet, is a maker of patterns.”</p>
+<p><span class="attribution">— G. H. Hardy, <em>A Mathematician’s Apology</em></span></p>
+</div>
+<p>Imagine a handful of vectors that all lean in roughly the same direction. They span some subspace, but they describe it badly: each one carries a little of every other one inside it, and it is hard to tell what is genuinely new about each. What we would love instead is a clean frame for that same subspace, a set of directions that are perfectly perpendicular and each of unit length, so that every vector in the space splits into independent, non-overlapping pieces. Gram–Schmidt is the simple, almost obvious procedure that builds exactly such a frame, one vector at a time. And once you see the picture, the QR decomposition falls out for free.</p>
+<section id="first-the-picture" class="level2">
+<h2 class="anchored" data-anchor-id="first-the-picture">First, the picture</h2>
+<p>Start with the very first vector and do nothing clever at all. Just keep its direction; call that your first axis. The honest work begins with the second vector.</p>
+<p>The second vector points partly along the first axis and partly away from it. The part along the first axis is redundant, since you already have that direction. So subtract it off. Concretely, cast a shadow of the second vector onto the first axis, the orthogonal projection, and remove that shadow. What survives points in a direction the first axis could never reach: it is perpendicular to the first by construction. That perpendicular remainder becomes your second axis.</p>
+<p>Now the pattern repeats. Bring in the third vector, look at the shadow it casts on the plane already spanned by your first two axes, subtract that shadow, and whatever remains sticks out perpendicular to both. Keep going. At every step you take the next raw vector, strip away everything your existing axes already explain, and keep only the genuinely new direction left over. Normalize each remainder to unit length and you have an orthonormal frame.</p>
+<p>That is the whole idea. Every formula below is just bookkeeping for “subtract the shadow.”</p>
+</section>
+<section id="writing-it-down" class="level2">
+<h2 class="anchored" data-anchor-id="writing-it-down">Writing it down</h2>
+<p>Let <img src="https://latex.codecogs.com/png.latex?v_1,%20%5Cdots,%20v_n%20%5Cin%20%5Cmathbb%7BR%7D%5Em"> be linearly independent, and write the inner product as <img src="https://latex.codecogs.com/png.latex?%5Clangle%20x,%20y%5Crangle%20=%20x%5E%5Ctop%20y">. The projection of a vector <img src="https://latex.codecogs.com/png.latex?v"> onto a unit vector <img src="https://latex.codecogs.com/png.latex?q"> is <img src="https://latex.codecogs.com/png.latex?%5Clangle%20q,%20v%5Crangle%5C,%20q">: the shadow’s length times the direction. Gram–Schmidt then reads</p>
+<p><span id="eq-gs"><img src="https://latex.codecogs.com/png.latex?%0Au_k%20=%20v_k%20-%20%5Csum_%7Bj=1%7D%5E%7Bk-1%7D%20%5Clangle%20q_j,%20v_k%5Crangle%5C,%20q_j,%0A%5Cqquad%0Aq_k%20=%20%5Cfrac%7Bu_k%7D%7B%5ClVert%20u_k%20%5CrVert%7D.%0A%5Ctag%7B1%7D"></span></p>
+<p>The sum is everything the earlier axes already account for; <img src="https://latex.codecogs.com/png.latex?u_k"> is the leftover that they cannot. We normalize it to get the next unit axis <img src="https://latex.codecogs.com/png.latex?q_k">.</p>
+</section>
+<section id="it-was-qr-all-along" class="level2">
+<h2 class="anchored" data-anchor-id="it-was-qr-all-along">It was QR all along</h2>
+<p>Look again at Equation&nbsp;1 and rearrange it to express the original vector in terms of the new frame:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Av_k%20=%20%5ClVert%20u_k%20%5CrVert%5C,%20q_k%20+%20%5Csum_%7Bj=1%7D%5E%7Bk-1%7D%20%5Clangle%20q_j,%20v_k%5Crangle%5C,%20q_j%20.%0A"></p>
+<p>Read this as a recipe for rebuilding <img src="https://latex.codecogs.com/png.latex?v_k"> out of the <img src="https://latex.codecogs.com/png.latex?q">’s. The crucial detail is which <img src="https://latex.codecogs.com/png.latex?q">’s appear: only <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_k">, never any with a higher index. Each original vector lives entirely inside the axes built up to its own turn.</p>
+<p>Stack the vectors as columns of a matrix <img src="https://latex.codecogs.com/png.latex?A%20=%20%5B%5C,v_1%20%5Cmid%20%5Ccdots%20%5Cmid%20v_n%5C,%5D"> and the new axes as columns of <img src="https://latex.codecogs.com/png.latex?Q%20=%20%5B%5C,q_1%20%5Cmid%20%5Ccdots%20%5Cmid%20q_n%5C,%5D">. The coefficients above assemble into a matrix <img src="https://latex.codecogs.com/png.latex?R">, and because <img src="https://latex.codecogs.com/png.latex?v_k"> uses no axis past <img src="https://latex.codecogs.com/png.latex?q_k">, every entry of <img src="https://latex.codecogs.com/png.latex?R"> below the diagonal is zero. We have landed on</p>
+<p><span id="eq-qr"><img src="https://latex.codecogs.com/png.latex?%0AA%20=%20QR,%0A%5Ctag%7B2%7D"></span></p>
+<p>with <img src="https://latex.codecogs.com/png.latex?Q"> holding orthonormal columns and <img src="https://latex.codecogs.com/png.latex?R"> upper triangular, its diagonal entries <img src="https://latex.codecogs.com/png.latex?r_%7Bkk%7D%20=%20%5ClVert%20u_k%20%5CrVert"> all positive. The geometric act of straightening a tangle of vectors and the algebraic factorization Equation&nbsp;2 are the same thing seen from two sides.</p>
+</section>
+<section id="why-the-frame-is-genuinely-orthonormal" class="level2">
+<h2 class="anchored" data-anchor-id="why-the-frame-is-genuinely-orthonormal">Why the frame is genuinely orthonormal</h2>
+<p>It is worth checking that the picture delivers what it promises, rather than just feeling like it should.</p>
+<div id="thm-qr" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (QR by Gram–Schmidt)</strong></span> If the columns of <img src="https://latex.codecogs.com/png.latex?A%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bm%20%5Ctimes%20n%7D"> are linearly independent, then Equation&nbsp;1 produces vectors <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_n"> that are orthonormal and satisfy <img src="https://latex.codecogs.com/png.latex?A%20=%20QR"> with <img src="https://latex.codecogs.com/png.latex?R"> upper triangular and <img src="https://latex.codecogs.com/png.latex?r_%7Bkk%7D%20%3E%200">.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We argue by induction on <img src="https://latex.codecogs.com/png.latex?k"> that <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_k"> are orthonormal and span the same subspace as <img src="https://latex.codecogs.com/png.latex?v_1,%20%5Cdots,%20v_k">.</p>
+<p>For <img src="https://latex.codecogs.com/png.latex?k%20=%201">, <img src="https://latex.codecogs.com/png.latex?q_1%20=%20v_1%20/%20%5ClVert%20v_1%20%5CrVert"> is a single unit vector spanning the same line as <img src="https://latex.codecogs.com/png.latex?v_1">, and <img src="https://latex.codecogs.com/png.latex?%5ClVert%20v_1%5CrVert%20%3E%200"> because the columns are independent.</p>
+<p>Assume the claim for <img src="https://latex.codecogs.com/png.latex?k-1">. Form <img src="https://latex.codecogs.com/png.latex?u_k"> as in Equation&nbsp;1. For any earlier index <img src="https://latex.codecogs.com/png.latex?i%20%3C%20k">, take the inner product with <img src="https://latex.codecogs.com/png.latex?q_i"> and use orthonormality of the previous axes, <img src="https://latex.codecogs.com/png.latex?%5Clangle%20q_i,%20q_j%5Crangle%20=%20%5Cdelta_%7Bij%7D">: <img src="https://latex.codecogs.com/png.latex?%0A%5Clangle%20q_i,%20u_k%5Crangle%20=%20%5Clangle%20q_i,%20v_k%5Crangle%20-%20%5Csum_%7Bj=1%7D%5E%7Bk-1%7D%20%5Clangle%20q_j,%20v_k%5Crangle%5C,%5Clangle%20q_i,%20q_j%5Crangle%20=%20%5Clangle%20q_i,%20v_k%5Crangle%20-%20%5Clangle%20q_i,%20v_k%5Crangle%20=%200%20.%0A"> So <img src="https://latex.codecogs.com/png.latex?u_k"> is perpendicular to every previous axis. It is also nonzero: if it vanished, Equation&nbsp;1 would write <img src="https://latex.codecogs.com/png.latex?v_k"> as a combination of <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_%7Bk-1%7D">, hence of <img src="https://latex.codecogs.com/png.latex?v_1,%20%5Cdots,%20v_%7Bk-1%7D">, contradicting linear independence. Therefore <img src="https://latex.codecogs.com/png.latex?q_k%20=%20u_k%20/%20%5ClVert%20u_k%5CrVert"> is a unit vector orthogonal to all earlier ones, and since <img src="https://latex.codecogs.com/png.latex?u_k"> is <img src="https://latex.codecogs.com/png.latex?v_k"> plus a combination of the previous axes, the spans still agree. The induction closes. Collecting the coefficients into <img src="https://latex.codecogs.com/png.latex?R"> gives Equation&nbsp;2, and <img src="https://latex.codecogs.com/png.latex?r_%7Bkk%7D%20=%20%5ClVert%20u_k%5CrVert%20%3E%200">. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
+</div>
+</section>
+<section id="where-the-naive-version-breaks" class="level2">
+<h2 class="anchored" data-anchor-id="where-the-naive-version-breaks">Where the naive version breaks</h2>
+<p>Here the story takes a turn that pure mathematics alone would never warn you about. On paper, Equation&nbsp;1 is flawless. On a computer, the order in which you subtract the shadows turns out to matter enormously.</p>
+<p>There are two ways to organize the subtraction. <em>Classical</em> Gram–Schmidt computes every projection against the <strong>original</strong> vector <img src="https://latex.codecogs.com/png.latex?v_k"> and removes them together. <em>Modified</em> Gram–Schmidt removes each shadow one at a time, always projecting the <strong>running remainder</strong> that is left so far. Algebraically the two are identical. In floating-point arithmetic they are not, because the modified version always works with the most up-to-date, mostly-perpendicular remainder, and so it never lets rounding errors pile up unexamined.</p>
+<p>To see the gap, feed both versions a deliberately nasty matrix: the <img src="https://latex.codecogs.com/png.latex?8%20%5Ctimes%208"> Hilbert matrix, whose columns are so nearly parallel that its condition number runs into the billions.</p>
+<div id="8796dd26" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> gram_schmidt(A, modified):</span>
+<span id="cb1-4">    m, n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> A.shape</span>
+<span id="cb1-5">    Q <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.zeros((m, n))</span>
+<span id="cb1-6">    R <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.zeros((n, n))</span>
+<span id="cb1-7">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> k <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(n):</span>
+<span id="cb1-8">        v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> A[:, k].copy()</span>
+<span id="cb1-9">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> j <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(k):</span>
+<span id="cb1-10">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># classical projects the original column; modified the running remainder</span></span>
+<span id="cb1-11">            R[j, k] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Q[:, j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> (v <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> modified <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> A[:, k])</span>
+<span id="cb1-12">            v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> R[j, k] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> Q[:, j]</span>
+<span id="cb1-13">        R[k, k] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linalg.norm(v)</span>
+<span id="cb1-14">        Q[:, k] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> R[k, k]</span>
+<span id="cb1-15">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> Q, R</span>
+<span id="cb1-16"></span>
+<span id="cb1-17">n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span></span>
+<span id="cb1-18">H <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([[<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> j <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> j <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(n)] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(n)])</span>
+<span id="cb1-19"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"condition number of H: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>linalg<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>cond(H)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2e}</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb1-20"></span>
+<span id="cb1-21"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> name, modified <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> [(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"classical"</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>), (<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"modified"</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)]:</span>
+<span id="cb1-22">    Q, R <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> gram_schmidt(H, modified)</span>
+<span id="cb1-23">    orthogonality <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linalg.norm(Q.T <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> Q <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> np.eye(n))</span>
+<span id="cb1-24">    reconstruction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linalg.norm(H <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> Q <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> R)</span>
+<span id="cb1-25">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>name<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:9s}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:  |Q^T Q - I| = </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>orthogonality<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    |H - QR| = </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>reconstruction<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb1-26"></span>
+<span id="cb1-27">Qh, _ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linalg.qr(H)   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># numpy uses Householder reflections</span></span>
+<span id="cb1-28"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'numpy.qr'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:9s}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:  |Q^T Q - I| = </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>linalg<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>norm(Qh.T <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> Qh <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> np.eye(n))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>condition number of H: 1.53e+10
+
+classical:  |Q^T Q - I| = 1.42e+00    |H - QR| = 9.71e-17
+modified :  |Q^T Q - I| = 3.62e-07    |H - QR| = 1.07e-16
+numpy.qr :  |Q^T Q - I| = 1.46e-15</code></pre>
+</div>
+</div>
+<p>Both methods rebuild <img src="https://latex.codecogs.com/png.latex?H"> from <img src="https://latex.codecogs.com/png.latex?Q"> and <img src="https://latex.codecogs.com/png.latex?R"> essentially perfectly, with <img src="https://latex.codecogs.com/png.latex?%5ClVert%20H%20-%20QR%5CrVert"> down at roundoff. That is not where the danger lives. Look instead at <img src="https://latex.codecogs.com/png.latex?%5ClVert%20Q%5E%5Ctop%20Q%20-%20I%5CrVert">, the honest test of whether the columns of <img src="https://latex.codecogs.com/png.latex?Q"> really are orthonormal. Classical Gram–Schmidt scores around <img src="https://latex.codecogs.com/png.latex?1">, meaning its “orthonormal” axes are nothing of the sort, they have collapsed back toward each other. The modified version holds the error near <img src="https://latex.codecogs.com/png.latex?10%5E%7B-7%7D">, and the Householder-based routine in NumPy reaches full machine precision around <img src="https://latex.codecogs.com/png.latex?10%5E%7B-15%7D">.</p>
+<p>The lesson is not that Gram–Schmidt is wrong. It is that a formula can be exactly true and still be the wrong thing to type, because finite-precision arithmetic has a geometry of its own. When you actually need a stable orthonormal frame, reach for modified Gram–Schmidt or, better still, a Householder QR like the one inside <code>numpy.linalg.qr</code>. A careful account of all this lives in <span class="citation" data-cites="trefethen1997numerical">[1]</span>.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>The heart of Gram–Schmidt is a single move repeated: take the next vector, subtract the shadow your existing axes already explain, and keep the perpendicular remainder. That move, written out, is the factorization <img src="https://latex.codecogs.com/png.latex?A%20=%20QR">, with the orthonormal frame in <img src="https://latex.codecogs.com/png.latex?Q"> and the bookkeeping in an upper-triangular <img src="https://latex.codecogs.com/png.latex?R">. The proof that the frame is truly orthonormal is a short induction resting on one cancellation. And the moment you run it, a quieter truth appears: on a real machine the naive ordering can throw the orthogonality away entirely, so the version you compute should be the modified one, or Householder if you can afford it.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Gram–Schmidt: Straightening a Tangle of Vectors</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/gram-schmidt/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
+<div id="ref-trefethen1997numerical" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. N. Trefethen and D. Bau, <em>Numerical linear algebra</em>. SIAM, 1997.</div>
+</div>
+</div></section></div> ]]></description>
+  <category>pure</category>
+  <category>applied</category>
+  <category>linear-algebra</category>
+  <category>numerical-methods</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/gram-schmidt/</guid>
+  <pubDate>Tue, 02 Jun 2026 23:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Welcome, and what this blog is for</title>
   <link>https://terryfxh.github.io/math-notes/posts/welcome/</link>

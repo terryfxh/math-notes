@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/gram-schmidt/index.html",
       "/posts/welcome/index.html",
       "/posts/spectral-theorem/index.html"
     ]
