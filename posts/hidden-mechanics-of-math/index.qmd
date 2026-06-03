@@ -1,0 +1,82 @@
+---
+title: "The Hidden Mechanics of Math: What Are We Actually Doing?"
+description: "A short essay on why mathematical ability is less about raw intelligence than about the ideas you carry, with the humble vector as a case study in what 'understanding' really means."
+date: 2026-06-03
+categories: [meta, linear-algebra]
+draft: false
+---
+
+::: {.epigraph}
+"Mathematics is not about numbers, equations, computations, or algorithms: it is about understanding."
+
+[— William Paul Thurston]{.attribution}
+:::
+
+Whenever we talk about learning mathematics, an unspoken assumption tends to float in the background: that it is a pure test of raw brainpower. Watch how mathematics is actually done, though, and you find something quite different. The real secret is that solving problems runs on wisdom far more than on sheer intelligence.
+
+Here is one way to picture it. Your effectiveness in mathematics is something like your raw intelligence multiplied by the tools, principles, and ideas you have actually managed to absorb:
+
+$$
+\text{wisdom} \;=\; \text{intelligence} \,\times\, \text{ideas you carry}.
+$$
+
+Memorizing mathematical facts is not the same as learning to solve mathematical problems. Behind every clever proof, every tidy textbook solution, every intimidating paper, there are a few core ideas doing the quiet work. If you want to grow as a mathematician, the first job is to dig those ideas out into the open. Let me make that concrete with the very foundation of linear algebra: the vector.
+
+## What is a vector, really?
+
+Hermann Weyl once remarked that introducing numbers as coordinates is an act of violence. It is a startling thing to say about something as tame as the $xy$-plane. To feel what he meant, we have to ask the apparently simple question: what *is* a vector?
+
+There are three distinct but deeply related answers, depending on whom you ask. A physics student will tell you a vector is an arrow pointing through space, carrying a length and a direction; so long as you preserve those two things, you may slide the arrow wherever you like. A computer science student will tell you a vector is just a tidy name for a list of numbers. If you are studying houses, a two dimensional vector might simply record the square footage in its first slot and the price in its second. A mathematician will refuse to choose, and instead generalize: a vector can be *anything at all*, provided two operations make honest sense, namely adding two vectors and scaling a vector by a number.
+
+That third view is the one worth pinning down precisely, because it is what the whole subject actually rests on.
+
+::: {#def-vectorspace}
+
+## Vector space (the idea, stated carefully)
+
+A vector space over a field is a set $V$ together with two operations, vector addition and scalar multiplication, obeying the familiar rules: addition is commutative and associative, there is a zero vector and an additive inverse for each element, and the two distributive laws tie scaling to addition. Anything satisfying these rules, arrows or lists or functions or polynomials, is a vector space, and every theorem of linear algebra applies to all of them at once.
+
+:::
+
+If we genuinely want to learn the mathematics rather than merely nod at the abstraction, we should not swallow @def-vectorspace whole. We should anchor it in a picture. So whenever a new idea appears in linear algebra, make your first move always the same: picture an arrow in a coordinate system, its tail pinned at the origin.
+
+## Anchoring the abstraction in a picture
+
+Once that geometric image is in your head, the operations stop being rules and start being motions.
+
+Take vector addition. Rather than stacking two columns of numbers and adding them slot by slot, imagine walking. Step out along the first vector, then from wherever you land take a second step matching the direction and length of the second vector. Where you end up is exactly where you would have arrived by walking along their sum from the very start. It is the grown up version of how children first meet addition on the number line, where $2 + 5$ means two steps right and then five more.
+
+Now take scaling, multiplying a vector by a number. That is just stretching. Multiply by $2$ and the arrow grows to twice its length; multiply by a negative number and it flips around before stretching. Because numbers enter linear algebra essentially to stretch and flip vectors, the words "number" and "scalar" end up meaning the same thing.
+
+The two views are not rivals, and we can watch them agree. Here the list and the arrow describe the same step.
+
+```{python}
+import numpy as np
+
+u = np.array([1, 2])     # the CS view: a list of numbers
+v = np.array([3, -1])
+
+# "walk along u, then step by v" is the same as adding the lists slot by slot
+print("step, then step :", (u + v).tolist())
+
+# scaling stretches; a negative scalar flips before stretching
+print("2 * u :", (2 * u).tolist(), "   (-1) * u :", ((-1) * u).tolist())
+```
+
+Nothing here is deep. That is the point: the geometric story and the numerical one are two descriptions of a single fact, and being able to slide between them is what understanding feels like.
+
+## The real skill is translation
+
+So the secret is not to pick one perspective and defend it to the death. The power of linear algebra lives in the constant translation between the views. It is the ability to take a vast list of abstract numbers and *see* it geometrically, spotting a pattern no spreadsheet would reveal, and equally to take a physical motion through space and hand it to a computer as coordinates. When Grant Sanderson builds the animations in *Essence of Linear Algebra*, for instance, he reasons first about what is happening in space, and only then converts it into the numbers that tell the machine where to place each pixel. The thinking is geometric; the execution is numerical; the craft is the bridge between them.
+
+So the next time you are stuck on a hard piece of mathematics, do not stare at the surface symbols and wait for raw cleverness to strike. Look for the translation between the abstract and the visual, and dig for the hidden principle underneath. That is where the real learning happens.
+
+## What to remember
+
+Mathematical strength is intelligence multiplied by the ideas you have made your own, and ideas are dug out, not memorized. The vector is the first place this pays off: hold the arrow, the list, and the abstract definition in mind together, and let yourself move freely between them. Understanding is not allegiance to one picture. It is fluency in the translation.
+
+*Acknowledgment: the three-perspectives framing of vectors and the examples in this essay follow Grant Sanderson's [3Blue1Brown](https://www.3blue1brown.com/) series* Essence of Linear Algebra. *I have retold them in my own words, as notes to myself on how to learn.*
+
+## How to cite
+
+> Terry (2026). *The Hidden Mechanics of Math: What Are We Actually Doing?*. Retrieved from `https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/`.
