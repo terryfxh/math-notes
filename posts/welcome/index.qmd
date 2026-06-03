@@ -6,6 +6,12 @@ categories: [meta]
 draft: false
 ---
 
+::: {.epigraph}
+"It is by logic that we prove, but by intuition that we discover."
+
+[— Henri Poincaré, *Science and Method*]{.attribution}
+:::
+
 I started this blog for a simple reason. Every time I finally understand a piece of mathematics, the understanding arrives as a picture, not as a formula. The formula was always there; what changes is that I can suddenly *see* why it had to look that way. I wanted a place to hold onto those pictures before they fade.
 
 So that is the spirit of everything here. I try to begin with the simplest version of an idea, the one small enough to fit in your head all at once, and grow it slowly until the general result feels less like a surprise and more like something you could almost have guessed. Only then do I write down the careful proof, because rigour is what lets you trust the picture later.

@@ -43,3 +43,38 @@ a {
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
+
+/* ---- Epigraphs (opening quotations) ---- */
+.epigraph {
+  max-width: 34rem;
+  margin: 1.6rem auto 2.4rem auto;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(0, 0, 0, 0.12);
+  font-style: italic;
+  color: #5a5a5a;
+  line-height: 1.6;
+}
+
+.epigraph p {
+  margin-bottom: 0.3rem;
+}
+
+/* The attribution line: not italic, smaller, right-aligned */
+.epigraph .attribution {
+  display: block;
+  font-style: normal;
+  font-size: 0.9rem;
+  text-align: right;
+  color: #7a7a7a;
+}
+
+/* Centered variant used on the landing page */
+.epigraph-center {
+  border-left: none;
+  text-align: center;
+  padding-left: 0;
+}
+
+.epigraph-center .attribution {
+  text-align: center;
+}

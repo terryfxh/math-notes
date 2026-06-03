@@ -14,6 +14,12 @@ page-layout: full
 title-block-banner: true
 ---
 
+::: {.epigraph .epigraph-center}
+"The introduction of numbers as coordinates ... is an act of violence."
+
+[— Hermann Weyl, *Philosophy of Mathematics and Natural Science*]{.attribution}
+:::
+
 Most of the time, mathematics gets handed to us as a list of things to calculate. I have always been far more curious about the picture sitting underneath all that machinery: the reason a theorem has no choice but to be true, the quiet moment when a row of abstract symbols suddenly turns into something you can picture and almost touch.
 
 This is where I work that out in the open. Each post starts from the simplest version of an idea I can find, builds up the intuition until the result feels inevitable, and only then writes down the formal proof. Where a picture or a few lines of runnable code make the idea easier to believe, I include them.

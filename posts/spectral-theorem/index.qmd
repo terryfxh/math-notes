@@ -7,6 +7,12 @@ bibliography: ../../references.bib
 draft: false
 ---
 
+::: {.epigraph}
+"Mathematics is the art of giving the same name to different things."
+
+[— Henri Poincaré]{.attribution}
+:::
+
 Here is a claim that sounds almost too clean to be true. Take any real symmetric matrix, no matter how tangled its entries look, and there is always a way to turn your head so that the transformation it describes does nothing fancy at all. It just stretches space along a set of perpendicular axes, each by its own amount. No shearing, no twisting, no mixing of directions. That is the whole content of the spectral theorem, and the rest of this post is about why space has no choice but to behave this way.
 
 ## First, the picture
