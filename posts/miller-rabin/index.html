@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-06-03">
+<meta name="description" content="You can become as certain as you like that a 300-digit number is prime without ever finding a factor, by interrogating it with random witnesses. The idea rests on a single fact: in a field, one has only two square roots.">
+
+<title>Miller–Rabin: How to Believe a Number Is Prime – (Terry) Xihan Fang — Math Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-901c328379d5b7ab31f39ddb0b0deb91.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Miller–Rabin: How to Believe a Number Is Prime – (Terry) Xihan Fang — Math Notes">
+<meta property="og:description" content="You can become as certain as you like that a 300-digit number is prime without ever finding a factor, by interrogating it with random witnesses. The idea rests on a single fact: in a field, one has only two square roots.">
+<meta property="og:site_name" content="(Terry) Xihan Fang — Math Notes">
+<meta name="twitter:title" content="Miller–Rabin: How to Believe a Number Is Prime – (Terry) Xihan Fang — Math Notes">
+<meta name="twitter:description" content="You can become as certain as you like that a 300-digit number is prime without ever finding a factor, by interrogating it with random witnesses. The idea rests on a single fact: in a field, one has only two square roots.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">(Terry) Xihan Fang — Math Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/terryfxh"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#a-first-attempt-and-why-it-fails" id="toc-a-first-attempt-and-why-it-fails" class="nav-link active" data-scroll-target="#a-first-attempt-and-why-it-fails">A first attempt, and why it fails</a></li>
+  <li><a href="#the-sharper-question" id="toc-the-sharper-question" class="nav-link" data-scroll-target="#the-sharper-question">The sharper question</a></li>
+  <li><a href="#how-many-bases-can-lie" id="toc-how-many-bases-can-lie" class="nav-link" data-scroll-target="#how-many-bases-can-lie">How many bases can lie?</a></li>
+  <li><a href="#from-confidence-to-certainty" id="toc-from-confidence-to-certainty" class="nav-link" data-scroll-target="#from-confidence-to-certainty">From confidence to certainty</a></li>
+  <li><a href="#a-closing-thought-on-what-a-witness-knows" id="toc-a-closing-thought-on-what-a-witness-knows" class="nav-link" data-scroll-target="#a-closing-thought-on-what-a-witness-knows">A closing thought on what a witness knows</a></li>
+  <li><a href="#how-to-cite" id="toc-how-to-cite" class="nav-link" data-scroll-target="#how-to-cite">How to cite</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Miller–Rabin: How to Believe a Number Is Prime</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">pure</div>
+    <div class="quarto-category">applied</div>
+    <div class="quarto-category">number-theory</div>
+    <div class="quarto-category">computer-science</div>
+    <div class="quarto-category">algorithms</div>
+    <div class="quarto-category">cryptography</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    You can become as certain as you like that a 300-digit number is prime without ever finding a factor, by interrogating it with random witnesses. The idea rests on a single fact: in a field, one has only two square roots.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 3, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="epigraph">
+<p>“The problem of distinguishing prime numbers from composite numbers … is known to be one of the most important and useful in arithmetic.”</p>
+<p><span class="attribution">— Carl Friedrich Gauss, <em>Disquisitiones Arithmeticae</em>, Art. 329 (1801)</span></p>
+</div>
+<p>Here is something that should feel slightly impossible. Hand me a number with three hundred digits and I can make you as confident as you wish that it is prime, confident past any doubt you could act on, without ever exhibiting a single factor and without coming anywhere near factoring it. The trick is not to search for divisors. It is to put the number on trial and call witnesses against it. A composite number, it turns out, cannot keep its story straight, and almost every witness we call will catch it in the lie.</p>
+<section id="a-first-attempt-and-why-it-fails" class="level2">
+<h2 class="anchored" data-anchor-id="a-first-attempt-and-why-it-fails">A first attempt, and why it fails</h2>
+<p>The natural place to start is Fermat’s little theorem: if <span class="math inline">\(n\)</span> is prime, then for every base <span class="math inline">\(a\)</span> not divisible by <span class="math inline">\(n\)</span>, <span class="math display">\[
+a^{\,n-1} \equiv 1 \pmod{n}.
+\]</span> Read by its contrapositive, this is already a test. Pick a base <span class="math inline">\(a\)</span>, compute <span class="math inline">\(a^{n-1} \bmod n\)</span>, and if the answer is anything other than <span class="math inline">\(1\)</span>, then <span class="math inline">\(n\)</span> cannot be prime. The base <span class="math inline">\(a\)</span> is a <em>witness</em> to the compositeness of <span class="math inline">\(n\)</span>, and it cost us one fast modular exponentiation to find.</p>
+<p>The trouble is the converse. Some composite numbers satisfy <span class="math inline">\(a^{n-1} \equiv 1\)</span> for <em>every</em> base coprime to them, and so they slip past the Fermat test no matter which base we try. These are the Carmichael numbers, the smallest being <span class="math inline">\(561 = 3 \cdot 11 \cdot 17\)</span>, and they are not rare enough to ignore. Against such a number the Fermat test is almost completely blind, as we will see in a moment. We need a sharper question to ask.</p>
+</section>
+<section id="the-sharper-question" class="level2">
+<h2 class="anchored" data-anchor-id="the-sharper-question">The sharper question</h2>
+<p>The sharper question comes from one clean fact about primes. When <span class="math inline">\(n\)</span> is prime, <span class="math inline">\(\mathbb{Z}/n\mathbb{Z}\)</span> is a field, and in a field the equation <span class="math inline">\(x^2 = 1\)</span> has only the two obvious solutions, <span class="math inline">\(x \equiv 1\)</span> and <span class="math inline">\(x \equiv -1\)</span>. There is no third square root of one. A composite number, by contrast, usually has extra square roots of <span class="math inline">\(1\)</span> lurking about, and those extras are the thread we pull on.</p>
+<p>To use this, factor all the powers of two out of <span class="math inline">\(n-1\)</span>. Write <span class="math display">\[
+n - 1 = 2^{s}\, d, \qquad d \text{ odd}.
+\]</span> Now instead of leaping straight to <span class="math inline">\(a^{n-1}\)</span>, climb there one squaring at a time, through the chain <span class="math display">\[
+a^{d},\ a^{2d},\ a^{4d},\ \dots,\ a^{2^{s} d} = a^{\,n-1}.
+\]</span> Each term is the square of the one before it. If <span class="math inline">\(n\)</span> is prime, Fermat guarantees the chain ends at <span class="math inline">\(1\)</span>, and the no-extra-square-roots fact tightly constrains how it can arrive there.</p>
+<div id="thm-mr" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (The witness condition)</strong></span> Let <span class="math inline">\(n\)</span> be an odd prime and write <span class="math inline">\(n - 1 = 2^{s} d\)</span> with <span class="math inline">\(d\)</span> odd. Then for every base <span class="math inline">\(a\)</span> with <span class="math inline">\(1 \le a \le n-1\)</span>, either <span class="math display">\[
+a^{d} \equiv 1 \pmod{n}
+\qquad\text{or}\qquad
+a^{2^{r} d} \equiv -1 \pmod{n}\ \text{ for some } 0 \le r &lt; s.
+\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Since <span class="math inline">\(n\)</span> is prime and does not divide <span class="math inline">\(a\)</span>, Fermat’s little theorem gives <span class="math inline">\(a^{2^{s} d} = a^{\,n-1} \equiv 1\)</span>. So the chain <span class="math inline">\(a^{d}, a^{2d}, \dots, a^{2^{s} d}\)</span> ends in <span class="math inline">\(1\)</span>.</p>
+<p>Walk backward from that final <span class="math inline">\(1\)</span>. Each step back takes a square root, and in the field <span class="math inline">\(\mathbb{Z}/n\mathbb{Z}\)</span> the only square roots of <span class="math inline">\(1\)</span> are <span class="math inline">\(\pm 1\)</span>, because <span class="math inline">\(x^2 - 1 = (x-1)(x+1)\)</span> and a field has no zero divisors. So every time we step back from a <span class="math inline">\(1\)</span>, we land on either <span class="math inline">\(1\)</span> or <span class="math inline">\(-1\)</span>. Two things can happen. Either the whole chain is <span class="math inline">\(1\)</span> all the way down, in which case <span class="math inline">\(a^{d} \equiv 1\)</span> and we are in the first case. Or somewhere a value fails to be <span class="math inline">\(1\)</span>; take the last such spot. The term just after it equals <span class="math inline">\(1\)</span> and is its square, so that term is a square root of <span class="math inline">\(1\)</span> other than <span class="math inline">\(1\)</span>, hence <span class="math inline">\(-1\)</span>. That is exactly <span class="math inline">\(a^{2^{r} d} \equiv -1\)</span> for some <span class="math inline">\(r\)</span>, the second case. <span class="math inline">\(\qquad\blacksquare\)</span></p>
+</div>
+<p>This gives the test its real shape. To examine an odd <span class="math inline">\(n\)</span>, pick a base <span class="math inline">\(a\)</span>, compute <span class="math inline">\(a^d \bmod n\)</span>, and then square it up to <span class="math inline">\(s\)</span> times. If we never see <span class="math inline">\(a^d \equiv 1\)</span> and never see a <span class="math inline">\(-1\)</span> along the way, then <a href="#thm-mr" class="quarto-xref">Theorem&nbsp;1</a> has been violated, and <span class="math inline">\(n\)</span> is <strong>certainly</strong> composite. The base <span class="math inline">\(a\)</span> is again a witness, only now it is a far more demanding test than Fermat’s, and Carmichael numbers no longer escape it.</p>
+<div id="5d5b4c6f" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> decompose(n):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Write n - 1 = 2^s * d with d odd."""</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    d, s <span class="op">=</span> n <span class="op">-</span> <span class="dv">1</span>, <span class="dv">0</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> d <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        d <span class="op">//=</span> <span class="dv">2</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        s <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> s, d</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_witness(a, n):</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""True if base a proves n composite (a is a Miller-Rabin witness)."""</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    s, d <span class="op">=</span> decompose(n)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="bu">pow</span>(a, d, n)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">==</span> <span class="dv">1</span> <span class="kw">or</span> x <span class="op">==</span> n <span class="op">-</span> <span class="dv">1</span>:</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span>                 <span class="co"># this base is fooled; not a witness</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(s <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> x <span class="op">*</span> x <span class="op">%</span> n</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> x <span class="op">==</span> n <span class="op">-</span> <span class="dv">1</span>:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">True</span>                      <span class="co"># neither condition met -&gt; n is composite</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> gcd</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">561</span>                              <span class="co"># the smallest Carmichael number</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>fermat_fooled <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">pow</span>(a, n <span class="op">-</span> <span class="dv">1</span>, n) <span class="op">==</span> <span class="dv">1</span> <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n) <span class="cf">if</span> gcd(a, n) <span class="op">==</span> <span class="dv">1</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>coprime_total <span class="op">=</span> <span class="bu">sum</span>(gcd(a, n) <span class="op">==</span> <span class="dv">1</span> <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n))</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"561 fools Fermat for </span><span class="sc">{</span>fermat_fooled<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span>coprime_total<span class="sc">}</span><span class="ss"> coprime bases"</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"561 has a Miller-Rabin witness at a=2: </span><span class="sc">{</span>is_witness(<span class="dv">2</span>, <span class="dv">561</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>561 fools Fermat for 320 of 320 coprime bases
+561 has a Miller-Rabin witness at a=2: True</code></pre>
+</div>
+</div>
+<p>The Fermat test is fooled by every base that shares no factor with <span class="math inline">\(561\)</span>. The single base <span class="math inline">\(a = 2\)</span>, asked the sharper question, convicts it at once.</p>
+</section>
+<section id="how-many-bases-can-lie" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-bases-can-lie">How many bases can lie?</h2>
+<p>A witness proves compositeness with certainty, but a <em>non</em>-witness proves nothing: a composite number might still slip past a few unlucky bases. The bases that fail to witness a composite <span class="math inline">\(n\)</span> are called its strong liars. Everything rests on there not being too many of them.</p>
+<div id="thm-rabin" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2 (Soundness (Rabin))</strong></span> If <span class="math inline">\(n\)</span> is an odd composite, then at most <span class="math inline">\(\tfrac{1}{4}(n-1)\)</span> of the bases <span class="math inline">\(a \in \{1, \dots, n-1\}\)</span> are strong liars. Equivalently, at least three quarters of all bases are witnesses.</p>
+</div>
+<p>The proof is a careful count inside the group of units; see <span class="citation" data-cites="rabin1980"><a href="#ref-rabin1980" role="doc-biblioref">[1]</a></span>. The consequence is what makes the test practical. Choose <span class="math inline">\(k\)</span> bases independently at random. A composite survives one random base with probability at most <span class="math inline">\(\tfrac14\)</span>, so it survives all <span class="math inline">\(k\)</span> with probability at most <span class="math inline">\(4^{-k}\)</span>. Twenty random bases push the chance of being fooled below <span class="math inline">\(10^{-12}\)</span>, smaller than the chance of a hardware error during the computation. We never reach certainty about primality this way, but we reach a confidence we are happy to act on, and we reach it cheaply.</p>
+<div id="61f95bff" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> strong_liars(n):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(<span class="kw">not</span> is_witness(a, n) <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> [<span class="dv">561</span>, <span class="dv">1105</span>, <span class="dv">2047</span>, <span class="dv">25326001</span>]:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    liars <span class="op">=</span> strong_liars(n)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"n = </span><span class="sc">{</span>n<span class="sc">:&gt;9}</span><span class="ss">:  strong liars </span><span class="sc">{</span>liars<span class="sc">:&gt;7}</span><span class="ss"> / </span><span class="sc">{</span>n<span class="op">-</span><span class="dv">1</span><span class="sc">}</span><span class="ss">  =  </span><span class="sc">{</span>liars<span class="op">/</span>(n<span class="op">-</span><span class="dv">1</span>)<span class="sc">:.3f}</span><span class="ss">   (bound 0.250)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>n =       561:  strong liars      10 / 560  =  0.018   (bound 0.250)
+n =      1105:  strong liars      30 / 1104  =  0.027   (bound 0.250)
+n =      2047:  strong liars     242 / 2046  =  0.118   (bound 0.250)
+n =  25326001:  strong liars 2531250 / 25326000  =  0.100   (bound 0.250)</code></pre>
+</div>
+</div>
+<p>Every composite stays well under the one-quarter ceiling. The worst case here, <span class="math inline">\(2047 = 23 \cdot 89\)</span>, still leaks only about <span class="math inline">\(12\%\)</span> of its bases, and it is a famous near-miss: <span class="math inline">\(2\)</span> alone is a strong liar for it, which is why a serious test never trusts a single fixed base on its own.</p>
+</section>
+<section id="from-confidence-to-certainty" class="level2">
+<h2 class="anchored" data-anchor-id="from-confidence-to-certainty">From confidence to certainty</h2>
+<p>For numbers below a known bound, the randomness can be removed entirely. Because the strong liars are so sparse, a small fixed set of prime bases suffices to decide primality with no error at all. The twelve bases <span class="math inline">\(2, 3, 5, \dots, 37\)</span> are enough to classify <em>every</em> integer below <span class="math inline">\(3{,}317{,}044{,}064{,}679{,}887{,}385{,}961{,}981\)</span>, a little over <span class="math inline">\(3.3 \times 10^{24}\)</span>, correctly <span class="citation" data-cites="sorenson2017"><a href="#ref-sorenson2017" role="doc-biblioref">[2]</a></span>. That comfortably covers <span class="math inline">\(64\)</span>-bit integers and far beyond, so a deterministic, always-correct primality test fits in a few lines.</p>
+<div id="92d5bb42" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_prime(n):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Deterministic for n &lt; 3.317e24; a strong probable-prime test above that."""</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">2</span>:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    small_primes <span class="op">=</span> (<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">17</span>, <span class="dv">19</span>, <span class="dv">23</span>, <span class="dv">29</span>, <span class="dv">31</span>, <span class="dv">37</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> small_primes:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="op">%</span> p <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> n <span class="op">==</span> p</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">all</span>(<span class="kw">not</span> is_witness(a, n) <span class="cf">for</span> a <span class="kw">in</span> small_primes)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>mersenne <span class="op">=</span> <span class="dv">2</span><span class="op">**</span><span class="dv">127</span> <span class="op">-</span> <span class="dv">1</span>            <span class="co"># a genuine 39-digit prime</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2^127 - 1 is prime: </span><span class="sc">{</span>is_prime(mersenne)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2^127 - 1 + 2 is prime: </span><span class="sc">{</span>is_prime(mersenne <span class="op">+</span> <span class="dv">2</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"(2^127 - 1) * (2^127 + 1) is prime: </span><span class="sc">{</span>is_prime(mersenne <span class="op">*</span> (mersenne <span class="op">+</span> <span class="dv">2</span>))<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2^127 - 1 is prime: True
+2^127 - 1 + 2 is prime: False
+(2^127 - 1) * (2^127 + 1) is prime: False</code></pre>
+</div>
+</div>
+<p>In a handful of milliseconds we have certified a thirty-nine-digit prime, and exposed two composites of similar size, without factoring anything. This routine, give or take engineering details, is what stands behind the key generation in the cryptography running quietly underneath this page.</p>
+</section>
+<section id="a-closing-thought-on-what-a-witness-knows" class="level2">
+<h2 class="anchored" data-anchor-id="a-closing-thought-on-what-a-witness-knows">A closing thought on what a witness knows</h2>
+<p>There is a small bonus hiding in the proof. When a base catches a composite by way of the second case failing, it does so by producing a square root of <span class="math inline">\(1\)</span> that is neither <span class="math inline">\(1\)</span> nor <span class="math inline">\(-1\)</span>. Call it <span class="math inline">\(x\)</span>. Then <span class="math inline">\(n\)</span> divides <span class="math inline">\(x^2 - 1 = (x-1)(x+1)\)</span> but divides neither factor, so <span class="math inline">\(\gcd(x - 1, n)\)</span> is a proper divisor of <span class="math inline">\(n\)</span>. The witness, in other words, does not merely swear that <span class="math inline">\(n\)</span> is composite. It quietly knows a factor. That a randomized primality test brushes so close to factoring, the problem we insisted we were avoiding, is one of those quiet structural jokes that number theory keeps telling. The history of these ideas runs from <span class="citation" data-cites="miller1976"><a href="#ref-miller1976" role="doc-biblioref">[3]</a></span> to <span class="citation" data-cites="rabin1980"><a href="#ref-rabin1980" role="doc-biblioref">[1]</a></span>, and the puzzle Gauss called most important and useful turns out to have an answer that is fast, humble, and a little mischievous.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Miller–Rabin: How to Believe a Number Is Prime</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/miller-rabin/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-rabin1980" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">M. O. Rabin, <span>“Probabilistic algorithm for testing primality,”</span> <em>Journal of Number Theory</em>, vol. 12, no. 1, pp. 128–138, 1980.</div>
+</div>
+<div id="ref-sorenson2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">J. P. Sorenson and J. Webster, <span>“Strong pseudoprimes to twelve prime bases,”</span> <em>Mathematics of Computation</em>, vol. 86, no. 304, pp. 985–1003, 2017.</div>
+</div>
+<div id="ref-miller1976" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">G. L. Miller, <span>“Riemann’s hypothesis and tests for primality,”</span> <em>Journal of Computer and System Sciences</em>, vol. 13, no. 3, pp. 300–317, 1976.</div>
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/terryfxh\.github\.io\/math-notes");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Miller–Rabin: How to Believe a Number Is Prime"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "You can become as certain as you like that a 300-digit number is prime without ever finding a factor, by interrogating it with random witnesses. The idea rests on a single fact: in a field, one has only two square roots."</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-06-03</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [pure, applied, number-theory, computer-science, algorithms, cryptography]</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> ../../references.bib</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="an">draft:</span><span class="co"> false</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>::: {.epigraph}</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>"The problem of distinguishing prime numbers from composite numbers ... is known to be one of the most important and useful in arithmetic."</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">— Carl Friedrich Gauss, *Disquisitiones Arithmeticae*, Art. 329 (1801)</span><span class="co">]</span>{.attribution}</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>Here is something that should feel slightly impossible. Hand me a number with three hundred digits and I can make you as confident as you wish that it is prime, confident past any doubt you could act on, without ever exhibiting a single factor and without coming anywhere near factoring it. The trick is not to search for divisors. It is to put the number on trial and call witnesses against it. A composite number, it turns out, cannot keep its story straight, and almost every witness we call will catch it in the lie.</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## A first attempt, and why it fails</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>The natural place to start is Fermat's little theorem: if $n$ is prime, then for every base $a$ not divisible by $n$,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>a^{\,n-1} \equiv 1 \pmod{n}.</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>Read by its contrapositive, this is already a test. Pick a base $a$, compute $a^{n-1} \bmod n$, and if the answer is anything other than $1$, then $n$ cannot be prime. The base $a$ is a *witness* to the compositeness of $n$, and it cost us one fast modular exponentiation to find.</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>The trouble is the converse. Some composite numbers satisfy $a^{n-1} \equiv 1$ for *every* base coprime to them, and so they slip past the Fermat test no matter which base we try. These are the Carmichael numbers, the smallest being $561 = 3 \cdot 11 \cdot 17$, and they are not rare enough to ignore. Against such a number the Fermat test is almost completely blind, as we will see in a moment. We need a sharper question to ask.</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## The sharper question</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>The sharper question comes from one clean fact about primes. When $n$ is prime, $\mathbb{Z}/n\mathbb{Z}$ is a field, and in a field the equation $x^2 = 1$ has only the two obvious solutions, $x \equiv 1$ and $x \equiv -1$. There is no third square root of one. A composite number, by contrast, usually has extra square roots of $1$ lurking about, and those extras are the thread we pull on.</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>To use this, factor all the powers of two out of $n-1$. Write</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>n - 1 = 2^{s}\, d, \qquad d \text{ odd}.</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>Now instead of leaping straight to $a^{n-1}$, climb there one squaring at a time, through the chain</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>a^{d},\ a^{2d},\ a^{4d},\ \dots,\ a^{2^{s} d} = a^{\,n-1}.</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>Each term is the square of the one before it. If $n$ is prime, Fermat guarantees the chain ends at $1$, and the no-extra-square-roots fact tightly constrains how it can arrive there.</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>::: {#thm-mr}</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## The witness condition</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>Let $n$ be an odd prime and write $n - 1 = 2^{s} d$ with $d$ odd. Then for every base $a$ with $1 \le a \le n-1$, either</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>a^{d} \equiv 1 \pmod{n}</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>\qquad\text{or}\qquad</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>a^{2^{r} d} \equiv -1 \pmod{n}\ \text{ for some } 0 \le r &lt; s.</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>::: {.proof}</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>Since $n$ is prime and does not divide $a$, Fermat's little theorem gives $a^{2^{s} d} = a^{\,n-1} \equiv 1$. So the chain $a^{d}, a^{2d}, \dots, a^{2^{s} d}$ ends in $1$.</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>Walk backward from that final $1$. Each step back takes a square root, and in the field $\mathbb{Z}/n\mathbb{Z}$ the only square roots of $1$ are $\pm 1$, because $x^2 - 1 = (x-1)(x+1)$ and a field has no zero divisors. So every time we step back from a $1$, we land on either $1$ or $-1$. Two things can happen. Either the whole chain is $1$ all the way down, in which case $a^{d} \equiv 1$ and we are in the first case. Or somewhere a value fails to be $1$; take the last such spot. The term just after it equals $1$ and is its square, so that term is a square root of $1$ other than $1$, hence $-1$. That is exactly $a^{2^{r} d} \equiv -1$ for some $r$, the second case. $\qquad\blacksquare$</span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>This gives the test its real shape. To examine an odd $n$, pick a base $a$, compute $a^d \bmod n$, and then square it up to $s$ times. If we never see $a^d \equiv 1$ and never see a $-1$ along the way, then @thm-mr has been violated, and $n$ is **certainly** composite. The base $a$ is again a witness, only now it is a far more demanding test than Fermat's, and Carmichael numbers no longer escape it.</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> decompose(n):</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Write n - 1 = 2^s * d with d odd."""</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>    d, s <span class="op">=</span> n <span class="op">-</span> <span class="dv">1</span>, <span class="dv">0</span></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> d <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>        d <span class="op">//=</span> <span class="dv">2</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>        s <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> s, d</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_witness(a, n):</span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""True if base a proves n composite (a is a Miller-Rabin witness)."""</span></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>    s, d <span class="op">=</span> decompose(n)</span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="bu">pow</span>(a, d, n)</span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">==</span> <span class="dv">1</span> <span class="kw">or</span> x <span class="op">==</span> n <span class="op">-</span> <span class="dv">1</span>:</span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span>                 <span class="co"># this base is fooled; not a witness</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(s <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> x <span class="op">*</span> x <span class="op">%</span> n</span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> x <span class="op">==</span> n <span class="op">-</span> <span class="dv">1</span>:</span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">True</span>                      <span class="co"># neither condition met -&gt; n is composite</span></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> gcd</span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">561</span>                              <span class="co"># the smallest Carmichael number</span></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>fermat_fooled <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">pow</span>(a, n <span class="op">-</span> <span class="dv">1</span>, n) <span class="op">==</span> <span class="dv">1</span> <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n) <span class="cf">if</span> gcd(a, n) <span class="op">==</span> <span class="dv">1</span>)</span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>coprime_total <span class="op">=</span> <span class="bu">sum</span>(gcd(a, n) <span class="op">==</span> <span class="dv">1</span> <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n))</span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"561 fools Fermat for </span><span class="sc">{</span>fermat_fooled<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span>coprime_total<span class="sc">}</span><span class="ss"> coprime bases"</span>)</span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"561 has a Miller-Rabin witness at a=2: </span><span class="sc">{</span>is_witness(<span class="dv">2</span>, <span class="dv">561</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>The Fermat test is fooled by every base that shares no factor with $561$. The single base $a = 2$, asked the sharper question, convicts it at once.</span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a><span class="fu">## How many bases can lie?</span></span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>A witness proves compositeness with certainty, but a *non*-witness proves nothing: a composite number might still slip past a few unlucky bases. The bases that fail to witness a composite $n$ are called its strong liars. Everything rests on there not being too many of them.</span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>::: {#thm-rabin}</span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## Soundness (Rabin)</span></span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>If $n$ is an odd composite, then at most $\tfrac{1}{4}(n-1)$ of the bases $a \in <span class="sc">\{</span>1, \dots, n-1<span class="sc">\}</span>$ are strong liars. Equivalently, at least three quarters of all bases are witnesses.</span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a>The proof is a careful count inside the group of units; see @rabin1980. The consequence is what makes the test practical. Choose $k$ bases independently at random. A composite survives one random base with probability at most $\tfrac14$, so it survives all $k$ with probability at most $4^{-k}$. Twenty random bases push the chance of being fooled below $10^{-12}$, smaller than the chance of a hardware error during the computation. We never reach certainty about primality this way, but we reach a confidence we are happy to act on, and we reach it cheaply.</span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> strong_liars(n):</span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(<span class="kw">not</span> is_witness(a, n) <span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n))</span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> [<span class="dv">561</span>, <span class="dv">1105</span>, <span class="dv">2047</span>, <span class="dv">25326001</span>]:</span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>    liars <span class="op">=</span> strong_liars(n)</span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"n = </span><span class="sc">{</span>n<span class="sc">:&gt;9}</span><span class="ss">:  strong liars </span><span class="sc">{</span>liars<span class="sc">:&gt;7}</span><span class="ss"> / </span><span class="sc">{</span>n<span class="op">-</span><span class="dv">1</span><span class="sc">}</span><span class="ss">  =  </span><span class="sc">{</span>liars<span class="op">/</span>(n<span class="op">-</span><span class="dv">1</span>)<span class="sc">:.3f}</span><span class="ss">   (bound 0.250)"</span>)</span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a>Every composite stays well under the one-quarter ceiling. The worst case here, $2047 = 23 \cdot 89$, still leaks only about $12\%$ of its bases, and it is a famous near-miss: $2$ alone is a strong liar for it, which is why a serious test never trusts a single fixed base on its own.</span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a><span class="fu">## From confidence to certainty</span></span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a>For numbers below a known bound, the randomness can be removed entirely. Because the strong liars are so sparse, a small fixed set of prime bases suffices to decide primality with no error at all. The twelve bases $2, 3, 5, \dots, 37$ are enough to classify *every* integer below $3{,}317{,}044{,}064{,}679{,}887{,}385{,}961{,}981$, a little over $3.3 \times 10^{24}$, correctly @sorenson2017. That comfortably covers $64$-bit integers and far beyond, so a deterministic, always-correct primality test fits in a few lines.</span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_prime(n):</span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Deterministic for n &lt; 3.317e24; a strong probable-prime test above that."""</span></span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">2</span>:</span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a>    small_primes <span class="op">=</span> (<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">13</span>, <span class="dv">17</span>, <span class="dv">19</span>, <span class="dv">23</span>, <span class="dv">29</span>, <span class="dv">31</span>, <span class="dv">37</span>)</span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> small_primes:</span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="op">%</span> p <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> n <span class="op">==</span> p</span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">all</span>(<span class="kw">not</span> is_witness(a, n) <span class="cf">for</span> a <span class="kw">in</span> small_primes)</span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a>mersenne <span class="op">=</span> <span class="dv">2</span><span class="op">**</span><span class="dv">127</span> <span class="op">-</span> <span class="dv">1</span>            <span class="co"># a genuine 39-digit prime</span></span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2^127 - 1 is prime: </span><span class="sc">{</span>is_prime(mersenne)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2^127 - 1 + 2 is prime: </span><span class="sc">{</span>is_prime(mersenne <span class="op">+</span> <span class="dv">2</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"(2^127 - 1) * (2^127 + 1) is prime: </span><span class="sc">{</span>is_prime(mersenne <span class="op">*</span> (mersenne <span class="op">+</span> <span class="dv">2</span>))<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a>In a handful of milliseconds we have certified a thirty-nine-digit prime, and exposed two composites of similar size, without factoring anything. This routine, give or take engineering details, is what stands behind the key generation in the cryptography running quietly underneath this page.</span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a><span class="fu">## A closing thought on what a witness knows</span></span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a>There is a small bonus hiding in the proof. When a base catches a composite by way of the second case failing, it does so by producing a square root of $1$ that is neither $1$ nor $-1$. Call it $x$. Then $n$ divides $x^2 - 1 = (x-1)(x+1)$ but divides neither factor, so $\gcd(x - 1, n)$ is a proper divisor of $n$. The witness, in other words, does not merely swear that $n$ is composite. It quietly knows a factor. That a randomized primality test brushes so close to factoring, the problem we insisted we were avoiding, is one of those quiet structural jokes that number theory keeps telling. The history of these ideas runs from @miller1976 to @rabin1980, and the puzzle Gauss called most important and useful turns out to have an answer that is fast, humble, and a little mischievous.</span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *Miller–Rabin: How to Believe a Number Is Prime*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/miller-rabin/`</span><span class="at">.</span></span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Terry Fang</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

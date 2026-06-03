@@ -1042,6 +1042,558 @@ numpy.qr :  |Q^T Q - I| = 1.46e-15</code></pre>
   <pubDate>Tue, 02 Jun 2026 23:00:00 GMT</pubDate>
 </item>
 <item>
+  <title>Miller–Rabin: How to Believe a Number Is Prime</title>
+  <link>https://terryfxh.github.io/math-notes/posts/miller-rabin/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p>“The problem of distinguishing prime numbers from composite numbers … is known to be one of the most important and useful in arithmetic.”</p>
+<p><span class="attribution">— Carl Friedrich Gauss, <em>Disquisitiones Arithmeticae</em>, Art. 329 (1801)</span></p>
+</div>
+<p>Here is something that should feel slightly impossible. Hand me a number with three hundred digits and I can make you as confident as you wish that it is prime, confident past any doubt you could act on, without ever exhibiting a single factor and without coming anywhere near factoring it. The trick is not to search for divisors. It is to put the number on trial and call witnesses against it. A composite number, it turns out, cannot keep its story straight, and almost every witness we call will catch it in the lie.</p>
+<section id="a-first-attempt-and-why-it-fails" class="level2">
+<h2 class="anchored" data-anchor-id="a-first-attempt-and-why-it-fails">A first attempt, and why it fails</h2>
+<p>The natural place to start is Fermat’s little theorem: if <img src="https://latex.codecogs.com/png.latex?n"> is prime, then for every base <img src="https://latex.codecogs.com/png.latex?a"> not divisible by <img src="https://latex.codecogs.com/png.latex?n">, <img src="https://latex.codecogs.com/png.latex?%0Aa%5E%7B%5C,n-1%7D%20%5Cequiv%201%20%5Cpmod%7Bn%7D.%0A"> Read by its contrapositive, this is already a test. Pick a base <img src="https://latex.codecogs.com/png.latex?a">, compute <img src="https://latex.codecogs.com/png.latex?a%5E%7Bn-1%7D%20%5Cbmod%20n">, and if the answer is anything other than <img src="https://latex.codecogs.com/png.latex?1">, then <img src="https://latex.codecogs.com/png.latex?n"> cannot be prime. The base <img src="https://latex.codecogs.com/png.latex?a"> is a <em>witness</em> to the compositeness of <img src="https://latex.codecogs.com/png.latex?n">, and it cost us one fast modular exponentiation to find.</p>
+<p>The trouble is the converse. Some composite numbers satisfy <img src="https://latex.codecogs.com/png.latex?a%5E%7Bn-1%7D%20%5Cequiv%201"> for <em>every</em> base coprime to them, and so they slip past the Fermat test no matter which base we try. These are the Carmichael numbers, the smallest being <img src="https://latex.codecogs.com/png.latex?561%20=%203%20%5Ccdot%2011%20%5Ccdot%2017">, and they are not rare enough to ignore. Against such a number the Fermat test is almost completely blind, as we will see in a moment. We need a sharper question to ask.</p>
+</section>
+<section id="the-sharper-question" class="level2">
+<h2 class="anchored" data-anchor-id="the-sharper-question">The sharper question</h2>
+<p>The sharper question comes from one clean fact about primes. When <img src="https://latex.codecogs.com/png.latex?n"> is prime, <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BZ%7D/n%5Cmathbb%7BZ%7D"> is a field, and in a field the equation <img src="https://latex.codecogs.com/png.latex?x%5E2%20=%201"> has only the two obvious solutions, <img src="https://latex.codecogs.com/png.latex?x%20%5Cequiv%201"> and <img src="https://latex.codecogs.com/png.latex?x%20%5Cequiv%20-1">. There is no third square root of one. A composite number, by contrast, usually has extra square roots of <img src="https://latex.codecogs.com/png.latex?1"> lurking about, and those extras are the thread we pull on.</p>
+<p>To use this, factor all the powers of two out of <img src="https://latex.codecogs.com/png.latex?n-1">. Write <img src="https://latex.codecogs.com/png.latex?%0An%20-%201%20=%202%5E%7Bs%7D%5C,%20d,%20%5Cqquad%20d%20%5Ctext%7B%20odd%7D.%0A"> Now instead of leaping straight to <img src="https://latex.codecogs.com/png.latex?a%5E%7Bn-1%7D">, climb there one squaring at a time, through the chain <img src="https://latex.codecogs.com/png.latex?%0Aa%5E%7Bd%7D,%5C%20a%5E%7B2d%7D,%5C%20a%5E%7B4d%7D,%5C%20%5Cdots,%5C%20a%5E%7B2%5E%7Bs%7D%20d%7D%20=%20a%5E%7B%5C,n-1%7D.%0A"> Each term is the square of the one before it. If <img src="https://latex.codecogs.com/png.latex?n"> is prime, Fermat guarantees the chain ends at <img src="https://latex.codecogs.com/png.latex?1">, and the no-extra-square-roots fact tightly constrains how it can arrive there.</p>
+<div id="thm-mr" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (The witness condition)</strong></span> Let <img src="https://latex.codecogs.com/png.latex?n"> be an odd prime and write <img src="https://latex.codecogs.com/png.latex?n%20-%201%20=%202%5E%7Bs%7D%20d"> with <img src="https://latex.codecogs.com/png.latex?d"> odd. Then for every base <img src="https://latex.codecogs.com/png.latex?a"> with <img src="https://latex.codecogs.com/png.latex?1%20%5Cle%20a%20%5Cle%20n-1">, either <img src="https://latex.codecogs.com/png.latex?%0Aa%5E%7Bd%7D%20%5Cequiv%201%20%5Cpmod%7Bn%7D%0A%5Cqquad%5Ctext%7Bor%7D%5Cqquad%0Aa%5E%7B2%5E%7Br%7D%20d%7D%20%5Cequiv%20-1%20%5Cpmod%7Bn%7D%5C%20%5Ctext%7B%20for%20some%20%7D%200%20%5Cle%20r%20%3C%20s.%0A"></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Since <img src="https://latex.codecogs.com/png.latex?n"> is prime and does not divide <img src="https://latex.codecogs.com/png.latex?a">, Fermat’s little theorem gives <img src="https://latex.codecogs.com/png.latex?a%5E%7B2%5E%7Bs%7D%20d%7D%20=%20a%5E%7B%5C,n-1%7D%20%5Cequiv%201">. So the chain <img src="https://latex.codecogs.com/png.latex?a%5E%7Bd%7D,%20a%5E%7B2d%7D,%20%5Cdots,%20a%5E%7B2%5E%7Bs%7D%20d%7D"> ends in <img src="https://latex.codecogs.com/png.latex?1">.</p>
+<p>Walk backward from that final <img src="https://latex.codecogs.com/png.latex?1">. Each step back takes a square root, and in the field <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BZ%7D/n%5Cmathbb%7BZ%7D"> the only square roots of <img src="https://latex.codecogs.com/png.latex?1"> are <img src="https://latex.codecogs.com/png.latex?%5Cpm%201">, because <img src="https://latex.codecogs.com/png.latex?x%5E2%20-%201%20=%20(x-1)(x+1)"> and a field has no zero divisors. So every time we step back from a <img src="https://latex.codecogs.com/png.latex?1">, we land on either <img src="https://latex.codecogs.com/png.latex?1"> or <img src="https://latex.codecogs.com/png.latex?-1">. Two things can happen. Either the whole chain is <img src="https://latex.codecogs.com/png.latex?1"> all the way down, in which case <img src="https://latex.codecogs.com/png.latex?a%5E%7Bd%7D%20%5Cequiv%201"> and we are in the first case. Or somewhere a value fails to be <img src="https://latex.codecogs.com/png.latex?1">; take the last such spot. The term just after it equals <img src="https://latex.codecogs.com/png.latex?1"> and is its square, so that term is a square root of <img src="https://latex.codecogs.com/png.latex?1"> other than <img src="https://latex.codecogs.com/png.latex?1">, hence <img src="https://latex.codecogs.com/png.latex?-1">. That is exactly <img src="https://latex.codecogs.com/png.latex?a%5E%7B2%5E%7Br%7D%20d%7D%20%5Cequiv%20-1"> for some <img src="https://latex.codecogs.com/png.latex?r">, the second case. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
+</div>
+<p>This gives the test its real shape. To examine an odd <img src="https://latex.codecogs.com/png.latex?n">, pick a base <img src="https://latex.codecogs.com/png.latex?a">, compute <img src="https://latex.codecogs.com/png.latex?a%5Ed%20%5Cbmod%20n">, and then square it up to <img src="https://latex.codecogs.com/png.latex?s"> times. If we never see <img src="https://latex.codecogs.com/png.latex?a%5Ed%20%5Cequiv%201"> and never see a <img src="https://latex.codecogs.com/png.latex?-1"> along the way, then Theorem&nbsp;1 has been violated, and <img src="https://latex.codecogs.com/png.latex?n"> is <strong>certainly</strong> composite. The base <img src="https://latex.codecogs.com/png.latex?a"> is again a witness, only now it is a far more demanding test than Fermat’s, and Carmichael numbers no longer escape it.</p>
+<div id="5d5b4c6f" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> decompose(n):</span>
+<span id="cb1-2">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""Write n - 1 = 2^s * d with d odd."""</span></span>
+<span id="cb1-3">    d, s <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-4">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> d <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb1-5">        d <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-6">        s <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-7">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> s, d</span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> is_witness(a, n):</span>
+<span id="cb1-10">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""True if base a proves n composite (a is a Miller-Rabin witness)."""</span></span>
+<span id="cb1-11">    s, d <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> decompose(n)</span>
+<span id="cb1-12">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">pow</span>(a, d, n)</span>
+<span id="cb1-13">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">or</span> x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:</span>
+<span id="cb1-14">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>                 <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># this base is fooled; not a witness</span></span>
+<span id="cb1-15">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(s <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>):</span>
+<span id="cb1-16">        x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> n</span>
+<span id="cb1-17">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:</span>
+<span id="cb1-18">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb1-19">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>                      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># neither condition met -&gt; n is composite</span></span>
+<span id="cb1-20"></span>
+<span id="cb1-21"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> math <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> gcd</span>
+<span id="cb1-22">n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">561</span>                              <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># the smallest Carmichael number</span></span>
+<span id="cb1-23">fermat_fooled <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">pow</span>(a, n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, n) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> a <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, n) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> gcd(a, n) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-24">coprime_total <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(gcd(a, n) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> a <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, n))</span>
+<span id="cb1-25"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"561 fools Fermat for </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>fermat_fooled<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> of </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>coprime_total<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> coprime bases"</span>)</span>
+<span id="cb1-26"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"561 has a Miller-Rabin witness at a=2: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>is_witness(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">561</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>561 fools Fermat for 320 of 320 coprime bases
+561 has a Miller-Rabin witness at a=2: True</code></pre>
+</div>
+</div>
+<p>The Fermat test is fooled by every base that shares no factor with <img src="https://latex.codecogs.com/png.latex?561">. The single base <img src="https://latex.codecogs.com/png.latex?a%20=%202">, asked the sharper question, convicts it at once.</p>
+</section>
+<section id="how-many-bases-can-lie" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-bases-can-lie">How many bases can lie?</h2>
+<p>A witness proves compositeness with certainty, but a <em>non</em>-witness proves nothing: a composite number might still slip past a few unlucky bases. The bases that fail to witness a composite <img src="https://latex.codecogs.com/png.latex?n"> are called its strong liars. Everything rests on there not being too many of them.</p>
+<div id="thm-rabin" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2 (Soundness (Rabin))</strong></span> If <img src="https://latex.codecogs.com/png.latex?n"> is an odd composite, then at most <img src="https://latex.codecogs.com/png.latex?%5Ctfrac%7B1%7D%7B4%7D(n-1)"> of the bases <img src="https://latex.codecogs.com/png.latex?a%20%5Cin%20%5C%7B1,%20%5Cdots,%20n-1%5C%7D"> are strong liars. Equivalently, at least three quarters of all bases are witnesses.</p>
+</div>
+<p>The proof is a careful count inside the group of units; see <span class="citation" data-cites="rabin1980">[1]</span>. The consequence is what makes the test practical. Choose <img src="https://latex.codecogs.com/png.latex?k"> bases independently at random. A composite survives one random base with probability at most <img src="https://latex.codecogs.com/png.latex?%5Ctfrac14">, so it survives all <img src="https://latex.codecogs.com/png.latex?k"> with probability at most <img src="https://latex.codecogs.com/png.latex?4%5E%7B-k%7D">. Twenty random bases push the chance of being fooled below <img src="https://latex.codecogs.com/png.latex?10%5E%7B-12%7D">, smaller than the chance of a hardware error during the computation. We never reach certainty about primality this way, but we reach a confidence we are happy to act on, and we reach it cheaply.</p>
+<div id="61f95bff" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> strong_liars(n):</span>
+<span id="cb3-2">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> is_witness(a, n) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> a <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, n))</span>
+<span id="cb3-3"></span>
+<span id="cb3-4"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> n <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">561</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1105</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2047</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25326001</span>]:</span>
+<span id="cb3-5">    liars <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> strong_liars(n)</span>
+<span id="cb3-6">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"n = </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>n<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:&gt;9}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:  strong liars </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>liars<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:&gt;7}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> / </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  =  </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>liars<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>(n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.3f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">   (bound 0.250)"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>n =       561:  strong liars      10 / 560  =  0.018   (bound 0.250)
+n =      1105:  strong liars      30 / 1104  =  0.027   (bound 0.250)
+n =      2047:  strong liars     242 / 2046  =  0.118   (bound 0.250)
+n =  25326001:  strong liars 2531250 / 25326000  =  0.100   (bound 0.250)</code></pre>
+</div>
+</div>
+<p>Every composite stays well under the one-quarter ceiling. The worst case here, <img src="https://latex.codecogs.com/png.latex?2047%20=%2023%20%5Ccdot%2089">, still leaks only about <img src="https://latex.codecogs.com/png.latex?12%5C%25"> of its bases, and it is a famous near-miss: <img src="https://latex.codecogs.com/png.latex?2"> alone is a strong liar for it, which is why a serious test never trusts a single fixed base on its own.</p>
+</section>
+<section id="from-confidence-to-certainty" class="level2">
+<h2 class="anchored" data-anchor-id="from-confidence-to-certainty">From confidence to certainty</h2>
+<p>For numbers below a known bound, the randomness can be removed entirely. Because the strong liars are so sparse, a small fixed set of prime bases suffices to decide primality with no error at all. The twelve bases <img src="https://latex.codecogs.com/png.latex?2,%203,%205,%20%5Cdots,%2037"> are enough to classify <em>every</em> integer below <img src="https://latex.codecogs.com/png.latex?3%7B,%7D317%7B,%7D044%7B,%7D064%7B,%7D679%7B,%7D887%7B,%7D385%7B,%7D961%7B,%7D981">, a little over <img src="https://latex.codecogs.com/png.latex?3.3%20%5Ctimes%2010%5E%7B24%7D">, correctly <span class="citation" data-cites="sorenson2017">[2]</span>. That comfortably covers <img src="https://latex.codecogs.com/png.latex?64">-bit integers and far beyond, so a deterministic, always-correct primality test fits in a few lines.</p>
+<div id="92d5bb42" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> is_prime(n):</span>
+<span id="cb5-2">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""Deterministic for n &lt; 3.317e24; a strong probable-prime test above that."""</span></span>
+<span id="cb5-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:</span>
+<span id="cb5-4">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb5-5">    small_primes <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">17</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">19</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">23</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">29</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">31</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">37</span>)</span>
+<span id="cb5-6">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> p <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> small_primes:</span>
+<span id="cb5-7">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb5-8">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> p</span>
+<span id="cb5-9">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">all</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> is_witness(a, n) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> a <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> small_primes)</span>
+<span id="cb5-10"></span>
+<span id="cb5-11">mersenne <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">127</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># a genuine 39-digit prime</span></span>
+<span id="cb5-12"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"2^127 - 1 is prime: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>is_prime(mersenne)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb5-13"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"2^127 - 1 + 2 is prime: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>is_prime(mersenne <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb5-14"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"(2^127 - 1) * (2^127 + 1) is prime: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>is_prime(mersenne <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (mersenne <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2^127 - 1 is prime: True
+2^127 - 1 + 2 is prime: False
+(2^127 - 1) * (2^127 + 1) is prime: False</code></pre>
+</div>
+</div>
+<p>In a handful of milliseconds we have certified a thirty-nine-digit prime, and exposed two composites of similar size, without factoring anything. This routine, give or take engineering details, is what stands behind the key generation in the cryptography running quietly underneath this page.</p>
+</section>
+<section id="a-closing-thought-on-what-a-witness-knows" class="level2">
+<h2 class="anchored" data-anchor-id="a-closing-thought-on-what-a-witness-knows">A closing thought on what a witness knows</h2>
+<p>There is a small bonus hiding in the proof. When a base catches a composite by way of the second case failing, it does so by producing a square root of <img src="https://latex.codecogs.com/png.latex?1"> that is neither <img src="https://latex.codecogs.com/png.latex?1"> nor <img src="https://latex.codecogs.com/png.latex?-1">. Call it <img src="https://latex.codecogs.com/png.latex?x">. Then <img src="https://latex.codecogs.com/png.latex?n"> divides <img src="https://latex.codecogs.com/png.latex?x%5E2%20-%201%20=%20(x-1)(x+1)"> but divides neither factor, so <img src="https://latex.codecogs.com/png.latex?%5Cgcd(x%20-%201,%20n)"> is a proper divisor of <img src="https://latex.codecogs.com/png.latex?n">. The witness, in other words, does not merely swear that <img src="https://latex.codecogs.com/png.latex?n"> is composite. It quietly knows a factor. That a randomized primality test brushes so close to factoring, the problem we insisted we were avoiding, is one of those quiet structural jokes that number theory keeps telling. The history of these ideas runs from <span class="citation" data-cites="miller1976">[3]</span> to <span class="citation" data-cites="rabin1980">[1]</span>, and the puzzle Gauss called most important and useful turns out to have an answer that is fast, humble, and a little mischievous.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Miller–Rabin: How to Believe a Number Is Prime</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/miller-rabin/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
+<div id="ref-rabin1980" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">M. O. Rabin, <span>“Probabilistic algorithm for testing primality,”</span> <em>Journal of Number Theory</em>, vol. 12, no. 1, pp. 128–138, 1980.</div>
+</div>
+<div id="ref-sorenson2017" class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">J. P. Sorenson and J. Webster, <span>“Strong pseudoprimes to twelve prime bases,”</span> <em>Mathematics of Computation</em>, vol. 86, no. 304, pp. 985–1003, 2017.</div>
+</div>
+<div id="ref-miller1976" class="csl-entry">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">G. L. Miller, <span>“Riemann’s hypothesis and tests for primality,”</span> <em>Journal of Computer and System Sciences</em>, vol. 13, no. 3, pp. 300–317, 1976.</div>
+</div>
+</div></section></div> ]]></description>
+  <category>pure</category>
+  <category>applied</category>
+  <category>number-theory</category>
+  <category>computer-science</category>
+  <category>algorithms</category>
+  <category>cryptography</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/miller-rabin/</guid>
+  <pubDate>Tue, 02 Jun 2026 23:00:00 GMT</pubDate>
+</item>
+<item>
   <title>Welcome, and what this blog is for</title>
   <link>https://terryfxh.github.io/math-notes/posts/welcome/</link>
   <description><![CDATA[ 
