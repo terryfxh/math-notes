@@ -19,6 +19,10 @@
 
 
 
+<div class="epigraph">
+<p>“It is by logic that we prove, but by intuition that we discover.”</p>
+<p><span class="attribution">— Henri Poincaré, <em>Science and Method</em></span></p>
+</div>
 <p>I started this blog for a simple reason. Every time I finally understand a piece of mathematics, the understanding arrives as a picture, not as a formula. The formula was always there; what changes is that I can suddenly <em>see</em> why it had to look that way. I wanted a place to hold onto those pictures before they fade.</p>
 <p>So that is the spirit of everything here. I try to begin with the simplest version of an idea, the one small enough to fit in your head all at once, and grow it slowly until the general result feels less like a surprise and more like something you could almost have guessed. Only then do I write down the careful proof, because rigour is what lets you trust the picture later.</p>
 <p>You will find the notes grouped into a few themes:</p>
@@ -47,6 +51,10 @@
 
 
 
+<div class="epigraph">
+<p>“Mathematics is the art of giving the same name to different things.”</p>
+<p><span class="attribution">— Henri Poincaré</span></p>
+</div>
 <p>Here is a claim that sounds almost too clean to be true. Take any real symmetric matrix, no matter how tangled its entries look, and there is always a way to turn your head so that the transformation it describes does nothing fancy at all. It just stretches space along a set of perpendicular axes, each by its own amount. No shearing, no twisting, no mixing of directions. That is the whole content of the spectral theorem, and the rest of this post is about why space has no choice but to behave this way.</p>
 <section id="first-the-picture" class="level2">
 <h2 class="anchored" data-anchor-id="first-the-picture">First, the picture</h2>
@@ -92,7 +100,7 @@
 <section id="a-numerical-check" class="level2">
 <h2 class="anchored" data-anchor-id="a-numerical-check">A numerical check</h2>
 <p>A proof tells you a decomposition must exist; it is a different kind of satisfying to watch it appear. Let us build a random symmetric matrix, ask the computer for its eigenvalues and eigenvectors, and confirm that Equation&nbsp;2 holds right down to floating-point roundoff.</p>
-<div id="acab6d40" class="cell" data-execution_count="1">
+<div id="0efcb197" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;

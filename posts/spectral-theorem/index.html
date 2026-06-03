@@ -99,7 +99,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-f5d883df4a6cc1a1c7a3756d46c5c142.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-901c328379d5b7ab31f39ddb0b0deb91.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -272,6 +272,10 @@ window.Quarto = {
 </header>
 
 
+<div class="epigraph">
+<p>“Mathematics is the art of giving the same name to different things.”</p>
+<p><span class="attribution">— Henri Poincaré</span></p>
+</div>
 <p>Here is a claim that sounds almost too clean to be true. Take any real symmetric matrix, no matter how tangled its entries look, and there is always a way to turn your head so that the transformation it describes does nothing fancy at all. It just stretches space along a set of perpendicular axes, each by its own amount. No shearing, no twisting, no mixing of directions. That is the whole content of the spectral theorem, and the rest of this post is about why space has no choice but to behave this way.</p>
 <section id="first-the-picture" class="level2">
 <h2 class="anchored" data-anchor-id="first-the-picture">First, the picture</h2>
@@ -325,7 +329,7 @@ A = Q \Lambda Q^\top .
 <section id="a-numerical-check" class="level2">
 <h2 class="anchored" data-anchor-id="a-numerical-check">A numerical check</h2>
 <p>A proof tells you a decomposition must exist; it is a different kind of satisfying to watch it appear. Let us build a random symmetric matrix, ask the computer for its eigenvalues and eigenvectors, and confirm that <a href="#eq-decomp" class="quarto-xref">Equation&nbsp;2</a> holds right down to floating-point roundoff.</p>
-<div id="acab6d40" class="cell" data-execution_count="1">
+<div id="0efcb197" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
@@ -839,116 +843,122 @@ A = Q \Lambda Q^\top .
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="an">draft:</span><span class="co"> false</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>Here is a claim that sounds almost too clean to be true. Take any real symmetric matrix, no matter how tangled its entries look, and there is always a way to turn your head so that the transformation it describes does nothing fancy at all. It just stretches space along a set of perpendicular axes, each by its own amount. No shearing, no twisting, no mixing of directions. That is the whole content of the spectral theorem, and the rest of this post is about why space has no choice but to behave this way.</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## First, the picture</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>Picture a linear map in two dimensions. In general it can do unpleasant things: it can rotate, it can shear a square into a slanted parallelogram, it can stretch more in one diagonal direction than another. A generic matrix really does mix your coordinate axes together.</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>::: {.epigraph}</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>"Mathematics is the art of giving the same name to different things."</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">— Henri Poincaré</span><span class="co">]</span>{.attribution}</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>Symmetry is the condition that quietly forbids all of that mixing, once you look from the right angle. The promise of the theorem is that for a symmetric matrix you can always find a fresh set of axes, still perfectly perpendicular to one another, in which the map becomes a pure diagonal stretch. Finding those special axes is the whole game, and they are exactly the eigenvectors.</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>Here is a claim that sounds almost too clean to be true. Take any real symmetric matrix, no matter how tangled its entries look, and there is always a way to turn your head so that the transformation it describes does nothing fancy at all. It just stretches space along a set of perpendicular axes, each by its own amount. No shearing, no twisting, no mixing of directions. That is the whole content of the spectral theorem, and the rest of this post is about why space has no choice but to behave this way.</span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setting it up</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## First, the picture</span></span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>Let $A \in \mathbb{R}^{n\times n}$ be **symmetric**, meaning $A^\top = A$. Write the standard inner product as $\langle x, y\rangle = x^\top y$. The single fact that powers everything below is that symmetry lets you slide $A$ from one side of an inner product to the other:</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>Picture a linear map in two dimensions. In general it can do unpleasant things: it can rotate, it can shear a square into a slanted parallelogram, it can stretch more in one diagonal direction than another. A generic matrix really does mix your coordinate axes together.</span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>\langle Ax, y\rangle = \langle x, Ay\rangle \qquad \text{for all } x,y \in \mathbb{R}^n.</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>$$ {#eq-selfadjoint}</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>Symmetry is the condition that quietly forbids all of that mixing, once you look from the right angle. The promise of the theorem is that for a symmetric matrix you can always find a fresh set of axes, still perfectly perpendicular to one another, in which the map becomes a pure diagonal stretch. Finding those special axes is the whole game, and they are exactly the eigenvectors.</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Setting it up</span></span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>This is worth a moment. It says $A$ treats both slots of the inner product identically, a property called self-adjointness. Everything that follows is really @eq-selfadjoint wearing different costumes.</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>Let $A \in \mathbb{R}^{n\times n}$ be **symmetric**, meaning $A^\top = A$. Write the standard inner product as $\langle x, y\rangle = x^\top y$. The single fact that powers everything below is that symmetry lets you slide $A$ from one side of an inner product to the other:</span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## The theorem</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>::: {#thm-spectral}</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>\langle Ax, y\rangle = \langle x, Ay\rangle \qquad \text{for all } x,y \in \mathbb{R}^n.</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>$$ {#eq-selfadjoint}</span>
 <span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## Spectral Theorem</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>This is worth a moment. It says $A$ treats both slots of the inner product identically, a property called self-adjointness. Everything that follows is really @eq-selfadjoint wearing different costumes.</span>
 <span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>If $A \in \mathbb{R}^{n\times n}$ is symmetric, then there exist an orthogonal matrix $Q$ (so $Q^\top Q = I$) and a real diagonal matrix $\Lambda = \operatorname{diag}(\lambda_1,\dots,\lambda_n)$ such that</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>A = Q \Lambda Q^\top .</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>$$ {#eq-decomp}</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>Equivalently, $\mathbb{R}^n$ has an orthonormal basis of eigenvectors of $A$, and every eigenvalue is real.</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="fu">## The theorem</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>::: {#thm-spectral}</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Spectral Theorem</span></span>
 <span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>Read @eq-decomp from right to left and it tells the same story as the picture. The matrix $Q^\top$ rotates you into the special axes, $\Lambda$ does the honest diagonal stretching, and $Q$ rotates you back. We reach it through two small observations.</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two small facts</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>If $A \in \mathbb{R}^{n\times n}$ is symmetric, then there exist an orthogonal matrix $Q$ (so $Q^\top Q = I$) and a real diagonal matrix $\Lambda = \operatorname{diag}(\lambda_1,\dots,\lambda_n)$ such that</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>A = Q \Lambda Q^\top .</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>$$ {#eq-decomp}</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>Equivalently, $\mathbb{R}^n$ has an orthonormal basis of eigenvectors of $A$, and every eigenvalue is real.</span>
 <span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>::: {#lem-real}</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="fu">## Eigenvalues are real</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>Read @eq-decomp from right to left and it tells the same story as the picture. The matrix $Q^\top$ rotates you into the special axes, $\Lambda$ does the honest diagonal stretching, and $Q$ rotates you back. We reach it through two small observations.</span>
 <span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>Every eigenvalue of a real symmetric $A$ is real.</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two small facts</span></span>
 <span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>::: {#lem-real}</span>
 <span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>::: {.proof}</span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>Let $Ax = \lambda x$ with $x \neq 0$, where for the moment we allow $\lambda$ and $x$ to be complex. Write $x^{*}$ for the conjugate transpose, so $\langle x, x\rangle = x^{*}x = \|x\|^2 &gt; 0$. Because $A$ has real entries and $A^\top = A$, it is Hermitian: $A^{*} = A$. Now follow a single quantity, $x^{*}Ax$, down two different paths:</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>\lambda\, \langle x, x\rangle = x^{*} A x = x^{*} A^{*} x = (Ax)^{*} x = \bar\lambda\, \langle x, x\rangle .</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>The first equality uses $Ax = \lambda x$; the middle uses $A^{*}=A$; the last uses $Ax = \lambda x$ again, now inside the conjugated slot. Since $\langle x, x\rangle &gt; 0$ we may cancel it, leaving $\lambda = \bar\lambda$. A number equal to its own conjugate is real. $\qquad\blacksquare$</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>::: {#lem-orthogonal}</span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="fu">## Eigenvectors for distinct eigenvalues are orthogonal</span></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>If $Ax = \lambda x$ and $Ay = \mu y$ with $\lambda \neq \mu$, then $\langle x, y\rangle = 0$.</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="fu">## Eigenvalues are real</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>Every eigenvalue of a real symmetric $A$ is real.</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>::: {.proof}</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>Let $Ax = \lambda x$ with $x \neq 0$, where for the moment we allow $\lambda$ and $x$ to be complex. Write $x^{*}$ for the conjugate transpose, so $\langle x, x\rangle = x^{*}x = \|x\|^2 &gt; 0$. Because $A$ has real entries and $A^\top = A$, it is Hermitian: $A^{*} = A$. Now follow a single quantity, $x^{*}Ax$, down two different paths:</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>\lambda\, \langle x, x\rangle = x^{*} A x = x^{*} A^{*} x = (Ax)^{*} x = \bar\lambda\, \langle x, x\rangle .</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>The first equality uses $Ax = \lambda x$; the middle uses $A^{*}=A$; the last uses $Ax = \lambda x$ again, now inside the conjugated slot. Since $\langle x, x\rangle &gt; 0$ we may cancel it, leaving $\lambda = \bar\lambda$. A number equal to its own conjugate is real. $\qquad\blacksquare$</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>::: {#lem-orthogonal}</span>
 <span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>::: {.proof}</span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>Slide $A$ across the inner product using @eq-selfadjoint:</span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>\lambda \langle x, y\rangle = \langle Ax, y\rangle = \langle x, Ay\rangle = \mu \langle x, y\rangle .</span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>Therefore $(\lambda - \mu)\langle x, y\rangle = 0$, and since $\lambda \neq \mu$ the only way out is $\langle x, y\rangle = 0$. The special axes are automatically perpendicular, exactly as the picture demanded. $\qquad\blacksquare$</span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="fu">## Putting it together</span></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>We now assemble the theorem. The argument is an induction on the dimension $n$, and each step leans on the two facts above.</span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>::: {.proof}</span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>The base case $n = 1$ is immediate, since a $1\times 1$ matrix is already diagonal. For the inductive step, @lem-real hands us a genuine real eigenvalue $\lambda_1$ with a unit eigenvector $q_1$. Consider its orthogonal complement $q_1^{\perp}$, the hyperplane of everything perpendicular to $q_1$. Identity @eq-selfadjoint shows this hyperplane is $A$-invariant: if $v \perp q_1$ then $Av \perp q_1$ as well, so $A$ never pushes you off the hyperplane. Restricted there, $A$ is again symmetric but acts on a space of dimension $n-1$, so the inductive hypothesis supplies an orthonormal eigenbasis of that smaller space. Adjoining $q_1$ completes it to an orthonormal eigenbasis of all of $\mathbb{R}^n$. Lining those vectors up as the columns of $Q$ gives exactly @eq-decomp. $\qquad\blacksquare$</span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="fu">## Eigenvectors for distinct eigenvalues are orthogonal</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>If $Ax = \lambda x$ and $Ay = \mu y$ with $\lambda \neq \mu$, then $\langle x, y\rangle = 0$.</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>::: {.proof}</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>Slide $A$ across the inner product using @eq-selfadjoint:</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>\lambda \langle x, y\rangle = \langle Ax, y\rangle = \langle x, Ay\rangle = \mu \langle x, y\rangle .</span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>Therefore $(\lambda - \mu)\langle x, y\rangle = 0$, and since $\lambda \neq \mu$ the only way out is $\langle x, y\rangle = 0$. The special axes are automatically perpendicular, exactly as the picture demanded. $\qquad\blacksquare$</span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Putting it together</span></span>
 <span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>For a complete and careful treatment, including the version for self-adjoint operators on infinite-dimensional Hilbert spaces, see @rudin1991functional. For the numerical side of the story, @trefethen1997numerical is the classic reference.</span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>We now assemble the theorem. The argument is an induction on the dimension $n$, and each step leans on the two facts above.</span>
 <span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## A numerical check</span></span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>A proof tells you a decomposition must exist; it is a different kind of satisfying to watch it appear. Let us build a random symmetric matrix, ask the computer for its eigenvalues and eigenvectors, and confirm that @eq-decomp holds right down to floating-point roundoff.</span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>::: {.proof}</span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>The base case $n = 1$ is immediate, since a $1\times 1$ matrix is already diagonal. For the inductive step, @lem-real hands us a genuine real eigenvalue $\lambda_1$ with a unit eigenvector $q_1$. Consider its orthogonal complement $q_1^{\perp}$, the hyperplane of everything perpendicular to $q_1$. Identity @eq-selfadjoint shows this hyperplane is $A$-invariant: if $v \perp q_1$ then $Av \perp q_1$ as well, so $A$ never pushes you off the hyperplane. Restricted there, $A$ is again symmetric but acts on a space of dimension $n-1$, so the inductive hypothesis supplies an orthonormal eigenbasis of that smaller space. Adjoining $q_1$ completes it to an orthonormal eigenbasis of all of $\mathbb{R}^n$. Lining those vectors up as the columns of $Q$ gives exactly @eq-decomp. $\qquad\blacksquare$</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">6</span></span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> rng.standard_normal((n, n))</span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> (M <span class="op">+</span> M.T) <span class="op">/</span> <span class="dv">2</span>                      <span class="co"># force symmetry</span></span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>eigvals, Q <span class="op">=</span> np.linalg.eigh(A)         <span class="co"># eigh is built for symmetric matrices</span></span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>Lambda <span class="op">=</span> np.diag(eigvals)</span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>reconstruction_error <span class="op">=</span> np.linalg.norm(A <span class="op">-</span> Q <span class="op">@</span> Lambda <span class="op">@</span> Q.T)</span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>orthogonality_error  <span class="op">=</span> np.linalg.norm(Q.T <span class="op">@</span> Q <span class="op">-</span> np.eye(n))</span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>For a complete and careful treatment, including the version for self-adjoint operators on infinite-dimensional Hilbert spaces, see @rudin1991functional. For the numerical side of the story, @trefethen1997numerical is the classic reference.</span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a><span class="fu">## A numerical check</span></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>A proof tells you a decomposition must exist; it is a different kind of satisfying to watch it appear. Let us build a random symmetric matrix, ask the computer for its eigenvalues and eigenvectors, and confirm that @eq-decomp holds right down to floating-point roundoff.</span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">6</span></span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> rng.standard_normal((n, n))</span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> (M <span class="op">+</span> M.T) <span class="op">/</span> <span class="dv">2</span>                      <span class="co"># force symmetry</span></span>
 <span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"eigenvalues (all real): </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(eigvals, <span class="dv">4</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"|A - Q L Q^T| = </span><span class="sc">{</span>reconstruction_error<span class="sc">:.2e}</span><span class="ss">"</span>)</span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"|Q^T Q - I|   = </span><span class="sc">{</span>orthogonality_error<span class="sc">:.2e}</span><span class="ss">"</span>)</span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>Both residuals sit around $10^{-15}$, which is as close to zero as double-precision arithmetic ever gets. The eigenvalues come back real, the eigenvectors come back orthonormal, and the stretch-and-rotate story holds up.</span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to remember</span></span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>If you keep only three things from this note, keep these. Symmetry is really self-adjointness, the identity @eq-selfadjoint, and that one fact is the engine of the entire proof. From it follow real eigenvalues (@lem-real) and perpendicular eigenvectors (@lem-orthogonal), which together build the orthonormal frame the theorem promises. And in practice, when you actually compute, reach for a symmetry-aware routine like <span class="in">`eigh`</span> rather than the general <span class="in">`eig`</span>; it is faster and it guarantees the real, orthogonal answer the mathematics says you deserve.</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>eigvals, Q <span class="op">=</span> np.linalg.eigh(A)         <span class="co"># eigh is built for symmetric matrices</span></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>Lambda <span class="op">=</span> np.diag(eigvals)</span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>reconstruction_error <span class="op">=</span> np.linalg.norm(A <span class="op">-</span> Q <span class="op">@</span> Lambda <span class="op">@</span> Q.T)</span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>orthogonality_error  <span class="op">=</span> np.linalg.norm(Q.T <span class="op">@</span> Q <span class="op">-</span> np.eye(n))</span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"eigenvalues (all real): </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">round</span>(eigvals, <span class="dv">4</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"|A - Q L Q^T| = </span><span class="sc">{</span>reconstruction_error<span class="sc">:.2e}</span><span class="ss">"</span>)</span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"|Q^T Q - I|   = </span><span class="sc">{</span>orthogonality_error<span class="sc">:.2e}</span><span class="ss">"</span>)</span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>Both residuals sit around $10^{-15}$, which is as close to zero as double-precision arithmetic ever gets. The eigenvalues come back real, the eigenvectors come back orthonormal, and the stretch-and-rotate story holds up.</span>
 <span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *The Spectral Theorem for Symmetric Matrices*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/spectral-theorem/`</span><span class="at">.</span></span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to remember</span></span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>If you keep only three things from this note, keep these. Symmetry is really self-adjointness, the identity @eq-selfadjoint, and that one fact is the engine of the entire proof. From it follow real eigenvalues (@lem-real) and perpendicular eigenvectors (@lem-orthogonal), which together build the orthonormal frame the theorem promises. And in practice, when you actually compute, reach for a symmetry-aware routine like <span class="in">`eigh`</span> rather than the general <span class="in">`eig`</span>; it is faster and it guarantees the real, orthogonal answer the mathematics says you deserve.</span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *The Spectral Theorem for Symmetric Matrices*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/spectral-theorem/`</span><span class="at">.</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
