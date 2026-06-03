@@ -1,11 +1,9 @@
 # Quarto build artifacts
 /_site/
 /.quarto/
-*.html
-!index.html
 
-# Freeze (uncomment if you DON'T want to commit cached compute results)
-# /_freeze/
+# Keep /_freeze/ committed: CI and re-renders reuse cached code output,
+# so deploys are fast and reproducible. Do not ignore it.
 
 # Python
 __pycache__/

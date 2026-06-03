@@ -1,82 +1,69 @@
 ---
-title: "The Hidden Mechanics of Math: What Are We Actually Doing?"
-description: "A short essay on why mathematical ability is less about raw intelligence than about the ideas you carry, with the humble vector as a case study in what 'understanding' really means."
+title: "Mathematics Is Not a Spectator Sport"
+description: "Watching a perfect explanation is not the same as understanding. On reinvention, motivation, wonder, intuition, and a backwards way of reading, and why all of it matters more in an age when a machine will gladly do the thinking for you."
 date: 2026-06-03
-categories: [meta, linear-algebra]
+categories: [meta, learning]
 draft: false
 ---
 
 ::: {.epigraph}
-"Mathematics is not about numbers, equations, computations, or algorithms: it is about understanding."
+"What I cannot create, I do not understand."
 
-[— William Paul Thurston]{.attribution}
+[— Richard Feynman, found on his blackboard, 1988]{.attribution}
 :::
 
-Whenever we talk about learning mathematics, an unspoken assumption tends to float in the background: that it is a pure test of raw brainpower. Watch how mathematics is actually done, though, and you find something quite different. The real secret is that solving problems runs on wisdom far more than on sheer intelligence.
+There is a particular pleasure in watching a beautiful explanation. You sit through a Feynman lecture, or a 3Blue1Brown animation, and somewhere near the end a warm click happens behind your eyes. The pieces fall together, the idea gleams, and you lean back feeling that you have understood. I want to argue that this feeling, satisfying as it is, deserves your suspicion. Most of what we call learning mathematics is spent in the audience, and mathematics is not a spectator sport.
 
-Here is one way to picture it. Your effectiveness in mathematics is something like your raw intelligence multiplied by the tools, principles, and ideas you have actually managed to absorb:
+## The illusion of understanding
 
-$$
-\text{wisdom} \;=\; \text{intelligence} \,\times\, \text{ideas you carry}.
-$$
+The click is real, but it is usually borrowed. A great explainer has done something quietly enormous on your behalf: they have taken a tangled, stubborn idea and removed every snag, smoothed every transition, and handed you the result frictionless. What you feel as understanding is often just the pleasure of watching someone else chew. Call it the Feynman effect, with apologies to the man whose blackboard gives this essay its motto. You mistake the elegance of the finished path for the experience of having walked it.
 
-Memorizing mathematical facts is not the same as learning to solve mathematical problems. Behind every clever proof, every tidy textbook solution, every intimidating paper, there are a few core ideas doing the quiet work. If you want to grow as a mathematician, the first job is to dig those ideas out into the open. Let me make that concrete with the very foundation of linear algebra: the vector.
+The cruel detail is that the friction was the lesson. A proof feels effortless to watch for exactly the reason it was hard to discover, and by sanding away the difficulty, the explainer also sands away the part where learning lives. This is why you can nod along to a derivation in the evening and find, the next morning, that you cannot reproduce a single line of it. You never owned it. You only visited.
 
-## What is a vector, really?
+The remedy is older than any video, and it is unglamorous: reinvention. When you meet an elegant result, the most valuable thing you can do is press pause, pick up a pencil, and try to rebuild it yourself before reading another word. Struggle with the algebra. Get it wrong. Hit the wall the original author hit, and feel why their clever step was clever. The single greatest trap for a self-learner is skipping the computation because the argument seems to "follow." Intuition does not take root in the eyes. It takes root in the hand, on paper, in the act of producing the thing rather than recognizing it.
 
-Hermann Weyl once remarked that introducing numbers as coordinates is an act of violence. It is a startling thing to say about something as tame as the $xy$-plane. To feel what he meant, we have to ask the apparently simple question: what *is* a vector?
+Take a small, almost insulting example. Nearly everyone has seen the proof that the square root of two is irrational, and nearly everyone, watching it, finds it obvious. Now close the page and rebuild it. Suppose it were a fraction in lowest terms, square both sides, notice that the numerator is forced to be even, and watch the contradiction bloom when the denominator is dragged into being even too. The first time you assemble that argument with your own hand, the phrase "in lowest terms" stops being a decoration at the start and becomes the hinge the entire proof swings on. You cannot feel that hinge from the audience. You can only feel it with the pencil.
 
-There are three distinct but deeply related answers, depending on whom you ask. A physics student will tell you a vector is an arrow pointing through space, carrying a length and a direction; so long as you preserve those two things, you may slide the arrow wherever you like. A computer science student will tell you a vector is just a tidy name for a list of numbers. If you are studying houses, a two dimensional vector might simply record the square footage in its first slot and the price in its second. A mathematician will refuse to choose, and instead generalize: a vector can be *anything at all*, provided two operations make honest sense, namely adding two vectors and scaling a vector by a number.
+All of this used to be merely good advice. In the age of AI it has become the whole game. A model will now hand you a flawless derivation, correctly formatted, on demand, and it will do this faster than you can find your pencil. The temptation to outsource the struggle has never been stronger, and the cost of giving in has never been higher, because the machine can manufacture the answer but it cannot manufacture your understanding. What I cannot create, I do not understand. Now that creation has become optional, choosing to create anyway is what separates a person who learns from a person who merely collects.
 
-That third view is the one worth pinning down precisely, because it is what the whole subject actually rests on.
+## The bottleneck was never the explanation
 
-::: {#def-vectorspace}
+Here is a puzzle worth sitting with. We are living in the richest moment in the history of mathematical exposition. There are free, world-class, lovingly animated explanations of nearly every undergraduate idea, available to anyone with a phone. If the problem with mathematics education had really been a shortage of good explanations, the internet should have ended mathematical struggle a decade ago. It plainly has not. So the missing ingredient was never clarity.
 
-## Vector space (the idea, stated carefully)
+The missing ingredient is desire, and desire is a stubbornly human thing. The most powerful engine I know for actually learning is social. It is a friend arguing with you across a table until you both see it. It is a study group where being confused out loud is allowed. Above all, it is the moment a teacher you respect pulls you aside and says, quietly, that you have a real gift for this. That single sentence has launched more mathematicians than any textbook ever written. No perfectly tuned AI tutor, however patient, reproduces the gravitational pull of another person believing in you.
 
-A vector space over a field is a set $V$ together with two operations, vector addition and scalar multiplication, obeying the familiar rules: addition is commutative and associative, there is a zero vector and an additive inverse for each element, and the two distributive laws tie scaling to addition. Anything satisfying these rules, arrows or lists or functions or polynomials, is a vector space, and every theorem of linear algebra applies to all of them at once.
+Part of the reason is memory. An AI tutor answers your question at midnight with bottomless patience and then forgets you completely. It will never be disappointed that you quit, never be quietly proud that you did not, never raise your half-formed idea again three weeks later because it has been turning the idea over too. Learning is partly the act of becoming someone in the eyes of people whose opinion you have chosen to care about, and that gentle human pressure is doing far more of the work than we like to admit. It is not a feature a model can ship.
 
-:::
+It helps to remember what the word education actually means. It comes from *educere*, to lead out, to draw forth what is already latent in someone. Its opposite is the thing we usually do instead: pouring facts into a container. You cannot pour someone into caring. You can only draw it out, and that almost always happens through a relationship, not a transmission.
 
-If we genuinely want to learn the mathematics rather than merely nod at the abstraction, we should not swallow @def-vectorspace whole. We should anchor it in a picture. So whenever a new idea appears in linear algebra, make your first move always the same: picture an arrow in a coordinate system, its tail pinned at the origin.
+## Stop asking what it is for
 
-## Anchoring the abstraction in a picture
+There is a tax we levy on mathematics that we levy on almost nothing else we love, and it is the question "what is this good for?" We ask it of eigenvalues and we never ask it of novels. Nobody finishes *Harry Potter* and demands to know the return on investment. We read it because we were curious about what happens, because the world it built was worth living in for an afternoon. Mathematics deserves the same permission, and it rewards the same posture.
 
-Once that geometric image is in your head, the operations stop being rules and start being motions.
+Approached as an art rather than a tool, a piece of mathematics reads like a story. It has characters, which are its objects and structures. It has tension, the gap between what you can see and what you can prove. And it has a climax, the moment two seemingly unrelated ideas collide and turn out to be the same idea wearing two costumes. Think of the first time you meet Euler's identity, $e^{i\pi} + 1 = 0$, and realize that five constants from five unrelated corners of mathematics were quietly relatives all along. Or the moment, which I have written about elsewhere on this blog, when a forbidding symmetric matrix turns out to be nothing more than a stretch along a set of perpendicular axes. These are not facts to be filed away for later. They are plot twists, and they land with the same jolt as the turn of a good novel. A good explanation of a theorem is closer to good storytelling than to good plumbing, and the people who fall in love with the subject are, almost without exception, the ones who were allowed to read it that way.
 
-Take vector addition. Rather than stacking two columns of numbers and adding them slot by slot, imagine walking. Step out along the first vector, then from wherever you land take a second step matching the direction and length of the second vector. Where you end up is exactly where you would have arrived by walking along their sum from the very start. It is the grown up version of how children first meet addition on the number line, where $2 + 5$ means two steps right and then five more.
+The beautiful joke at the end of this argument is that the gloriously useless turns out to be useful anyway. G. H. Hardy prized number theory precisely because he believed it would never touch the grubby world, and it now stands guard over every password and bank transfer on Earth. The notion of a number as a coordinate, which Hermann Weyl once called an act of violence, runs the graphics on the screen in front of you. Chase the wonder and the utility arrives on its own, uninvited, often a century late. Chase only the utility and you usually get neither.
 
-Now take scaling, multiplying a vector by a number. That is just stretching. Multiply by $2$ and the arrow grows to twice its length; multiply by a negative number and it flips around before stretching. Because numbers enter linear algebra essentially to stretch and flip vectors, the words "number" and "scalar" end up meaning the same thing.
+## Intuition before the axioms
 
-The two views are not rivals, and we can watch them agree. Here the list and the arrow describe the same step.
+Open many a mathematics textbook and the first thing it does is hit you with a definition. An axiom, stated cold, in full generality, before you have any reason to want it. This is a strange way to teach a living idea. It is, as someone once put it, like handing a baby a dictionary and expecting it to learn to speak. The baby needs to babble, to point, to associate sounds with warm familiar things, long before any word has a definition.
 
-```{python}
-import numpy as np
+So resist the axiom-first order, and build the picture first. Before a vector is a list of numbers or an element of an abstract space, let it be an arrow in the plane with its tail at the origin, something you can stretch and turn and add by walking. Once that image is in your hands, the symbols arrive as descriptions of something you already understand, rather than as commandments to be memorized. The same move rescues almost everything that looks forbidding. A group, defined cold, is a set with an operation obeying four dry axioms; met first as a picture, it is simply the collection of ways you can pick up a triangle and set it back down so that it looks unchanged, the rotations and flips you can perform with your hands. A limit, defined cold, is a thicket of epsilons and deltas; met first, it is a chase, where you name how close you demand to get and the function promises it can stay at least that close from some point on. The axioms do not vanish, and you will still need their precision, but now they read as the careful transcript of something you have already felt in your body.
 
-u = np.array([1, 2])     # the CS view: a list of numbers
-v = np.array([3, -1])
+The difference in feeling is everything. Concepts you have visualized feel like yours; you have a sense of ownership over them. Concepts handed down as definitions feel like furniture in someone else's house. Abstraction is the genuine and necessary price we pay for generality, but intuition is the bridge that lets you afford it, and the bridge has to come first.
 
-# "walk along u, then step by v" is the same as adding the lists slot by slot
-print("step, then step :", (u + v).tolist())
+## Read the book backwards
 
-# scaling stretches; a negative scalar flips before stretching
-print("2 * u :", (2 * u).tolist(), "   (-1) * u :", ((-1) * u).tolist())
-```
+This suggests a final, slightly subversive habit: stop reading mathematics like a novel, dutifully from page one. Mathematical texts are not built to be consumed in order, and treating them that way is how curious people grind themselves into boredom.
 
-Nothing here is deep. That is the point: the geometric story and the numerical one are two descriptions of a single fact, and being able to slide between them is what understanding feels like.
-
-## The real skill is translation
-
-So the secret is not to pick one perspective and defend it to the death. The power of linear algebra lives in the constant translation between the views. It is the ability to take a vast list of abstract numbers and *see* it geometrically, spotting a pattern no spreadsheet would reveal, and equally to take a physical motion through space and hand it to a computer as coordinates. When Grant Sanderson builds the animations in *Essence of Linear Algebra*, for instance, he reasons first about what is happening in space, and only then converts it into the numbers that tell the machine where to place each pixel. The thinking is geometric; the execution is numerical; the craft is the bridge between them.
-
-So the next time you are stuck on a hard piece of mathematics, do not stare at the surface symbols and wait for raw cleverness to strike. Look for the translation between the abstract and the visual, and dig for the hidden principle underneath. That is where the real learning happens.
+Try the opposite. Before you read a new chapter, flip to the exercises at its end. If the problems are a wall of unfamiliar words, the chapter is laying dry foundations, and you can read it quickly, knowing what it is for. But if you can understand what a problem is even asking, then you have found something precious: a question you want answered. Now go back and read the chapter as a hunt for that answer, and watch how differently the same paragraphs read when you are looking for something in them. Treat every theorem not as a verdict to accept but as a challenge thrown in your direction, a problem you attempt before you are allowed to peek at the solution. A proof you have wrestled with for ten minutes teaches more than ten proofs you have watched glide by.
 
 ## What to remember
 
-Mathematical strength is intelligence multiplied by the ideas you have made your own, and ideas are dug out, not memorized. The vector is the first place this pays off: hold the arrow, the list, and the abstract definition in mind together, and let yourself move freely between them. Understanding is not allegiance to one picture. It is fluency in the translation.
+The machines have made answers nearly free. A correct, polished, well-explained solution to almost any solved problem is now the cheapest thing in the world, available instantly and without effort. What remains scarce, and therefore precious, is understanding, and understanding has stubbornly refused to become a spectator activity. It is still earned the old way: by reinventing instead of replaying, by finding your own reasons to care, by reading mathematics as both a story and a hunt, and by seeing the picture before you trust the symbol. The point of learning mathematics was never merely to obtain the answer. The point was, and still is, to become the kind of mind that could have found it.
 
-*Acknowledgment: the three-perspectives framing of vectors and the examples in this essay follow Grant Sanderson's [3Blue1Brown](https://www.3blue1brown.com/) series* Essence of Linear Algebra. *I have retold them in my own words, as notes to myself on how to learn.*
+*Acknowledgment: this essay argues with the work of explainers I admire, Richard Feynman and Grant Sanderson's [3Blue1Brown](https://www.3blue1brown.com/) among them, and the vector picture above follows his* Essence of Linear Algebra. *The quarrel is a loving one.*
 
 ## How to cite
 
-> Terry (2026). *The Hidden Mechanics of Math: What Are We Actually Doing?*. Retrieved from `https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/`.
+> Terry (2026). *Mathematics Is Not a Spectator Sport*. Retrieved from `https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/`.
