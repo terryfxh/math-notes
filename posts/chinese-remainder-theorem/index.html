@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-06-03">
+<meta name="description" content="A 1500-year-old counting puzzle turns out to be a coordinate system for the integers, and that single idea is what lets modern computers do arithmetic on enormous numbers and decrypt RSA several times faster.">
+
+<title>The Chinese Remainder Theorem: Residues as Coordinates – (Terry) Xihan Fang — Math Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-901c328379d5b7ab31f39ddb0b0deb91.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="The Chinese Remainder Theorem: Residues as Coordinates – (Terry) Xihan Fang — Math Notes">
+<meta property="og:description" content="A 1500-year-old counting puzzle turns out to be a coordinate system for the integers, and that single idea is what lets modern computers do arithmetic on enormous numbers and decrypt RSA several times faster.">
+<meta property="og:site_name" content="(Terry) Xihan Fang — Math Notes">
+<meta name="twitter:title" content="The Chinese Remainder Theorem: Residues as Coordinates – (Terry) Xihan Fang — Math Notes">
+<meta name="twitter:description" content="A 1500-year-old counting puzzle turns out to be a coordinate system for the integers, and that single idea is what lets modern computers do arithmetic on enormous numbers and decrypt RSA several times faster.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">(Terry) Xihan Fang — Math Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/terryfxh"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#first-the-picture" id="toc-first-the-picture" class="nav-link active" data-scroll-target="#first-the-picture">First, the picture</a></li>
+  <li><a href="#the-theorem" id="toc-the-theorem" class="nav-link" data-scroll-target="#the-theorem">The theorem</a></li>
+  <li><a href="#reading-the-address-back" id="toc-reading-the-address-back" class="nav-link" data-scroll-target="#reading-the-address-back">Reading the address back</a></li>
+  <li><a href="#why-a-computer-cares" id="toc-why-a-computer-cares" class="nav-link" data-scroll-target="#why-a-computer-cares">Why a computer cares</a></li>
+  <li><a href="#what-to-remember" id="toc-what-to-remember" class="nav-link" data-scroll-target="#what-to-remember">What to remember</a></li>
+  <li><a href="#how-to-cite" id="toc-how-to-cite" class="nav-link" data-scroll-target="#how-to-cite">How to cite</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">The Chinese Remainder Theorem: Residues as Coordinates</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">pure</div>
+    <div class="quarto-category">applied</div>
+    <div class="quarto-category">number-theory</div>
+    <div class="quarto-category">computer-science</div>
+    <div class="quarto-category">cryptography</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    A 1500-year-old counting puzzle turns out to be a coordinate system for the integers, and that single idea is what lets modern computers do arithmetic on enormous numbers and decrypt RSA several times faster.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 3, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="epigraph">
+<p>“Mathematics is the queen of the sciences, and number theory is the queen of mathematics.”</p>
+<p><span class="attribution">— Carl Friedrich Gauss, as recorded by Sartorius von Waltershausen (1856)</span></p>
+</div>
+<p>Sometime around the fourth century, a Chinese text called the <em>Sunzi Suanjing</em> posed a small riddle:</p>
+<blockquote class="blockquote">
+<p>There are certain things whose number is unknown. Counted in threes, two are left over; counted in fives, three are left over; counted in sevens, two are left over. How many things are there?</p>
+</blockquote>
+<p>You can find the answer by patient trial, and the book does: twenty-three. What the book could not have known is that the little procedure hiding behind this puzzle would, more than a millennium later, sit quietly inside almost every secure connection your computer makes. The Chinese Remainder Theorem is the bridge between a counting game and the arithmetic of machines, and the reason is a single change of viewpoint: a remainder is not a leftover, it is a coordinate.</p>
+<section id="first-the-picture" class="level2">
+<h2 class="anchored" data-anchor-id="first-the-picture">First, the picture</h2>
+<p>Fix a few moduli that share no common factors, say <span class="math inline">\(3\)</span>, <span class="math inline">\(5\)</span>, and <span class="math inline">\(7\)</span>. To each whole number attach the triple of remainders it leaves: the number <span class="math inline">\(23\)</span> becomes <span class="math inline">\((23 \bmod 3,\, 23 \bmod 5,\, 23 \bmod 7) = (2, 3, 2)\)</span>, exactly the riddle’s clues.</p>
+<p>Now think of that triple as an address. The first slot can take <span class="math inline">\(3\)</span> values, the second <span class="math inline">\(5\)</span>, the third <span class="math inline">\(7\)</span>, so there are <span class="math inline">\(3 \times 5 \times 7 = 105\)</span> possible addresses in all. And there are exactly <span class="math inline">\(105\)</span> numbers in the range <span class="math inline">\(0\)</span> through <span class="math inline">\(104\)</span>. The theorem is the claim that these two sets match up perfectly: every number in that range has its own address, and every address belongs to exactly one number. No collisions, no gaps. The remainders behave like coordinates on a grid, and the integers from <span class="math inline">\(0\)</span> to <span class="math inline">\(104\)</span> are precisely the grid points.</p>
+<p>Once you see it this way, the riddle stops being a riddle. “Counted in threes leaves two, in fives leaves three, in sevens leaves two” is just the address <span class="math inline">\((2,3,2)\)</span>, and asking for the number is asking which grid point sits there. There is exactly one, and below <span class="math inline">\(105\)</span> it is <span class="math inline">\(23\)</span>.</p>
+</section>
+<section id="the-theorem" class="level2">
+<h2 class="anchored" data-anchor-id="the-theorem">The theorem</h2>
+<p>Let <span class="math inline">\(m_1, \dots, m_k\)</span> be <strong>pairwise coprime</strong> positive integers, meaning <span class="math inline">\(\gcd(m_i, m_j) = 1\)</span> whenever <span class="math inline">\(i \neq j\)</span>, and write <span class="math inline">\(M = m_1 m_2 \cdots m_k\)</span>.</p>
+<div id="thm-crt" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Chinese Remainder Theorem)</strong></span> The map sending each residue class to its tuple of remainders, <span class="math display">\[
+\varphi : \mathbb{Z}/M\mathbb{Z} \longrightarrow \mathbb{Z}/m_1\mathbb{Z} \times \cdots \times \mathbb{Z}/m_k\mathbb{Z},
+\qquad
+\varphi(n) = (n \bmod m_1,\, \dots,\, n \bmod m_k),
+\]</span> is a bijection. It respects addition and multiplication, so it is in fact an isomorphism of rings.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Count first. The left side has <span class="math inline">\(M\)</span> elements, and the right side has <span class="math inline">\(m_1 m_2 \cdots m_k = M\)</span> as well. A map between finite sets of equal size is a bijection as soon as it is injective, so injectivity is all we need.</p>
+<p>Suppose <span class="math inline">\(\varphi(n) = \varphi(n')\)</span>. Then <span class="math inline">\(n \equiv n' \pmod{m_i}\)</span> for every <span class="math inline">\(i\)</span>, that is, each <span class="math inline">\(m_i\)</span> divides <span class="math inline">\(n - n'\)</span>. Here the coprimality earns its keep: if pairwise coprime numbers each divide an integer, then so does their product. Hence <span class="math inline">\(M \mid (n - n')\)</span>, which means <span class="math inline">\(n\)</span> and <span class="math inline">\(n'\)</span> are the same class in <span class="math inline">\(\mathbb{Z}/M\mathbb{Z}\)</span>. So <span class="math inline">\(\varphi\)</span> is injective, therefore bijective. That it preserves <span class="math inline">\(+\)</span> and <span class="math inline">\(\times\)</span> is immediate, since reducing a sum or product mod <span class="math inline">\(m_i\)</span> is the same as reducing first and combining afterward. <span class="math inline">\(\qquad\blacksquare\)</span></p>
+</div>
+<p>The proof says a unique number lives at each address, but it does not yet say how to find it. For that we invert the map by hand.</p>
+</section>
+<section id="reading-the-address-back" class="level2">
+<h2 class="anchored" data-anchor-id="reading-the-address-back">Reading the address back</h2>
+<p>Given a target address <span class="math inline">\((a_1, \dots, a_k)\)</span>, we want the <span class="math inline">\(n\)</span> that sits there. The trick is to build <span class="math inline">\(n\)</span> out of pieces, one per coordinate, each of which lights up a single slot and stays dark in all the others.</p>
+<p>For each <span class="math inline">\(i\)</span>, let <span class="math inline">\(M_i = M / m_i\)</span>, the product of every modulus except <span class="math inline">\(m_i\)</span>. By construction <span class="math inline">\(m_j \mid M_i\)</span> for every <span class="math inline">\(j \neq i\)</span>, so <span class="math inline">\(M_i\)</span> already vanishes modulo all the other moduli. Modulo <span class="math inline">\(m_i\)</span> itself, <span class="math inline">\(M_i\)</span> is coprime to <span class="math inline">\(m_i\)</span> and so has an inverse <span class="math inline">\(y_i\)</span>, meaning <span class="math inline">\(M_i y_i \equiv 1 \pmod{m_i}\)</span>. Now set</p>
+<p><span id="eq-crt-formula"><span class="math display">\[
+n = \sum_{i=1}^{k} a_i\, M_i\, y_i \pmod{M}.
+\tag{1}\]</span></span></p>
+<p>Check it against any single modulus <span class="math inline">\(m_j\)</span>. Every term with <span class="math inline">\(i \neq j\)</span> carries the factor <span class="math inline">\(M_i\)</span>, which is divisible by <span class="math inline">\(m_j\)</span>, so it contributes nothing. The surviving term is <span class="math inline">\(a_j M_j y_j \equiv a_j \cdot 1 = a_j \pmod{m_j}\)</span>. The construction hits the target in every coordinate at once. <a href="#eq-crt-formula" class="quarto-xref">Equation&nbsp;1</a> is the whole algorithm, and the code below is nothing more than this sum.</p>
+<div id="77b6e3f3" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> prod</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> crt(residues, moduli):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Smallest non-negative n with n % moduli[i] == residues[i], for pairwise-coprime moduli."""</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    M <span class="op">=</span> prod(moduli)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> a_i, m_i <span class="kw">in</span> <span class="bu">zip</span>(residues, moduli):</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        M_i <span class="op">=</span> M <span class="op">//</span> m_i</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        y_i <span class="op">=</span> <span class="bu">pow</span>(M_i, <span class="op">-</span><span class="dv">1</span>, m_i)      <span class="co"># modular inverse of M_i mod m_i</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        n <span class="op">+=</span> a_i <span class="op">*</span> M_i <span class="op">*</span> y_i</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n <span class="op">%</span> M</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># The Sunzi Suanjing problem, fifteen centuries later</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>answer <span class="op">=</span> crt([<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>])</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Sunzi's unknown number: </span><span class="sc">{</span>answer<span class="sc">}</span><span class="ss">"</span>)          <span class="co"># 23</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"solutions repeat every M = </span><span class="sc">{</span>prod([<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>])<span class="sc">}</span><span class="ss">"</span>) <span class="co"># 105</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sunzi's unknown number: 23
+solutions repeat every M = 105</code></pre>
+</div>
+</div>
+</section>
+<section id="why-a-computer-cares" class="level2">
+<h2 class="anchored" data-anchor-id="why-a-computer-cares">Why a computer cares</h2>
+<p>So far this is elegant number theory. The reason it became infrastructure is that the isomorphism in <a href="#thm-crt" class="quarto-xref">Theorem&nbsp;1</a> does something a computer scientist dreams about: it turns one hard arithmetic problem into several small, independent ones.</p>
+<p>Because <span class="math inline">\(\varphi\)</span> respects <span class="math inline">\(+\)</span> and <span class="math inline">\(\times\)</span>, to add or multiply two numbers modulo <span class="math inline">\(M\)</span> you may add or multiply their coordinates <em>separately</em>, each in its own little world modulo <span class="math inline">\(m_i\)</span>, and then read the answer back. The coordinates never talk to each other. There is no carrying between them. This is the idea behind a <strong>residue number system</strong>: store a huge integer as its remainders against a set of coprime moduli, and every multiplication becomes a handful of small multiplications that a machine can run side by side.</p>
+<div id="127d72c0" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>moduli <span class="op">=</span> [<span class="dv">101</span>, <span class="dv">103</span>, <span class="dv">107</span>, <span class="dv">109</span>]    <span class="co"># pairwise coprime; M is their product</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> prod(moduli)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">0</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> random.randrange(M), random.randrange(M)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># carry the numbers as coordinates, multiply slot by slot, then reconstruct</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>res_a <span class="op">=</span> [a <span class="op">%</span> m <span class="cf">for</span> m <span class="kw">in</span> moduli]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>res_b <span class="op">=</span> [b <span class="op">%</span> m <span class="cf">for</span> m <span class="kw">in</span> moduli]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>res_c <span class="op">=</span> [(x <span class="op">*</span> y) <span class="op">%</span> m <span class="cf">for</span> x, y, m <span class="kw">in</span> <span class="bu">zip</span>(res_a, res_b, moduli)]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"componentwise product matches direct product:"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>      crt(res_c, moduli) <span class="op">==</span> (a <span class="op">*</span> b) <span class="op">%</span> M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>componentwise product matches direct product: True</code></pre>
+</div>
+</div>
+<p>The most familiar place this shows up is RSA. Decrypting a message means computing <span class="math inline">\(c^{d} \bmod N\)</span> where <span class="math inline">\(N = pq\)</span> is a product of two large primes. That exponentiation is the expensive heartbeat of the whole scheme, and its cost grows faster than linearly in the size of the modulus. The Chinese Remainder Theorem offers a shortcut: instead of working modulo the giant <span class="math inline">\(N\)</span>, work modulo <span class="math inline">\(p\)</span> and modulo <span class="math inline">\(q\)</span> separately, where every number is half the size, then glue the two results back together with <a href="#eq-crt-formula" class="quarto-xref">Equation&nbsp;1</a>. Two small exponentiations plus a recombination beat one large exponentiation, and in practice the speedup is roughly threefold. Every serious RSA implementation does exactly this <span class="citation" data-cites="rivest1978rsa"><a href="#ref-rivest1978rsa" role="doc-biblioref">[1]</a></span>.</p>
+<div id="3db2476d" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_prime(n, k<span class="op">=</span><span class="dv">20</span>):</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">2</span>: <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> sp <span class="kw">in</span> (<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">11</span>,<span class="dv">13</span>,<span class="dv">17</span>,<span class="dv">19</span>,<span class="dv">23</span>,<span class="dv">29</span>,<span class="dv">31</span>,<span class="dv">37</span>):</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="op">%</span> sp <span class="op">==</span> <span class="dv">0</span>: <span class="cf">return</span> n <span class="op">==</span> sp</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    d, r <span class="op">=</span> n <span class="op">-</span> <span class="dv">1</span>, <span class="dv">0</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> d <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>: d <span class="op">//=</span> <span class="dv">2</span><span class="op">;</span> r <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(k):</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="bu">pow</span>(random.randrange(<span class="dv">2</span>, n <span class="op">-</span> <span class="dv">1</span>), d, n)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> x <span class="kw">in</span> (<span class="dv">1</span>, n <span class="op">-</span> <span class="dv">1</span>): <span class="cf">continue</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(r <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> x <span class="op">*</span> x <span class="op">%</span> n</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> x <span class="op">==</span> n <span class="op">-</span> <span class="dv">1</span>: <span class="cf">break</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>: <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gen_prime(bits):</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> random.getrandbits(bits) <span class="op">|</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> (bits <span class="op">-</span> <span class="dv">1</span>)) <span class="op">|</span> <span class="dv">1</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> is_prime(n): <span class="cf">return</span> n</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">1</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>p, q <span class="op">=</span> gen_prime(<span class="dv">512</span>), gen_prime(<span class="dv">512</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>N, e <span class="op">=</span> p <span class="op">*</span> q, <span class="dv">65537</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> <span class="bu">pow</span>(e, <span class="op">-</span><span class="dv">1</span>, (p <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> (q <span class="op">-</span> <span class="dv">1</span>))</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="bu">pow</span>(<span class="dv">987654321</span> <span class="op">%</span> N, e, N)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co"># straight decryption, modulo the full N</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): m_direct <span class="op">=</span> <span class="bu">pow</span>(c, d, N)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>t1 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="co"># CRT decryption: two half-size exponentiations, then recombine</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>dp, dq, q_inv <span class="op">=</span> d <span class="op">%</span> (p <span class="op">-</span> <span class="dv">1</span>), d <span class="op">%</span> (q <span class="op">-</span> <span class="dv">1</span>), <span class="bu">pow</span>(q, <span class="op">-</span><span class="dv">1</span>, p)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> decrypt_crt(c):</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    mp, mq <span class="op">=</span> <span class="bu">pow</span>(c, dp, p), <span class="bu">pow</span>(c, dq, q)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> (q_inv <span class="op">*</span> (mp <span class="op">-</span> mq)) <span class="op">%</span> p</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (mq <span class="op">+</span> h <span class="op">*</span> q) <span class="op">%</span> N</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>t2 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): m_crt <span class="op">=</span> decrypt_crt(c)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>t3 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"direct : </span><span class="sc">{</span>(t1 <span class="op">-</span> t0) <span class="op">/</span> <span class="dv">50</span> <span class="op">*</span> <span class="dv">1000</span><span class="sc">:.2f}</span><span class="ss"> ms"</span>)</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"CRT    : </span><span class="sc">{</span>(t3 <span class="op">-</span> t2) <span class="op">/</span> <span class="dv">50</span> <span class="op">*</span> <span class="dv">1000</span><span class="sc">:.2f}</span><span class="ss"> ms"</span>)</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"speedup: </span><span class="sc">{</span>(t1 <span class="op">-</span> t0) <span class="op">/</span> (t3 <span class="op">-</span> t2)<span class="sc">:.1f}</span><span class="ss">x   (results agree: </span><span class="sc">{</span>m_direct <span class="op">==</span> m_crt<span class="sc">}</span><span class="ss">)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>direct : 2.02 ms
+CRT    : 0.72 ms
+speedup: 2.8x   (results agree: True)</code></pre>
+</div>
+</div>
+<p>The exact ratio depends on the machine, but the shape is always the same: splitting the modulus pays off, and it pays off for the reason the picture promised, because the two coordinates can be handled independently. The same decomposition powers fast big-integer multiplication through number-theoretic transforms over several primes, and it underlies threshold secret-sharing schemes where a secret is hidden in its residues and only enough of them together can reveal it. A fuller account of residue arithmetic lives in <span class="citation" data-cites="knuth1997seminumerical"><a href="#ref-knuth1997seminumerical" role="doc-biblioref">[2]</a></span>.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>The Chinese Remainder Theorem says that for pairwise coprime moduli, a number and its tuple of remainders carry exactly the same information: the map between them is a bijection, in fact a ring isomorphism. Read one way, that is a coordinate system for the integers, with each residue a coordinate and <a href="#eq-crt-formula" class="quarto-xref">Equation&nbsp;1</a> the rule for reading an address back into a number. Read the other way, it is a license to break a single large computation into several small independent ones, which is why a riddle from the <em>Sunzi Suanjing</em> now lives inside RSA, residue number systems, and fast multiplication. A remainder, it turns out, was never a scrap left behind. It was a coordinate all along.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>The Chinese Remainder Theorem: Residues as Coordinates</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-rivest1978rsa" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">R. L. Rivest, A. Shamir, and L. Adleman, <span>“A method for obtaining digital signatures and public-key cryptosystems,”</span> <em>Communications of the ACM</em>, vol. 21, no. 2, pp. 120–126, 1978.</div>
+</div>
+<div id="ref-knuth1997seminumerical" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">D. E. Knuth, <em>The art of computer programming, vol. 2: Seminumerical algorithms</em>, 3rd ed. Addison-Wesley, 1997.</div>
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/terryfxh\.github\.io\/math-notes");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "The Chinese Remainder Theorem: Residues as Coordinates"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "A 1500-year-old counting puzzle turns out to be a coordinate system for the integers, and that single idea is what lets modern computers do arithmetic on enormous numbers and decrypt RSA several times faster."</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-06-03</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [pure, applied, number-theory, computer-science, cryptography]</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> ../../references.bib</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="an">draft:</span><span class="co"> false</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>::: {.epigraph}</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>"Mathematics is the queen of the sciences, and number theory is the queen of mathematics."</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">— Carl Friedrich Gauss, as recorded by Sartorius von Waltershausen (1856)</span><span class="co">]</span>{.attribution}</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>Sometime around the fourth century, a Chinese text called the *Sunzi Suanjing* posed a small riddle:</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; There are certain things whose number is unknown. Counted in threes, two are left over; counted in fives, three are left over; counted in sevens, two are left over. How many things are there?</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>You can find the answer by patient trial, and the book does: twenty-three. What the book could not have known is that the little procedure hiding behind this puzzle would, more than a millennium later, sit quietly inside almost every secure connection your computer makes. The Chinese Remainder Theorem is the bridge between a counting game and the arithmetic of machines, and the reason is a single change of viewpoint: a remainder is not a leftover, it is a coordinate.</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## First, the picture</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>Fix a few moduli that share no common factors, say $3$, $5$, and $7$. To each whole number attach the triple of remainders it leaves: the number $23$ becomes $(23 \bmod 3,\, 23 \bmod 5,\, 23 \bmod 7) = (2, 3, 2)$, exactly the riddle's clues.</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>Now think of that triple as an address. The first slot can take $3$ values, the second $5$, the third $7$, so there are $3 \times 5 \times 7 = 105$ possible addresses in all. And there are exactly $105$ numbers in the range $0$ through $104$. The theorem is the claim that these two sets match up perfectly: every number in that range has its own address, and every address belongs to exactly one number. No collisions, no gaps. The remainders behave like coordinates on a grid, and the integers from $0$ to $104$ are precisely the grid points.</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>Once you see it this way, the riddle stops being a riddle. "Counted in threes leaves two, in fives leaves three, in sevens leaves two" is just the address $(2,3,2)$, and asking for the number is asking which grid point sits there. There is exactly one, and below $105$ it is $23$.</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## The theorem</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>Let $m_1, \dots, m_k$ be **pairwise coprime** positive integers, meaning $\gcd(m_i, m_j) = 1$ whenever $i \neq j$, and write $M = m_1 m_2 \cdots m_k$.</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>::: {#thm-crt}</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## Chinese Remainder Theorem</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>The map sending each residue class to its tuple of remainders,</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>\varphi : \mathbb{Z}/M\mathbb{Z} \longrightarrow \mathbb{Z}/m_1\mathbb{Z} \times \cdots \times \mathbb{Z}/m_k\mathbb{Z},</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>\qquad</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>\varphi(n) = (n \bmod m_1,\, \dots,\, n \bmod m_k),</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>is a bijection. It respects addition and multiplication, so it is in fact an isomorphism of rings.</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>::: {.proof}</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>Count first. The left side has $M$ elements, and the right side has $m_1 m_2 \cdots m_k = M$ as well. A map between finite sets of equal size is a bijection as soon as it is injective, so injectivity is all we need.</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>Suppose $\varphi(n) = \varphi(n')$. Then $n \equiv n' \pmod{m_i}$ for every $i$, that is, each $m_i$ divides $n - n'$. Here the coprimality earns its keep: if pairwise coprime numbers each divide an integer, then so does their product. Hence $M \mid (n - n')$, which means $n$ and $n'$ are the same class in $\mathbb{Z}/M\mathbb{Z}$. So $\varphi$ is injective, therefore bijective. That it preserves $+$ and $\times$ is immediate, since reducing a sum or product mod $m_i$ is the same as reducing first and combining afterward. $\qquad\blacksquare$</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>The proof says a unique number lives at each address, but it does not yet say how to find it. For that we invert the map by hand.</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reading the address back</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>Given a target address $(a_1, \dots, a_k)$, we want the $n$ that sits there. The trick is to build $n$ out of pieces, one per coordinate, each of which lights up a single slot and stays dark in all the others.</span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>For each $i$, let $M_i = M / m_i$, the product of every modulus except $m_i$. By construction $m_j \mid M_i$ for every $j \neq i$, so $M_i$ already vanishes modulo all the other moduli. Modulo $m_i$ itself, $M_i$ is coprime to $m_i$ and so has an inverse $y_i$, meaning $M_i y_i \equiv 1 \pmod{m_i}$. Now set</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>n = \sum_{i=1}^{k} a_i\, M_i\, y_i \pmod{M}.</span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>$$ {#eq-crt-formula}</span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>Check it against any single modulus $m_j$. Every term with $i \neq j$ carries the factor $M_i$, which is divisible by $m_j$, so it contributes nothing. The surviving term is $a_j M_j y_j \equiv a_j \cdot 1 = a_j \pmod{m_j}$. The construction hits the target in every coordinate at once. @eq-crt-formula is the whole algorithm, and the code below is nothing more than this sum.</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> prod</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> crt(residues, moduli):</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Smallest non-negative n with n % moduli[i] == residues[i], for pairwise-coprime moduli."""</span></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>    M <span class="op">=</span> prod(moduli)</span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> a_i, m_i <span class="kw">in</span> <span class="bu">zip</span>(residues, moduli):</span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>        M_i <span class="op">=</span> M <span class="op">//</span> m_i</span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>        y_i <span class="op">=</span> <span class="bu">pow</span>(M_i, <span class="op">-</span><span class="dv">1</span>, m_i)      <span class="co"># modular inverse of M_i mod m_i</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>        n <span class="op">+=</span> a_i <span class="op">*</span> M_i <span class="op">*</span> y_i</span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n <span class="op">%</span> M</span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a><span class="co"># The Sunzi Suanjing problem, fifteen centuries later</span></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>answer <span class="op">=</span> crt([<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>], [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>])</span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Sunzi's unknown number: </span><span class="sc">{</span>answer<span class="sc">}</span><span class="ss">"</span>)          <span class="co"># 23</span></span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"solutions repeat every M = </span><span class="sc">{</span>prod([<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>])<span class="sc">}</span><span class="ss">"</span>) <span class="co"># 105</span></span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why a computer cares</span></span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a>So far this is elegant number theory. The reason it became infrastructure is that the isomorphism in @thm-crt does something a computer scientist dreams about: it turns one hard arithmetic problem into several small, independent ones.</span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>Because $\varphi$ respects $+$ and $\times$, to add or multiply two numbers modulo $M$ you may add or multiply their coordinates *separately*, each in its own little world modulo $m_i$, and then read the answer back. The coordinates never talk to each other. There is no carrying between them. This is the idea behind a **residue number system**: store a huge integer as its remainders against a set of coprime moduli, and every multiplication becomes a handful of small multiplications that a machine can run side by side.</span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>moduli <span class="op">=</span> [<span class="dv">101</span>, <span class="dv">103</span>, <span class="dv">107</span>, <span class="dv">109</span>]    <span class="co"># pairwise coprime; M is their product</span></span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> prod(moduli)</span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">0</span>)</span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> random.randrange(M), random.randrange(M)</span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a><span class="co"># carry the numbers as coordinates, multiply slot by slot, then reconstruct</span></span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>res_a <span class="op">=</span> [a <span class="op">%</span> m <span class="cf">for</span> m <span class="kw">in</span> moduli]</span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>res_b <span class="op">=</span> [b <span class="op">%</span> m <span class="cf">for</span> m <span class="kw">in</span> moduli]</span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a>res_c <span class="op">=</span> [(x <span class="op">*</span> y) <span class="op">%</span> m <span class="cf">for</span> x, y, m <span class="kw">in</span> <span class="bu">zip</span>(res_a, res_b, moduli)]</span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"componentwise product matches direct product:"</span>,</span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a>      crt(res_c, moduli) <span class="op">==</span> (a <span class="op">*</span> b) <span class="op">%</span> M)</span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a>The most familiar place this shows up is RSA. Decrypting a message means computing $c^{d} \bmod N$ where $N = pq$ is a product of two large primes. That exponentiation is the expensive heartbeat of the whole scheme, and its cost grows faster than linearly in the size of the modulus. The Chinese Remainder Theorem offers a shortcut: instead of working modulo the giant $N$, work modulo $p$ and modulo $q$ separately, where every number is half the size, then glue the two results back together with @eq-crt-formula. Two small exponentiations plus a recombination beat one large exponentiation, and in practice the speedup is roughly threefold. Every serious RSA implementation does exactly this @rivest1978rsa.</span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_prime(n, k<span class="op">=</span><span class="dv">20</span>):</span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">2</span>: <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> sp <span class="kw">in</span> (<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">11</span>,<span class="dv">13</span>,<span class="dv">17</span>,<span class="dv">19</span>,<span class="dv">23</span>,<span class="dv">29</span>,<span class="dv">31</span>,<span class="dv">37</span>):</span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="op">%</span> sp <span class="op">==</span> <span class="dv">0</span>: <span class="cf">return</span> n <span class="op">==</span> sp</span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a>    d, r <span class="op">=</span> n <span class="op">-</span> <span class="dv">1</span>, <span class="dv">0</span></span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> d <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>: d <span class="op">//=</span> <span class="dv">2</span><span class="op">;</span> r <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(k):</span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="bu">pow</span>(random.randrange(<span class="dv">2</span>, n <span class="op">-</span> <span class="dv">1</span>), d, n)</span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> x <span class="kw">in</span> (<span class="dv">1</span>, n <span class="op">-</span> <span class="dv">1</span>): <span class="cf">continue</span></span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(r <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> x <span class="op">*</span> x <span class="op">%</span> n</span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> x <span class="op">==</span> n <span class="op">-</span> <span class="dv">1</span>: <span class="cf">break</span></span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>: <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gen_prime(bits):</span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> random.getrandbits(bits) <span class="op">|</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> (bits <span class="op">-</span> <span class="dv">1</span>)) <span class="op">|</span> <span class="dv">1</span></span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> is_prime(n): <span class="cf">return</span> n</span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">1</span>)</span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a>p, q <span class="op">=</span> gen_prime(<span class="dv">512</span>), gen_prime(<span class="dv">512</span>)</span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a>N, e <span class="op">=</span> p <span class="op">*</span> q, <span class="dv">65537</span></span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> <span class="bu">pow</span>(e, <span class="op">-</span><span class="dv">1</span>, (p <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> (q <span class="op">-</span> <span class="dv">1</span>))</span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="bu">pow</span>(<span class="dv">987654321</span> <span class="op">%</span> N, e, N)</span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a><span class="co"># straight decryption, modulo the full N</span></span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): m_direct <span class="op">=</span> <span class="bu">pow</span>(c, d, N)</span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a>t1 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a><span class="co"># CRT decryption: two half-size exponentiations, then recombine</span></span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a>dp, dq, q_inv <span class="op">=</span> d <span class="op">%</span> (p <span class="op">-</span> <span class="dv">1</span>), d <span class="op">%</span> (q <span class="op">-</span> <span class="dv">1</span>), <span class="bu">pow</span>(q, <span class="op">-</span><span class="dv">1</span>, p)</span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> decrypt_crt(c):</span>
+<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a>    mp, mq <span class="op">=</span> <span class="bu">pow</span>(c, dp, p), <span class="bu">pow</span>(c, dq, q)</span>
+<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> (q_inv <span class="op">*</span> (mp <span class="op">-</span> mq)) <span class="op">%</span> p</span>
+<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (mq <span class="op">+</span> h <span class="op">*</span> q) <span class="op">%</span> N</span>
+<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a>t2 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>): m_crt <span class="op">=</span> decrypt_crt(c)</span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a>t3 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"direct : </span><span class="sc">{</span>(t1 <span class="op">-</span> t0) <span class="op">/</span> <span class="dv">50</span> <span class="op">*</span> <span class="dv">1000</span><span class="sc">:.2f}</span><span class="ss"> ms"</span>)</span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"CRT    : </span><span class="sc">{</span>(t3 <span class="op">-</span> t2) <span class="op">/</span> <span class="dv">50</span> <span class="op">*</span> <span class="dv">1000</span><span class="sc">:.2f}</span><span class="ss"> ms"</span>)</span>
+<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"speedup: </span><span class="sc">{</span>(t1 <span class="op">-</span> t0) <span class="op">/</span> (t3 <span class="op">-</span> t2)<span class="sc">:.1f}</span><span class="ss">x   (results agree: </span><span class="sc">{</span>m_direct <span class="op">==</span> m_crt<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a>The exact ratio depends on the machine, but the shape is always the same: splitting the modulus pays off, and it pays off for the reason the picture promised, because the two coordinates can be handled independently. The same decomposition powers fast big-integer multiplication through number-theoretic transforms over several primes, and it underlies threshold secret-sharing schemes where a secret is hidden in its residues and only enough of them together can reveal it. A fuller account of residue arithmetic lives in @knuth1997seminumerical.</span>
+<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to remember</span></span>
+<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a>The Chinese Remainder Theorem says that for pairwise coprime moduli, a number and its tuple of remainders carry exactly the same information: the map between them is a bijection, in fact a ring isomorphism. Read one way, that is a coordinate system for the integers, with each residue a coordinate and @eq-crt-formula the rule for reading an address back into a number. Read the other way, it is a license to break a single large computation into several small independent ones, which is why a riddle from the *Sunzi Suanjing* now lives inside RSA, residue number systems, and fast multiplication. A remainder, it turns out, was never a scrap left behind. It was a coordinate all along.</span>
+<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *The Chinese Remainder Theorem: Residues as Coordinates*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/`</span><span class="at">.</span></span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Terry Fang</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
