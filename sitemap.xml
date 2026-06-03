@@ -1,39 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://terryfxh.github.io/math-notes/WORKFLOW.html</loc>
-    <lastmod>2026-06-02T04:20:22.290Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/quotes.html</loc>
-    <lastmod>2026-06-03T00:12:12.166Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/spectral-theorem/index.html</loc>
-    <lastmod>2026-06-03T00:05:55.662Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/index.html</loc>
-    <lastmod>2026-06-03T00:05:45.250Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/about.html</loc>
-    <lastmod>2026-06-02T23:53:08.913Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/ideas.html</loc>
-    <lastmod>2026-06-03T00:12:24.281Z</lastmod>
+    <loc>https://terryfxh.github.io/math-notes/posts/welcome/index.html</loc>
+    <lastmod>2026-06-03T00:05:50.352Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/gram-schmidt/index.html</loc>
     <lastmod>2026-06-03T00:20:56.720Z</lastmod>
   </url>
   <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/welcome/index.html</loc>
-    <lastmod>2026-06-03T00:05:50.352Z</lastmod>
+    <loc>https://terryfxh.github.io/math-notes/about.html</loc>
+    <lastmod>2026-06-02T23:53:08.913Z</lastmod>
   </url>
   <url>
-    <loc>https://terryfxh.github.io/math-notes/TODO.html</loc>
-    <lastmod>2026-06-02T04:20:22.290Z</lastmod>
+    <loc>https://terryfxh.github.io/math-notes/index.html</loc>
+    <lastmod>2026-06-03T00:27:08.603Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/spectral-theorem/index.html</loc>
+    <lastmod>2026-06-03T00:05:55.662Z</lastmod>
   </url>
 </urlset>
