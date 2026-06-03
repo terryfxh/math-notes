@@ -26,4 +26,4 @@ This is where I work that out in the open. Each post starts from the simplest ve
 
 I write these mostly for the version of me who was once stuck on the very same thing. If you happen to be stuck there too, I hope they help.
 
-Browse by topic with the category filter, or subscribe through [RSS](index.xml).
+Browse by topic with the category filter below.

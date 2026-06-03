@@ -1,6 +1,11 @@
 project:
   type: website
   output-dir: _site
+  # Only turn these into web pages. Helper docs (README, WORKFLOW, TODO,
+  # quotes, ideas) stay in the repo but are NOT published as pages.
+  render:
+    - "*.qmd"
+    - "posts/"
 
 website:
   title: "(Terry) Xihan Fang — Math Notes"
@@ -16,8 +21,6 @@ website:
         href: index.qmd
       - text: About
         href: about.qmd
-      - text: Categories
-        href: index.qmd#category-listing
     right:
       - icon: github
         href: https://github.com/terryfxh
