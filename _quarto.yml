@@ -20,10 +20,8 @@ website:
         href: index.qmd#category-listing
     right:
       - icon: github
-        href: https://github.com/terryfxh   # <-- change
+        href: https://github.com/terryfxh
         aria-label: GitHub
-      - icon: rss
-        href: index.xml
   page-footer:
     left: "© 2026 Terry Fang"
     right: "Built with [Quarto](https://quarto.org)"
