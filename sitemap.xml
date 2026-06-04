@@ -2,38 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/welcome/index.html</loc>
-    <lastmod>2026-06-04T11:20:15.588Z</lastmod>
+    <lastmod>2026-06-04T22:22:31.328Z</lastmod>
   </url>
   <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/miller-rabin/index.html</loc>
-    <lastmod>2026-06-04T11:20:15.588Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/gram-schmidt/index.html</loc>
-    <lastmod>2026-06-04T11:20:15.588Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/index.html</loc>
-    <lastmod>2026-06-04T11:20:15.588Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/about.html</loc>
-    <lastmod>2026-06-04T11:20:15.588Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/index.html</loc>
-    <lastmod>2026-06-04T11:20:15.588Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/discrete-log/index.html</loc>
-    <lastmod>2026-06-04T11:20:15.588Z</lastmod>
+    <loc>https://terryfxh.github.io/math-notes/posts/on-learning-mathematics/index.html</loc>
+    <lastmod>2026-06-04T22:22:31.328Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/index.html</loc>
-    <lastmod>2026-06-04T11:20:15.588Z</lastmod>
+    <lastmod>2026-06-04T22:22:31.328Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/discrete-log/index.html</loc>
+    <lastmod>2026-06-04T22:22:31.328Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/index.html</loc>
+    <lastmod>2026-06-04T22:22:31.327Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/about.html</loc>
+    <lastmod>2026-06-04T22:22:31.327Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/index.html</loc>
+    <lastmod>2026-06-04T22:22:31.328Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/gram-schmidt/index.html</loc>
+    <lastmod>2026-06-04T22:22:31.328Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/miller-rabin/index.html</loc>
+    <lastmod>2026-06-04T22:22:31.328Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/spectral-theorem/index.html</loc>
-    <lastmod>2026-06-04T11:20:15.588Z</lastmod>
+    <lastmod>2026-06-04T22:22:31.328Z</lastmod>
   </url>
 </urlset>
