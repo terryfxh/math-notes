@@ -13,7 +13,7 @@ draft: false
 [— Bertrand Russell, *The Study of Mathematics*]{.attribution}
 :::
 
-If you've ever finished a whole problem set and still felt a small, private doubt — *am I actually learning this, or just getting better at repeating it?* — then this one is for you. So let's pull up a chair and reason it through slowly, from the beginning, until the answer actually holds together.
+If you've ever finished a whole problem set and still felt a small, private doubt — *am I actually learning this, or just getting better at repeating it?* — then this one is for you. So let's pull up a chair.
 
 ## Start by asking yourself a harder question
 
