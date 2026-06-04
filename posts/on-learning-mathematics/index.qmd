@@ -1,0 +1,120 @@
+---
+title: "On Learning Mathematics"
+description: "A meditation on what we are really training when we train ourselves in math: knowledge versus judgment, intuition tamed by rigour, why talent does not get the last word, and what must not be outsourced in the age of AI."
+date: 2026-06-04
+categories: [meta, learning]
+bibliography: ../../references.bib
+draft: false
+---
+
+::: {.epigraph}
+"Mathematics, rightly viewed, possesses not only truth, but supreme beauty — a beauty cold and austere, like that of sculpture."
+
+[— Bertrand Russell, *The Study of Mathematics*]{.attribution}
+:::
+
+If you've ever finished a whole problem set and still felt a small, private doubt — *am I actually learning this, or just getting better at repeating it?* — then this one is for you. Pull up a chair. I want to talk this through the way I'd talk to a friend across the table, slowly, until it actually makes sense.
+
+## Start by asking yourself a harder question
+
+There's an old line, worn almost smooth from overuse: the unexamined life is not worth living. Drag it into the world of learning math and it loses none of its edge.
+
+Doing a lot of problems doesn't mean you've *learned* mathematics. It might just mean you've gotten faster at repeating yourself. The question worth sitting with is plainer, and a little more uncomfortable: **what am I actually training?** Am I training a sensitivity to structure, or a dependence on templates? Am I building judgment I can carry into a problem I've never seen — or stockpiling one-time reflexes for one-time exams?
+
+I don't ask this to make you anxious. I ask it because the answer changes everything about how you should spend your hours. And here's the thing I've come to believe: mathematical ability isn't one dial. It's several forces braided together — what you can hold in your head, the pictures you've built to hold it, your instinct for which move to try, your internalized sense of what counts as a real reason, and whether you can stay steady when a problem refuses to budge. Pull on any single one of those threads and call it "the whole thing," and you'll get a story that's tidy and wrong.
+
+So when people say "solving problems is about wisdom, not raw intelligence" — they're pointing the right way, but the sentence is too smooth. Its virtue is that it refuses a lazy fatalism, the idea that math is just your IQ showing through. Its flaw is that it makes "wisdom" sound like a small formula: learn a few principles and the ceiling disappears. It doesn't quite. Let's keep that sentence on the table and take it apart together.
+
+## Wisdom is not the shadow of IQ
+
+"Knowledge isn't the same as ability" is something most learners realize eventually. But if you let it slide one notch further into "knowledge doesn't matter," you've just fallen off the other side of the horse.
+
+Understanding concepts and being fluent with procedures are not enemies. Real ability isn't memorizing definitions, and it isn't hand-waving about intuition either. It's the capacity to move *between* them — symbol, concept, step, judgment — and to move lightly.
+
+Feynman tells a story that cuts right to the center of this. As a boy he was out in the woods, and another kid asked, "See that bird? What's it called?" Feynman didn't know. The kid said it was some kind of thrush — "your dad doesn't teach you anything." But Feynman's father had taught him something else entirely: you can learn that bird's name in every language on Earth — Italian, Portuguese, Chinese, Japanese — and when you're done, *you'll know absolutely nothing about the bird itself.* You'll only know what humans call it. To actually know the bird, you have to watch it. What is it doing? How does it move? Why?
+
+That's the whole fault line between *knowing the name* and *knowing the thing*, drawn in a single afternoon. And it is exactly the trap waiting in every math course: the quiet belief that once you can pronounce "compactness," "normal subgroup," "functor," the concept belongs to you. It doesn't. The meaning of a mathematical word isn't in how it sounds, or even in its dictionary definition. It lives in what the word can *do* — which examples it walks into, which counterexamples it rules out, which proofs it holds up, which other structures it quietly connects to. A name you can recite but can't *use* is just an ornament in a glass case.
+
+Russell put the dignified version of this beautifully: mathematics, rightly taught, should awaken a faith in reason and a respect for the very idea of proof — and then he added, drily, that the teaching of his day mostly didn't. The line still stings, because too many classrooms still hand students rules as if they were the teacher's *will* rather than a system of reasons you're allowed to question and rebuild. When that happens, students don't learn mathematics. They learn obedience.
+
+So if we want to say "wisdom" strictly, here it is: **wisdom is the ability to turn knowledge into judgment.** The mark of it isn't whether you can recite — it's whether you can choose a good representation, spot which step is the hinge the whole problem turns on, sense why a method works *here* and fails *there*, and know when to retreat to a simpler model and start again. That's more honest, and more useful, than the word "smart."
+
+## See the object before you demand rigor
+
+The moment I say "intuition first, logic second," someone tenses up: *isn't that just an excuse to be sloppy?*
+
+But the thing to worry about was never intuition. It's **untrained** intuition. And the clearest map I know of how intuition and rigor are supposed to grow up together comes from Terence Tao.
+
+Tao describes a mathematician's development in three stages, and once you see them you can't unsee them. First comes the *pre-rigorous* stage: you reason with pictures, with hand-waving, with examples — vague, but alive. Then the *rigorous* stage: you learn to work in precise language, to build careful formal arguments, and — crucially — to *distrust* your intuition for a while, because you need the discipline of not believing yourself until you've checked. Most people think that's the summit. It isn't. The real destination is the *post-rigorous* stage, where rigor has sunk so deep it's become instinct, and *because* of that you can return to intuition and trust it again — only now it's intuition that's been trained by years of proof. You can feel your way past the details and still know, at any moment, exactly how you'd nail one down if pressed.
+
+Sit with that for a second, because it quietly dissolves the whole fake war between feeling and rigor.
+
+Intuition and rigor aren't a relay where one hands off to the other and leaves. They *tame each other.* Intuition gives you a direction; rigor is the brake. And then — this is the part people miss — every rigorous argument reaches back and reshapes the intuition that sent you there, so the next time you "see" the problem, you see it more truly. That's what mathematical maturity actually is: not a staircase climbing in one direction, but a current moving back and forth.
+
+And that act of *seeing* is the whole heart of what Grant Sanderson — 3Blue1Brown — has spent years building. You can boil his whole philosophy down to one sentence: **a good explanation should leave you feeling like you could have discovered the thing yourself.** He doesn't shove a formula at you. He plants a picture in your head first — an arrow, a patch of space getting stretched and squished, a curve sliding as you turn a dial — so that when the symbols finally arrive, they feel like *labels* on something you can already see, instead of hieroglyphs dropped from the sky.
+
+This is also why a *toy model* isn't childish — it's a sign of maturity. When a general theorem won't open up, compute $n=1$, then $n=2$. When three dimensions blur, flatten the thing to two. Shrink the problem down to where you can stand firmly, find your footing, and only then start to climb. The trick isn't to abandon the toy model once you've "graduated." It's to be able to *snap back* to it in an instant, and read the high structure off the small case. Beginners think simple examples are something you leave behind. The people who are actually good keep a pocketful of them, always.
+
+## Education shouldn't teach math as a guessing game
+
+The most damaging thing low-quality math teaching does isn't making problems hard. It's quietly convincing students that the *essence* of mathematics is guessing what the teacher is hiding.
+
+I've watched it happen. A student meets a clever "trick" problem, fails to spot the gimmick, and walks away with a lesson that has nothing to do with mathematics: *I'm not smart enough.* Do that for enough years and the wound stops being about any single problem. It becomes a low background hum — *math hurts me* — and people leave the subject not because they couldn't have learned it, but because experience taught them to flinch. By then the issue isn't intelligence at all. It's an emotional structure that bad teaching built and then walked away from.
+
+So yes, I'm with the people who say *don't let bad math education mislead children* — but I want the reason stated precisely, because it's easy to overshoot into "all hard problems are bad." They aren't. The test is simple. Ask of any problem: **does it open onto a reusable structure? Does it lead toward a clearer concept? Does it help a student build the belief that they can take something unfamiliar and reorganize it into something they understand?** If yes, make it as hard as you like. If no — however flashy it is — it's mostly just noise wearing the costume of difficulty.
+
+This isn't an argument against hard problems. It's a recalibration of *why we set them.*
+
+## Talent is real, and it doesn't get the last word
+
+On the question of whether you have to be a genius to be good at math, the two worst answers are mirror images. One says it's all talent, so most people should make peace with mediocrity. The other says it's all effort, and every gap is an illusion. Neither holds up.
+
+Tao — a Fields Medalist, a genuine childhood prodigy, exactly the person you'd expect to disagree — wrote a short piece titled *"Does one have to be a genius to do mathematics?"* His answer is a flat **no.** Mathematics, he argues, isn't pushed forward by mysterious sparks of genius. It moves on work, on asking questions, on talking to people, on the unglamorous daily accumulation of understanding. He even warns that the *myth* of genius does harm: it tempts you to sit around waiting for inspiration instead of doing the slow, ordinary labor that actually makes you better. When that comes from *him,* it lands differently.
+
+So here's the picture I trust. Talent is a real variable — but not the judge with the final say. It's terrain: it sets the friction and the grade of the slope. But method, environment, rhythm, and temperament decide whether you actually reach the top. Most students' real problem isn't a missing aptitude for math. It's that they reach for *grinding* when they should reframe, for *brute force* when they should change representation, for *shame* when they should just correct the error. And if you dress that bad posture up as "diligence," then even effort becomes a kind of lie.
+
+Maturity in mathematics is rarely "I'm smarter than you." It's "I learned, earlier than most, when to step back, when to switch viewpoints, when to use a simpler object to light up a harder one." That takes time, and it takes revisiting things you thought you were done with. "Slow is fast" isn't a motivational poster here — it's economics. Only understanding that has actually been *organized* compounds.
+
+## Before AI, hold onto the thing called learning
+
+AI has genuinely changed the situation we're learning in. I'm not going to pretend otherwise, and I'm not going to drown you in study summaries to prove it — you've felt the shift yourself. The real question was never *will it come into the classroom.* It's *what will it turn the classroom into.*
+
+The two slogans I'd push back on hardest are mirror images again. One: "It's just a tool, use it freely." The other: "It'll destroy learning, don't touch it." Both are too coarse.
+
+Here's the sharpest way I know to think about it, and it's Feynman's, written on his blackboard at the end of his life: **"What I cannot create, I do not understand."** When AI creates the answer for you, the thing you skip is the exact place where understanding was going to happen. The first time you work a proof, the first time you build a model, the first time you push a derivation through — *that* is the moment a bridge gets built, strut by strut, inside your own head. Outsource that step and the bridge stays a blueprint forever. It looks like a bridge. You can't walk on it.
+
+But treating AI as pure poison is just as wrong. A tutor — human or machine — that scaffolds you, feeds back at the right moment, and refuses to simply hand over the answer can be extraordinary. The dividing line was never *whether you use AI.* It's this: **does the AI think for you, or does it make you think?**
+
+That single question sorts almost everything. Used to give you a hint, a counterexample, a diagnosis of *why* your attempt broke, a second concept to compare against, a way to test yourself — it's a gift. Used to ghost-write your first solution, your first proof, your first model — it quietly robs you of the one field where growth actually grows. That's not moral squeamishness. It's just the logic of where understanding comes from.
+
+## Mathematics isn't a problem bank — it's clarity inside form
+
+Let me come back to Russell's line: mathematics possesses not only truth, but supreme beauty. And set beside it something Thurston said — that a mathematician's job isn't to hit a production quota of definitions, theorems, and proofs, but to *advance human understanding of mathematics.* One sentence leans toward the aesthetic, the other toward the practical, and somehow they light each other up.
+
+Because here is why math is worth learning, underneath "it's useful" and "it's correct": it takes the chaos of experience and **compresses it into order** — order you can pass to someone else, reason forward from, and reuse. A theorem isn't a fact you stored. It's a piece of the world made transmissible.
+
+And it doesn't arrive pre-polished, standing there waiting to be copied down. So many concepts only became clear through argument, counterexample, repair, and redefinition — messy, human, alive. Which is why, in the end, mathematics shouldn't be understood as a warehouse of conclusions at all. It's a public practice of thinking about **relationships and the things that stay invariant when everything else changes.**
+
+So the whole picture finally comes together, and it's simpler than I expected.
+
+The core of learning mathematics isn't how many results you've memorized. It's training yourself into a person who can *see relationships.* Knowledge is the raw material; ability is that material once it's been organized. Intuition is the doorway; proof is what purifies what came through it. The job of teaching is not to manufacture fear — it's to help a student turn "I don't get it" into "I know where to look." AI can be scaffolding, but it can't pour the bridge that has to be built inside your own skull.
+
+As for mathematics itself — it's neither an ocean of drills nor a fog of abstraction. It's one of the ways human beings pursue clarity *under strict constraint.* And once you see it that way, "learning math" stops being about chasing the right answer. It becomes training a certain kind of mind: one that isn't easily fooled by appearances, by names, by authority, or by shortcuts.
+
+Feynman called it the pleasure of finding things out. Sanderson calls it the *aha.* Tao calls it intuition that rigor has trained. Different names, the same bird — that small, clean lift in your chest the moment you finally *see* a structure for what it is.
+
+Doesn't that just feel beautiful?
+
+## What I'm still not sure about
+
+Let me be honest and leave a few pieces of the puzzle on the table instead of pretending the picture is finished.
+
+I can tell you, with reasonable confidence, that leaning on AI to think *for* you is a bad trade. What I can't honestly tell you is that some universal, works-for-everyone "AI method" for learning math has been figured out. It hasn't. Anyone selling you one is a few years ahead of the evidence.
+
+And the deepest question doesn't have a formula waiting at the end of it anyway. Underneath all of this — the talent, the tools, the rigor, the pictures — sits something older and harder: **what kind of person do we actually hope mathematics will make of us?**
+
+No equation solves that one for you. But I've come to think that being willing to ask it, seriously, is already a kind of beginning.
+
+## How to cite
+
+> Terry (2026). *On Learning Mathematics*. Retrieved from `https://terryfxh.github.io/math-notes/posts/on-learning-mathematics/`.
