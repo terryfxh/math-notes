@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-06-04">
+<meta name="description" content="Raising a number to a power on a clock face is a few multiplications; running it backwards is a search that the best known algorithms still measure in the square root of the haystack. That gap between forward and backward is the whole reason two strangers can agree on a secret in the open.">
+
+<title>The Discrete Logarithm: Easy to Make, Hard to Undo – (Terry) Xihan Fang — Math Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-2e1787f35859f4e47328aef9885308b8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="The Discrete Logarithm: Easy to Make, Hard to Undo – (Terry) Xihan Fang — Math Notes">
+<meta property="og:description" content="Raising a number to a power on a clock face is a few multiplications; running it backwards is a search that the best known algorithms still measure in the square root of the haystack. That gap between forward and backward is the whole reason two strangers can agree on a secret in the open.">
+<meta property="og:site_name" content="(Terry) Xihan Fang — Math Notes">
+<meta name="twitter:title" content="The Discrete Logarithm: Easy to Make, Hard to Undo – (Terry) Xihan Fang — Math Notes">
+<meta name="twitter:description" content="Raising a number to a power on a clock face is a few multiplications; running it backwards is a search that the best known algorithms still measure in the square root of the haystack. That gap between forward and backward is the whole reason two strangers can agree on a secret in the open.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">(Terry) Xihan Fang — Math Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/terryfxh"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#first-put-the-numbers-on-a-clock" id="toc-first-put-the-numbers-on-a-clock" class="nav-link active" data-scroll-target="#first-put-the-numbers-on-a-clock">First, put the numbers on a clock</a></li>
+  <li><a href="#the-forward-trip-is-a-stroll-the-return-is-a-search" id="toc-the-forward-trip-is-a-stroll-the-return-is-a-search" class="nav-link" data-scroll-target="#the-forward-trip-is-a-stroll-the-return-is-a-search">The forward trip is a stroll; the return is a search</a></li>
+  <li><a href="#meeting-in-the-middle-baby-steps-and-giant-steps" id="toc-meeting-in-the-middle-baby-steps-and-giant-steps" class="nav-link" data-scroll-target="#meeting-in-the-middle-baby-steps-and-giant-steps">Meeting in the middle: baby steps and giant steps</a></li>
+  <li><a href="#two-strangers-one-secret-said-out-loud" id="toc-two-strangers-one-secret-said-out-loud" class="nav-link" data-scroll-target="#two-strangers-one-secret-said-out-loud">Two strangers, one secret, said out loud</a></li>
+  <li><a href="#what-is-actually-being-assumed" id="toc-what-is-actually-being-assumed" class="nav-link" data-scroll-target="#what-is-actually-being-assumed">What is actually being assumed</a></li>
+  <li><a href="#what-to-remember" id="toc-what-to-remember" class="nav-link" data-scroll-target="#what-to-remember">What to remember</a></li>
+  <li><a href="#how-to-cite" id="toc-how-to-cite" class="nav-link" data-scroll-target="#how-to-cite">How to cite</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">The Discrete Logarithm: Easy to Make, Hard to Undo</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">pure</div>
+    <div class="quarto-category">applied</div>
+    <div class="quarto-category">number-theory</div>
+    <div class="quarto-category">computer-science</div>
+    <div class="quarto-category">algorithms</div>
+    <div class="quarto-category">cryptography</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Raising a number to a power on a clock face is a few multiplications; running it backwards is a search that the best known algorithms still measure in the square root of the haystack. That gap between forward and backward is the whole reason two strangers can agree on a secret in the open.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 4, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Most of the operations we learn as children come with an undo button built in. Addition has subtraction, multiplication has division, squaring has the square root. You rarely think about the undo as a separate skill, because it costs about the same as the thing it reverses. This essay is about an operation where that symmetry quietly breaks. Going forward is cheap, a handful of multiplications. Going backward, as far as anyone knows, is a genuine search through an enormous space. And that single broken symmetry, the gap between how hard it is to do something and how hard it is to undo it, is the hinge that the security of much of the internet swings on.</p>
+<p>Let me start, as we always should, with the smallest version of the picture.</p>
+<section id="first-put-the-numbers-on-a-clock" class="level2">
+<h2 class="anchored" data-anchor-id="first-put-the-numbers-on-a-clock">First, put the numbers on a clock</h2>
+<p>Pick a prime, say <span class="math inline">\(p = 7\)</span>, and throw away the multiples of <span class="math inline">\(p\)</span>. You are left with the numbers <span class="math inline">\(1, 2, 3, 4, 5, 6\)</span>, and the rule of the game is that you multiply as usual but then keep only the remainder after dividing by <span class="math inline">\(7\)</span>. So <span class="math inline">\(3 \times 4 = 12\)</span>, and <span class="math inline">\(12 \bmod 7 = 5\)</span>. Multiplication has become a motion on a tiny clock face with the hours <span class="math inline">\(1\)</span> through <span class="math inline">\(6\)</span> written around it.</p>
+<p>Now fix one number, call it <span class="math inline">\(g\)</span>, and start walking: <span class="math inline">\(g^1, g^2, g^3, \dots\)</span>, each step multiplying by <span class="math inline">\(g\)</span> again and wrapping around the clock. Take <span class="math inline">\(g = 3\)</span> and watch where the powers land modulo <span class="math inline">\(7\)</span>: <span class="math display">\[
+3^1 = 3,\quad 3^2 = 2,\quad 3^3 = 6,\quad 3^4 = 4,\quad 3^5 = 5,\quad 3^6 = 1.
+\]</span> Look at what happened. The powers of <span class="math inline">\(3\)</span> swept out <em>every</em> nonzero hour, <span class="math inline">\(\{1,2,3,4,5,6\}\)</span>, before returning home to <span class="math inline">\(1\)</span>. A single number, multiplied by itself over and over, visited the entire clock. A number that does this is called a <strong>primitive root</strong>, and it tells us the clock is not a random scatter of hours but a single cycle in disguise. The hours are really the positions <span class="math inline">\(0, 1, 2, \dots, 5\)</span> along one big loop, and <span class="math inline">\(g\)</span> is the engine that drives us one step around it each time we multiply.</p>
+<p>Take a moment to chew on that, because it is the whole geometric heart of the matter. Multiplying by <span class="math inline">\(g\)</span> looks like a messy, jumping operation, but it is secretly just <em>advancing one notch</em> on a circular track. The set <span class="math inline">\(\{1, 2, \dots, p-1\}\)</span> under multiplication mod <span class="math inline">\(p\)</span> is what algebraists call a cyclic group, and a primitive root is a generator that lays the whole group out as a single ring of evenly spaced beads. That such a generator always exists for a prime modulus is a real theorem, and Niven’s congruence chapter proves it carefully <span class="citation" data-cites="niven1991"><a href="#ref-niven1991" role="doc-biblioref">[1]</a></span>; for us the picture is enough.</p>
+</section>
+<section id="the-forward-trip-is-a-stroll-the-return-is-a-search" class="level2">
+<h2 class="anchored" data-anchor-id="the-forward-trip-is-a-stroll-the-return-is-a-search">The forward trip is a stroll; the return is a search</h2>
+<p>Here is the question that makes everything else go. Suppose I tell you the clock (<span class="math inline">\(p\)</span>), the engine (<span class="math inline">\(g\)</span>), and where I ended up after some number of steps (<span class="math inline">\(h\)</span>). Can you tell me <em>how many steps</em> I took?</p>
+<p>In symbols, you know <span class="math inline">\(g\)</span> and <span class="math inline">\(h\)</span> and the prime <span class="math inline">\(p\)</span>, and you want the exponent <span class="math inline">\(x\)</span> with <span class="math display">\[
+g^{\,x} \equiv h \pmod{p}.
+\]</span> That exponent is called the <strong>discrete logarithm</strong> of <span class="math inline">\(h\)</span> to the base <span class="math inline">\(g\)</span>, written <span class="math inline">\(x = \log_g h\)</span>, and the name is honest: just as an ordinary logarithm asks “to what power must I raise the base,” this one asks the same question, only now inside the finite world of the clock.</p>
+<p>Going forward is genuinely easy. To compute <span class="math inline">\(g^x \bmod p\)</span> you never multiply <span class="math inline">\(x\)</span> times. You square and climb: from <span class="math inline">\(g\)</span> you get <span class="math inline">\(g^2\)</span>, square that for <span class="math inline">\(g^4\)</span>, then <span class="math inline">\(g^8\)</span>, and so on, picking out the powers you need according to the binary digits of <span class="math inline">\(x\)</span>. A number <span class="math inline">\(x\)</span> with a few hundred binary digits takes only a few hundred squarings. Forward is a short stroll, no matter how astronomically large <span class="math inline">\(x\)</span> is.</p>
+<div id="ebee1ba2" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="dv">1_000_000_007</span>          <span class="co"># a prime modulus</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="dv">5</span>                      <span class="co"># a primitive root mod p (it sweeps out the whole clock)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">123_456_789</span>            <span class="co"># the number of steps -- our secret</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> <span class="bu">pow</span>(g, x, p)           <span class="co"># square-and-multiply: a few dozen multiplications, instant</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"walking </span><span class="sc">{</span>x<span class="sc">}</span><span class="ss"> steps from g=</span><span class="sc">{</span>g<span class="sc">}</span><span class="ss"> lands at h = </span><span class="sc">{</span>h<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>walking 123456789 steps from g=5 lands at h = 372224738</code></pre>
+</div>
+</div>
+<p>Now try to go back. You are handed <span class="math inline">\(h = 372224738\)</span> and asked which <span class="math inline">\(x\)</span> produced it. There is no clever inverse formula waiting; you appear to be stuck searching. The most naive approach is to take steps <span class="math inline">\(g^1, g^2, g^3, \dots\)</span> and wait until one of them equals <span class="math inline">\(h\)</span>. On a clock with <span class="math inline">\(p - 1\)</span> hours that is up to a billion steps here, and for the primes used in practice it is a number with hundreds of digits, more steps than there are atoms within reach. The forward trip and the return trip live in completely different worlds of difficulty. Now is a great time to pause and ask: is the return really as hopeless as brute force, or is there something smarter?</p>
+</section>
+<section id="meeting-in-the-middle-baby-steps-and-giant-steps" class="level2">
+<h2 class="anchored" data-anchor-id="meeting-in-the-middle-baby-steps-and-giant-steps">Meeting in the middle: baby steps and giant steps</h2>
+<p>There is something smarter, and it is a beautiful, almost physical idea. At first glance the search looks like a billion-step slog, but let us break down what we are actually doing and reorganize it.</p>
+<p>We want <span class="math inline">\(g^x = h\)</span>. Split the unknown exponent into a <em>giant</em> part and a <em>baby</em> part. Choose a stride length <span class="math inline">\(m \approx \sqrt{p}\)</span> and write <span class="math display">\[
+x = i\,m + j, \qquad 0 \le j &lt; m,\ \ 0 \le i &lt; m.
+\]</span> Every exponent up to <span class="math inline">\(p-1\)</span> can be written this way: <span class="math inline">\(i\)</span> counts how many giant strides of length <span class="math inline">\(m\)</span> you take, and <span class="math inline">\(j\)</span> is the small leftover. Substitute and rearrange: <span class="math display">\[
+g^{\,im + j} = h
+\quad\Longleftrightarrow\quad
+g^{\,j} = h \cdot \left(g^{-m}\right)^{i}.
+\]</span> Stare at that rearrangement, because it is the trick in one line. The left side depends only on the baby part <span class="math inline">\(j\)</span>; the right side depends only on the giant part <span class="math inline">\(i\)</span>. We have separated the two unknowns onto opposite banks of the equation.</p>
+<p>So we work each side independently and let them meet. First take all the <strong>baby steps</strong>: compute <span class="math inline">\(g^0, g^1, \dots, g^{m-1}\)</span> and drop them into a lookup table, each value remembering its exponent <span class="math inline">\(j\)</span>. That is about <span class="math inline">\(\sqrt{p}\)</span> multiplications and <span class="math inline">\(\sqrt{p}\)</span> memory. Then take <strong>giant steps</strong>: starting from <span class="math inline">\(h\)</span>, repeatedly multiply by <span class="math inline">\(g^{-m}\)</span>, producing <span class="math inline">\(h, h g^{-m}, h g^{-2m}, \dots\)</span>. After the <span class="math inline">\(i\)</span>-th giant step you are holding the right-hand side <span class="math inline">\(h \cdot (g^{-m})^i\)</span>. The moment that value appears in your baby-step table, you have found a match: the table hands you <span class="math inline">\(j\)</span>, you already know <span class="math inline">\(i\)</span>, and <span class="math inline">\(x = im + j\)</span> falls out. This is Shanks’s baby-step giant-step algorithm <span class="citation" data-cites="shanks1971"><a href="#ref-shanks1971" role="doc-biblioref">[2]</a></span>.</p>
+<div id="57844a9f" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> isqrt</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> discrete_log_bsgs(g, h, p):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Smallest x &gt;= 0 with g^x = h (mod p), by meeting in the middle."""</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> p <span class="op">-</span> <span class="dv">1</span>                          <span class="co"># we search exponents over the group's size</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> isqrt(n) <span class="op">+</span> <span class="dv">1</span>                   <span class="co"># stride length ~ sqrt(p)</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Baby steps: tabulate g^0, g^1, ..., g^(m-1), remembering each exponent.</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    table, value <span class="op">=</span> {}, <span class="dv">1</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(m):</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        table.setdefault(value, j)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        value <span class="op">=</span> value <span class="op">*</span> g <span class="op">%</span> p</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Giant steps: multiply h by g^(-m) repeatedly until we hit a baby step.</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    stride <span class="op">=</span> <span class="bu">pow</span>(g, <span class="op">-</span>m, p)             <span class="co"># g^(-m) mod p</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    current <span class="op">=</span> h</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(m):</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="kw">in</span> table:</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> i <span class="op">*</span> m <span class="op">+</span> table[current]</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> current <span class="op">*</span> stride <span class="op">%</span> p</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span>                        <span class="co"># h is not a power of g</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>recovered <span class="op">=</span> discrete_log_bsgs(g, h, p)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"recovered x = </span><span class="sc">{</span>recovered<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"check: g^x mod p reproduces h? </span><span class="sc">{</span><span class="bu">pow</span>(g, recovered, p) <span class="op">==</span> h<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>recovered x = 123456789
+check: g^x mod p reproduces h? True</code></pre>
+</div>
+</div>
+<p>The same problem that needed a billion brute-force steps is now solved in a few tens of thousands. The reason is the trade we made: instead of one list of length <span class="math inline">\(p\)</span>, we used two lists of length <span class="math inline">\(\sqrt{p}\)</span> and let them collide. You might have already guessed where this leaves us. The discrete logarithm is <em>not</em> impossibly hard. It is <span class="math inline">\(\sqrt{p}\)</span> hard, and there are deeper methods (index calculus, Pollard’s rho) that do better still on the storage. The art of choosing safe parameters is the art of making <span class="math inline">\(\sqrt{p}\)</span>, even after every such improvement, larger than any computation anyone could ever run.</p>
+<div id="28796b6b" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Why size is everything: the meet-in-the-middle work grows like the square root.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bits <span class="kw">in</span> [<span class="dv">30</span>, <span class="dv">256</span>, <span class="dv">2048</span>]:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    half <span class="op">=</span> bits <span class="op">//</span> <span class="dv">2</span>                  <span class="co"># log2 of the work, since work ~ sqrt(p) = 2^(bits/2)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    digits <span class="op">=</span> <span class="bu">len</span>(<span class="bu">str</span>(<span class="dv">2</span> <span class="op">**</span> half))      <span class="co"># exact integer count, no floating-point overflow</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>bits<span class="sc">:&gt;4}</span><span class="ss">-bit prime:  ~ 2^</span><span class="sc">{</span>half<span class="sc">}</span><span class="ss"> operations, a number with </span><span class="sc">{</span>digits<span class="sc">}</span><span class="ss"> decimal digits"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  30-bit prime:  ~ 2^15 operations, a number with 5 decimal digits
+ 256-bit prime:  ~ 2^128 operations, a number with 39 decimal digits
+2048-bit prime:  ~ 2^1024 operations, a number with 309 decimal digits</code></pre>
+</div>
+</div>
+<p>A <span class="math inline">\(30\)</span>-bit clock, like the one in our code, cracks in a flash. A <span class="math inline">\(2048\)</span>-bit clock, the everyday size for this kind of cryptography, asks for about <span class="math inline">\(2^{1024}\)</span> operations to reverse, a quantity so far past physical possibility that the word “impossible” is, for once, the careful word and not the lazy one. The forward door stays a stroll; the backward door is bolted by the square root of an astronomical number.</p>
+</section>
+<section id="two-strangers-one-secret-said-out-loud" class="level2">
+<h2 class="anchored" data-anchor-id="two-strangers-one-secret-said-out-loud">Two strangers, one secret, said out loud</h2>
+<p>Now we can do the thing that should feel like a magic trick. In 1976, Whitfield Diffie and Martin Hellman noticed that this one-way clock lets two people who have never met agree on a shared secret while shouting everything they say across a crowded room <span class="citation" data-cites="diffie1976"><a href="#ref-diffie1976" role="doc-biblioref">[3]</a></span>. Here is the whole protocol, and the asymmetry above is the only thing holding it up.</p>
+<p>Alice and Bob agree, in public, on a large prime <span class="math inline">\(p\)</span> and a generator <span class="math inline">\(g\)</span>. Anyone may hear these. Then:</p>
+<ul>
+<li>Alice picks a secret number <span class="math inline">\(a\)</span>, computes <span class="math inline">\(A = g^{a} \bmod p\)</span>, and sends <span class="math inline">\(A\)</span> across the room. Forward trip: easy for her.</li>
+<li>Bob picks a secret number <span class="math inline">\(b\)</span>, computes <span class="math inline">\(B = g^{b} \bmod p\)</span>, and sends <span class="math inline">\(B\)</span> back. Easy for him.</li>
+<li>Alice raises what she received to her own secret: <span class="math inline">\(B^{a} = (g^{b})^{a} = g^{ab}\)</span>.</li>
+<li>Bob does the mirror image: <span class="math inline">\(A^{b} = (g^{a})^{b} = g^{ab}\)</span>.</li>
+</ul>
+<p>They have landed on the <em>same</em> number, <span class="math inline">\(g^{ab} \bmod p\)</span>, without ever sending it. That shared value becomes the key to a private conversation.</p>
+<div id="43f60cc3" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> secrets</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Public, shouted across the room:</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="bn">0xFFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD129024E088A67CC74020BBEA63B139B22514A08798E3404DDEF9519B3CD3A431B302B0A6DF25F14374FE1356D6D51C245E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7EDEE386BFB5A899FA5AE9F24117C4B1FE649286651ECE45B3DC2007CB8A163BF0598DA48361C55D39A69163FA8FD24CF5F83655D23DCA3AD961C62F356208552BB9ED529077096966D670C354E4ABC9804F1746C08CA237327FFFFFFFFFFFFFFFF</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="dv">2</span>                                  <span class="co"># the standard RFC 3526 2048-bit group</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> secrets.randbelow(p <span class="op">-</span> <span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>       <span class="co"># Alice's secret, never transmitted</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> secrets.randbelow(p <span class="op">-</span> <span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>       <span class="co"># Bob's secret, never transmitted</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> <span class="bu">pow</span>(g, a, p)                       <span class="co"># Alice -&gt; Bob   (public)</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> <span class="bu">pow</span>(g, b, p)                       <span class="co"># Bob -&gt; Alice   (public)</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>alice_key <span class="op">=</span> <span class="bu">pow</span>(B, a, p)               <span class="co"># Alice computes g^(ba)</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>bob_key   <span class="op">=</span> <span class="bu">pow</span>(A, b, p)               <span class="co"># Bob   computes g^(ab)</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Alice and Bob agree on a shared secret:"</span>, alice_key <span class="op">==</span> bob_key)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first 16 hex digits of the shared key:"</span>, <span class="bu">format</span>(alice_key, <span class="st">'x'</span>)[:<span class="dv">16</span>], <span class="st">"..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Alice and Bob agree on a shared secret: True
+first 16 hex digits of the shared key: 1697d1a9a6c43adf ...</code></pre>
+</div>
+</div>
+<p>An eavesdropper, call her Eve, has been listening the whole time. She knows <span class="math inline">\(p\)</span>, <span class="math inline">\(g\)</span>, <span class="math inline">\(A\)</span>, and <span class="math inline">\(B\)</span>. What she wants is <span class="math inline">\(g^{ab}\)</span>, and the only obvious route there is to extract <span class="math inline">\(a\)</span> from <span class="math inline">\(A = g^a\)</span> or <span class="math inline">\(b\)</span> from <span class="math inline">\(B = g^b\)</span>, and that is exactly a discrete logarithm on a <span class="math inline">\(2048\)</span>-bit clock, the bolted door from the last section. Everything Alice and Bob said was public. The secret was never in the words; it was in the <em>return trip Eve cannot afford to take</em>. Doesn’t that just feel beautiful? The privacy comes not from hiding the messages but from an asymmetry in arithmetic.</p>
+</section>
+<section id="what-is-actually-being-assumed" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-actually-being-assumed">What is actually being assumed</h2>
+<p>It is worth being honest about the foundation here, because this kind of pattern shows up all the time in modern cryptography and the honesty is the interesting part. We did <em>not</em> prove that reversing the clock is hard. We showed that the best methods we know are about <span class="math inline">\(\sqrt{p}\)</span>, and we are <em>assuming</em>, on the strength of decades of failed attempts to do better, that no efficient shortcut exists. The security of Diffie–Hellman rests on the <strong>discrete logarithm assumption</strong>: that computing <span class="math inline">\(\log_g h \bmod p\)</span> is intractable for well-chosen large <span class="math inline">\(p\)</span>.</p>
+<p>This is a different sort of ground to stand on than a theorem like the Chinese Remainder Theorem, which is simply true. Here the guarantee is conditional, and the condition is a belief about the limits of computation. That belief is studied in its own right, as part of the broader project of pinning down which problems are inherently hard, the same territory mapped in Demaine, Gasarch, and Hajiaghayi’s lectures on algorithmic lower bounds <span class="citation" data-cites="demaine_hardness"><a href="#ref-demaine_hardness" role="doc-biblioref">[4]</a></span>. Two cautions come with the territory. First, the modulus must be chosen with care: special structure in <span class="math inline">\(p\)</span> can let index-calculus methods chew through the problem far faster than <span class="math inline">\(\sqrt{p}\)</span>, which is why one uses standardized “safe” primes and not just any large one. Second, the assumption is about <em>classical</em> computers. Shor’s algorithm would solve the discrete logarithm efficiently on a large quantum computer, which is precisely why the next generation of key exchange is being rebuilt on different hard problems. The hardness here is earned and provisional, not eternal, and knowing which is which is part of using it wisely.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>The whole story turns on one asymmetry. On the clock of integers modulo a prime, a generator <span class="math inline">\(g\)</span> lets you walk <span class="math inline">\(x\)</span> steps to reach <span class="math inline">\(g^x\)</span> with only a handful of squarings, but recovering the step count <span class="math inline">\(x\)</span> from where you landed, the discrete logarithm, costs about <span class="math inline">\(\sqrt{p}\)</span> work by the best methods known and is believed to have no real shortcut. Forward is a stroll, backward is a search, and the gap between them is not a flaw to be fixed but a resource to be spent. Diffie and Hellman spent it to let two strangers forge a shared secret in full public view, and that trick still sits underneath the padlock in your browser. A logarithm, the most ordinary undo button in arithmetic, becomes a one-way door the moment you move it onto a finite clock, and on the strength of that one-way door a remarkable amount of the modern world keeps its secrets.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>The Discrete Logarithm: Easy to Make, Hard to Undo</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/discrete-log/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-niven1991" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">I. Niven, H. S. Zuckerman, and H. L. Montgomery, <em>An introduction to the theory of numbers</em>, 5th ed. John Wiley &amp; Sons, 1991.</div>
+</div>
+<div id="ref-shanks1971" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">D. Shanks, <span>“Class number, a theory of factorization, and genera,”</span> in <em>1969 number theory institute</em>, vol. 20, in Proceedings of symposia in pure mathematics, vol. 20., American Mathematical Society, 1971, pp. 415–440.</div>
+</div>
+<div id="ref-diffie1976" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">W. Diffie and M. E. Hellman, <span>“New directions in cryptography,”</span> <em>IEEE Transactions on Information Theory</em>, vol. 22, no. 6, pp. 644–654, 1976.</div>
+</div>
+<div id="ref-demaine_hardness" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">E. D. Demaine, W. Gasarch, and M. Hajiaghayi, <span>“Algorithmic lower bounds: Fun with hardness proofs.”</span> <a href="https://hardness.mit.edu" class="uri">https://hardness.mit.edu</a>.</div>
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/terryfxh\.github\.io\/math-notes");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "The Discrete Logarithm: Easy to Make, Hard to Undo"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "Raising a number to a power on a clock face is a few multiplications; running it backwards is a search that the best known algorithms still measure in the square root of the haystack. That gap between forward and backward is the whole reason two strangers can agree on a secret in the open."</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-06-04</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [pure, applied, number-theory, computer-science, algorithms, cryptography]</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> ../../references.bib</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="an">draft:</span><span class="co"> false</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>Most of the operations we learn as children come with an undo button built in. Addition has subtraction, multiplication has division, squaring has the square root. You rarely think about the undo as a separate skill, because it costs about the same as the thing it reverses. This essay is about an operation where that symmetry quietly breaks. Going forward is cheap, a handful of multiplications. Going backward, as far as anyone knows, is a genuine search through an enormous space. And that single broken symmetry, the gap between how hard it is to do something and how hard it is to undo it, is the hinge that the security of much of the internet swings on.</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>Let me start, as we always should, with the smallest version of the picture.</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## First, put the numbers on a clock</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>Pick a prime, say $p = 7$, and throw away the multiples of $p$. You are left with the numbers $1, 2, 3, 4, 5, 6$, and the rule of the game is that you multiply as usual but then keep only the remainder after dividing by $7$. So $3 \times 4 = 12$, and $12 \bmod 7 = 5$. Multiplication has become a motion on a tiny clock face with the hours $1$ through $6$ written around it.</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>Now fix one number, call it $g$, and start walking: $g^1, g^2, g^3, \dots$, each step multiplying by $g$ again and wrapping around the clock. Take $g = 3$ and watch where the powers land modulo $7$:</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>3^1 = 3,\quad 3^2 = 2,\quad 3^3 = 6,\quad 3^4 = 4,\quad 3^5 = 5,\quad 3^6 = 1.</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>Look at what happened. The powers of $3$ swept out *every* nonzero hour, $\{1,2,3,4,5,6\}$, before returning home to $1$. A single number, multiplied by itself over and over, visited the entire clock. A number that does this is called a **primitive root**, and it tells us the clock is not a random scatter of hours but a single cycle in disguise. The hours are really the positions $0, 1, 2, \dots, 5$ along one big loop, and $g$ is the engine that drives us one step around it each time we multiply.</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>Take a moment to chew on that, because it is the whole geometric heart of the matter. Multiplying by $g$ looks like a messy, jumping operation, but it is secretly just *advancing one notch* on a circular track. The set $<span class="sc">\{</span>1, 2, \dots, p-1<span class="sc">\}</span>$ under multiplication mod $p$ is what algebraists call a cyclic group, and a primitive root is a generator that lays the whole group out as a single ring of evenly spaced beads. That such a generator always exists for a prime modulus is a real theorem, and Niven's congruence chapter proves it carefully @niven1991; for us the picture is enough.</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## The forward trip is a stroll; the return is a search</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>Here is the question that makes everything else go. Suppose I tell you the clock ($p$), the engine ($g$), and where I ended up after some number of steps ($h$). Can you tell me *how many steps* I took?</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>In symbols, you know $g$ and $h$ and the prime $p$, and you want the exponent $x$ with</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>g^{\,x} \equiv h \pmod{p}.</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>That exponent is called the **discrete logarithm** of $h$ to the base $g$, written $x = \log_g h$, and the name is honest: just as an ordinary logarithm asks "to what power must I raise the base," this one asks the same question, only now inside the finite world of the clock.</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>Going forward is genuinely easy. To compute $g^x \bmod p$ you never multiply $x$ times. You square and climb: from $g$ you get $g^2$, square that for $g^4$, then $g^8$, and so on, picking out the powers you need according to the binary digits of $x$. A number $x$ with a few hundred binary digits takes only a few hundred squarings. Forward is a short stroll, no matter how astronomically large $x$ is.</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="dv">1_000_000_007</span>          <span class="co"># a prime modulus</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="dv">5</span>                      <span class="co"># a primitive root mod p (it sweeps out the whole clock)</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">123_456_789</span>            <span class="co"># the number of steps -- our secret</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> <span class="bu">pow</span>(g, x, p)           <span class="co"># square-and-multiply: a few dozen multiplications, instant</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"walking </span><span class="sc">{</span>x<span class="sc">}</span><span class="ss"> steps from g=</span><span class="sc">{</span>g<span class="sc">}</span><span class="ss"> lands at h = </span><span class="sc">{</span>h<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>Now try to go back. You are handed $h = 372224738$ and asked which $x$ produced it. There is no clever inverse formula waiting; you appear to be stuck searching. The most naive approach is to take steps $g^1, g^2, g^3, \dots$ and wait until one of them equals $h$. On a clock with $p - 1$ hours that is up to a billion steps here, and for the primes used in practice it is a number with hundreds of digits, more steps than there are atoms within reach. The forward trip and the return trip live in completely different worlds of difficulty. Now is a great time to pause and ask: is the return really as hopeless as brute force, or is there something smarter?</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Meeting in the middle: baby steps and giant steps</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>There is something smarter, and it is a beautiful, almost physical idea. At first glance the search looks like a billion-step slog, but let us break down what we are actually doing and reorganize it.</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>We want $g^x = h$. Split the unknown exponent into a *giant* part and a *baby* part. Choose a stride length $m \approx \sqrt{p}$ and write</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>x = i\,m + j, \qquad 0 \le j &lt; m,\ \ 0 \le i &lt; m.</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>Every exponent up to $p-1$ can be written this way: $i$ counts how many giant strides of length $m$ you take, and $j$ is the small leftover. Substitute and rearrange:</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>g^{\,im + j} = h</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>\quad\Longleftrightarrow\quad</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>g^{\,j} = h \cdot \left(g^{-m}\right)^{i}.</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>Stare at that rearrangement, because it is the trick in one line. The left side depends only on the baby part $j$; the right side depends only on the giant part $i$. We have separated the two unknowns onto opposite banks of the equation.</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>So we work each side independently and let them meet. First take all the **baby steps**: compute $g^0, g^1, \dots, g^{m-1}$ and drop them into a lookup table, each value remembering its exponent $j$. That is about $\sqrt{p}$ multiplications and $\sqrt{p}$ memory. Then take **giant steps**: starting from $h$, repeatedly multiply by $g^{-m}$, producing $h, h g^{-m}, h g^{-2m}, \dots$. After the $i$-th giant step you are holding the right-hand side $h \cdot (g^{-m})^i$. The moment that value appears in your baby-step table, you have found a match: the table hands you $j$, you already know $i$, and $x = im + j$ falls out. This is Shanks's baby-step giant-step algorithm @shanks1971.</span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> isqrt</span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> discrete_log_bsgs(g, h, p):</span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Smallest x &gt;= 0 with g^x = h (mod p), by meeting in the middle."""</span></span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> p <span class="op">-</span> <span class="dv">1</span>                          <span class="co"># we search exponents over the group's size</span></span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> isqrt(n) <span class="op">+</span> <span class="dv">1</span>                   <span class="co"># stride length ~ sqrt(p)</span></span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Baby steps: tabulate g^0, g^1, ..., g^(m-1), remembering each exponent.</span></span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a>    table, value <span class="op">=</span> {}, <span class="dv">1</span></span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(m):</span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>        table.setdefault(value, j)</span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>        value <span class="op">=</span> value <span class="op">*</span> g <span class="op">%</span> p</span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Giant steps: multiply h by g^(-m) repeatedly until we hit a baby step.</span></span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a>    stride <span class="op">=</span> <span class="bu">pow</span>(g, <span class="op">-</span>m, p)             <span class="co"># g^(-m) mod p</span></span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a>    current <span class="op">=</span> h</span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(m):</span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="kw">in</span> table:</span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> i <span class="op">*</span> m <span class="op">+</span> table[current]</span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> current <span class="op">*</span> stride <span class="op">%</span> p</span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span>                        <span class="co"># h is not a power of g</span></span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a>recovered <span class="op">=</span> discrete_log_bsgs(g, h, p)</span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"recovered x = </span><span class="sc">{</span>recovered<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"check: g^x mod p reproduces h? </span><span class="sc">{</span><span class="bu">pow</span>(g, recovered, p) <span class="op">==</span> h<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a>The same problem that needed a billion brute-force steps is now solved in a few tens of thousands. The reason is the trade we made: instead of one list of length $p$, we used two lists of length $\sqrt{p}$ and let them collide. You might have already guessed where this leaves us. The discrete logarithm is *not* impossibly hard. It is $\sqrt{p}$ hard, and there are deeper methods (index calculus, Pollard's rho) that do better still on the storage. The art of choosing safe parameters is the art of making $\sqrt{p}$, even after every such improvement, larger than any computation anyone could ever run.</span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a><span class="co"># Why size is everything: the meet-in-the-middle work grows like the square root.</span></span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bits <span class="kw">in</span> [<span class="dv">30</span>, <span class="dv">256</span>, <span class="dv">2048</span>]:</span>
+<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a>    half <span class="op">=</span> bits <span class="op">//</span> <span class="dv">2</span>                  <span class="co"># log2 of the work, since work ~ sqrt(p) = 2^(bits/2)</span></span>
+<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a>    digits <span class="op">=</span> <span class="bu">len</span>(<span class="bu">str</span>(<span class="dv">2</span> <span class="op">**</span> half))      <span class="co"># exact integer count, no floating-point overflow</span></span>
+<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>bits<span class="sc">:&gt;4}</span><span class="ss">-bit prime:  ~ 2^</span><span class="sc">{</span>half<span class="sc">}</span><span class="ss"> operations, a number with </span><span class="sc">{</span>digits<span class="sc">}</span><span class="ss"> decimal digits"</span>)</span>
+<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a>A $30$-bit clock, like the one in our code, cracks in a flash. A $2048$-bit clock, the everyday size for this kind of cryptography, asks for about $2^{1024}$ operations to reverse, a quantity so far past physical possibility that the word "impossible" is, for once, the careful word and not the lazy one. The forward door stays a stroll; the backward door is bolted by the square root of an astronomical number.</span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two strangers, one secret, said out loud</span></span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>Now we can do the thing that should feel like a magic trick. In 1976, Whitfield Diffie and Martin Hellman noticed that this one-way clock lets two people who have never met agree on a shared secret while shouting everything they say across a crowded room @diffie1976. Here is the whole protocol, and the asymmetry above is the only thing holding it up.</span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a>Alice and Bob agree, in public, on a large prime $p$ and a generator $g$. Anyone may hear these. Then:</span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Alice picks a secret number $a$, computes $A = g^{a} \bmod p$, and sends $A$ across the room. Forward trip: easy for her.</span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Bob picks a secret number $b$, computes $B = g^{b} \bmod p$, and sends $B$ back. Easy for him.</span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Alice raises what she received to her own secret: $B^{a} = (g^{b})^{a} = g^{ab}$.</span>
+<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Bob does the mirror image: $A^{b} = (g^{a})^{b} = g^{ab}$.</span>
+<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-124"><a href="#cb9-124" aria-hidden="true" tabindex="-1"></a>They have landed on the *same* number, $g^{ab} \bmod p$, without ever sending it. That shared value becomes the key to a private conversation.</span>
+<span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-128"><a href="#cb9-128" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb9-129"><a href="#cb9-129" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> secrets</span>
+<span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a><span class="co"># Public, shouted across the room:</span></span>
+<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="bn">0xFFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD129024E088A67CC74020BBEA63B139B22514A08798E3404DDEF9519B3CD3A431B302B0A6DF25F14374FE1356D6D51C245E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7EDEE386BFB5A899FA5AE9F24117C4B1FE649286651ECE45B3DC2007CB8A163BF0598DA48361C55D39A69163FA8FD24CF5F83655D23DCA3AD961C62F356208552BB9ED529077096966D670C354E4ABC9804F1746C08CA237327FFFFFFFFFFFFFFFF</span></span>
+<span id="cb9-133"><a href="#cb9-133" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="dv">2</span>                                  <span class="co"># the standard RFC 3526 2048-bit group</span></span>
+<span id="cb9-134"><a href="#cb9-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-135"><a href="#cb9-135" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> secrets.randbelow(p <span class="op">-</span> <span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>       <span class="co"># Alice's secret, never transmitted</span></span>
+<span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> secrets.randbelow(p <span class="op">-</span> <span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>       <span class="co"># Bob's secret, never transmitted</span></span>
+<span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> <span class="bu">pow</span>(g, a, p)                       <span class="co"># Alice -&gt; Bob   (public)</span></span>
+<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> <span class="bu">pow</span>(g, b, p)                       <span class="co"># Bob -&gt; Alice   (public)</span></span>
+<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a>alice_key <span class="op">=</span> <span class="bu">pow</span>(B, a, p)               <span class="co"># Alice computes g^(ba)</span></span>
+<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a>bob_key   <span class="op">=</span> <span class="bu">pow</span>(A, b, p)               <span class="co"># Bob   computes g^(ab)</span></span>
+<span id="cb9-143"><a href="#cb9-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-144"><a href="#cb9-144" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Alice and Bob agree on a shared secret:"</span>, alice_key <span class="op">==</span> bob_key)</span>
+<span id="cb9-145"><a href="#cb9-145" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first 16 hex digits of the shared key:"</span>, <span class="bu">format</span>(alice_key, <span class="st">'x'</span>)[:<span class="dv">16</span>], <span class="st">"..."</span>)</span>
+<span id="cb9-146"><a href="#cb9-146" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-147"><a href="#cb9-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-148"><a href="#cb9-148" aria-hidden="true" tabindex="-1"></a>An eavesdropper, call her Eve, has been listening the whole time. She knows $p$, $g$, $A$, and $B$. What she wants is $g^{ab}$, and the only obvious route there is to extract $a$ from $A = g^a$ or $b$ from $B = g^b$, and that is exactly a discrete logarithm on a $2048$-bit clock, the bolted door from the last section. Everything Alice and Bob said was public. The secret was never in the words; it was in the *return trip Eve cannot afford to take*. Doesn't that just feel beautiful? The privacy comes not from hiding the messages but from an asymmetry in arithmetic.</span>
+<span id="cb9-149"><a href="#cb9-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-150"><a href="#cb9-150" aria-hidden="true" tabindex="-1"></a><span class="fu">## What is actually being assumed</span></span>
+<span id="cb9-151"><a href="#cb9-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-152"><a href="#cb9-152" aria-hidden="true" tabindex="-1"></a>It is worth being honest about the foundation here, because this kind of pattern shows up all the time in modern cryptography and the honesty is the interesting part. We did *not* prove that reversing the clock is hard. We showed that the best methods we know are about $\sqrt{p}$, and we are *assuming*, on the strength of decades of failed attempts to do better, that no efficient shortcut exists. The security of Diffie–Hellman rests on the **discrete logarithm assumption**: that computing $\log_g h \bmod p$ is intractable for well-chosen large $p$.</span>
+<span id="cb9-153"><a href="#cb9-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-154"><a href="#cb9-154" aria-hidden="true" tabindex="-1"></a>This is a different sort of ground to stand on than a theorem like the Chinese Remainder Theorem, which is simply true. Here the guarantee is conditional, and the condition is a belief about the limits of computation. That belief is studied in its own right, as part of the broader project of pinning down which problems are inherently hard, the same territory mapped in Demaine, Gasarch, and Hajiaghayi's lectures on algorithmic lower bounds @demaine_hardness. Two cautions come with the territory. First, the modulus must be chosen with care: special structure in $p$ can let index-calculus methods chew through the problem far faster than $\sqrt{p}$, which is why one uses standardized "safe" primes and not just any large one. Second, the assumption is about *classical* computers. Shor's algorithm would solve the discrete logarithm efficiently on a large quantum computer, which is precisely why the next generation of key exchange is being rebuilt on different hard problems. The hardness here is earned and provisional, not eternal, and knowing which is which is part of using it wisely.</span>
+<span id="cb9-155"><a href="#cb9-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-156"><a href="#cb9-156" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to remember</span></span>
+<span id="cb9-157"><a href="#cb9-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-158"><a href="#cb9-158" aria-hidden="true" tabindex="-1"></a>The whole story turns on one asymmetry. On the clock of integers modulo a prime, a generator $g$ lets you walk $x$ steps to reach $g^x$ with only a handful of squarings, but recovering the step count $x$ from where you landed, the discrete logarithm, costs about $\sqrt{p}$ work by the best methods known and is believed to have no real shortcut. Forward is a stroll, backward is a search, and the gap between them is not a flaw to be fixed but a resource to be spent. Diffie and Hellman spent it to let two strangers forge a shared secret in full public view, and that trick still sits underneath the padlock in your browser. A logarithm, the most ordinary undo button in arithmetic, becomes a one-way door the moment you move it onto a finite clock, and on the strength of that one-way door a remarkable amount of the modern world keeps its secrets.</span>
+<span id="cb9-159"><a href="#cb9-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-160"><a href="#cb9-160" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb9-161"><a href="#cb9-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-162"><a href="#cb9-162" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *The Discrete Logarithm: Easy to Make, Hard to Undo*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/discrete-log/`</span><span class="at">.</span></span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Terry Fang · All rights reserved · Reproduction or republication in any form requires attribution and the author’s prior permission.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
