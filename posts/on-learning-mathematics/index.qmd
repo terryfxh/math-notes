@@ -13,7 +13,7 @@ draft: false
 [— Bertrand Russell, *The Study of Mathematics*]{.attribution}
 :::
 
-If you've ever finished a whole problem set and still felt a small, private doubt — *am I actually learning this, or just getting better at repeating it?* — then this one is for you. Pull up a chair. I want to talk this through the way I'd talk to a friend across the table, slowly, until it actually makes sense.
+If you've ever finished a whole problem set and still felt a small, private doubt — *am I actually learning this, or just getting better at repeating it?* — then this one is for you. So let's pull up a chair and reason it through slowly, from the beginning, until the answer actually holds together.
 
 ## Start by asking yourself a harder question
 
@@ -23,7 +23,7 @@ Doing a lot of problems doesn't mean you've *learned* mathematics. It might just
 
 I don't ask this to make you anxious. I ask it because the answer changes everything about how you should spend your hours. And here's the thing I've come to believe: mathematical ability isn't one dial. It's several forces braided together — what you can hold in your head, the pictures you've built to hold it, your instinct for which move to try, your internalized sense of what counts as a real reason, and whether you can stay steady when a problem refuses to budge. Pull on any single one of those threads and call it "the whole thing," and you'll get a story that's tidy and wrong.
 
-So when people say "solving problems is about wisdom, not raw intelligence" — they're pointing the right way, but the sentence is too smooth. Its virtue is that it refuses a lazy fatalism, the idea that math is just your IQ showing through. Its flaw is that it makes "wisdom" sound like a small formula: learn a few principles and the ceiling disappears. It doesn't quite. Let's keep that sentence on the table and take it apart together.
+So when people say "solving problems is about wisdom, not raw intelligence" — they're pointing the right way, but the sentence is too smooth. Its virtue is that it refuses a lazy fatalism, the idea that math is just your IQ showing through. Its flaw is that it makes "wisdom" sound like a small formula: learn a few principles and the ceiling disappears. It doesn't quite. Let's keep that sentence on the table and take it apart.
 
 ## Wisdom is not the shadow of IQ
 
@@ -47,7 +47,7 @@ But the thing to worry about was never intuition. It's **untrained** intuition. 
 
 Tao describes a mathematician's development in three stages, and once you see them you can't unsee them. First comes the *pre-rigorous* stage: you reason with pictures, with hand-waving, with examples — vague, but alive. Then the *rigorous* stage: you learn to work in precise language, to build careful formal arguments, and — crucially — to *distrust* your intuition for a while, because you need the discipline of not believing yourself until you've checked. Most people think that's the summit. It isn't. The real destination is the *post-rigorous* stage, where rigor has sunk so deep it's become instinct, and *because* of that you can return to intuition and trust it again — only now it's intuition that's been trained by years of proof. You can feel your way past the details and still know, at any moment, exactly how you'd nail one down if pressed.
 
-Sit with that for a second, because it quietly dissolves the whole fake war between feeling and rigor.
+That picture quietly dissolves the whole fake war between feeling and rigor.
 
 Intuition and rigor aren't a relay where one hands off to the other and leaves. They *tame each other.* Intuition gives you a direction; rigor is the brake. And then — this is the part people miss — every rigorous argument reaches back and reshapes the intuition that sent you there, so the next time you "see" the problem, you see it more truly. That's what mathematical maturity actually is: not a staircase climbing in one direction, but a current moving back and forth.
 
@@ -77,7 +77,7 @@ Maturity in mathematics is rarely "I'm smarter than you." It's "I learned, earli
 
 ## Before AI, hold onto the thing called learning
 
-AI has genuinely changed the situation we're learning in. I'm not going to pretend otherwise, and I'm not going to drown you in study summaries to prove it — you've felt the shift yourself. The real question was never *will it come into the classroom.* It's *what will it turn the classroom into.*
+AI has genuinely changed the situation we're learning in. I'm not going to pretend otherwise, and I won't pile on study summaries to prove it; the shift is plain enough on its own. The real question was never *will it come into the classroom.* It's *what will it turn the classroom into.*
 
 The two slogans I'd push back on hardest are mirror images again. One: "It's just a tool, use it freely." The other: "It'll destroy learning, don't touch it." Both are too coarse.
 
@@ -101,9 +101,7 @@ The core of learning mathematics isn't how many results you've memorized. It's t
 
 As for mathematics itself — it's neither an ocean of drills nor a fog of abstraction. It's one of the ways human beings pursue clarity *under strict constraint.* And once you see it that way, "learning math" stops being about chasing the right answer. It becomes training a certain kind of mind: one that isn't easily fooled by appearances, by names, by authority, or by shortcuts.
 
-Feynman called it the pleasure of finding things out. Sanderson calls it the *aha.* Tao calls it intuition that rigor has trained. Different names, the same bird — that small, clean lift in your chest the moment you finally *see* a structure for what it is.
-
-Doesn't that just feel beautiful?
+Feynman called it the pleasure of finding things out. Sanderson calls it the *aha.* Tao calls it intuition that rigor has trained. Three names for the same bird — that small, clean lift the moment a structure finally resolves into something you can see. That, I have come to think, is where the real beauty of mathematics lives.
 
 ## What I'm still not sure about
 
