@@ -26,7 +26,8 @@ website:
         href: https://github.com/terryfxh
         aria-label: GitHub
   page-footer:
-    left: "© 2026 Terry Fang"
+    border: true
+    left: "© 2026 Terry Fang · All rights reserved · Reproduction or republication in any form requires attribution and the author's prior permission."
     right: "Built with [Quarto](https://quarto.org)"
 
 format:
