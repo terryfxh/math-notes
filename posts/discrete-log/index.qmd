@@ -1,0 +1,154 @@
+---
+title: "The Discrete Logarithm: Easy to Make, Hard to Undo"
+description: "Raising a number to a power on a clock face is a few multiplications; running it backwards is a search that the best known algorithms still measure in the square root of the haystack. That gap between forward and backward is the whole reason two strangers can agree on a secret in the open."
+date: 2026-06-04
+categories: [pure, applied, number-theory, computer-science, algorithms, cryptography]
+bibliography: ../../references.bib
+draft: false
+---
+
+Most of the operations we learn as children come with an undo button built in. Addition has subtraction, multiplication has division, squaring has the square root. You rarely think about the undo as a separate skill, because it costs about the same as the thing it reverses. This essay is about an operation where that symmetry quietly breaks. Going forward is cheap, a handful of multiplications. Going backward, as far as anyone knows, is a genuine search through an enormous space. And that single broken symmetry, the gap between how hard it is to do something and how hard it is to undo it, is the hinge that the security of much of the internet swings on.
+
+Let me start, as we always should, with the smallest version of the picture.
+
+## First, put the numbers on a clock
+
+Pick a prime, say $p = 7$, and throw away the multiples of $p$. You are left with the numbers $1, 2, 3, 4, 5, 6$, and the rule of the game is that you multiply as usual but then keep only the remainder after dividing by $7$. So $3 \times 4 = 12$, and $12 \bmod 7 = 5$. Multiplication has become a motion on a tiny clock face with the hours $1$ through $6$ written around it.
+
+Now fix one number, call it $g$, and start walking: $g^1, g^2, g^3, \dots$, each step multiplying by $g$ again and wrapping around the clock. Take $g = 3$ and watch where the powers land modulo $7$:
+$$
+3^1 = 3,\quad 3^2 = 2,\quad 3^3 = 6,\quad 3^4 = 4,\quad 3^5 = 5,\quad 3^6 = 1.
+$$
+Look at what happened. The powers of $3$ swept out *every* nonzero hour, $\{1,2,3,4,5,6\}$, before returning home to $1$. A single number, multiplied by itself over and over, visited the entire clock. A number that does this is called a **primitive root**, and it tells us the clock is not a random scatter of hours but a single cycle in disguise. The hours are really the positions $0, 1, 2, \dots, 5$ along one big loop, and $g$ is the engine that drives us one step around it each time we multiply.
+
+Take a moment to chew on that, because it is the whole geometric heart of the matter. Multiplying by $g$ looks like a messy, jumping operation, but it is secretly just *advancing one notch* on a circular track. The set $\{1, 2, \dots, p-1\}$ under multiplication mod $p$ is what algebraists call a cyclic group, and a primitive root is a generator that lays the whole group out as a single ring of evenly spaced beads. That such a generator always exists for a prime modulus is a real theorem, and Niven's congruence chapter proves it carefully @niven1991; for us the picture is enough.
+
+## The forward trip is a stroll; the return is a search
+
+Here is the question that makes everything else go. Suppose I tell you the clock ($p$), the engine ($g$), and where I ended up after some number of steps ($h$). Can you tell me *how many steps* I took?
+
+In symbols, you know $g$ and $h$ and the prime $p$, and you want the exponent $x$ with
+$$
+g^{\,x} \equiv h \pmod{p}.
+$$
+That exponent is called the **discrete logarithm** of $h$ to the base $g$, written $x = \log_g h$, and the name is honest: just as an ordinary logarithm asks "to what power must I raise the base," this one asks the same question, only now inside the finite world of the clock.
+
+Going forward is genuinely easy. To compute $g^x \bmod p$ you never multiply $x$ times. You square and climb: from $g$ you get $g^2$, square that for $g^4$, then $g^8$, and so on, picking out the powers you need according to the binary digits of $x$. A number $x$ with a few hundred binary digits takes only a few hundred squarings. Forward is a short stroll, no matter how astronomically large $x$ is.
+
+```{python}
+p = 1_000_000_007          # a prime modulus
+g = 5                      # a primitive root mod p (it sweeps out the whole clock)
+x = 123_456_789            # the number of steps -- our secret
+
+h = pow(g, x, p)           # square-and-multiply: a few dozen multiplications, instant
+print(f"walking {x} steps from g={g} lands at h = {h}")
+```
+
+Now try to go back. You are handed $h = 372224738$ and asked which $x$ produced it. There is no clever inverse formula waiting; you appear to be stuck searching. The most naive approach is to take steps $g^1, g^2, g^3, \dots$ and wait until one of them equals $h$. On a clock with $p - 1$ hours that is up to a billion steps here, and for the primes used in practice it is a number with hundreds of digits, more steps than there are atoms within reach. The forward trip and the return trip live in completely different worlds of difficulty. Now is a great time to pause and ask: is the return really as hopeless as brute force, or is there something smarter?
+
+## Meeting in the middle: baby steps and giant steps
+
+There is something smarter, and it is a beautiful, almost physical idea. At first glance the search looks like a billion-step slog, but let us break down what we are actually doing and reorganize it.
+
+We want $g^x = h$. Split the unknown exponent into a *giant* part and a *baby* part. Choose a stride length $m \approx \sqrt{p}$ and write
+$$
+x = i\,m + j, \qquad 0 \le j < m,\ \ 0 \le i < m.
+$$
+Every exponent up to $p-1$ can be written this way: $i$ counts how many giant strides of length $m$ you take, and $j$ is the small leftover. Substitute and rearrange:
+$$
+g^{\,im + j} = h
+\quad\Longleftrightarrow\quad
+g^{\,j} = h \cdot \left(g^{-m}\right)^{i}.
+$$
+Stare at that rearrangement, because it is the trick in one line. The left side depends only on the baby part $j$; the right side depends only on the giant part $i$. We have separated the two unknowns onto opposite banks of the equation.
+
+So we work each side independently and let them meet. First take all the **baby steps**: compute $g^0, g^1, \dots, g^{m-1}$ and drop them into a lookup table, each value remembering its exponent $j$. That is about $\sqrt{p}$ multiplications and $\sqrt{p}$ memory. Then take **giant steps**: starting from $h$, repeatedly multiply by $g^{-m}$, producing $h, h g^{-m}, h g^{-2m}, \dots$. After the $i$-th giant step you are holding the right-hand side $h \cdot (g^{-m})^i$. The moment that value appears in your baby-step table, you have found a match: the table hands you $j$, you already know $i$, and $x = im + j$ falls out. This is Shanks's baby-step giant-step algorithm @shanks1971.
+
+```{python}
+from math import isqrt
+
+def discrete_log_bsgs(g, h, p):
+    """Smallest x >= 0 with g^x = h (mod p), by meeting in the middle."""
+    n = p - 1                          # we search exponents over the group's size
+    m = isqrt(n) + 1                   # stride length ~ sqrt(p)
+
+    # Baby steps: tabulate g^0, g^1, ..., g^(m-1), remembering each exponent.
+    table, value = {}, 1
+    for j in range(m):
+        table.setdefault(value, j)
+        value = value * g % p
+
+    # Giant steps: multiply h by g^(-m) repeatedly until we hit a baby step.
+    stride = pow(g, -m, p)             # g^(-m) mod p
+    current = h
+    for i in range(m):
+        if current in table:
+            return i * m + table[current]
+        current = current * stride % p
+    return None                        # h is not a power of g
+
+recovered = discrete_log_bsgs(g, h, p)
+print(f"recovered x = {recovered}")
+print(f"check: g^x mod p reproduces h? {pow(g, recovered, p) == h}")
+```
+
+The same problem that needed a billion brute-force steps is now solved in a few tens of thousands. The reason is the trade we made: instead of one list of length $p$, we used two lists of length $\sqrt{p}$ and let them collide. You might have already guessed where this leaves us. The discrete logarithm is *not* impossibly hard. It is $\sqrt{p}$ hard, and there are deeper methods (index calculus, Pollard's rho) that do better still on the storage. The art of choosing safe parameters is the art of making $\sqrt{p}$, even after every such improvement, larger than any computation anyone could ever run.
+
+```{python}
+# Why size is everything: the meet-in-the-middle work grows like the square root.
+for bits in [30, 256, 2048]:
+    half = bits // 2                  # log2 of the work, since work ~ sqrt(p) = 2^(bits/2)
+    digits = len(str(2 ** half))      # exact integer count, no floating-point overflow
+    print(f"{bits:>4}-bit prime:  ~ 2^{half} operations, a number with {digits} decimal digits")
+```
+
+A $30$-bit clock, like the one in our code, cracks in a flash. A $2048$-bit clock, the everyday size for this kind of cryptography, asks for about $2^{1024}$ operations to reverse, a quantity so far past physical possibility that the word "impossible" is, for once, the careful word and not the lazy one. The forward door stays a stroll; the backward door is bolted by the square root of an astronomical number.
+
+## Two strangers, one secret, said out loud
+
+Now we can do the thing that should feel like a magic trick. In 1976, Whitfield Diffie and Martin Hellman noticed that this one-way clock lets two people who have never met agree on a shared secret while shouting everything they say across a crowded room @diffie1976. Here is the whole protocol, and the asymmetry above is the only thing holding it up.
+
+Alice and Bob agree, in public, on a large prime $p$ and a generator $g$. Anyone may hear these. Then:
+
+- Alice picks a secret number $a$, computes $A = g^{a} \bmod p$, and sends $A$ across the room. Forward trip: easy for her.
+- Bob picks a secret number $b$, computes $B = g^{b} \bmod p$, and sends $B$ back. Easy for him.
+- Alice raises what she received to her own secret: $B^{a} = (g^{b})^{a} = g^{ab}$.
+- Bob does the mirror image: $A^{b} = (g^{a})^{b} = g^{ab}$.
+
+They have landed on the *same* number, $g^{ab} \bmod p$, without ever sending it. That shared value becomes the key to a private conversation.
+
+```{python}
+import secrets
+
+# Public, shouted across the room:
+p = 0xFFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD129024E088A67CC74020BBEA63B139B22514A08798E3404DDEF9519B3CD3A431B302B0A6DF25F14374FE1356D6D51C245E485B576625E7EC6F44C42E9A637ED6B0BFF5CB6F406B7EDEE386BFB5A899FA5AE9F24117C4B1FE649286651ECE45B3DC2007CB8A163BF0598DA48361C55D39A69163FA8FD24CF5F83655D23DCA3AD961C62F356208552BB9ED529077096966D670C354E4ABC9804F1746C08CA237327FFFFFFFFFFFFFFFF
+g = 2                                  # the standard RFC 3526 2048-bit group
+
+a = secrets.randbelow(p - 2) + 1       # Alice's secret, never transmitted
+b = secrets.randbelow(p - 2) + 1       # Bob's secret, never transmitted
+
+A = pow(g, a, p)                       # Alice -> Bob   (public)
+B = pow(g, b, p)                       # Bob -> Alice   (public)
+
+alice_key = pow(B, a, p)               # Alice computes g^(ba)
+bob_key   = pow(A, b, p)               # Bob   computes g^(ab)
+
+print("Alice and Bob agree on a shared secret:", alice_key == bob_key)
+print("first 16 hex digits of the shared key:", format(alice_key, 'x')[:16], "...")
+```
+
+An eavesdropper, call her Eve, has been listening the whole time. She knows $p$, $g$, $A$, and $B$. What she wants is $g^{ab}$, and the only obvious route there is to extract $a$ from $A = g^a$ or $b$ from $B = g^b$, and that is exactly a discrete logarithm on a $2048$-bit clock, the bolted door from the last section. Everything Alice and Bob said was public. The secret was never in the words; it was in the *return trip Eve cannot afford to take*. Doesn't that just feel beautiful? The privacy comes not from hiding the messages but from an asymmetry in arithmetic.
+
+## What is actually being assumed
+
+It is worth being honest about the foundation here, because this kind of pattern shows up all the time in modern cryptography and the honesty is the interesting part. We did *not* prove that reversing the clock is hard. We showed that the best methods we know are about $\sqrt{p}$, and we are *assuming*, on the strength of decades of failed attempts to do better, that no efficient shortcut exists. The security of Diffie–Hellman rests on the **discrete logarithm assumption**: that computing $\log_g h \bmod p$ is intractable for well-chosen large $p$.
+
+This is a different sort of ground to stand on than a theorem like the Chinese Remainder Theorem, which is simply true. Here the guarantee is conditional, and the condition is a belief about the limits of computation. That belief is studied in its own right, as part of the broader project of pinning down which problems are inherently hard, the same territory mapped in Demaine, Gasarch, and Hajiaghayi's lectures on algorithmic lower bounds @demaine_hardness. Two cautions come with the territory. First, the modulus must be chosen with care: special structure in $p$ can let index-calculus methods chew through the problem far faster than $\sqrt{p}$, which is why one uses standardized "safe" primes and not just any large one. Second, the assumption is about *classical* computers. Shor's algorithm would solve the discrete logarithm efficiently on a large quantum computer, which is precisely why the next generation of key exchange is being rebuilt on different hard problems. The hardness here is earned and provisional, not eternal, and knowing which is which is part of using it wisely.
+
+## What to remember
+
+The whole story turns on one asymmetry. On the clock of integers modulo a prime, a generator $g$ lets you walk $x$ steps to reach $g^x$ with only a handful of squarings, but recovering the step count $x$ from where you landed, the discrete logarithm, costs about $\sqrt{p}$ work by the best methods known and is believed to have no real shortcut. Forward is a stroll, backward is a search, and the gap between them is not a flaw to be fixed but a resource to be spent. Diffie and Hellman spent it to let two strangers forge a shared secret in full public view, and that trick still sits underneath the padlock in your browser. A logarithm, the most ordinary undo button in arithmetic, becomes a one-way door the moment you move it onto a finite clock, and on the strength of that one-way door a remarkable amount of the modern world keeps its secrets.
+
+## How to cite
+
+> Terry (2026). *The Discrete Logarithm: Easy to Make, Hard to Undo*. Retrieved from `https://terryfxh.github.io/math-notes/posts/discrete-log/`.
