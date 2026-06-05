@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/domino-tilings/index.html",
       "/posts/discrete-log/index.html",
       "/posts/on-learning-mathematics/index.html",
       "/posts/chinese-remainder-theorem/index.html",

@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-06-06">
+<meta name="description" content="Counting the ways to tile a board with dominoes looks like a programming exercise, but the same count is an entry of a matrix raised to a power, a root of a characteristic polynomial, and a coefficient of a generating function. They are all one object seen from different rooms.">
+
+<title>Counting Domino Tilings: When Dynamic Programming Is a Matrix – (Terry) Xihan Fang — Math Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-2e1787f35859f4e47328aef9885308b8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Counting Domino Tilings: When Dynamic Programming Is a Matrix – (Terry) Xihan Fang — Math Notes">
+<meta property="og:description" content="Counting the ways to tile a board with dominoes looks like a programming exercise, but the same count is an entry of a matrix raised to a power, a root of a characteristic polynomial, and a coefficient of a generating function. They are all one object seen from different rooms.">
+<meta property="og:site_name" content="(Terry) Xihan Fang — Math Notes">
+<meta name="twitter:title" content="Counting Domino Tilings: When Dynamic Programming Is a Matrix – (Terry) Xihan Fang — Math Notes">
+<meta name="twitter:description" content="Counting the ways to tile a board with dominoes looks like a programming exercise, but the same count is an entry of a matrix raised to a power, a root of a characteristic polynomial, and a coefficient of a generating function. They are all one object seen from different rooms.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">(Terry) Xihan Fang — Math Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/terryfxh"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#first-the-thinnest-board" id="toc-first-the-thinnest-board" class="nav-link active" data-scroll-target="#first-the-thinnest-board">First, the thinnest board</a></li>
+  <li><a href="#the-reframe-one-step-of-dp-is-one-multiply-by-a-matrix" id="toc-the-reframe-one-step-of-dp-is-one-multiply-by-a-matrix" class="nav-link" data-scroll-target="#the-reframe-one-step-of-dp-is-one-multiply-by-a-matrix">The reframe: one step of DP is one multiply by a matrix</a></li>
+  <li><a href="#what-the-matrix-knows-a-closed-form-falls-out" id="toc-what-the-matrix-knows-a-closed-form-falls-out" class="nav-link" data-scroll-target="#what-the-matrix-knows-a-closed-form-falls-out">What the matrix knows: a closed form falls out</a></li>
+  <li><a href="#up-a-dimension-the-transfer-matrix" id="toc-up-a-dimension-the-transfer-matrix" class="nav-link" data-scroll-target="#up-a-dimension-the-transfer-matrix">Up a dimension: the transfer matrix</a></li>
+  <li><a href="#the-growth-rate-hiding-in-the-largest-eigenvalue" id="toc-the-growth-rate-hiding-in-the-largest-eigenvalue" class="nav-link" data-scroll-target="#the-growth-rate-hiding-in-the-largest-eigenvalue">The growth rate hiding in the largest eigenvalue</a></li>
+  <li><a href="#what-to-remember" id="toc-what-to-remember" class="nav-link" data-scroll-target="#what-to-remember">What to remember</a></li>
+  <li><a href="#how-to-cite" id="toc-how-to-cite" class="nav-link" data-scroll-target="#how-to-cite">How to cite</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Counting Domino Tilings: When Dynamic Programming Is a Matrix</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">pure</div>
+    <div class="quarto-category">applied</div>
+    <div class="quarto-category">combinatorics</div>
+    <div class="quarto-category">computer-science</div>
+    <div class="quarto-category">algorithms</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Counting the ways to tile a board with dominoes looks like a programming exercise, but the same count is an entry of a matrix raised to a power, a root of a characteristic polynomial, and a coefficient of a generating function. They are all one object seen from different rooms.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 6, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="epigraph">
+<p>“A mathematician, like a painter or a poet, is a maker of patterns. If his patterns are more permanent than theirs, it is because they are made with ideas.”</p>
+<p><span class="attribution">— G. H. Hardy, <em>A Mathematician’s Apology</em> (1940)</span></p>
+</div>
+<p>Here is a question a child can pose and a computer scientist can lose an afternoon to. You have a board, <span class="math inline">\(2\)</span> squares tall and <span class="math inline">\(n\)</span> squares wide, and a pile of dominoes, each covering exactly two adjacent squares. In how many different ways can you tile the board completely, no gaps, no overlaps, no domino hanging off the edge? It sounds like a puzzle, and it is. What I want to show you is that the answer is secretly a piece of linear algebra, and that the bridge between “write a loop to count” and “raise a matrix to a power” is one of the most useful ideas a programmer can carry around. The counting problem, the matrix, and a generating function all turn out to be the same thing wearing different clothes.</p>
+<p>As always, let us not start with the hard board. Let us bring it down to the smallest case we can actually draw.</p>
+<section id="first-the-thinnest-board" class="level2">
+<h2 class="anchored" data-anchor-id="first-the-thinnest-board">First, the thinnest board</h2>
+<p>Take the board just <span class="math inline">\(2\)</span> tall and look at its leftmost column. A domino has to cover those two squares somehow, and there are only two ways it can happen. Either one vertical domino stands up and fills the whole column by itself, or two horizontal dominoes lie down, each poking one square into the <em>next</em> column.</p>
+<p>Stare at those two options, because the whole recurrence is hiding in them. If you drop in a vertical domino, you have sealed off the first column cleanly and what remains is a <span class="math inline">\(2 \times (n-1)\)</span> board, untouched. If instead you lay the two horizontals, they consume the first column <em>and</em> the matching two squares of the second column, and what remains is a <span class="math inline">\(2 \times (n-2)\)</span> board. Every tiling begins with exactly one of these two moves, and the two moves lead to two smaller boards of the very same kind.</p>
+<p>Let <span class="math inline">\(f(n)\)</span> be the number of tilings of the <span class="math inline">\(2 \times n\)</span> board. The reasoning above says, in one line, <span class="math display">\[
+f(n) = f(n-1) + f(n-2),
+\]</span> with the base cases <span class="math inline">\(f(0) = 1\)</span> (the empty board has one tiling, the empty one) and <span class="math inline">\(f(1) = 1\)</span> (a single standing domino). You might have already guessed what is coming. That is the Fibonacci recurrence, and our tiling counts are Fibonacci numbers marching by.</p>
+<div id="ed668010" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tilings_2xn(n):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    a, b <span class="op">=</span> <span class="dv">1</span>, <span class="dv">1</span>                      <span class="co"># a = f(k-1), b = f(k); start at f(0)=f(1)=1</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        a, b <span class="op">=</span> b, a <span class="op">+</span> b</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a                         <span class="co"># after n steps, a holds f(n)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([tilings_2xn(n) <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">11</span>)])   <span class="co"># 1, 1, 2, 3, 5, 8, 13, ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</code></pre>
+</div>
+</div>
+<p>This little loop is a <em>dynamic program</em> in its purest form: a hard count broken into overlapping subproblems, each solved once and reused. It is fast and it is correct. But it hides the structure I promised you. To see that, we reframe the same step as a motion in space.</p>
+</section>
+<section id="the-reframe-one-step-of-dp-is-one-multiply-by-a-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="the-reframe-one-step-of-dp-is-one-multiply-by-a-matrix">The reframe: one step of DP is one multiply by a matrix</h2>
+<p>Watch what the loop actually does each turn. It holds a little pair of numbers, the two most recent counts, and it slides that pair forward: the new pair is <span class="math inline">\((b,\ a+b)\)</span> built from the old pair <span class="math inline">\((a, b)\)</span>. A rule that turns one vector into another vector by a fixed linear recipe is exactly what a matrix <em>is</em>. Bundle the state into a column vector <span class="math inline">\(\left(\begin{smallmatrix} f(k) \\ f(k-1) \end{smallmatrix}\right)\)</span> and the update becomes <span class="math display">\[
+\begin{pmatrix} f(k+1) \\ f(k) \end{pmatrix}
+=
+\begin{pmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{pmatrix}
+\begin{pmatrix} f(k) \\ f(k-1) \end{pmatrix}.
+\]</span> Call that matrix <span class="math inline">\(M\)</span>. One turn of the loop is one multiplication by <span class="math inline">\(M\)</span>. So running the loop <span class="math inline">\(n\)</span> times is multiplying by <span class="math inline">\(M\)</span> a total of <span class="math inline">\(n\)</span> times, which is to say <span class="math inline">\(f(n)\)</span> lives inside <span class="math inline">\(M^{n}\)</span>. The dynamic program was matrix exponentiation in disguise the whole time.</p>
+<div id="b24faa91" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">1</span>],</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>              [<span class="dv">1</span>, <span class="dv">0</span>]], dtype<span class="op">=</span><span class="bu">object</span>)        <span class="co"># object dtype -&gt; exact, unbounded integers</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> matpow(A, k):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fast exponentiation: A^k in about log2(k) matrix multiplications."""</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    R <span class="op">=</span> np.identity(<span class="bu">len</span>(A), dtype<span class="op">=</span><span class="bu">object</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> k:</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> k <span class="op">&amp;</span> <span class="dv">1</span>:</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            R <span class="op">=</span> R <span class="op">@</span> A</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        A <span class="op">=</span> A <span class="op">@</span> A</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        k <span class="op">&gt;&gt;=</span> <span class="dv">1</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> R</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>fn <span class="op">=</span> matpow(M, n)[<span class="dv">0</span>, <span class="dv">0</span>]                      <span class="co"># f(n) sits in the top-left corner of M^n</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2 x </span><span class="sc">{</span>n<span class="sc">}</span><span class="ss"> board has </span><span class="sc">{</span>fn<span class="sc">}</span><span class="ss"> tilings"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2 x 50 board has 20365011074 tilings</code></pre>
+</div>
+</div>
+<p>This is not just a cute restatement. It buys something real. The loop takes <span class="math inline">\(n\)</span> steps to reach <span class="math inline">\(f(n)\)</span>, but fast exponentiation reaches <span class="math inline">\(M^n\)</span> in about <span class="math inline">\(\log_2 n\)</span> multiplications by repeated squaring, <span class="math inline">\(M, M^2, M^4, M^8, \dots\)</span>. For the Fibonacci numbers the difference is mild; for recurrences that come up in counting paths through large graphs it is the difference between feasible and hopeless. And there is a second prize, the one that makes a mathematician smile.</p>
+</section>
+<section id="what-the-matrix-knows-a-closed-form-falls-out" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-matrix-knows-a-closed-form-falls-out">What the matrix knows: a closed form falls out</h2>
+<p>Once a recurrence is a matrix, its long-run behavior is governed by the matrix’s eigenvalues, the special numbers <span class="math inline">\(\lambda\)</span> for which <span class="math inline">\(M\)</span> merely <em>stretches</em> some direction by a factor of <span class="math inline">\(\lambda\)</span> instead of rotating it. For our <span class="math inline">\(M\)</span> they are the roots of <span class="math inline">\(\lambda^2 = \lambda + 1\)</span>, namely <span class="math display">\[
+\varphi = \frac{1 + \sqrt{5}}{2} \approx 1.618, \qquad \psi = \frac{1 - \sqrt{5}}{2} \approx -0.618.
+\]</span> The first is the golden ratio. Because <span class="math inline">\(M\)</span> stretches by <span class="math inline">\(\varphi\)</span> along one eigen-direction and by <span class="math inline">\(\psi\)</span> (a small number) along the other, after many steps the <span class="math inline">\(\varphi\)</span> direction completely dominates, and the counts grow like <span class="math inline">\(\varphi^{\,n}\)</span>. Diagonalizing <span class="math inline">\(M\)</span> turns the recurrence into pure powers and hands back the exact formula, <span class="math display">\[
+f(n) = \frac{\varphi^{\,n+1} - \psi^{\,n+1}}{\sqrt{5}},
+\]</span> the Binet formula for Fibonacci. A problem about laying down little wooden tiles has produced the golden ratio with no prompting. Doesn’t that just feel beautiful?</p>
+<div id="1f27764f" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>phi <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> <span class="dv">5</span><span class="op">**</span><span class="fl">0.5</span>) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>psi <span class="op">=</span> (<span class="dv">1</span> <span class="op">-</span> <span class="dv">5</span><span class="op">**</span><span class="fl">0.5</span>) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>closed <span class="op">=</span> <span class="bu">round</span>((phi<span class="op">**</span>(n <span class="op">+</span> <span class="dv">1</span>) <span class="op">-</span> psi<span class="op">**</span>(n <span class="op">+</span> <span class="dv">1</span>)) <span class="op">/</span> <span class="dv">5</span><span class="op">**</span><span class="fl">0.5</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"closed-form count agrees with the matrix power: </span><span class="sc">{</span>closed <span class="op">==</span> fn<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"each extra column multiplies the count by about phi = </span><span class="sc">{</span>phi<span class="sc">:.6f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>closed-form count agrees with the matrix power: True
+each extra column multiplies the count by about phi = 1.618034</code></pre>
+</div>
+</div>
+<p>So three descriptions have collapsed into one. The dynamic program, the matrix power, and the golden-ratio formula are not three facts about <span class="math inline">\(2 \times n\)</span> tilings; they are one fact, read off the recurrence in three different ways. Now is a great time to pause, because we are about to spend this idea on a board we cannot solve by a one-line recurrence.</p>
+</section>
+<section id="up-a-dimension-the-transfer-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="up-a-dimension-the-transfer-matrix">Up a dimension: the transfer matrix</h2>
+<p>Make the board <span class="math inline">\(m\)</span> rows tall and <span class="math inline">\(n\)</span> columns wide. The trick that saved us at <span class="math inline">\(m = 2\)</span>, peeling off one column at a time, still works, but the bookkeeping is richer. When we finish placing all the dominoes that belong to one column, some of them are horizontals that stick one square into the <em>next</em> column. The set of rows where the next column is already occupied, before we even get there, is the only thing the past leaves behind. That subset, a pattern of which of the <span class="math inline">\(m\)</span> rows are “poking through,” is the <strong>state</strong> of the boundary, and there are <span class="math inline">\(2^m\)</span> possible states.</p>
+<p>This is the move the project’s house style calls reframing with new constructs: we stop tracking the whole board and track only the thin boundary between done and not-done. Filling one column takes us from an incoming boundary state to an outgoing one, and crucially the number of ways to make that transition depends only on the two states, not on <span class="math inline">\(n\)</span> and not on how we got here. Collect those counts into a single <span class="math inline">\(2^m \times 2^m\)</span> matrix <span class="math inline">\(T\)</span>, the <strong>transfer matrix</strong>, whose entry <span class="math inline">\(T_{t,s}\)</span> is the number of ways to fill a column that arrives in state <span class="math inline">\(s\)</span> and leaves in state <span class="math inline">\(t\)</span>.</p>
+<div id="thm-transfer" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Tilings as a matrix power)</strong></span> Let <span class="math inline">\(T\)</span> be the transfer matrix for boards <span class="math inline">\(m\)</span> rows tall, and let <span class="math inline">\(\mathbf{0}\)</span> be the empty boundary state. Then the number of domino tilings of the <span class="math inline">\(m \times n\)</span> board is <span class="math display">\[
+\bigl(T^{\,n}\bigr)_{\mathbf{0},\,\mathbf{0}}.
+\]</span></p>
+</div>
+<p>The reasoning is the same one twice over. Multiplying by <span class="math inline">\(T\)</span> once advances the boundary across one column and sums over every legal way to do it, exactly as a step of dynamic programming sums over every choice. Multiplying <span class="math inline">\(n\)</span> times threads the boundary across all <span class="math inline">\(n\)</span> columns. We start from the empty boundary, nothing poking into column one, and we demand the empty boundary at the end, nothing poking past column <span class="math inline">\(n\)</span>, which is just the statement that the finished tiling stays inside the board. Reading <span class="math inline">\((T^n)_{\mathbf 0,\mathbf 0}\)</span> off the matrix power is reading the answer. This is the transfer-matrix method, and a careful treatment lives in <span class="citation" data-cites="stanley2012"><a href="#ref-stanley2012" role="doc-biblioref">[1]</a></span>.</p>
+<div id="8c565ae7" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_transfer(m):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Transfer matrix for m-row boards: T[t][s] = ways to fill a column</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">    that enters in boundary state s and leaves in boundary state t."""</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    size <span class="op">=</span> <span class="dv">1</span> <span class="op">&lt;&lt;</span> m</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    T <span class="op">=</span> [[<span class="dv">0</span>] <span class="op">*</span> size <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(size)]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> start <span class="kw">in</span> <span class="bu">range</span>(size):</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> fill(row, work, nxt):</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> row <span class="op">==</span> m:                                   <span class="co"># column complete</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                T[nxt][start] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> work <span class="op">&amp;</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> row):                          <span class="co"># already filled from the left</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                fill(row <span class="op">+</span> <span class="dv">1</span>, work, nxt)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> row <span class="op">+</span> <span class="dv">1</span> <span class="op">&lt;</span> m <span class="kw">and</span> <span class="kw">not</span> (work <span class="op">&amp;</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> (row <span class="op">+</span> <span class="dv">1</span>))):   <span class="co"># stand a vertical domino</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                fill(row <span class="op">+</span> <span class="dv">2</span>, work <span class="op">|</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> row) <span class="op">|</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> (row <span class="op">+</span> <span class="dv">1</span>)), nxt)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>            fill(row <span class="op">+</span> <span class="dv">1</span>, work <span class="op">|</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> row), nxt <span class="op">|</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> row))  <span class="co"># lay a horizontal -&gt; next column</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        fill(<span class="dv">0</span>, start, <span class="dv">0</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> T</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tilings(m, n):</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    T <span class="op">=</span> np.array(build_transfer(m), dtype<span class="op">=</span><span class="bu">object</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> matpow(T, n)[<span class="dv">0</span>, <span class="dv">0</span>]                              <span class="co"># empty boundary in, empty boundary out</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"2 x 10 :"</span>, tilings(<span class="dv">2</span>, <span class="dv">10</span>), <span class="st">"  (Fibonacci, as before)"</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"8 x 8  :"</span>, tilings(<span class="dv">8</span>, <span class="dv">8</span>), <span class="st">"  (the classic chessboard count)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2 x 10 : 89   (Fibonacci, as before)
+8 x 8  : 12988816   (the classic chessboard count)</code></pre>
+</div>
+</div>
+<p>The <span class="math inline">\(8 \times 8\)</span> board, an ordinary chessboard, admits <span class="math inline">\(12{,}988{,}816\)</span> domino tilings, a number first extracted by hand from exactly this kind of structure. Our few lines reproduce it because they are doing the same thing the hand computation did: walking the boundary across the board one column at a time, and letting a matrix remember the rest.</p>
+</section>
+<section id="the-growth-rate-hiding-in-the-largest-eigenvalue" class="level2">
+<h2 class="anchored" data-anchor-id="the-growth-rate-hiding-in-the-largest-eigenvalue">The growth rate hiding in the largest eigenvalue</h2>
+<p>The eigenvalue story scales up too, and it ends somewhere lovely. Just as <span class="math inline">\(\varphi\)</span> governed the <span class="math inline">\(2 \times n\)</span> growth, the largest eigenvalue <span class="math inline">\(\lambda_{\max}\)</span> of the transfer matrix sets the growth rate of the count as the board gets longer: adding one more column multiplies the number of tilings by roughly <span class="math inline">\(\lambda_{\max}\)</span>. So <span class="math inline">\(\lambda_{\max}\)</span> is a kind of entropy per column, a measure of how many genuine new choices each column opens up.</p>
+<div id="8d2e529d" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m <span class="kw">in</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>]:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    Tf <span class="op">=</span> np.array(build_transfer(m), dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    lam <span class="op">=</span> <span class="bu">max</span>(<span class="bu">abs</span>(np.linalg.eigvals(Tf)))                 <span class="co"># largest eigenvalue</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"m = </span><span class="sc">{</span>m<span class="sc">}</span><span class="ss">:  per-column growth </span><span class="sc">{</span>lam<span class="sc">:6.4f}</span><span class="ss">,   per-cell growth </span><span class="sc">{</span>lam <span class="op">**</span> (<span class="dv">1</span> <span class="op">/</span> m)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>m = 2:  per-column growth 1.6180,   per-cell growth 1.2720
+m = 4:  per-column growth 2.8405,   per-cell growth 1.2982
+m = 6:  per-column growth 5.0489,   per-cell growth 1.3098
+m = 8:  per-column growth 9.0071,   per-cell growth 1.3162</code></pre>
+</div>
+</div>
+<p>Look down the last column of numbers. The growth <em>per cell</em>, <span class="math inline">\(\lambda_{\max}^{1/m}\)</span>, is creeping toward a limit as the board gets taller: <span class="math inline">\(1.272\)</span>, <span class="math inline">\(1.298\)</span>, <span class="math inline">\(1.310\)</span>, <span class="math inline">\(1.316\)</span>, climbing slowly. That limit is real and it is famous. As <span class="math inline">\(m \to \infty\)</span> the per-cell growth approaches <span class="math display">\[
+e^{\,G/\pi} \approx 1.338515,
+\]</span> where <span class="math inline">\(G\)</span> is Catalan’s constant, the value Kasteleyn and, independently, Temperley and Fisher pinned down in 1961 by a beautiful determinant formula for dimer counts on a lattice <span class="citation" data-cites="kasteleyn1961"><a href="#ref-kasteleyn1961" role="doc-biblioref">[2]</a></span>. We will not climb all the way to that formula here. The point worth keeping is the chain of sight it sits at the end of: a child’s tiling puzzle became a dynamic program, the dynamic program became a matrix power, the matrix’s eigenvalues set the growth rate, and the limit of those growth rates is a clean constant built from <span class="math inline">\(\pi\)</span> and Catalan’s number. This kind of pattern shows up all the time once you let yourself see a recurrence as a matrix.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>Counting domino tilings of a <span class="math inline">\(2 \times n\)</span> board gives a recurrence, <span class="math inline">\(f(n) = f(n-1) + f(n-2)\)</span>, and that single line is enough to carry the whole lesson. Written as a loop it is dynamic programming; written as a vector update it is multiplication by a fixed matrix, so the count is an entry of <span class="math inline">\(M^n\)</span>; read through the matrix’s eigenvalues it is the golden ratio and a closed form. Widen the board to <span class="math inline">\(m\)</span> rows and nothing about the philosophy changes: the boundary between filled and unfilled becomes the state, the column-by-column update becomes a transfer matrix <span class="math inline">\(T\)</span>, and the number of tilings is <span class="math inline">\((T^n)_{\mathbf 0,\mathbf 0}\)</span>, with the largest eigenvalue of <span class="math inline">\(T\)</span> setting how fast the count grows. Dynamic programming, matrix powers, and the spectrum of a linear map are not neighbors that happen to help each other. On a problem like this they are the same idea, and once you have seen that once, you start seeing it everywhere.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Counting Domino Tilings: When Dynamic Programming Is a Matrix</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/domino-tilings/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-stanley2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">R. P. Stanley, <em>Enumerative combinatorics, volume 1</em>, 2nd ed. in Cambridge studies in advanced mathematics. Cambridge University Press, 2012.</div>
+</div>
+<div id="ref-kasteleyn1961" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">P. W. Kasteleyn, <span>“The statistics of dimers on a lattice: I. The number of dimer arrangements on a quadratic lattice,”</span> <em>Physica</em>, vol. 27, no. 12, pp. 1209–1225, 1961.</div>
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/terryfxh\.github\.io\/math-notes");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Counting Domino Tilings: When Dynamic Programming Is a Matrix"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "Counting the ways to tile a board with dominoes looks like a programming exercise, but the same count is an entry of a matrix raised to a power, a root of a characteristic polynomial, and a coefficient of a generating function. They are all one object seen from different rooms."</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-06-06</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [pure, applied, combinatorics, computer-science, algorithms]</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> ../../references.bib</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="an">draft:</span><span class="co"> false</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>::: {.epigraph}</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>"A mathematician, like a painter or a poet, is a maker of patterns. If his patterns are more permanent than theirs, it is because they are made with ideas."</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">— G. H. Hardy, *A Mathematician's Apology* (1940)</span><span class="co">]</span>{.attribution}</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>Here is a question a child can pose and a computer scientist can lose an afternoon to. You have a board, $2$ squares tall and $n$ squares wide, and a pile of dominoes, each covering exactly two adjacent squares. In how many different ways can you tile the board completely, no gaps, no overlaps, no domino hanging off the edge? It sounds like a puzzle, and it is. What I want to show you is that the answer is secretly a piece of linear algebra, and that the bridge between "write a loop to count" and "raise a matrix to a power" is one of the most useful ideas a programmer can carry around. The counting problem, the matrix, and a generating function all turn out to be the same thing wearing different clothes.</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>As always, let us not start with the hard board. Let us bring it down to the smallest case we can actually draw.</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## First, the thinnest board</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>Take the board just $2$ tall and look at its leftmost column. A domino has to cover those two squares somehow, and there are only two ways it can happen. Either one vertical domino stands up and fills the whole column by itself, or two horizontal dominoes lie down, each poking one square into the *next* column.</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>Stare at those two options, because the whole recurrence is hiding in them. If you drop in a vertical domino, you have sealed off the first column cleanly and what remains is a $2 \times (n-1)$ board, untouched. If instead you lay the two horizontals, they consume the first column *and* the matching two squares of the second column, and what remains is a $2 \times (n-2)$ board. Every tiling begins with exactly one of these two moves, and the two moves lead to two smaller boards of the very same kind.</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>Let $f(n)$ be the number of tilings of the $2 \times n$ board. The reasoning above says, in one line,</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>f(n) = f(n-1) + f(n-2),</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>with the base cases $f(0) = 1$ (the empty board has one tiling, the empty one) and $f(1) = 1$ (a single standing domino). You might have already guessed what is coming. That is the Fibonacci recurrence, and our tiling counts are Fibonacci numbers marching by.</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tilings_2xn(n):</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    a, b <span class="op">=</span> <span class="dv">1</span>, <span class="dv">1</span>                      <span class="co"># a = f(k-1), b = f(k); start at f(0)=f(1)=1</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>        a, b <span class="op">=</span> b, a <span class="op">+</span> b</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a                         <span class="co"># after n steps, a holds f(n)</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([tilings_2xn(n) <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">11</span>)])   <span class="co"># 1, 1, 2, 3, 5, 8, 13, ...</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>This little loop is a *dynamic program* in its purest form: a hard count broken into overlapping subproblems, each solved once and reused. It is fast and it is correct. But it hides the structure I promised you. To see that, we reframe the same step as a motion in space.</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## The reframe: one step of DP is one multiply by a matrix</span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>Watch what the loop actually does each turn. It holds a little pair of numbers, the two most recent counts, and it slides that pair forward: the new pair is $(b,\ a+b)$ built from the old pair $(a, b)$. A rule that turns one vector into another vector by a fixed linear recipe is exactly what a matrix *is*. Bundle the state into a column vector $\left(\begin{smallmatrix} f(k) <span class="sc">\\</span> f(k-1) \end{smallmatrix}\right)$ and the update becomes</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix} f(k+1) <span class="sc">\\</span> f(k) \end{pmatrix}</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix} 1 &amp; 1 <span class="sc">\\</span> 1 &amp; 0 \end{pmatrix}</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix} f(k) <span class="sc">\\</span> f(k-1) \end{pmatrix}.</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>Call that matrix $M$. One turn of the loop is one multiplication by $M$. So running the loop $n$ times is multiplying by $M$ a total of $n$ times, which is to say $f(n)$ lives inside $M^{n}$. The dynamic program was matrix exponentiation in disguise the whole time.</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">1</span>],</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>              [<span class="dv">1</span>, <span class="dv">0</span>]], dtype<span class="op">=</span><span class="bu">object</span>)        <span class="co"># object dtype -&gt; exact, unbounded integers</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> matpow(A, k):</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fast exponentiation: A^k in about log2(k) matrix multiplications."""</span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>    R <span class="op">=</span> np.identity(<span class="bu">len</span>(A), dtype<span class="op">=</span><span class="bu">object</span>)</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> k:</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> k <span class="op">&amp;</span> <span class="dv">1</span>:</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>            R <span class="op">=</span> R <span class="op">@</span> A</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>        A <span class="op">=</span> A <span class="op">@</span> A</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>        k <span class="op">&gt;&gt;=</span> <span class="dv">1</span></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> R</span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>fn <span class="op">=</span> matpow(M, n)[<span class="dv">0</span>, <span class="dv">0</span>]                      <span class="co"># f(n) sits in the top-left corner of M^n</span></span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2 x </span><span class="sc">{</span>n<span class="sc">}</span><span class="ss"> board has </span><span class="sc">{</span>fn<span class="sc">}</span><span class="ss"> tilings"</span>)</span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>This is not just a cute restatement. It buys something real. The loop takes $n$ steps to reach $f(n)$, but fast exponentiation reaches $M^n$ in about $\log_2 n$ multiplications by repeated squaring, $M, M^2, M^4, M^8, \dots$. For the Fibonacci numbers the difference is mild; for recurrences that come up in counting paths through large graphs it is the difference between feasible and hopeless. And there is a second prize, the one that makes a mathematician smile.</span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a><span class="fu">## What the matrix knows: a closed form falls out</span></span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>Once a recurrence is a matrix, its long-run behavior is governed by the matrix's eigenvalues, the special numbers $\lambda$ for which $M$ merely *stretches* some direction by a factor of $\lambda$ instead of rotating it. For our $M$ they are the roots of $\lambda^2 = \lambda + 1$, namely</span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>\varphi = \frac{1 + \sqrt{5}}{2} \approx 1.618, \qquad \psi = \frac{1 - \sqrt{5}}{2} \approx -0.618.</span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>The first is the golden ratio. Because $M$ stretches by $\varphi$ along one eigen-direction and by $\psi$ (a small number) along the other, after many steps the $\varphi$ direction completely dominates, and the counts grow like $\varphi^{\,n}$. Diagonalizing $M$ turns the recurrence into pure powers and hands back the exact formula,</span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>f(n) = \frac{\varphi^{\,n+1} - \psi^{\,n+1}}{\sqrt{5}},</span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>the Binet formula for Fibonacci. A problem about laying down little wooden tiles has produced the golden ratio with no prompting. Doesn't that just feel beautiful?</span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>phi <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> <span class="dv">5</span><span class="op">**</span><span class="fl">0.5</span>) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a>psi <span class="op">=</span> (<span class="dv">1</span> <span class="op">-</span> <span class="dv">5</span><span class="op">**</span><span class="fl">0.5</span>) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a>closed <span class="op">=</span> <span class="bu">round</span>((phi<span class="op">**</span>(n <span class="op">+</span> <span class="dv">1</span>) <span class="op">-</span> psi<span class="op">**</span>(n <span class="op">+</span> <span class="dv">1</span>)) <span class="op">/</span> <span class="dv">5</span><span class="op">**</span><span class="fl">0.5</span>)</span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"closed-form count agrees with the matrix power: </span><span class="sc">{</span>closed <span class="op">==</span> fn<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"each extra column multiplies the count by about phi = </span><span class="sc">{</span>phi<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>So three descriptions have collapsed into one. The dynamic program, the matrix power, and the golden-ratio formula are not three facts about $2 \times n$ tilings; they are one fact, read off the recurrence in three different ways. Now is a great time to pause, because we are about to spend this idea on a board we cannot solve by a one-line recurrence.</span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a><span class="fu">## Up a dimension: the transfer matrix</span></span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a>Make the board $m$ rows tall and $n$ columns wide. The trick that saved us at $m = 2$, peeling off one column at a time, still works, but the bookkeeping is richer. When we finish placing all the dominoes that belong to one column, some of them are horizontals that stick one square into the *next* column. The set of rows where the next column is already occupied, before we even get there, is the only thing the past leaves behind. That subset, a pattern of which of the $m$ rows are "poking through," is the **state** of the boundary, and there are $2^m$ possible states.</span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a>This is the move the project's house style calls reframing with new constructs: we stop tracking the whole board and track only the thin boundary between done and not-done. Filling one column takes us from an incoming boundary state to an outgoing one, and crucially the number of ways to make that transition depends only on the two states, not on $n$ and not on how we got here. Collect those counts into a single $2^m \times 2^m$ matrix $T$, the **transfer matrix**, whose entry $T_{t,s}$ is the number of ways to fill a column that arrives in state $s$ and leaves in state $t$.</span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>::: {#thm-transfer}</span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a><span class="fu">## Tilings as a matrix power</span></span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a>Let $T$ be the transfer matrix for boards $m$ rows tall, and let $\mathbf{0}$ be the empty boundary state. Then the number of domino tilings of the $m \times n$ board is</span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a>\bigl(T^{\,n}\bigr)_{\mathbf{0},\,\mathbf{0}}.</span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a>The reasoning is the same one twice over. Multiplying by $T$ once advances the boundary across one column and sums over every legal way to do it, exactly as a step of dynamic programming sums over every choice. Multiplying $n$ times threads the boundary across all $n$ columns. We start from the empty boundary, nothing poking into column one, and we demand the empty boundary at the end, nothing poking past column $n$, which is just the statement that the finished tiling stays inside the board. Reading $(T^n)_{\mathbf 0,\mathbf 0}$ off the matrix power is reading the answer. This is the transfer-matrix method, and a careful treatment lives in @stanley2012.</span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_transfer(m):</span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Transfer matrix for m-row boards: T[t][s] = ways to fill a column</span></span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a><span class="co">    that enters in boundary state s and leaves in boundary state t."""</span></span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a>    size <span class="op">=</span> <span class="dv">1</span> <span class="op">&lt;&lt;</span> m</span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a>    T <span class="op">=</span> [[<span class="dv">0</span>] <span class="op">*</span> size <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(size)]</span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> start <span class="kw">in</span> <span class="bu">range</span>(size):</span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> fill(row, work, nxt):</span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> row <span class="op">==</span> m:                                   <span class="co"># column complete</span></span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a>                T[nxt][start] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span></span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> work <span class="op">&amp;</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> row):                          <span class="co"># already filled from the left</span></span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a>                fill(row <span class="op">+</span> <span class="dv">1</span>, work, nxt)</span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span></span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> row <span class="op">+</span> <span class="dv">1</span> <span class="op">&lt;</span> m <span class="kw">and</span> <span class="kw">not</span> (work <span class="op">&amp;</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> (row <span class="op">+</span> <span class="dv">1</span>))):   <span class="co"># stand a vertical domino</span></span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a>                fill(row <span class="op">+</span> <span class="dv">2</span>, work <span class="op">|</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> row) <span class="op">|</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> (row <span class="op">+</span> <span class="dv">1</span>)), nxt)</span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a>            fill(row <span class="op">+</span> <span class="dv">1</span>, work <span class="op">|</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> row), nxt <span class="op">|</span> (<span class="dv">1</span> <span class="op">&lt;&lt;</span> row))  <span class="co"># lay a horizontal -&gt; next column</span></span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a>        fill(<span class="dv">0</span>, start, <span class="dv">0</span>)</span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> T</span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tilings(m, n):</span>
+<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a>    T <span class="op">=</span> np.array(build_transfer(m), dtype<span class="op">=</span><span class="bu">object</span>)</span>
+<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> matpow(T, n)[<span class="dv">0</span>, <span class="dv">0</span>]                              <span class="co"># empty boundary in, empty boundary out</span></span>
+<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"2 x 10 :"</span>, tilings(<span class="dv">2</span>, <span class="dv">10</span>), <span class="st">"  (Fibonacci, as before)"</span>)</span>
+<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"8 x 8  :"</span>, tilings(<span class="dv">8</span>, <span class="dv">8</span>), <span class="st">"  (the classic chessboard count)"</span>)</span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a>The $8 \times 8$ board, an ordinary chessboard, admits $12{,}988{,}816$ domino tilings, a number first extracted by hand from exactly this kind of structure. Our few lines reproduce it because they are doing the same thing the hand computation did: walking the boundary across the board one column at a time, and letting a matrix remember the rest.</span>
+<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a><span class="fu">## The growth rate hiding in the largest eigenvalue</span></span>
+<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a>The eigenvalue story scales up too, and it ends somewhere lovely. Just as $\varphi$ governed the $2 \times n$ growth, the largest eigenvalue $\lambda_{\max}$ of the transfer matrix sets the growth rate of the count as the board gets longer: adding one more column multiplies the number of tilings by roughly $\lambda_{\max}$. So $\lambda_{\max}$ is a kind of entropy per column, a measure of how many genuine new choices each column opens up.</span>
+<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m <span class="kw">in</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>]:</span>
+<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a>    Tf <span class="op">=</span> np.array(build_transfer(m), dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a>    lam <span class="op">=</span> <span class="bu">max</span>(<span class="bu">abs</span>(np.linalg.eigvals(Tf)))                 <span class="co"># largest eigenvalue</span></span>
+<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"m = </span><span class="sc">{</span>m<span class="sc">}</span><span class="ss">:  per-column growth </span><span class="sc">{</span>lam<span class="sc">:6.4f}</span><span class="ss">,   per-cell growth </span><span class="sc">{</span>lam <span class="op">**</span> (<span class="dv">1</span> <span class="op">/</span> m)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a>Look down the last column of numbers. The growth *per cell*, $\lambda_{\max}^{1/m}$, is creeping toward a limit as the board gets taller: $1.272$, $1.298$, $1.310$, $1.316$, climbing slowly. That limit is real and it is famous. As $m \to \infty$ the per-cell growth approaches</span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a>e^{\,G/\pi} \approx 1.338515,</span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a>where $G$ is Catalan's constant, the value Kasteleyn and, independently, Temperley and Fisher pinned down in 1961 by a beautiful determinant formula for dimer counts on a lattice @kasteleyn1961. We will not climb all the way to that formula here. The point worth keeping is the chain of sight it sits at the end of: a child's tiling puzzle became a dynamic program, the dynamic program became a matrix power, the matrix's eigenvalues set the growth rate, and the limit of those growth rates is a clean constant built from $\pi$ and Catalan's number. This kind of pattern shows up all the time once you let yourself see a recurrence as a matrix.</span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to remember</span></span>
+<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a>Counting domino tilings of a $2 \times n$ board gives a recurrence, $f(n) = f(n-1) + f(n-2)$, and that single line is enough to carry the whole lesson. Written as a loop it is dynamic programming; written as a vector update it is multiplication by a fixed matrix, so the count is an entry of $M^n$; read through the matrix's eigenvalues it is the golden ratio and a closed form. Widen the board to $m$ rows and nothing about the philosophy changes: the boundary between filled and unfilled becomes the state, the column-by-column update becomes a transfer matrix $T$, and the number of tilings is $(T^n)_{\mathbf 0,\mathbf 0}$, with the largest eigenvalue of $T$ setting how fast the count grows. Dynamic programming, matrix powers, and the spectrum of a linear map are not neighbors that happen to help each other. On a problem like this they are the same idea, and once you have seen that once, you start seeing it everywhere.</span>
+<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *Counting Domino Tilings: When Dynamic Programming Is a Matrix*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/domino-tilings/`</span><span class="at">.</span></span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Terry Fang · All rights reserved · Reproduction or republication in any form requires attribution and the author’s prior permission.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

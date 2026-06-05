@@ -2,42 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/welcome/index.html</loc>
-    <lastmod>2026-06-04T22:50:05.725Z</lastmod>
+    <lastmod>2026-06-05T23:50:30.343Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/on-learning-mathematics/index.html</loc>
-    <lastmod>2026-06-04T22:50:05.725Z</lastmod>
+    <lastmod>2026-06-05T23:50:30.343Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/index.html</loc>
-    <lastmod>2026-06-04T22:50:05.725Z</lastmod>
+    <lastmod>2026-06-05T23:50:30.343Z</lastmod>
   </url>
   <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/discrete-log/index.html</loc>
-    <lastmod>2026-06-04T22:50:05.725Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/index.html</loc>
-    <lastmod>2026-06-04T22:50:05.724Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/about.html</loc>
-    <lastmod>2026-06-04T22:50:05.724Z</lastmod>
+    <loc>https://terryfxh.github.io/math-notes/posts/domino-tilings/index.html</loc>
+    <lastmod>2026-06-05T23:50:30.343Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/index.html</loc>
-    <lastmod>2026-06-04T22:50:05.725Z</lastmod>
+    <lastmod>2026-06-05T23:50:30.343Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/about.html</loc>
+    <lastmod>2026-06-05T23:50:30.343Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/index.html</loc>
+    <lastmod>2026-06-05T23:50:30.343Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/discrete-log/index.html</loc>
+    <lastmod>2026-06-05T23:50:30.343Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/gram-schmidt/index.html</loc>
-    <lastmod>2026-06-04T22:50:05.725Z</lastmod>
+    <lastmod>2026-06-05T23:50:30.343Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/miller-rabin/index.html</loc>
-    <lastmod>2026-06-04T22:50:05.725Z</lastmod>
+    <lastmod>2026-06-05T23:50:30.343Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/spectral-theorem/index.html</loc>
-    <lastmod>2026-06-04T22:50:05.725Z</lastmod>
+    <lastmod>2026-06-05T23:50:30.343Z</lastmod>
   </url>
 </urlset>
