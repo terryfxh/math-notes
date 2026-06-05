@@ -1,0 +1,172 @@
+---
+title: "Counting Domino Tilings: When Dynamic Programming Is a Matrix"
+description: "Counting the ways to tile a board with dominoes looks like a programming exercise, but the same count is an entry of a matrix raised to a power, a root of a characteristic polynomial, and a coefficient of a generating function. They are all one object seen from different rooms."
+date: 2026-06-06
+categories: [pure, applied, combinatorics, computer-science, algorithms]
+bibliography: ../../references.bib
+draft: false
+---
+
+::: {.epigraph}
+"A mathematician, like a painter or a poet, is a maker of patterns. If his patterns are more permanent than theirs, it is because they are made with ideas."
+
+[— G. H. Hardy, *A Mathematician's Apology* (1940)]{.attribution}
+:::
+
+Here is a question a child can pose and a computer scientist can lose an afternoon to. You have a board, $2$ squares tall and $n$ squares wide, and a pile of dominoes, each covering exactly two adjacent squares. In how many different ways can you tile the board completely, no gaps, no overlaps, no domino hanging off the edge? It sounds like a puzzle, and it is. What I want to show you is that the answer is secretly a piece of linear algebra, and that the bridge between "write a loop to count" and "raise a matrix to a power" is one of the most useful ideas a programmer can carry around. The counting problem, the matrix, and a generating function all turn out to be the same thing wearing different clothes.
+
+As always, let us not start with the hard board. Let us bring it down to the smallest case we can actually draw.
+
+## First, the thinnest board
+
+Take the board just $2$ tall and look at its leftmost column. A domino has to cover those two squares somehow, and there are only two ways it can happen. Either one vertical domino stands up and fills the whole column by itself, or two horizontal dominoes lie down, each poking one square into the *next* column.
+
+Stare at those two options, because the whole recurrence is hiding in them. If you drop in a vertical domino, you have sealed off the first column cleanly and what remains is a $2 \times (n-1)$ board, untouched. If instead you lay the two horizontals, they consume the first column *and* the matching two squares of the second column, and what remains is a $2 \times (n-2)$ board. Every tiling begins with exactly one of these two moves, and the two moves lead to two smaller boards of the very same kind.
+
+Let $f(n)$ be the number of tilings of the $2 \times n$ board. The reasoning above says, in one line,
+$$
+f(n) = f(n-1) + f(n-2),
+$$
+with the base cases $f(0) = 1$ (the empty board has one tiling, the empty one) and $f(1) = 1$ (a single standing domino). You might have already guessed what is coming. That is the Fibonacci recurrence, and our tiling counts are Fibonacci numbers marching by.
+
+```{python}
+def tilings_2xn(n):
+    a, b = 1, 1                      # a = f(k-1), b = f(k); start at f(0)=f(1)=1
+    for _ in range(n):
+        a, b = b, a + b
+    return a                         # after n steps, a holds f(n)
+
+print([tilings_2xn(n) for n in range(0, 11)])   # 1, 1, 2, 3, 5, 8, 13, ...
+```
+
+This little loop is a *dynamic program* in its purest form: a hard count broken into overlapping subproblems, each solved once and reused. It is fast and it is correct. But it hides the structure I promised you. To see that, we reframe the same step as a motion in space.
+
+## The reframe: one step of DP is one multiply by a matrix
+
+Watch what the loop actually does each turn. It holds a little pair of numbers, the two most recent counts, and it slides that pair forward: the new pair is $(b,\ a+b)$ built from the old pair $(a, b)$. A rule that turns one vector into another vector by a fixed linear recipe is exactly what a matrix *is*. Bundle the state into a column vector $\left(\begin{smallmatrix} f(k) \\ f(k-1) \end{smallmatrix}\right)$ and the update becomes
+$$
+\begin{pmatrix} f(k+1) \\ f(k) \end{pmatrix}
+=
+\begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}
+\begin{pmatrix} f(k) \\ f(k-1) \end{pmatrix}.
+$$
+Call that matrix $M$. One turn of the loop is one multiplication by $M$. So running the loop $n$ times is multiplying by $M$ a total of $n$ times, which is to say $f(n)$ lives inside $M^{n}$. The dynamic program was matrix exponentiation in disguise the whole time.
+
+```{python}
+import numpy as np
+
+M = np.array([[1, 1],
+              [1, 0]], dtype=object)        # object dtype -> exact, unbounded integers
+
+def matpow(A, k):
+    """Fast exponentiation: A^k in about log2(k) matrix multiplications."""
+    R = np.identity(len(A), dtype=object)
+    while k:
+        if k & 1:
+            R = R @ A
+        A = A @ A
+        k >>= 1
+    return R
+
+n = 50
+fn = matpow(M, n)[0, 0]                      # f(n) sits in the top-left corner of M^n
+print(f"2 x {n} board has {fn} tilings")
+```
+
+This is not just a cute restatement. It buys something real. The loop takes $n$ steps to reach $f(n)$, but fast exponentiation reaches $M^n$ in about $\log_2 n$ multiplications by repeated squaring, $M, M^2, M^4, M^8, \dots$. For the Fibonacci numbers the difference is mild; for recurrences that come up in counting paths through large graphs it is the difference between feasible and hopeless. And there is a second prize, the one that makes a mathematician smile.
+
+## What the matrix knows: a closed form falls out
+
+Once a recurrence is a matrix, its long-run behavior is governed by the matrix's eigenvalues, the special numbers $\lambda$ for which $M$ merely *stretches* some direction by a factor of $\lambda$ instead of rotating it. For our $M$ they are the roots of $\lambda^2 = \lambda + 1$, namely
+$$
+\varphi = \frac{1 + \sqrt{5}}{2} \approx 1.618, \qquad \psi = \frac{1 - \sqrt{5}}{2} \approx -0.618.
+$$
+The first is the golden ratio. Because $M$ stretches by $\varphi$ along one eigen-direction and by $\psi$ (a small number) along the other, after many steps the $\varphi$ direction completely dominates, and the counts grow like $\varphi^{\,n}$. Diagonalizing $M$ turns the recurrence into pure powers and hands back the exact formula,
+$$
+f(n) = \frac{\varphi^{\,n+1} - \psi^{\,n+1}}{\sqrt{5}},
+$$
+the Binet formula for Fibonacci. A problem about laying down little wooden tiles has produced the golden ratio with no prompting. Doesn't that just feel beautiful?
+
+```{python}
+phi = (1 + 5**0.5) / 2
+psi = (1 - 5**0.5) / 2
+closed = round((phi**(n + 1) - psi**(n + 1)) / 5**0.5)
+print(f"closed-form count agrees with the matrix power: {closed == fn}")
+print(f"each extra column multiplies the count by about phi = {phi:.6f}")
+```
+
+So three descriptions have collapsed into one. The dynamic program, the matrix power, and the golden-ratio formula are not three facts about $2 \times n$ tilings; they are one fact, read off the recurrence in three different ways. Now is a great time to pause, because we are about to spend this idea on a board we cannot solve by a one-line recurrence.
+
+## Up a dimension: the transfer matrix
+
+Make the board $m$ rows tall and $n$ columns wide. The trick that saved us at $m = 2$, peeling off one column at a time, still works, but the bookkeeping is richer. When we finish placing all the dominoes that belong to one column, some of them are horizontals that stick one square into the *next* column. The set of rows where the next column is already occupied, before we even get there, is the only thing the past leaves behind. That subset, a pattern of which of the $m$ rows are "poking through," is the **state** of the boundary, and there are $2^m$ possible states.
+
+This is the move the project's house style calls reframing with new constructs: we stop tracking the whole board and track only the thin boundary between done and not-done. Filling one column takes us from an incoming boundary state to an outgoing one, and crucially the number of ways to make that transition depends only on the two states, not on $n$ and not on how we got here. Collect those counts into a single $2^m \times 2^m$ matrix $T$, the **transfer matrix**, whose entry $T_{t,s}$ is the number of ways to fill a column that arrives in state $s$ and leaves in state $t$.
+
+::: {#thm-transfer}
+
+## Tilings as a matrix power
+
+Let $T$ be the transfer matrix for boards $m$ rows tall, and let $\mathbf{0}$ be the empty boundary state. Then the number of domino tilings of the $m \times n$ board is
+$$
+\bigl(T^{\,n}\bigr)_{\mathbf{0},\,\mathbf{0}}.
+$$
+
+:::
+
+The reasoning is the same one twice over. Multiplying by $T$ once advances the boundary across one column and sums over every legal way to do it, exactly as a step of dynamic programming sums over every choice. Multiplying $n$ times threads the boundary across all $n$ columns. We start from the empty boundary, nothing poking into column one, and we demand the empty boundary at the end, nothing poking past column $n$, which is just the statement that the finished tiling stays inside the board. Reading $(T^n)_{\mathbf 0,\mathbf 0}$ off the matrix power is reading the answer. This is the transfer-matrix method, and a careful treatment lives in @stanley2012.
+
+```{python}
+def build_transfer(m):
+    """Transfer matrix for m-row boards: T[t][s] = ways to fill a column
+    that enters in boundary state s and leaves in boundary state t."""
+    size = 1 << m
+    T = [[0] * size for _ in range(size)]
+    for start in range(size):
+        def fill(row, work, nxt):
+            if row == m:                                   # column complete
+                T[nxt][start] += 1
+                return
+            if work & (1 << row):                          # already filled from the left
+                fill(row + 1, work, nxt)
+                return
+            if row + 1 < m and not (work & (1 << (row + 1))):   # stand a vertical domino
+                fill(row + 2, work | (1 << row) | (1 << (row + 1)), nxt)
+            fill(row + 1, work | (1 << row), nxt | (1 << row))  # lay a horizontal -> next column
+        fill(0, start, 0)
+    return T
+
+def tilings(m, n):
+    T = np.array(build_transfer(m), dtype=object)
+    return matpow(T, n)[0, 0]                              # empty boundary in, empty boundary out
+
+print("2 x 10 :", tilings(2, 10), "  (Fibonacci, as before)")
+print("8 x 8  :", tilings(8, 8), "  (the classic chessboard count)")
+```
+
+The $8 \times 8$ board, an ordinary chessboard, admits $12{,}988{,}816$ domino tilings, a number first extracted by hand from exactly this kind of structure. Our few lines reproduce it because they are doing the same thing the hand computation did: walking the boundary across the board one column at a time, and letting a matrix remember the rest.
+
+## The growth rate hiding in the largest eigenvalue
+
+The eigenvalue story scales up too, and it ends somewhere lovely. Just as $\varphi$ governed the $2 \times n$ growth, the largest eigenvalue $\lambda_{\max}$ of the transfer matrix sets the growth rate of the count as the board gets longer: adding one more column multiplies the number of tilings by roughly $\lambda_{\max}$. So $\lambda_{\max}$ is a kind of entropy per column, a measure of how many genuine new choices each column opens up.
+
+```{python}
+for m in [2, 4, 6, 8]:
+    Tf = np.array(build_transfer(m), dtype=float)
+    lam = max(abs(np.linalg.eigvals(Tf)))                 # largest eigenvalue
+    print(f"m = {m}:  per-column growth {lam:6.4f},   per-cell growth {lam ** (1 / m):.4f}")
+```
+
+Look down the last column of numbers. The growth *per cell*, $\lambda_{\max}^{1/m}$, is creeping toward a limit as the board gets taller: $1.272$, $1.298$, $1.310$, $1.316$, climbing slowly. That limit is real and it is famous. As $m \to \infty$ the per-cell growth approaches
+$$
+e^{\,G/\pi} \approx 1.338515,
+$$
+where $G$ is Catalan's constant, the value Kasteleyn and, independently, Temperley and Fisher pinned down in 1961 by a beautiful determinant formula for dimer counts on a lattice @kasteleyn1961. We will not climb all the way to that formula here. The point worth keeping is the chain of sight it sits at the end of: a child's tiling puzzle became a dynamic program, the dynamic program became a matrix power, the matrix's eigenvalues set the growth rate, and the limit of those growth rates is a clean constant built from $\pi$ and Catalan's number. This kind of pattern shows up all the time once you let yourself see a recurrence as a matrix.
+
+## What to remember
+
+Counting domino tilings of a $2 \times n$ board gives a recurrence, $f(n) = f(n-1) + f(n-2)$, and that single line is enough to carry the whole lesson. Written as a loop it is dynamic programming; written as a vector update it is multiplication by a fixed matrix, so the count is an entry of $M^n$; read through the matrix's eigenvalues it is the golden ratio and a closed form. Widen the board to $m$ rows and nothing about the philosophy changes: the boundary between filled and unfilled becomes the state, the column-by-column update becomes a transfer matrix $T$, and the number of tilings is $(T^n)_{\mathbf 0,\mathbf 0}$, with the largest eigenvalue of $T$ setting how fast the count grows. Dynamic programming, matrix powers, and the spectrum of a linear map are not neighbors that happen to help each other. On a problem like this they are the same idea, and once you have seen that once, you start seeing it everywhere.
+
+## How to cite
+
+> Terry (2026). *Counting Domino Tilings: When Dynamic Programming Is a Matrix*. Retrieved from `https://terryfxh.github.io/math-notes/posts/domino-tilings/`.

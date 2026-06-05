@@ -7,6 +7,12 @@ bibliography: ../../references.bib
 draft: false
 ---
 
+::: {.epigraph}
+"Invert, always invert."
+
+[— Carl Gustav Jacob Jacobi (attributed)]{.attribution}
+:::
+
 Most of the operations we learn as children come with an undo button built in. Addition has subtraction, multiplication has division, squaring has the square root. You rarely think about the undo as a separate skill, because it costs about the same as the thing it reverses. This essay is about an operation where that symmetry quietly breaks. Going forward is cheap, a handful of multiplications. Going backward, as far as anyone knows, is a genuine search through an enormous space. And that single broken symmetry, the gap between how hard it is to do something and how hard it is to undo it, is the hinge that the security of much of the internet swings on.
 
 Let me start, as we always should, with the smallest version of the picture.
