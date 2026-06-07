@@ -36,7 +36,7 @@
 <section id="the-crack-v-throws-information-away" class="level2">
 <h2 class="anchored" data-anchor-id="the-crack-v-throws-information-away">The crack: <img src="https://latex.codecogs.com/png.latex?V"> throws information away</h2>
 <p>Bring it down to one dimension, where we can see everything. On the line, what is the variety of <img src="https://latex.codecogs.com/png.latex?x">? The single point <img src="https://latex.codecogs.com/png.latex?0">. What is the variety of <img src="https://latex.codecogs.com/png.latex?x%5E2">? Also just <img src="https://latex.codecogs.com/png.latex?0"> — squaring does not move where a polynomial is zero, only how flatly it sits there. And <img src="https://latex.codecogs.com/png.latex?x%5E3">, and <img src="https://latex.codecogs.com/png.latex?x%5E%7B100%7D">, all of them vanish at <img src="https://latex.codecogs.com/png.latex?0"> and nowhere else.</p>
-<div id="abcc4585" class="cell" data-execution_count="1">
+<div id="40bfe824" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sympy <span class="im" style="color: #00769E;
@@ -104,7 +104,7 @@ zeros of x**3: {0}</code></pre>
 <section id="why-the-field-has-to-be-closed" class="level2">
 <h2 class="anchored" data-anchor-id="why-the-field-has-to-be-closed">Why the field has to be closed</h2>
 <p>Try the dictionary over the real numbers and watch it break. Consider the single equation <img src="https://latex.codecogs.com/png.latex?x%5E2%20+%201%20=%200">. Over <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D"> it has no solutions — the parabola <img src="https://latex.codecogs.com/png.latex?y%20=%20x%5E2%20+%201"> floats above the axis and never touches it. So <img src="https://latex.codecogs.com/png.latex?V(x%5E2+1)%20=%20%5Cvarnothing">, the empty shape.</p>
-<div id="a769299a" class="cell" data-execution_count="2">
+<div id="ff0bc21f" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sympy <span class="im" style="color: #00769E;
@@ -188,7 +188,7 @@ complex zeros: {-I, I}</code></pre>
 <p>Here is my favorite part, because it is a pure example of the move this blog keeps coming back to: when a problem is stuck, add a new construct and reframe. The strong Nullstellensatz looks like a genuinely deeper statement than the weak one. It is not. It is the weak one, viewed from one dimension up. The trick is due to Rabinowitsch, and it is barely a page.</p>
 <p>Suppose <img src="https://latex.codecogs.com/png.latex?f"> vanishes on the whole variety <img src="https://latex.codecogs.com/png.latex?V(g_1,%20%5Cdots,%20g_m)">, and we want to prove some power of <img src="https://latex.codecogs.com/png.latex?f"> lands in the ideal. The obstacle is that “<img src="https://latex.codecogs.com/png.latex?f"> vanishes wherever the <img src="https://latex.codecogs.com/png.latex?g_i"> vanish” is a statement about an infinite shape, hard to grab. So introduce a brand new variable <img src="https://latex.codecogs.com/png.latex?t"> — a new axis the problem never had — and pose a question about <em>solvability</em> instead: <img src="https://latex.codecogs.com/png.latex?%0A%5Ctext%7Bdoes%20the%20enlarged%20system%7D%20%5Cquad%20g_1%20=%20%5Cdots%20=%20g_m%20=%200,%20%5Cquad%20t%20%5Ccdot%20f%20=%201%20%5Cquad%20%5Ctext%7Bhave%20any%20solution?%7D%0A"> Look at what we have demanded. The equation <img src="https://latex.codecogs.com/png.latex?t%20f%20=%201"> forces <img src="https://latex.codecogs.com/png.latex?f%20%5Cneq%200">. But <img src="https://latex.codecogs.com/png.latex?g_1%20=%20%5Cdots%20=%20g_m%20=%200"> forces us onto <img src="https://latex.codecogs.com/png.latex?V(g_1,%5Cdots,g_m)">, and that is exactly where <img src="https://latex.codecogs.com/png.latex?f"> <em>does</em> vanish, by assumption. We have asked <img src="https://latex.codecogs.com/png.latex?f"> to be both zero and nonzero at once. So the enlarged system has no solution at all — and now the <em>weak</em> theorem fires, telling us <img src="https://latex.codecogs.com/png.latex?1"> lies in the enlarged ideal <img src="https://latex.codecogs.com/png.latex?(g_1,%20%5Cdots,%20g_m,%5C,%201%20-%20t%20f)">. Substitute <img src="https://latex.codecogs.com/png.latex?t%20=%201/f"> back in, clear the denominators, and the powers of <img src="https://latex.codecogs.com/png.latex?f"> that appear are precisely the statement <img src="https://latex.codecogs.com/png.latex?f%5EN%20%5Cin%20(g_1,%20%5Cdots,%20g_m)">, i.e.&nbsp;<img src="https://latex.codecogs.com/png.latex?f%20%5Cin%20%5Csqrt%7B(g_1,%5Cdots,g_m)%7D">. The radical was the answer, the new variable was the key, and the deep theorem was the shallow one wearing a coat.</p>
 <p>That argument is not just elegant; it is <em>executable</em>. Testing whether <img src="https://latex.codecogs.com/png.latex?f"> vanishes on a variety becomes testing whether <img src="https://latex.codecogs.com/png.latex?1"> belongs to one explicit enlarged ideal, and a Gröbner basis decides ideal membership mechanically <span class="citation" data-cites="cox2015ideals">[2]</span>. If the basis collapses to <img src="https://latex.codecogs.com/png.latex?%5C%7B1%5C%7D">, the answer is yes.</p>
-<div id="39863690" class="cell" data-execution_count="3">
+<div id="1da4e2e5" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sympy <span class="im" style="color: #00769E;
@@ -375,6 +375,1128 @@ y  vanishes on V(x^2, xy)? False</code></pre>
   <category>algebraic-geometry</category>
   <category>commutative-algebra</category>
   <guid>https://terryfxh.github.io/math-notes/posts/nullstellensatz/</guid>
+  <pubDate>Sun, 07 Jun 2026 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Reconstructing Calculus from First Principles</title>
+  <link>https://terryfxh.github.io/math-notes/posts/reconstructing-calculus/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p>“Mathematics, rightly viewed, possesses not only truth, but supreme beauty — a beauty cold and austere, like that of sculpture.”</p>
+<p><span class="attribution">— Bertrand Russell, <em>The Study of Mathematics</em> (1902)</span></p>
+</div>
+<p>You almost certainly learned calculus the way most of us did: as a toolbox. There was a rule for derivatives, a rule for integrals, a table of limits to memorize, and a reassuring promise that if you turned the crank correctly the right number would fall out. And it worked. You computed areas, you found tangent lines, you maybe even believed that the symbol <img src="https://latex.codecogs.com/png.latex?%5Cint"> and the symbol <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7Bd%7D%7Bdx%7D"> undid each other because a textbook said so.</p>
+<p>I want to spend this post pulling that toolbox apart and rebuilding it, this time from the ground up, asking at every step the question the toolbox never answered: <em>why is any of this allowed?</em> That question is the whole subject of real analysis, and the surprise waiting at the bottom is that the entire towering structure of calculus balances on one quiet fact about the number line. Not the product rule, not the chain rule, but something far more primitive: that the real numbers have no gaps. Everything else is consequence.</p>
+<section id="why-you-should-not-yet-trust-calculus" class="level2">
+<h2 class="anchored" data-anchor-id="why-you-should-not-yet-trust-calculus">Why you should not (yet) trust calculus</h2>
+<p>Let me start by shaking your faith a little, because comfortable disbelief is exactly the mood real analysis wants you in. The trouble with “just compute” is that computation, applied carelessly to infinite things, cheerfully produces nonsense.</p>
+<p>Take the simplest infinite sum that misbehaves, the alternating ones and minus-ones, <img src="https://latex.codecogs.com/png.latex?%0AS%20=%201%20-%201%20+%201%20-%201%20+%201%20-%201%20+%20%5Ccdots%20.%0A"> Group the terms one way, <img src="https://latex.codecogs.com/png.latex?(1-1)%20+%20(1-1)%20+%20%5Ccdots">, and every pair cancels, so <img src="https://latex.codecogs.com/png.latex?S%20=%200">. Group them the other way, <img src="https://latex.codecogs.com/png.latex?1%20+%20(-1+1)%20+%20(-1+1)%20+%20%5Ccdots">, and everything after the first term cancels, so <img src="https://latex.codecogs.com/png.latex?S%20=%201">. And if you are feeling clever you write <img src="https://latex.codecogs.com/png.latex?S%20=%201%20-%20(1%20-%201%20+%201%20-%20%5Ccdots)%20=%201%20-%20S">, solve, and get <img src="https://latex.codecogs.com/png.latex?S%20=%20%5Ctfrac%7B1%7D%7B2%7D">. Three answers, all from “valid” algebra, none of them agreeing.</p>
+<div id="6d2a8494" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># The partial sums of 1 - 1 + 1 - 1 + ... never settle on anything.</span></span>
+<span id="cb1-2">partial, s <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [], <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> k <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>):</span>
+<span id="cb1-4">    s <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> (<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>(k <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># +1, -1, +1, -1, ...</span></span>
+<span id="cb1-5">    partial.append(s)</span>
+<span id="cb1-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"partial sums:"</span>, partial)                 <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1, 0, 1, 0, ...</span></span>
+<span id="cb1-7"></span>
+<span id="cb1-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Two equally "obvious" groupings give two different totals:</span></span>
+<span id="cb1-9"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"(1-1)+(1-1)+...  ="</span>, (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 0</span></span>
+<span id="cb1-10"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1+(-1+1)+(-1+1)  ="</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1</span></span>
+<span id="cb1-11"></span>
+<span id="cb1-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># And averaging the partial sums drifts toward 1/2:</span></span>
+<span id="cb1-13"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> statistics</span>
+<span id="cb1-14"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"running averages:"</span>,</span>
+<span id="cb1-15">      [<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">round</span>(statistics.mean(partial[:n]), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> n <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">11</span>)])</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>partial sums: [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+(1-1)+(1-1)+...  = 0
+1+(-1+1)+(-1+1)  = 1
+running averages: [1, 0.5, 0.667, 0.5, 0.6, 0.5, 0.571, 0.5, 0.556, 0.5]</code></pre>
+</div>
+</div>
+<p>Look at that first list. The partial sums bounce <img src="https://latex.codecogs.com/png.latex?1,%200,%201,%200,%20%5Cdots"> forever and never approach a single value. That is the tell. The sum was never a number to begin with, and by <em>pretending</em> it was one we gave ourselves a license to derive whatever we liked. The grouping tricks are not three deep truths about <img src="https://latex.codecogs.com/png.latex?S">; they are three symptoms of asking a question that has no answer.</p>
+<p>If you think this is a contrived parlor trick, here is the same disease in a setting that feels much more respectable. Picture a tall thin spike: a function that is zero everywhere except on the little interval <img src="https://latex.codecogs.com/png.latex?(0,%20%5Ctfrac%7B1%7D%7Bn%7D%5D">, where it takes the value <img src="https://latex.codecogs.com/png.latex?n">. Its graph is a rectangle of width <img src="https://latex.codecogs.com/png.latex?%5Ctfrac%7B1%7D%7Bn%7D"> and height <img src="https://latex.codecogs.com/png.latex?n">, so its area, its integral, is exactly <img src="https://latex.codecogs.com/png.latex?1">, no matter how large <img src="https://latex.codecogs.com/png.latex?n"> gets. Now let <img src="https://latex.codecogs.com/png.latex?n"> run off to infinity. At every single point <img src="https://latex.codecogs.com/png.latex?x"> the spike eventually slides past and leaves that point sitting at height <img src="https://latex.codecogs.com/png.latex?0">, so the <em>limiting</em> function is flat zero, with area <img src="https://latex.codecogs.com/png.latex?0">. But the area of each spike was <img src="https://latex.codecogs.com/png.latex?1"> the entire time. If you let yourself swap “the limit of the areas” with “the area of the limit”, you have just proved <img src="https://latex.codecogs.com/png.latex?1%20=%200">.</p>
+<p>Take a moment to sit with how ordinary that looked. No division by zero, no obviously illegal move, just two limits quietly traded in the wrong order. This is the real lesson of the motivation section: knowing <em>how to compute</em> an integral or a sum is not the same as knowing <em>when the computation means anything</em>. The rules of calculus come with invisible fine print, and analysis is the discipline of reading it.</p>
+<section id="the-hole-in-the-number-line" class="level3">
+<h3 class="anchored" data-anchor-id="the-hole-in-the-number-line">The hole in the number line</h3>
+<p>There is a second, deeper crack, and it is not about infinity at all. It is about the numbers themselves.</p>
+<p>Draw a right triangle with two legs of length one. Its hypotenuse has length <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B2%7D">; you can see the segment, you can hold a ruler to it, it is as real as any length in the world. Now ask which <em>rational</em> number it is. The ancient and famous answer is that there is none: no fraction <img src="https://latex.codecogs.com/png.latex?%5Ctfrac%7Bp%7D%7Bq%7D"> squared gives <img src="https://latex.codecogs.com/png.latex?2">.</p>
+<div id="39b6ee6c" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fractions <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Fraction</span>
+<span id="cb3-2"></span>
+<span id="cb3-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Bisection for x^2 = 2, played entirely inside the rationals.</span></span>
+<span id="cb3-4">lo, hi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Fraction(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), Fraction(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb3-5"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>):</span>
+<span id="cb3-6">    mid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (lo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> hi) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-7">    lo, hi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (mid, hi) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> mid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> mid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> (lo, mid)</span>
+<span id="cb3-8"></span>
+<span id="cb3-9"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rational bracket:"</span>, lo, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&lt;= sqrt(2) &lt;="</span>, hi)</span>
+<span id="cb3-10"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"their squares straddle 2:"</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>(lo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> lo), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&lt; 2 &lt;"</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>(hi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> hi))</span>
+<span id="cb3-11"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"does any of these rationals square to exactly 2? "</span>,</span>
+<span id="cb3-12">      <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">any</span>(m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> m <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> (lo, hi, (lo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> hi) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)))</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>rational bracket: 181/128 &lt;= sqrt(2) &lt;= 5793/4096
+their squares straddle 2: 1.99957275390625 &lt; 2 &lt; 2.000263273715973
+does any of these rationals square to exactly 2?  False</code></pre>
+</div>
+</div>
+<p>Watch what the code is doing, because it is the crux of everything to come. We trap <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B2%7D"> between two rationals and squeeze the gap in half, again and again. The brackets close in beautifully, their squares press right up against <img src="https://latex.codecogs.com/png.latex?2"> from both sides, and yet, as the last line confirms, no rational in the chase ever <em>is</em> the answer. We have a sequence of perfectly good rational numbers that obviously <em>wants</em> to converge, that is homing in on a definite spot on the line, and the spot it is homing in on simply is not there in <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BQ%7D">.</p>
+<p>This is what I mean by a hole. The rational line, looked at up close, is shot through with gaps exactly where limits ought to land. And if we tried to build calculus on <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BQ%7D"> alone, every limit, every derivative, every integral would be standing on a number system that cannot promise the limit points exist. That is calculus built on quicksand. Before we can do anything rigorous, we have to fill the holes. The rest of this post is, in a real sense, the story of one axiom whose entire job is to guarantee those missing points into existence.</p>
+</section>
+</section>
+<section id="how-to-think-like-an-analyst" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-think-like-an-analyst">How to think like an analyst</h2>
+<p>Before we fill the holes, we need a new way of talking, because the language that got us into trouble was vague. “Gets arbitrarily close”, “approaches but never reaches”, “infinitely small”: these phrases feel meaningful but they cannot be checked, and a statement you cannot check is a statement you cannot trust. The first move of analysis is to replace all of that fog with something a skeptic could verify.</p>
+<p>Here is the trick, and it is genuinely one of the great ideas. Instead of saying <img src="https://latex.codecogs.com/png.latex?a"> and <img src="https://latex.codecogs.com/png.latex?b"> are “infinitely close”, we set up a challenge. You name a tolerance, any positive margin of error <img src="https://latex.codecogs.com/png.latex?%5Cepsilon%20%3E%200"> you like, however absurdly tiny, and I have to show that <img src="https://latex.codecogs.com/png.latex?a"> and <img src="https://latex.codecogs.com/png.latex?b"> are within <img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> of each other: <img src="https://latex.codecogs.com/png.latex?%0A%7Ca%20-%20b%7C%20%5Cle%20%5Cepsilon%20.%0A"> If I can meet <em>every</em> challenge you throw at me, for every <img src="https://latex.codecogs.com/png.latex?%5Cepsilon%20%3E%200"> no matter how small, then there is simply no room left between <img src="https://latex.codecogs.com/png.latex?a"> and <img src="https://latex.codecogs.com/png.latex?b">, and we are forced to conclude <img src="https://latex.codecogs.com/png.latex?a%20=%20b">. This is the <strong><img src="https://latex.codecogs.com/png.latex?%5Cepsilon">-principle</strong>, and it quietly powers an enormous fraction of all the proofs you will ever read in the subject. Equality becomes the statement that no positive gap survives scrutiny.</p>
+<p>Notice the flavor of this. We stopped pointing at pictures and started quantifying. “Close” became a number you can argue about; “approaches” will become a promise that for every tolerance there is a stage past which the promise holds. This is the <img src="https://latex.codecogs.com/png.latex?%5Cepsilon">–<img src="https://latex.codecogs.com/png.latex?%5Cdelta"> language, and at first it feels like bureaucracy strangling the life out of a simple idea. But the bureaucracy is the point: it is what lets us say something definite about infinite processes without ever having to “reach infinity”.</p>
+<p>And there is a second commitment we have to make, harder than the first. We have to be willing to throw away everything we think we know and rebuild it from declared starting points. All those algebraic reflexes from school, that you can rearrange sums freely, that a bounded increasing quantity must “level off” somewhere, that a continuous curve which goes from below an axis to above it must cross it: none of these get to be assumed. Some are true and provable, some are true only with extra hypotheses, and some are exactly the kind of plausible-sounding claim that the spike example showed can betray you. The analyst’s discipline is to take a small number of axioms, state them out loud, and then derive the rest with no circular reasoning. So let us find that small number of axioms. It turns out we need shockingly few.</p>
+</section>
+<section id="the-one-axiom-that-holds-everything-up" class="level2">
+<h2 class="anchored" data-anchor-id="the-one-axiom-that-holds-everything-up">The one axiom that holds everything up</h2>
+<p>This is the heart of the whole post, so let us slow down and give it the room it deserves. Every theorem in the back half of a calculus course, every guarantee that a limit exists or a maximum is attained or an integral converges, traces back through a chain of reasoning to a single property of the real numbers. Following Stephen Abbott’s beautiful arrangement of the subject <span class="citation" data-cites="abbott2015understanding">[1]</span>, I want to show you not just what that property is, but how the entire scaffolding of analysis unrolls from it.</p>
+<p>We already know what is missing from <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BQ%7D">. We saw it: a sequence of rationals can close in on a spot that is not a rational number. So whatever we add to repair the line had better be precisely a guarantee that such spots exist. Here is the guarantee, stated as cleanly as it can be.</p>
+<div id="def-aoc" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1 (Axiom of Completeness)</strong></span> Every nonempty set of real numbers that is bounded above has a <em>least</em> upper bound — a smallest number that is still <img src="https://latex.codecogs.com/png.latex?%5Cge"> everything in the set. We call it the <strong>supremum</strong> of the set, written <img src="https://latex.codecogs.com/png.latex?%5Csup">.</p>
+</div>
+<p>Sit with what this is claiming. An upper bound for a set is just a ceiling, any number no smaller than everything in the set. A set can have endless ceilings; if <img src="https://latex.codecogs.com/png.latex?5"> is a ceiling then so are <img src="https://latex.codecogs.com/png.latex?6"> and <img src="https://latex.codecogs.com/png.latex?100">. The axiom says there is always a <em>lowest</em> ceiling, one that hugs the set as tightly as any ceiling possibly could. For the set of rationals whose square is less than <img src="https://latex.codecogs.com/png.latex?2">, that lowest ceiling is exactly <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B2%7D">: every smaller number lets some element of the set poke above it, and that tightest-possible ceiling is the very point <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BQ%7D"> was missing. The Axiom of Completeness is, almost literally, the decree that the holes are filled. Every place a bounded set presses up against, there is now a real number waiting.</p>
+<p>By the way, this is the one thing we <em>assume</em>. We do not prove it; we cannot, because it is the defining difference between <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D"> and <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BQ%7D">. Everything from here on is earned from it.</p>
+<section id="watching-completeness-build-a-number" class="level3">
+<h3 class="anchored" data-anchor-id="watching-completeness-build-a-number">Watching completeness build a number</h3>
+<p>Let me show you the axiom doing its job, turning the squeeze on <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B2%7D"> into an actual point. The mechanism is bisection, the same halving from before, but now read through the lens of completeness.</p>
+<div id="abbdc1ea" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Nested halving traps a single real point: the least upper bound of</span></span>
+<span id="cb5-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># { x : x^2 &lt;= 2 }, which the rationals could not supply.</span></span>
+<span id="cb5-3">lo, hi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span></span>
+<span id="cb5-4"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>):</span>
+<span id="cb5-5">    mid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (lo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> hi) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb5-6">    lo, hi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (mid, hi) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> mid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> mid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> (lo, mid)</span>
+<span id="cb5-7"></span>
+<span id="cb5-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"interval width after 60 halvings: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>hi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> lo<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb5-9"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"the single point left trapped   : </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>lo<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!r}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb5-10"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"its square                       : </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>lo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> lo<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!r}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>interval width after 60 halvings: 2.22e-16
+the single point left trapped   : 1.414213562373095
+its square                       : 1.9999999999999996</code></pre>
+</div>
+</div>
+<p>Sixty halvings shrink the interval to a width of about <img src="https://latex.codecogs.com/png.latex?10%5E%7B-16%7D">, the very edge of what the machine can resolve, and the brackets have collapsed onto a single point whose square is <img src="https://latex.codecogs.com/png.latex?2"> to the last visible digit. The Axiom of Completeness is the formal promise that this collapse always succeeds, that the shrinking intervals really do close on a genuine real number rather than on another gap. The picture to keep is a vise: closed jaws tightening with nowhere for the trapped point to escape, and completeness swearing the point is truly caught.</p>
+</section>
+<section id="the-equivalence-chain-five-faces-of-one-fact" class="level3">
+<h3 class="anchored" data-anchor-id="the-equivalence-chain-five-faces-of-one-fact">The equivalence chain: five faces of one fact</h3>
+<p>Now comes the part I find genuinely thrilling. From this one axiom, the major existence theorems of analysis tumble out one after another, and then, in a lovely twist, every one of them turns out to be strong enough to imply the axiom right back. They are not a hierarchy of increasingly powerful claims. They are five different sentences in five different dialects, all saying the same thing: <em>the real line has no holes.</em></p>
+<p>Let me walk the chain, emphasizing at each link the pattern that runs through all of analysis — <em>we hit a wall, we name a new tool, the wall comes down.</em></p>
+<p><strong>From completeness to nested intervals.</strong> Picture a tower of closed intervals, each nested inside the last, <img src="https://latex.codecogs.com/png.latex?I_1%20%5Csupseteq%20I_2%20%5Csupseteq%20I_3%20%5Csupseteq%20%5Ccdots">, their lengths shrinking toward zero. Is there a point common to all of them? Over <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BQ%7D"> the answer can be no, the intervals can close on a gap. Over <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D"> the answer is always yes.</p>
+<div id="thm-nip" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Nested Interval Property)</strong></span> If <img src="https://latex.codecogs.com/png.latex?I_1%20%5Csupseteq%20I_2%20%5Csupseteq%20%5Ccdots"> are closed bounded intervals, then their intersection <img src="https://latex.codecogs.com/png.latex?%5Cbigcap_%7Bn%7D%20I_n"> is nonempty.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Write <img src="https://latex.codecogs.com/png.latex?I_n%20=%20%5Ba_n,%20b_n%5D">. The left endpoints <img src="https://latex.codecogs.com/png.latex?a_n"> only ever move right, and every <img src="https://latex.codecogs.com/png.latex?b_n"> is an upper bound for all of them (nesting keeps each <img src="https://latex.codecogs.com/png.latex?a_n"> to the left of every <img src="https://latex.codecogs.com/png.latex?b_n">). So the set <img src="https://latex.codecogs.com/png.latex?%5C%7Ba_n%5C%7D"> is nonempty and bounded above, and the Axiom of Completeness hands us <img src="https://latex.codecogs.com/png.latex?x%20=%20%5Csup%5C%7Ba_n%5C%7D">. Being the <em>least</em> upper bound, <img src="https://latex.codecogs.com/png.latex?x"> sits at or below every <img src="https://latex.codecogs.com/png.latex?b_n"> and at or above every <img src="https://latex.codecogs.com/png.latex?a_n">, so <img src="https://latex.codecogs.com/png.latex?x%20%5Cin%20%5Ba_n,%20b_n%5D"> for all <img src="https://latex.codecogs.com/png.latex?n">. The supremum is the common point, conjured out of completeness alone. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
+</div>
+<p>Do you see the move? We needed a point to exist, we had no formula for it, so we summoned it as a supremum. That is completeness earning its keep.</p>
+<p><strong>From completeness to monotone convergence.</strong> Here is the wall: we have a sequence creeping upward, <img src="https://latex.codecogs.com/png.latex?x_1%20%5Cle%20x_2%20%5Cle%20x_3%20%5Cle%20%5Ccdots">, and it never exceeds some ceiling. Intuitively it must “level off”. But “must” is exactly the kind of word we promised to stop trusting on faith. What lets us cash it?</p>
+<div id="thm-mct" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2 (Monotone Convergence Theorem)</strong></span> A sequence that is monotone (always increasing or always decreasing) and bounded converges to a real limit.</p>
+</div>
+<p>The limit is nothing other than the supremum of the values (for an increasing sequence). Completeness guarantees that supremum exists, and the <img src="https://latex.codecogs.com/png.latex?%5Cepsilon">-principle does the rest: pick any tolerance <img src="https://latex.codecogs.com/png.latex?%5Cepsilon">, and because the supremum is the <em>least</em> ceiling, some term must already be within <img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> of it; monotonicity then drags every later term into that same <img src="https://latex.codecogs.com/png.latex?%5Cepsilon">-band and traps it there. Let me show it breathing.</p>
+<div id="1b24ab41" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> math</span>
+<span id="cb7-2"></span>
+<span id="cb7-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># This sequence is decreasing and bounded below by sqrt(2),</span></span>
+<span id="cb7-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># so completeness GUARANTEES a limit -- one the rationals lack.</span></span>
+<span id="cb7-5">x, seq <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span>, [<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span>]</span>
+<span id="cb7-6"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>):</span>
+<span id="cb7-7">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> x) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># the old Babylonian step</span></span>
+<span id="cb7-8">    seq.append(x)</span>
+<span id="cb7-9"></span>
+<span id="cb7-10"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> n, val <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(seq):</span>
+<span id="cb7-11">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"x_</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>n<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> = </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>val<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.15f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb7-12"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gap to sqrt(2):"</span>, seq[<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> math.sqrt(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>x_0 = 2.000000000000000
+x_1 = 1.500000000000000
+x_2 = 1.416666666666667
+x_3 = 1.414215686274510
+x_4 = 1.414213562374690
+x_5 = 1.414213562373095
+x_6 = 1.414213562373095
+gap to sqrt(2): -2.220446049250313e-16</code></pre>
+</div>
+</div>
+<p>Each term is smaller than the last and never dips below <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B2%7D">, the two hypotheses of the theorem, and sure enough by the fifth step it has pinned <img src="https://latex.codecogs.com/png.latex?%5Csqrt%202"> to machine precision. Notice we did not need to know the limit in advance to be <em>certain it existed</em>; monotone-and-bounded was enough. That certainty is a gift from completeness, and it is the first time we have been able to assert a limit exists without pointing at it.</p>
+<p><strong>From nested intervals to Bolzano–Weierstrass.</strong> Now a harder wall. Take any bounded sequence at all, no monotonicity, no pattern, allowed to jump around as wildly as it pleases. Must <em>some</em> part of it settle down? It seems too much to ask of a sequence that might be pure chaos.</p>
+<div id="thm-bw" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 3 (Bolzano–Weierstrass Theorem)</strong></span> Every bounded sequence of real numbers has a convergent subsequence.</p>
+</div>
+<p>The proof is a reframing, the move this blog keeps returning to: when a problem looks hopeless, add structure that was not there and the answer appears. Here the new structure is bisection. The whole sequence lives inside some interval. Cut that interval in half; at least one half must contain infinitely many terms of the sequence, because infinitely many things cannot all fit in two halves while leaving both halves finite. Keep that half, and cut <em>it</em> in half, again choosing a side with infinitely many terms. You have built a nested tower of intervals, each holding infinitely many terms, with lengths shrinking to zero. The Nested Interval Property says they share a point <img src="https://latex.codecogs.com/png.latex?x">, and by picking one sequence term from each interval you build a subsequence marching straight toward <img src="https://latex.codecogs.com/png.latex?x">. Chaos always hides a convergent thread, and we found it by pigeonholing infinitely many terms into ever-smaller boxes.</p>
+<div id="4aa24b0d" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> math</span>
+<span id="cb9-2"></span>
+<span id="cb9-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># A bounded but jumpy sequence: sin(1), sin(2), sin(3), ... never settles,</span></span>
+<span id="cb9-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># yet Bolzano-Weierstrass promises a convergent subsequence hides inside.</span></span>
+<span id="cb9-5">xs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [math.sin(n) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> n <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">200_001</span>)]   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># all of it lives in [-1, 1]</span></span>
+<span id="cb9-6"></span>
+<span id="cb9-7">lo, hi, pool, log <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(xs))), []</span>
+<span id="cb9-8"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> hi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> lo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-4</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(pool) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:</span>
+<span id="cb9-9">    mid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (lo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> hi) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb9-10">    left  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> pool <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> xs[i] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> mid]</span>
+<span id="cb9-11">    right <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> pool <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> xs[i] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>  mid]</span>
+<span id="cb9-12">    pool, lo, hi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (left, lo, mid) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(left) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(right) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> (right, mid, hi)</span>
+<span id="cb9-13">    log.append((hi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> lo, xs[pool[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]]))</span>
+<span id="cb9-14"></span>
+<span id="cb9-15"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> width, rep <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> log[::<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>]:</span>
+<span id="cb9-16">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"interval width </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>width<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:8.5f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  -&gt;  a term inside it: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>rep<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:+.5f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb9-17"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"the subsequence is closing in on about </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>(lo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> hi) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:+.5f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>interval width  1.00000  -&gt;  a term inside it: -0.75680
+interval width  0.12500  -&gt;  a term inside it: -0.95892
+interval width  0.01562  -&gt;  a term inside it: -0.99999
+interval width  0.00195  -&gt;  a term inside it: -0.99999
+interval width  0.00024  -&gt;  a term inside it: -0.99999
+the subsequence is closing in on about -0.99997</code></pre>
+</div>
+</div>
+<p>Each line keeps the half of the interval that still holds a large share of the terms, exactly the “infinitely many” pigeonhole made finite, and the representative values visibly funnel toward a single limit as the window shrinks. The sequence as a whole never converges; a thread pulled out of it does. That is Bolzano–Weierstrass.</p>
+<p><strong>From Bolzano–Weierstrass to the Cauchy criterion.</strong> We have reached the most useful wall of all, and the one that most cleanly shows the <em>trouble-tool-resolution</em> loop. The problem is this: every definition of convergence we have written so far mentions the limit <img src="https://latex.codecogs.com/png.latex?L">. To check that a sequence converges, you have to already know where it is going. But in practice, when you are summing a series or running an algorithm, you have no idea what the limit is, that is precisely what you are trying to find. So you are stuck: you cannot verify convergence because verification requires the very answer you lack.</p>
+<p>The escape, due to Cauchy, is to stop talking about the destination and talk only about the <em>travelers</em>. A sequence is called <strong>Cauchy</strong> if its own terms eventually huddle together: for every tolerance <img src="https://latex.codecogs.com/png.latex?%5Cepsilon">, past some stage every pair of terms is within <img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> of each other. No limit mentioned. Just the internal promise that the sequence stops spreading out.</p>
+<div id="thm-cc" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 4 (Cauchy Criterion)</strong></span> A sequence of real numbers converges if and only if it is Cauchy.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>The easy direction: a convergent sequence is Cauchy, since if everything is near <img src="https://latex.codecogs.com/png.latex?L"> then everything is near everything else. The deep direction is the one completeness powers. A Cauchy sequence is bounded (its tail is packed into one <img src="https://latex.codecogs.com/png.latex?%5Cepsilon">-band, and only finitely many terms sit outside). Bounded, so by Bolzano–Weierstrass it has a subsequence converging to some <img src="https://latex.codecogs.com/png.latex?L">. And once one thread of a Cauchy sequence reaches <img src="https://latex.codecogs.com/png.latex?L">, the Cauchy condition forces <em>all</em> the terms to follow it there: any term is close to the converging subsequence, which is close to <img src="https://latex.codecogs.com/png.latex?L">. So the whole sequence converges to <img src="https://latex.codecogs.com/png.latex?L">. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
+</div>
+<p>This is the payoff I most want you to feel. We have earned the right to certify that a sequence converges <em>without ever naming its limit</em>, purely by watching its terms crowd together. Here is that power in the one situation where it matters most, an infinite series.</p>
+<div id="0361bb77" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Partial sums of 1 + 1/4 + 1/9 + ... . We judge convergence by the</span></span>
+<span id="cb11-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># sequence's INTERNAL gaps, never once mentioning the (famous) limit.</span></span>
+<span id="cb11-3">S, total <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [], <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb11-4"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> n <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2001</span>):</span>
+<span id="cb11-5">    total <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb11-6">    S.append(total)</span>
+<span id="cb11-7"></span>
+<span id="cb11-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> tail_spread(N):                 <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># the worst gap among terms from N onward</span></span>
+<span id="cb11-9">    tail <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> S[N <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:]</span>
+<span id="cb11-10">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>(tail) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>(tail)</span>
+<span id="cb11-11"></span>
+<span id="cb11-12"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> N <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>):</span>
+<span id="cb11-13">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"from term </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>N<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:&gt;4}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> on, the sequence spans only </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>tail_spread(N)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb11-14"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"the gaps vanish, so it is Cauchy -- and completeness hands us a limit."</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>from term   10 on, the sequence spans only 9.47e-02
+from term  100 on, the sequence spans only 9.45e-03
+from term 1000 on, the sequence spans only 5.00e-04
+the gaps vanish, so it is Cauchy -- and completeness hands us a limit.</code></pre>
+</div>
+</div>
+<p>The internal spread collapses toward zero, so the partial sums are Cauchy, so the series converges, and we concluded all of that without breathing a word about <img src="https://latex.codecogs.com/png.latex?%5Cpi%5E2/6">. This, finally, tells us what an infinite series <em>is</em>: not a mystical “infinite addition”, which has no meaning, but the limit of the finite partial sums. The whole theory of series is just the theory of sequences wearing a disguise.</p>
+</section>
+<section id="the-insight-worth-keeping" class="level3">
+<h3 class="anchored" data-anchor-id="the-insight-worth-keeping">The insight worth keeping</h3>
+<p>Step back and look at what we have built. Starting from one axiom we derived nested intervals, monotone convergence, Bolzano–Weierstrass, and the Cauchy criterion, each unlocking the next. And here is the elegant turn: with one mild extra ingredient, the <strong>Archimedean property</strong> (that no real number is bigger than every integer, so the reciprocals <img src="https://latex.codecogs.com/png.latex?%5Ctfrac%7B1%7D%7Bn%7D"> can be made as small as you like), every one of these five statements implies all the others. They form a perfect ring of equivalences.</p>
+<p>Doesn’t that just feel beautiful? Five theorems that look completely different, about ceilings and intervals and chaotic sequences and internal gaps, are revealed to be a single fact viewed from five angles. And the fact is the one we started with: the real line is seamless. There are no holes for a limit to fall through. Every other guarantee in analysis is this one truth, translated.</p>
+</section>
+</section>
+<section id="sequences-and-series-made-rigorous" class="level2">
+<h2 class="anchored" data-anchor-id="sequences-and-series-made-rigorous">Sequences and series, made rigorous</h2>
+<p>With completeness underneath us, we can finally pin down the word that the motivation section abused: <em>limit</em>. Here is the definition that fog kept us from, stated in the challenge-and-response language.</p>
+<p>A sequence <img src="https://latex.codecogs.com/png.latex?(x_n)"> <strong>converges to <img src="https://latex.codecogs.com/png.latex?L"></strong> if, for every tolerance <img src="https://latex.codecogs.com/png.latex?%5Cepsilon%20%3E%200">, there is a stage <img src="https://latex.codecogs.com/png.latex?N"> past which every term lies within <img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> of <img src="https://latex.codecogs.com/png.latex?L">: that is, <img src="https://latex.codecogs.com/png.latex?%7Cx_n%20-%20L%7C%20%3C%20%5Cepsilon"> for all <img src="https://latex.codecogs.com/png.latex?n%20%5Cge%20N">.</p>
+<p>Read it as a game. You hand me an <img src="https://latex.codecogs.com/png.latex?%5Cepsilon">, a target zone of radius <img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> around <img src="https://latex.codecogs.com/png.latex?L">. I have to find a moment <img src="https://latex.codecogs.com/png.latex?N"> after which the sequence enters that zone and, crucially, <em>never leaves it again</em>. Not “gets close once” but falls in and stays in. If I can answer every <img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> you pose, however cruelly small, the sequence converges. Notice how this finally cashes out “approaches without reaching”: the terms need never equal <img src="https://latex.codecogs.com/png.latex?L">, they need only be unable to stay any fixed distance away.</p>
+<p>This is the whole grammar of the subject, and it is why the Cauchy criterion was such a liberation. With the plain definition you must know <img src="https://latex.codecogs.com/png.latex?L"> to play the game. The Cauchy condition lets you play it against the sequence itself. Trouble, tool, resolution: we did not know the limit, so we invented a test that does not need it, and completeness guaranteed the test never lies.</p>
+</section>
+<section id="topology-the-geometry-of-limits" class="level2">
+<h2 class="anchored" data-anchor-id="topology-the-geometry-of-limits">Topology: the geometry of limits</h2>
+<p>So far our world has been the line, where “close” means a small difference of numbers. But the moment you study functions seriously, you need to talk about closeness in a way that survives being bent and reshaped, and that is what topology gives you. Rudin makes the case bluntly: try to discuss limits and continuity without first understanding the shapes that points form, open sets, closed sets, and above all compactness, and you are working much harder than you need to <span class="citation" data-cites="rudin1976principles">[2]</span>.</p>
+<p>The vocabulary is worth meeting once, plainly. A set is <strong>open</strong> if every point has a little breathing room, a tiny interval around it still inside the set; the open interval <img src="https://latex.codecogs.com/png.latex?(0,1)"> is the model, no point is trapped against an edge. A set is <strong>closed</strong> if it contains all its own limit points, every spot that its sequences can sneak up on; <img src="https://latex.codecogs.com/png.latex?%5B0,1%5D"> is closed, it owns its endpoints. These are the two ways a set can relate to its boundary, and limits are the thread connecting them: closed sets are exactly the ones from which no convergent sequence can escape.</p>
+<p>And then there is the jewel.</p>
+<div id="def-compact" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2 (Compact set)</strong></span> A set in <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D"> is <strong>compact</strong> if it is closed and bounded — equivalently, if every sequence inside it has a subsequence converging to a point still inside it.</p>
+</div>
+<p>Roughly speaking, compactness is what “finite” turns into when you are forced to work with infinitely many points. A finite set has a wonderful property: any sequence drawn from it must repeat some value endlessly, so it obviously has a convergent (constant) subsequence, and the limit is right there in the set. Compactness rescues exactly that property for infinite sets. Look again at the second description; it is Bolzano–Weierstrass, promoted from a fact about <img src="https://latex.codecogs.com/png.latex?%5B-1,1%5D"> into the <em>definition</em> of a kind of set. A closed bounded interval is the canonical compact set, and that is why it keeps showing up as the natural home for the theorems of calculus.</p>
+<p>Why care? Because compactness is precisely the hypothesis under which continuous functions behave. A function is <strong>continuous</strong> when it does not tear the line: nearby inputs go to nearby outputs, which in the <img src="https://latex.codecogs.com/png.latex?%5Cepsilon">–<img src="https://latex.codecogs.com/png.latex?%5Cdelta"> dialect says that for every output tolerance <img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> there is an input tolerance <img src="https://latex.codecogs.com/png.latex?%5Cdelta"> small enough to stay inside it. The topological restatement is gorgeously compact in its own right: a function is continuous exactly when the preimage of every open set is open. Pulling back an open set never punches a hole in it; that single sentence is continuity, with no <img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> in sight.</p>
+<p>Put continuity and compactness together and you get the result every calculus student uses on faith. A continuous function carries a compact set to a compact set; it cannot stretch a closed bounded domain into something unbounded or open-ended. On the line that means a continuous function on <img src="https://latex.codecogs.com/png.latex?%5Ba,b%5D"> has a bounded range that includes its own supremum, so the function actually <em>attains</em> a maximum and a minimum somewhere on the interval. That is the Extreme Value Theorem, and far from being an obvious doodle about humps and valleys, it is a precise consequence of compactness, which is itself Bolzano–Weierstrass, which is itself completeness. The same seam in the line that catches <img src="https://latex.codecogs.com/png.latex?%5Csqrt%202"> is what forces a continuous curve to reach its highest point.</p>
+</section>
+<section id="rebuilding-the-calculus" class="level2">
+<h2 class="anchored" data-anchor-id="rebuilding-the-calculus">Rebuilding the calculus</h2>
+<p>Now we come home, back to derivatives and integrals, but we arrive with new eyes. Everything we touch here is a consequence of the machinery above, and the goal is to see <em>why</em> the familiar rules are entitled to be true.</p>
+<p>Start with the derivative, and let go of “the slope of the tangent line”, which is a picture, not a definition. The deeper idea is approximation. Near a point, a differentiable function is one that is almost perfectly mimicked by a straight line, and the derivative is the slope of that one special line. Formally, <img src="https://latex.codecogs.com/png.latex?f"> is differentiable at <img src="https://latex.codecogs.com/png.latex?a"> with derivative <img src="https://latex.codecogs.com/png.latex?f'(a)"> when <img src="https://latex.codecogs.com/png.latex?%0Af(a%20+%20h)%20=%20f(a)%20+%20f'(a)%5C,h%20+%20(%5Ctext%7Berror%20that%20shrinks%20faster%20than%20%7D%20h),%0A"> so that as <img src="https://latex.codecogs.com/png.latex?h%20%5Cto%200"> the error vanishes even compared to the already-tiny <img src="https://latex.codecogs.com/png.latex?h">. To differentiate is to ask: of all the straight lines through this point, which one hugs the curve so tightly that the leftover error is negligible at first order? Differentiation is local linearization, the art of replacing a curve, for an instant, by the line that best impersonates it. That reframing, curve becomes line, is what makes the whole machinery of calculus, and later of differential geometry, possible.</p>
+<p>Now the integral, and here the rigorous story is more interesting than the intuition. “Area under the curve” is the picture, but to <em>define</em> it we squeeze, in the spirit of the bisection that has run through this entire post. Chop the interval into small pieces. On each piece the function has a lowest value and a highest value; build a short rectangle on the low value and a tall rectangle on the high value. Summing the short rectangles gives a <strong>lower sum</strong> that definitely <em>underestimates</em> the area; summing the tall ones gives an <strong>upper sum</strong> that definitely <em>overestimates</em> it. The true area, whatever it is, is pinned between them.</p>
+<div id="def-riemann" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3 (The Riemann integral)</strong></span> A bounded function is <strong>integrable</strong> on <img src="https://latex.codecogs.com/png.latex?%5Ba,b%5D"> if, by taking the partition fine enough, the lower sums and the upper sums can be brought arbitrarily close together. Their common squeezed value is the integral <img src="https://latex.codecogs.com/png.latex?%5Cint_a%5Eb%20f">.</p>
+</div>
+<p>This squeezing definition is sharper than the cartoon, and it earns its keep on functions the cartoon cannot handle, ones with sudden jumps where “the area under the curve” is not visually obvious.</p>
+<div id="88aa92b0" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb13-2"></span>
+<span id="cb13-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># A function with a clean jump at x = 1/2. Still integrable, because the</span></span>
+<span id="cb13-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># upper and lower sums squeeze together despite the discontinuity.</span></span>
+<span id="cb13-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> f(x):</span>
+<span id="cb13-6">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> np.where(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, x, x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>)</span>
+<span id="cb13-7"></span>
+<span id="cb13-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> darboux(n):</span>
+<span id="cb13-9">    edges <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linspace(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb13-10">    sample <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linspace(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4001</span>)         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fine grid to read each cell's min/max</span></span>
+<span id="cb13-11">    lower <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> upper <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb13-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> a, b <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">zip</span>(edges[:<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], edges[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:]):</span>
+<span id="cb13-13">        cell <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> f(sample[(sample <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> a) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span> (sample <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> b)])</span>
+<span id="cb13-14">        lower <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> cell.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">min</span>() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> a)</span>
+<span id="cb13-15">        upper <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> cell.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> a)</span>
+<span id="cb13-16">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> lower, upper</span>
+<span id="cb13-17"></span>
+<span id="cb13-18"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> n <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>):</span>
+<span id="cb13-19">    L, U <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> darboux(n)</span>
+<span id="cb13-20">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"n=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>n<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:&gt;5}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">: lower=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>L<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.6f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  upper=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>U<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.6f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  gap=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>U <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> L<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb13-21"></span>
+<span id="cb13-22">exact <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> ((<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>))</span>
+<span id="cb13-23"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"the sums squeeze toward the exact value:"</span>, exact)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>n=   10: lower=0.950050  upper=1.150000  gap=2.00e-01
+n=  100: lower=0.995000  upper=1.015000  gap=2.00e-02
+n= 1000: lower=0.999500  upper=1.001500  gap=2.00e-03
+the sums squeeze toward the exact value: 1.0</code></pre>
+</div>
+</div>
+<p>Watch the gap between the lower and upper sums in that last column. It marches to zero like <img src="https://latex.codecogs.com/png.latex?1/n">, dragged down by the lone cell straddling the jump, whose width shrinks as the partition refines. The function leaps by a full unit at <img src="https://latex.codecogs.com/png.latex?x%20=%20%5Ctfrac12"> and the squeeze does not care; lower and upper still close on the same number. That robustness is the whole reason we define integration by squeezing rather than by drawing, and it is, underneath, one more appeal to completeness: the common value the sums close on is guaranteed to exist because the reals have no gaps for it to slip through.</p>
+<p>And then, the summit. We have built differentiation as taking a curve apart into its local linear behavior, and integration as accumulating a function up across an interval. They were defined by completely different procedures, one a limit of slopes, the other a limit of squeezed sums, with no obvious reason to be related at all.</p>
+<div id="thm-ftc" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 5 (Fundamental Theorem of Calculus)</strong></span> If <img src="https://latex.codecogs.com/png.latex?f"> is continuous and <img src="https://latex.codecogs.com/png.latex?F(x)%20=%20%5Cint_a%5Ex%20f">, then <img src="https://latex.codecogs.com/png.latex?F"> is differentiable and <img src="https://latex.codecogs.com/png.latex?F'%20=%20f">. Tearing a total back into its instantaneous pieces, and accumulating the pieces back into a total, are inverse operations.</p>
+</div>
+<p>This is not a calculational trick to memorize for finding antiderivatives. It is the deepest structural fact in elementary calculus, and it is a <em>theorem</em>, something that has to be proved, and the proof leans on exactly the continuity-and-limits theory we spent the whole post constructing. That differentiation and integration undo each other is the grand reward at the end of the climb, the place where the local and the global, the slope and the area, turn out to be two views of one thing. Doesn’t that feel like the right way for the story to end, the toolbox’s central promise revealed not as an axiom to swallow but as a truth you can see the reasons for?</p>
+</section>
+<section id="from-intuition-to-rigor" class="level2">
+<h2 class="anchored" data-anchor-id="from-intuition-to-rigor">From intuition to rigor</h2>
+<p>So why bother? Why rebuild a calculus you could already compute with? Because what you have now is not a bigger toolbox; it is the knowledge of <em>why every tool is allowed to work</em>, and which fine print can break it. You can look at <img src="https://latex.codecogs.com/png.latex?1%20-%201%20+%201%20-%20%5Ccdots"> and say precisely why it has no sum. You can look at the sliding spike and name the exact illegal step. You can assert a limit exists before you can compute it. That is a different and sturdier kind of understanding, and it does not wash away the next time a formula surprises you.</p>
+<p>If you want to learn this properly, I will make the same recommendation almost everyone who loves the subject makes: read two books, and read them for different reasons. Start with Abbott’s <em>Understanding Analysis</em> <span class="citation" data-cites="abbott2015understanding">[1]</span>, which is a masterpiece of <em>motivation</em>. Abbott never drops a definition on you cold; he shows you the paradox or the gap that makes the definition necessary, lets you feel the trouble, and only then introduces the tool, so the theory assembles itself in your hands the way the equivalence chain did above. He teaches you how to <em>discover</em> analysis, and he guards you from getting lost inside the proofs. Then, once the intuition is solid, graduate to Rudin’s <em>Principles of Mathematical Analysis</em> <span class="citation" data-cites="rudin1976principles">[2]</span>, “baby Rudin”, for its austere rigor and the cold sculptural elegance Russell described in our epigraph. Rudin will not hold your hand. He will show you how high the abstraction can be stacked, and that view is exactly what opens the doors to the mathematics beyond, topology, measure theory, functional analysis <span class="citation" data-cites="rudin1991functional">[3]</span>. Tao’s <em>Analysis I</em> <span class="citation" data-cites="tao2016analysis">[4]</span> sits beautifully between them if you want the construction of the real numbers themselves spelled out from the integers up.</p>
+<p>Here is the parting thought I want to leave you with. The point of analysis was never the computations; you could already do those. The point is the building of an unshakable logical structure, a way of knowing that does not depend on the picture looking convincing. A proof is not merely a device for convincing someone else that a result is true. It is the only way to understand <em>why</em> the result has to be true, why the real line must be seamless, why a continuous function must reach its peak, why differentiation and integration are forced to be inverse. That “why”, earned and not assumed, is the whole reward. And it all hangs, every last theorem of it, on the quiet insistence that the number line has no holes.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>If you keep only the spine of this, keep this. Elementary calculus computes; analysis explains, and the explaining starts from distrust, because careless limits genuinely produce <img src="https://latex.codecogs.com/png.latex?0%20=%201">. The rational line has holes exactly where limits want to land, and the single repair is the Axiom of Completeness, the promise that every bounded set has a least upper bound. From that one axiom flows an equivalent ring of existence theorems, nested intervals, monotone convergence, Bolzano–Weierstrass, and the Cauchy criterion, every one of them just saying “the line is seamless” in a different dialect, and tied together by the Archimedean property. On that foundation, limits get an honest <img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> definition, series become limits of partial sums, compactness generalizes finiteness so continuous functions attain their extremes, and the derivative (local linearization) and the integral (a squeeze between upper and lower sums) are finally revealed as inverses by the Fundamental Theorem of Calculus. The whole cathedral rests on one stone: no holes.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This post sketches the architecture and proves the key links in the chain; it leans on intuition where a full course would grind out every <img src="https://latex.codecogs.com/png.latex?%5Cepsilon">. For the complete treatment, follow Abbott for the motivation and Rudin for the rigor.</p>
+</div>
+</div>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Reconstructing Calculus from First Principles</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/reconstructing-calculus/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
+<div id="ref-abbott2015understanding" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">S. Abbott, <em>Understanding analysis</em>, 2nd ed. in Undergraduate texts in mathematics. Springer, 2015.</div>
+</div>
+<div id="ref-rudin1976principles" class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">W. Rudin, <em>Principles of mathematical analysis</em>, 3rd ed. in International series in pure and applied mathematics. McGraw-Hill, 1976.</div>
+</div>
+<div id="ref-rudin1991functional" class="csl-entry">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">W. Rudin, <em>Functional analysis</em>, 2nd ed. in International series in pure and applied mathematics. McGraw-Hill, 1991.</div>
+</div>
+<div id="ref-tao2016analysis" class="csl-entry">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">T. Tao, <em>Analysis i</em>, 3rd ed. in Texts and readings in mathematics. Hindustan Book Agency, 2016.</div>
+</div>
+</div></section></div> ]]></description>
+  <category>pure</category>
+  <category>real-analysis</category>
+  <category>foundations</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/reconstructing-calculus/</guid>
   <pubDate>Sun, 07 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
