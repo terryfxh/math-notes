@@ -119,6 +119,9 @@ body:has(.about-page) main.content {
 .about-meta {
   grid-area: meta;
   align-self: start;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--about-rule);
 }
 
 .about-rail h1 {
@@ -144,16 +147,6 @@ body:has(.about-page) main.content {
   color: #35373a;
   font-size: 0.98rem;
   line-height: 1.65;
-}
-
-.about-phi {
-  position: absolute;
-  top: 0.65rem;
-  right: 0;
-  color: var(--about-accent);
-  font-family: Georgia, serif;
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
 }
 
 .about-rail-section {
@@ -188,14 +181,39 @@ body:has(.about-page) main.content {
   line-height: 1.45;
 }
 
-.about-link {
+.about-meta > .about-rail-section:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.about-actions {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.about-actions p {
+  margin: 0;
+}
+
+.about-link {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 0;
+  justify-content: center;
+  gap: 0.7rem;
+  min-width: 7.25rem;
+  padding: 0.62rem 0.9rem;
+  border: 1px solid #b9bbb8;
+  border-radius: 0.45rem;
   color: var(--about-ink);
-  font-size: 0.98rem;
+  font-size: 0.9rem;
+  line-height: 1;
   text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
 }
 
 .about-link::after {
@@ -206,8 +224,11 @@ body:has(.about-page) main.content {
 }
 
 .about-link:hover {
+  border-color: var(--about-ink);
+  background: #f6f6f3;
   color: var(--about-ink);
-  text-decoration: underline;
+  text-decoration: none;
+  transform: translateY(-1px);
 }
 
 .about-link:hover::after {
@@ -313,6 +334,7 @@ body:has(.about-page) main.content {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+    margin-top: 0;
   }
 
   .about-rail-section {
@@ -340,12 +362,21 @@ body:has(.about-page) main.content {
     display: block;
   }
 
-  .about-phi {
-    top: 0.35rem;
-  }
-
   .about-rail-section {
     margin-top: 2rem;
+  }
+
+  .about-meta > .about-rail-section:first-child {
+    margin-top: 0;
+  }
+
+  .about-actions {
+    gap: 0.55rem;
+  }
+
+  .about-link {
+    min-width: 0;
+    padding-inline: 1rem;
   }
 
   .about-intro,
@@ -363,6 +394,7 @@ body:has(.about-page) main.content {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .about-link,
   .about-link::after {
     transition: none;
   }

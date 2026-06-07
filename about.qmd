@@ -9,8 +9,6 @@ page-layout: full
 
 # About
 
-<span class="about-phi" aria-hidden="true">φ ≈ 1.618</span>
-
 I'm **Terry**, a mathematics student writing to understand: to follow an
 idea carefully, test it against computation, and see what it reveals about
 the world.
@@ -39,8 +37,12 @@ connections worth keeping.
 
 ## Connect
 
+::: {.about-actions}
+
 [GitHub](https://github.com/terryfxh){.about-link}
 [Email](mailto:fangxihan1@gmail.com){.about-link}
+
+:::
 
 :::
 
