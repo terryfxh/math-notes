@@ -4,6 +4,20 @@ This replaces the old "edit, then run `quarto publish gh-pages` by hand" loop.
 The big change: **publishing is now just `git push`.** A GitHub Action renders the
 site on a clean machine and deploys it for you.
 
+## Fast daily commands
+
+```
+python tools/blog.py status
+python tools/blog.py new "Your Post Title" --categories "pure, number-theory"
+python tools/blog.py preview
+python tools/blog.py fast-check
+python tools/blog.py full-check
+python tools/blog.py render
+```
+
+Use `fast-check` while drafting. Use `full-check` before publishing a post that
+contains or changes Python code cells.
+
 ## One-time setup (do this once)
 
 1. Commit the new tooling (the Action, the scripts, this guide):
@@ -25,10 +39,11 @@ site on a clean machine and deploys it for you.
 ## Writing a new post (the everyday loop)
 
 ```
-python tools/new_post.py "Your Post Title"     # 1. scaffold
-quarto preview                                  # 2. write, see it live (drafts hidden)
+python tools/blog.py new "Your Post Title"      # 1. scaffold
+python tools/blog.py preview                    # 2. write, see it live (drafts hidden)
 #    ...set draft: false when ready...
-python tools/check.py                           # 3. clean + validate + run code
+python tools/blog.py fast-check                 # 3. quick clean + validate
+python tools/blog.py full-check                 # 3b. before publishing code-heavy posts
 git add . && git commit -m "add post: ..." && git push   # 4. publish
 ```
 
@@ -43,23 +58,39 @@ directory-and-remote dance that used to cause errors.
   draft, so it stays off the live listing until you flip `draft: false`.
 - **`quarto preview`** is the only step that still needs Quarto + Python installed
   locally. It is optional but recommended for seeing math and code render.
-- **`check.py`** is the safety net (details below). Run it before every commit.
+- **`blog.py`** is the command hub. It wraps post creation, status, checks,
+  preview, and render so Codex, Claude Code, and you can use the same entrypoint.
+- **`check.py`** is the safety net (details below). Run a fast check before every
+  commit and a full check before publishing code-heavy posts.
 - **`git push`** is the publish button.
 
-## The pre-publish check: `python tools/check.py`
+## The pre-publish check
 
-One command that does three things, in order:
+Fast mode:
+
+```
+python tools/blog.py fast-check
+```
+
+Full mode:
+
+```
+python tools/blog.py full-check
+```
+
+The check does these things:
 
 1. **Strips NUL bytes** from `.qmd` / `.yml` / `.bib` / `.md`. OneDrive sometimes
    appends these during sync, and they are what kept breaking Quarto's YAML parser.
    This makes that whole class of failure self-healing.
 2. **Validates YAML** front matter for every post and the site config.
-3. **Runs every Python code cell** so a broken snippet is caught in seconds, not
-   after a slow CI deploy.
+3. **Checks post metadata**, local links, and bibliography citations.
+4. **Runs every Python code cell** in full mode so a broken snippet is caught
+   locally, not after a slow CI deploy.
 
-Exit code `0` means safe to push. Add `--no-run` to skip executing code for a
-faster check. (Optional one-time `pip install pyyaml` enables the deep YAML check;
-without it, NUL-cleaning and code-running still work.)
+Exit code `0` means safe to push. `python tools/check.py --fast` and
+`python tools/check.py --no-run` skip executing code cells for speed. If full
+mode reports missing Python packages, run `pip install -r requirements.txt`.
 
 ## The publishing checklist
 
@@ -71,7 +102,8 @@ without it, NUL-cleaning and code-running still work.)
 - [ ] Prose minimizes dashes; voice matches the existing posts.
 - [ ] `description` is one accurate, search-friendly sentence.
 - [ ] `draft: false` set.
-- [ ] `python tools/check.py` passes.
+- [ ] `python tools/blog.py fast-check` passes.
+- [ ] `python tools/blog.py full-check` passes if the post has code cells.
 - [ ] `git push` done; the Actions tab shows a green deploy.
 
 ## Known gotchas (so they never recur)
@@ -84,7 +116,7 @@ without it, NUL-cleaning and code-running still work.)
 - **`styles.css` under `theme:`** must begin with the line `/*-- scss:rules --*/`,
   or Quarto rejects it as a theme layer.
 - **Helper docs stay private.** `_quarto.yml` only renders `*.qmd` and `posts/`, so
-  README, WORKFLOW, TODO, quotes, ideas, content-plan, and this file are never
+  README, WORKFLOW, quotes, ideas, content-plan, and this file are never
   published as pages. Keep that allowlist intact when editing config.
 - **Windows shell.** Run commands one per line. Do not wrap URLs in `< >`, and avoid
   chaining with `&&` if a step might fail; `<` and `>` are redirection operators.
@@ -98,4 +130,5 @@ without it, NUL-cleaning and code-running still work.)
 | Directory / remote / identity errors | Removed; CI builds from a clean checkout |
 | YAML breakage from OneDrive NULs | Auto-healed by `check.py` |
 | Copy-paste boilerplate per post | `new_post.py` scaffolds it |
-| Ad-hoc validation | One `check.py` gate |
+| Ad-hoc validation | `blog.py fast-check` and `blog.py full-check` |
+| Codex / Claude context hunting | `AGENTS.md`, `CLAUDE.md`, and `blog.py status` |

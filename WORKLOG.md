@@ -1,0 +1,106 @@
+# Work Log — Math Notes Blog
+
+A running record of what has been built, the established workflow, and what comes next.
+Newest entries on top. Kept as working memory for future sessions.
+
+> Language note: this file is in English (project rule: work product in English). For
+> roadmap rationale see `content-plan.md`; for post seeds see `ideas.md`.
+
+---
+
+## Status snapshot
+
+The table below is regenerated from `posts/*/index.qmd` by `python tools/blog.py worklog`.
+Do not edit it by hand — edits between the AUTO markers are overwritten.
+
+<!-- AUTO:STATUS:START -->
+_Last updated 2026-06-07 — 10 published posts._
+
+| Date | Slug | Title | Categories |
+|---|---|---|---|
+| 2026-06-01 | `spectral-theorem` | The Spectral Theorem for Symmetric Matrices | pure, applied, linear-algebra |
+| 2026-06-02 | `welcome` | Welcome, and what this blog is for | meta |
+| 2026-06-03 | `chinese-remainder-theorem` | The Chinese Remainder Theorem: Residues as Coordinates | pure, applied, number-theory, computer-science, cryptography |
+| 2026-06-03 | `gram-schmidt` | Gram–Schmidt: Straightening a Tangle of Vectors | pure, applied, linear-algebra, numerical-methods |
+| 2026-06-03 | `hidden-mechanics-of-math` | Mathematics Is Not a Spectator Sport | meta, learning |
+| 2026-06-03 | `miller-rabin` | Miller–Rabin: How to Believe a Number Is Prime | pure, applied, number-theory, computer-science, algorithms, cryptography |
+| 2026-06-04 | `discrete-log` | The Discrete Logarithm: Easy to Make, Hard to Undo | pure, applied, number-theory, computer-science, algorithms, cryptography |
+| 2026-06-04 | `on-learning-mathematics` | On Learning Mathematics | meta, learning |
+| 2026-06-04 | `on-learning-mathematics-zh` | 数学学习的沉思 | meta, learning |
+| 2026-06-06 | `domino-tilings` | Counting Domino Tilings: When Dynamic Programming Is a Matrix | pure, applied, combinatorics, computer-science, algorithms |
+<!-- AUTO:STATUS:END -->
+
+---
+
+## Changelog
+
+One entry is appended automatically the first time `tools/worklog.py` sees a published
+post (run via `python tools/blog.py worklog`). Newest on top.
+
+<!-- AUTO:LOG:START -->
+- **2026-06-06** — published `domino-tilings`: Counting Domino Tilings: When Dynamic Programming Is a Matrix (pure, applied, combinatorics, computer-science, algorithms)
+- **2026-06-04** — published `on-learning-mathematics-zh`: 数学学习的沉思 (meta, learning)
+- **2026-06-04** — published `on-learning-mathematics`: On Learning Mathematics (meta, learning)
+- **2026-06-04** — published `discrete-log`: The Discrete Logarithm: Easy to Make, Hard to Undo (pure, applied, number-theory, computer-science, algorithms, cryptography)
+- **2026-06-03** — published `miller-rabin`: Miller–Rabin: How to Believe a Number Is Prime (pure, applied, number-theory, computer-science, algorithms, cryptography)
+- **2026-06-03** — published `hidden-mechanics-of-math`: Mathematics Is Not a Spectator Sport (meta, learning)
+- **2026-06-03** — published `gram-schmidt`: Gram–Schmidt: Straightening a Tangle of Vectors (pure, applied, linear-algebra, numerical-methods)
+- **2026-06-03** — published `chinese-remainder-theorem`: The Chinese Remainder Theorem: Residues as Coordinates (pure, applied, number-theory, computer-science, cryptography)
+- **2026-06-02** — published `welcome`: Welcome, and what this blog is for (meta)
+- **2026-06-01** — published `spectral-theorem`: The Spectral Theorem for Symmetric Matrices (pure, applied, linear-algebra)
+<!-- AUTO:LOG:END -->
+
+---
+
+## Established workflow (follow this every time)
+
+1. `git status --short` before any edit (collaboration safety rule).
+2. Draft or polish prose in the **intuition-first voice** (use the
+   `intuition-first-explainer` skill). Intuition and geometry first, computation second.
+3. Each post: `posts/<slug>/index.qmd`, modeled on the `spectral-theorem` template.
+   Shared bibliography is `references.bib`; add new sources there.
+4. Validate before publishing:
+   - `python tools/blog.py fast-check` — YAML, metadata, links, citations (no execution).
+   - `python tools/blog.py full-check` — executes every code cell when code changed.
+   - At minimum `python tools/check.py --fast` before publishing.
+5. Verify code cells against ground truth (brute force / known constants) inside the post.
+6. Present the file, then publish one git line at a time in the project folder:
+   `git add <files>` → `git commit -m "..."` → `git push`.
+
+**Safety rules in force:** never delete/move/rename/overwrite article drafts without an
+explicit request; no destructive git (`reset --hard`, checkout-over-changes); treat article
+text as user-owned; `_site/` and `.quarto/` are disposable, keep `_freeze/`.
+
+---
+
+## Infrastructure built (from git history)
+
+- Quarto static site initialized (`_quarto.yml`): cosmo theme + `styles.css`, MathJax,
+  IEEE citations, theorem/proof crossref environments.
+- Epigraph system: verified quote bank (`quotes.md`); Weyl on the homepage, Poincaré on
+  posts. Per-post override supported (discrete-log skips the epigraph; domino-tilings uses
+  Hardy).
+- Site footer carries an IP / reproduction notice.
+- Tooling in `tools/`: `blog.py` (command hub), `check.py` (pre-publish safety check),
+  `posts_status.py`, `new_post.py`.
+- Cleanups: stopped publishing helper docs as pages, removed dead Categories link, removed
+  RSS icon from navbar, removed edit link, fixed the `styles.css` scss layer.
+
+---
+
+## Roadmap — next up
+
+**Immediate next post:** the Nullstellensatz "algebra ↔ geometry dictionary"
+(algebraic-geometry bridge).
+
+**Richest veins** (see `content-plan.md` for the full mapping to the `MATHSnotes` library):
+
+- *Number theory (Niven):* quadratic reciprocity (visual lattice-point proof), continued
+  fractions → Wiener's RSA attack, sieves, sums of two squares (Gaussian integers), Pell.
+- *Combinatorics (Stanley):* generating functions → solving recurrences, inversions/descents
+  → sorting, Catalan numbers, Möbius functions on posets / inclusion–exclusion, Dilworth.
+- *Complexity (Demaine):* NP-hardness reductions, puzzles and games — the CS anchor.
+- *Algebraic geometry (Hulek/Hartshorne):* elliptic curves and the algebra↔geometry
+  dictionary as the high-impact bridges.
+
+**Process:** keep `ideas.md` ranked; never start from a blank page — pull the top idea.

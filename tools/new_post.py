@@ -93,9 +93,10 @@ The one or two sentences you want the reader to keep.
     print(f"Created posts/{slug}/index.qmd  (draft)")
     print("Next:")
     print("  1. Write it; pick an epigraph from quotes.md.")
-    print("  2. quarto preview            # see it locally (draft is hidden on the live site)")
+    print("  2. python tools/blog.py preview")
     print("  3. set draft: false when ready")
-    print("  4. python tools/check.py     # clean + validate + run code")
+    print("  4. python tools/blog.py fast-check")
+    print("     python tools/blog.py full-check   # before publishing code-heavy posts")
     print("  5. git add . && git commit -m \"add post: {0}\" && git push".format(slug))
     print("     ...the GitHub Action renders and deploys automatically.")
     return 0

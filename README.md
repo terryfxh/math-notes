@@ -3,7 +3,8 @@
 A Quarto static-site blog for pure & applied mathematics notes. English-first,
 LaTeX-native, with runnable code cells.
 
-See [`WORKFLOW.md`](WORKFLOW.md) for the full positioning → publishing → growth process.
+See [`WORKFLOW.md`](WORKFLOW.md) for the full positioning to publishing to
+growth process, and [`WRITING.md`](WRITING.md) for the daily command loop.
 
 ## Project layout
 
@@ -18,6 +19,12 @@ See [`WORKFLOW.md`](WORKFLOW.md) for the full positioning → publishing → gro
 │   ├── _metadata.yml    # defaults applied to all posts
 │   ├── welcome/index.qmd
 │   └── spectral-theorem/index.qmd   # formatting template (theorems, code, citations)
+├── tools/
+│   ├── blog.py          # command hub: new/status/check/render/preview
+│   ├── check.py         # pre-publish safety check
+│   └── posts_status.py  # post inventory table
+├── AGENTS.md            # Codex / AI collaboration safety rules
+├── CLAUDE.md            # Claude entrypoint: goal, language rules, persona, safety (see AGENTS.md)
 ├── WORKFLOW.md          # the complete plan
 └── ideas.md             # running list of post ideas
 ```
@@ -28,7 +35,7 @@ See [`WORKFLOW.md`](WORKFLOW.md) for the full positioning → publishing → gro
    (or `brew install quarto` / `winget install Posit.Quarto`). Verify with `quarto --version`.
 2. **Install Python** (3.9+) for code cells, plus the libraries posts use:
    ```bash
-   pip install jupyter numpy matplotlib
+   pip install -r requirements.txt
    ```
 3. **Personalize** `_quarto.yml` and `about.qmd`: replace every `yourusername`,
    `Your Name`, and placeholder URL/email.
@@ -36,8 +43,11 @@ See [`WORKFLOW.md`](WORKFLOW.md) for the full positioning → publishing → gro
 ## Local development
 
 ```bash
-quarto preview      # live site with hot reload at http://localhost:port
-quarto render       # build the static site into _site/
+python tools/blog.py status       # quick table of all posts
+python tools/blog.py preview      # live site with hot reload
+python tools/blog.py render       # fast local render into _site/
+python tools/blog.py fast-check   # YAML, metadata, links, citations
+python tools/blog.py full-check   # also executes Python code cells
 ```
 
 Posts with `draft: true` are excluded from the published listing. Flip to
@@ -46,10 +56,9 @@ Posts with `draft: true` are excluded from the published listing. Flip to
 ## Writing a new post
 
 ```bash
-git checkout -b post/my-slug
-cp -r posts/spectral-theorem posts/my-slug   # start from the template
-# edit posts/my-slug/index.qmd, set title/date/categories
-quarto preview
+python tools/blog.py new "My Post Title" --categories "pure, number-theory"
+python tools/blog.py preview
+python tools/blog.py fast-check
 ```
 
 Commit, push, open a PR (or merge), then publish.
@@ -58,14 +67,9 @@ Commit, push, open a PR (or merge), then publish.
 
 ### Option A — GitHub Pages (simplest)
 
-```bash
-# one-time: create an empty GitHub repo and add it as origin
-quarto publish gh-pages
-```
-
-This builds and pushes to a `gh-pages` branch and serves at
-`https://yourusername.github.io/your-repo/`. Set `site-url` in `_quarto.yml`
-to that address so sitemap and social cards generate correctly.
+Push to `main`. The GitHub Action runs `python tools/check.py --fast`, renders
+the site, and publishes the result to `gh-pages`. The site is served from the
+`site-url` configured in `_quarto.yml`.
 
 ### Option B — Netlify (auto-deploy on every push)
 
