@@ -11,18 +11,22 @@ Fast mode is intended for quick local use and CI before deploy:
 The check intentionally avoids deleting, moving, or rewriting posts. The only
 write it may perform is removing stray NUL bytes from text files, which protects
 Quarto's YAML parser from OneDrive sync corruption.
+
+Performance: every post is read from disk exactly once and the text is reused by
+all validators (front matter, citations, links, code, freeze).
 """
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, NamedTuple
 
 ROOT = Path(__file__).resolve().parent.parent
 TEXT_GLOBS = ("*.qmd", "*.yml", "*.yaml", "*.bib", "*.md")
-SKIP_PARTS = {".git", ".quarto", "_site", "__pycache__", ".venv"}
+SKIP_PARTS = {".git", ".quarto", "_site", "_freeze", "__pycache__", ".venv"}
 REQUIRED_POST_FIELDS = ("title", "description", "date", "categories", "draft")
 
 try:
@@ -32,6 +36,11 @@ try:
 except ImportError:
     yaml = None
     HAVE_YAML = False
+
+
+class Post(NamedTuple):
+    path: Path
+    text: str
 
 
 class Reporter:
@@ -94,6 +103,14 @@ def strip_nuls(reporter: Reporter) -> None:
         reporter.note(f"stripped NUL bytes from {rel(path)}")
 
 
+def load_posts() -> list[Post]:
+    """Read every posts/*/index.qmd exactly once."""
+    posts: list[Post] = []
+    for path in sorted(p for p in (ROOT / "posts").glob("*/index.qmd") if p.is_file()):
+        posts.append(Post(path, path.read_text(encoding="utf-8")))
+    return posts
+
+
 def front_matter(text: str) -> str | None:
     match = re.match(r"^---\r?\n(.*?)\r?\n---", text, re.S)
     return match.group(1) if match else None
@@ -154,13 +171,8 @@ def validate_project_yaml(reporter: Reporter) -> None:
                 reporter.error(f"{name}: YAML parse error: {exc}")
 
 
-def post_files() -> list[Path]:
-    return sorted(p for p in (ROOT / "posts").glob("*/index.qmd") if p.is_file())
-
-
-def validate_posts(reporter: Reporter) -> None:
-    for path in post_files():
-        text = path.read_text(encoding="utf-8")
+def validate_posts(posts: list[Post], reporter: Reporter) -> None:
+    for path, text in posts:
         block = front_matter(text)
         if block is None:
             reporter.error(f"{rel(path)}: missing front matter")
@@ -193,24 +205,25 @@ def bibliography_keys() -> set[str]:
     return set(re.findall(r"@\w+\s*\{\s*([^,\s]+)", text))
 
 
-def validate_citations(reporter: Reporter) -> None:
+def validate_citations(posts: list[Post], reporter: Reporter) -> None:
     keys = bibliography_keys()
     if not keys:
         return
     citation_re = re.compile(r"\[@([A-Za-z0-9_:\-]+)")
-    for path in post_files():
-        text = path.read_text(encoding="utf-8")
+    for path, text in posts:
         for key in citation_re.findall(text):
             if key not in keys:
                 reporter.error(f"{rel(path)}: citation [@{key}] is missing from references.bib")
 
 
-def validate_local_links(reporter: Reporter) -> None:
+def validate_local_links(posts: list[Post], reporter: Reporter) -> None:
     link_re = re.compile(r"!?\[[^\]]*]\(([^)]+)\)")
-    for path in [ROOT / "README.md", ROOT / "WRITING.md", *post_files()]:
-        if not path.exists():
-            continue
-        text = path.read_text(encoding="utf-8")
+    extra = [
+        Post(p, p.read_text(encoding="utf-8"))
+        for p in (ROOT / "README.md", ROOT / "WRITING.md")
+        if p.exists()
+    ]
+    for path, text in [*extra, *posts]:
         for raw_target in link_re.findall(text):
             target = raw_target.split("#", 1)[0].strip()
             if not target or re.match(r"^[a-z]+:", target) or target.startswith("#"):
@@ -230,11 +243,45 @@ def python_cells(text: str) -> list[str]:
     return re.findall(r"```\{python\}\r?\n(.*?)\r?\n```", text, re.S)
 
 
-def run_code_cells(reporter: Reporter) -> None:
-    for path in post_files():
-        cells = python_cells(path.read_text(encoding="utf-8"))
+def validate_freeze(posts: list[Post], reporter: Reporter) -> None:
+    """Guard against publishing stale or uncached code output.
+
+    With `freeze: auto`, only posts whose source changed are re-executed, and the
+    committed _freeze/ output is reused. A code-bearing post with no committed
+    freeze is re-executed on every CI build; one whose source is newer than its
+    freeze would publish output that no longer matches the prose. The mtime
+    comparison is meaningful only locally (a fresh CI checkout rewrites mtimes),
+    so it is skipped under CI.
+    """
+    freeze_root = ROOT / "_freeze" / "posts"
+    in_ci = bool(os.environ.get("CI"))
+    for path, text in posts:
+        if not python_cells(text):
+            continue
+        slug = path.parent.name
+        fdir = freeze_root / slug
+        if not fdir.exists():
+            reporter.warn(
+                f"{rel(path)}: has runnable code but no committed _freeze/posts/{slug}; "
+                f"CI re-executes it every build. Run `python tools/blog.py render --execute` "
+                f"locally and commit _freeze/ to cache it."
+            )
+            continue
+        if in_ci:
+            continue
+        src_mtime = path.stat().st_mtime
+        freeze_mtimes = [f.stat().st_mtime for f in fdir.rglob("*") if f.is_file()]
+        if freeze_mtimes and src_mtime > max(freeze_mtimes) + 1:
+            reporter.warn(
+                f"{rel(path)}: source is newer than its _freeze cache; re-render with "
+                f"`python tools/blog.py render --execute` so the published output matches the post."
+            )
+
+
+def run_code_cells(posts: list[Post], reporter: Reporter) -> None:
+    for path, text in posts:
         namespace: dict[str, Any] = {}
-        for index, code in enumerate(cells, 1):
+        for index, code in enumerate(python_cells(text), 1):
             try:
                 exec(compile(code, f"{rel(path)}#cell{index}", "exec"), namespace)
             except Exception as exc:
@@ -253,13 +300,15 @@ def main() -> int:
     reporter = Reporter()
     strip_nuls(reporter)
     validate_project_yaml(reporter)
-    validate_posts(reporter)
-    validate_citations(reporter)
-    validate_local_links(reporter)
+    posts = load_posts()
+    validate_posts(posts, reporter)
+    validate_citations(posts, reporter)
+    validate_local_links(posts, reporter)
+    validate_freeze(posts, reporter)
     if args.fast or args.no_run:
         reporter.note("fast mode: skipped Python code cell execution")
     else:
-        run_code_cells(reporter)
+        run_code_cells(posts, reporter)
     return reporter.finish()
 
 

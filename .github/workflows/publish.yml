@@ -10,6 +10,12 @@ on:
 permissions:
   contents: write           # allows the action to push to the gh-pages branch
 
+# Only one deploy at a time. A newer push cancels an in-progress build so we
+# never waste minutes rendering a commit that is already superseded.
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -24,6 +30,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip                 # reuse the pip download cache between runs
+          cache-dependency-path: requirements.txt
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt
@@ -31,6 +39,8 @@ jobs:
       - name: Run fast pre-publish checks
         run: python tools/check.py --fast
 
+      # Posts set `freeze: auto`, so committed _freeze/ output is reused and only
+      # posts whose source changed are re-executed. Keep _freeze/ committed.
       - name: Render and publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
         with:

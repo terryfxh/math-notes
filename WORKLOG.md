@@ -59,13 +59,20 @@ post (run via `python tools/blog.py worklog`). Newest on top.
    `intuition-first-explainer` skill). Intuition and geometry first, computation second.
 3. Each post: `posts/<slug>/index.qmd`, modeled on the `spectral-theorem` template.
    Shared bibliography is `references.bib`; add new sources there.
-4. Validate before publishing:
-   - `python tools/blog.py fast-check` — YAML, metadata, links, citations (no execution).
-   - `python tools/blog.py full-check` — executes every code cell when code changed.
-   - At minimum `python tools/check.py --fast` before publishing.
+4. Validate before publishing. Prefer the one-step command:
+   - `python tools/blog.py preflight` — runs full checks (executes code cells) **then**
+     syncs `WORKLOG.md`. Add `--fast` to skip execution.
+   - Or run the pieces directly: `fast-check` (YAML, metadata, links, citations, freeze
+     guard, no execution) / `full-check` (also executes every code cell).
+   - `check.py` now warns if a code-bearing post has no committed `_freeze/` (CI would
+     re-execute it every build) or if its source is newer than its freeze cache. Clear it
+     with `python tools/blog.py render --execute`, then commit `_freeze/`.
 5. Verify code cells against ground truth (brute force / known constants) inside the post.
 6. Present the file, then publish one git line at a time in the project folder:
    `git add <files>` → `git commit -m "..."` → `git push`.
+   - Optional: `python tools/blog.py install-hooks` installs a git pre-commit hook that
+     refreshes `WORKLOG.md`, stages it, and runs `check.py --fast` before each commit — so
+     the log stays current automatically.
 
 **Safety rules in force:** never delete/move/rename/overwrite article drafts without an
 explicit request; no destructive git (`reset --hard`, checkout-over-changes); treat article
