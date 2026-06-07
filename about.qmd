@@ -1,43 +1,113 @@
 ---
 title: "About"
-image: profile.jpg
-about:
-  template: trestles
-  links:
-    - icon: github
-      text: GitHub
-      href: https://github.com/terryfxh
-    - icon: envelope
-      text: Email
-      href: "mailto:fangxihan1@gmail.com"
-    - icon: linkedin
-      text: LinkedIn
-      href: https://www.linkedin.com/in/xihan-fang/
+page-layout: full
 ---
 
-I'm **Terry**, a mathematics student who keeps getting pulled toward the place where pure theory, computation, and modelling meet. What I love most is the moment an abstract structure stops being a definition on a page and starts feeling like an object with a shape of its own.
+::: {.about-page}
 
-A lot of my curiosity lives between worlds: topology and analysis on one side, network science, stochastic processes, optimization, and quantitative finance on the other. I keep this site as a long-term home for the notes, derivations, and small experiments I build while trying to understand these things properly.
+::: {.about-rail}
 
-## Research interests
+# About
 
-- **Pure mathematics:** topology, analysis, algebra, and the structures that tie them together.
-- **Applied mathematics:** network science, stochastic processes, optimization, and numerical methods.
-- **Quantitative finance:** market modelling, risk, statistical learning, and systematic research.
-- **Mathematical modelling:** formulating models, estimating parameters, probing their sensitivity, and checking them against computation.
+<span class="about-phi" aria-hidden="true">φ ≈ 1.618</span>
 
-## What you'll find here
+I'm **Terry**, a mathematics student writing to understand: to follow an
+idea carefully, test it against computation, and see what it reveals about
+the world.
 
-The notes here are written with three quiet ambitions:
+These notes are a record of questions pursued, arguments reconstructed, and
+connections worth keeping.
 
-1. to state definitions, theorems, and proofs precisely enough that I can trust them again months later;
-2. to keep tracing the thread that connects abstract mathematics to computation and modelling;
-3. to leave a reproducible record of the calculations, simulations, and half-formed ideas along the way.
+:::
 
-Some posts are study notes on topics like topology, networks, probability, or optimization. Others are write-ups of a modelling project, a numerical experiment, or a paper I am slowly working through. Whatever the subject, the aim is the same: clarity, self-contained reasoning, and the occasional sense of wonder when an argument turns out to be more beautiful than it had any right to be.
+::: {.about-meta}
 
-Most of it is written for my future self. If it turns out to be useful to another student walking the same path, all the better.
+::: {.about-rail-section}
 
-## Elsewhere
+## Current interests
 
-My code and smaller projects live on GitHub, and I keep a LinkedIn profile for academic and professional updates. For questions, corrections, or just a good conversation about mathematics, my inbox is always open.
+- Analysis and topology
+- Algebra and geometry
+- Networks and stochastic processes
+- Optimization and numerical methods
+- Mathematical modelling
+- Quantitative questions and risk
+
+:::
+
+::: {.about-rail-section}
+
+## Connect
+
+[GitHub](https://github.com/terryfxh){.about-link}
+[Email](mailto:fangxihan1@gmail.com){.about-link}
+
+:::
+
+:::
+
+::: {.about-essay}
+
+::: {.about-intro}
+
+Mathematics is rigorous structure shaped by disciplined imagination. In a
+proof, a symmetry, or an unexpected equivalence, precision can become a form
+of art: a simpler way of seeing what was present all along.
+
+:::
+
+::: {.about-section data-index="01"}
+
+## Mathematics as a way of seeing
+
+Mathematics teaches me to look beneath complexity for structure. It asks for
+clarity without sacrificing wonder, and it turns intuition into arguments
+that can be examined, shared, and trusted.
+
+What draws me most is its economy. A good definition gathers many examples
+into one thought; a good proof makes the necessary feel inevitable. The
+elegance lies not in ornament, but in how little remains once the right idea
+has been found.
+
+:::
+
+::: {.about-section data-index="02"}
+
+## Why mathematics
+
+I chose mathematics because I wanted to study something closer to truth and
+philosophy, not merely acquire one more technique. Techniques change with
+their tools; a way of reasoning can continue to refine how one sees.
+
+I have no illusion that I possess the effortless gifts of mathematical
+prodigies. What I can bring is patience, seriousness, and a willingness to
+stay with a difficult idea until a little more of its form becomes visible.
+
+> There is only one heroism in the world: to see the world as it is, and to
+> love it.
+>
+> [— Romain Rolland]{.quote-attribution}
+
+For me, mathematics belongs to that effort: to look at reality without
+simplifying away its difficulty, and still believe that it can be understood.
+
+:::
+
+::: {.about-section data-index="03"}
+
+## From abstraction to the world
+
+Abstraction matters most when it returns with sharper questions. I am
+interested in computation, networks, probability, stochastic processes,
+optimization, and modelling because they let mathematical ideas meet systems
+that are uncertain, interconnected, and real.
+
+This blog is both a workshop and a ledger: a place to reconstruct proofs,
+test models, record numerical experiments, and preserve the moments when an
+abstract idea suddenly explains something concrete.
+
+:::
+
+:::
+
+:::

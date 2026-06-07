@@ -46,7 +46,7 @@ format:
 
 # Bibliography defaults (used by any post that cites)
 bibliography: references.bib
-csl: https://www.zotero.org/styles/ieee   # swap for your preferred citation style
+csl: ieee.csl
 
 # Theorem/proof environments and cross-reference labels
 crossref:
