@@ -1,0 +1,12 @@
+# Normalize line endings: store text as LF and check it out as LF on every OS.
+# This silences the "LF will be replaced by CRLF" warnings on Windows and keeps
+# diffs from churning whole files when OneDrive/Windows rewrite line endings.
+* text=auto eol=lf
+
+# Treat these as binary (never line-ending converted, never diffed as text).
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.pdf  binary
+*.ipynb binary
