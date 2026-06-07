@@ -3,4 +3,3 @@ numpy
 matplotlib
 pyyaml
 sympy
-sympy
