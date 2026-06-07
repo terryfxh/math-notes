@@ -25,3 +25,7 @@ You will find the notes grouped into a few themes:
 One promise I want to keep: every claim here is either proved, cited, or openly flagged as intuition rather than fact. When I get something wrong, and I will, I would rather fix it in the open than quietly hope no one noticed. Corrections are genuinely welcome through the issue link on each page.
 
 If you want a feel for how a full note reads, the next one, on the [Spectral Theorem](../spectral-theorem/), walks through a complete argument the way I like to tell them: a picture first, then the proof.
+
+## How to cite
+
+> Terry (2026). *Welcome, and what this blog is for*. Retrieved from `https://terryfxh.github.io/math-notes/posts/welcome/`.

@@ -14,7 +14,7 @@ The table below is regenerated from `posts/*/index.qmd` by `python tools/blog.py
 Do not edit it by hand — edits between the AUTO markers are overwritten.
 
 <!-- AUTO:STATUS:START -->
-_Last updated 2026-06-07 — 10 published posts._
+_Last updated 2026-06-07 — 9 published posts._
 
 | Date | Slug | Title | Categories |
 |---|---|---|---|
@@ -26,7 +26,6 @@ _Last updated 2026-06-07 — 10 published posts._
 | 2026-06-03 | `miller-rabin` | Miller–Rabin: How to Believe a Number Is Prime | pure, applied, number-theory, computer-science, algorithms, cryptography |
 | 2026-06-04 | `discrete-log` | The Discrete Logarithm: Easy to Make, Hard to Undo | pure, applied, number-theory, computer-science, algorithms, cryptography |
 | 2026-06-04 | `on-learning-mathematics` | On Learning Mathematics | meta, learning |
-| 2026-06-04 | `on-learning-mathematics-zh` | 数学学习的沉思 | meta, learning |
 | 2026-06-06 | `domino-tilings` | Counting Domino Tilings: When Dynamic Programming Is a Matrix | pure, applied, combinatorics, computer-science, algorithms |
 <!-- AUTO:STATUS:END -->
 
@@ -39,7 +38,6 @@ post (run via `python tools/blog.py worklog`). Newest on top.
 
 <!-- AUTO:LOG:START -->
 - **2026-06-06** — published `domino-tilings`: Counting Domino Tilings: When Dynamic Programming Is a Matrix (pure, applied, combinatorics, computer-science, algorithms)
-- **2026-06-04** — published `on-learning-mathematics-zh`: 数学学习的沉思 (meta, learning)
 - **2026-06-04** — published `on-learning-mathematics`: On Learning Mathematics (meta, learning)
 - **2026-06-04** — published `discrete-log`: The Discrete Logarithm: Easy to Make, Hard to Undo (pure, applied, number-theory, computer-science, algorithms, cryptography)
 - **2026-06-03** — published `miller-rabin`: Miller–Rabin: How to Believe a Number Is Prime (pure, applied, number-theory, computer-science, algorithms, cryptography)
