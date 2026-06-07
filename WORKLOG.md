@@ -14,7 +14,7 @@ The table below is regenerated from `posts/*/index.qmd` by `python tools/blog.py
 Do not edit it by hand — edits between the AUTO markers are overwritten.
 
 <!-- AUTO:STATUS:START -->
-_Last updated 2026-06-07 — 9 published posts._
+_Last updated 2026-06-07 — 10 published posts._
 
 | Date | Slug | Title | Categories |
 |---|---|---|---|
@@ -27,6 +27,7 @@ _Last updated 2026-06-07 — 9 published posts._
 | 2026-06-04 | `discrete-log` | The Discrete Logarithm: Easy to Make, Hard to Undo | pure, applied, number-theory, computer-science, algorithms, cryptography |
 | 2026-06-04 | `on-learning-mathematics` | On Learning Mathematics | meta, learning |
 | 2026-06-06 | `domino-tilings` | Counting Domino Tilings: When Dynamic Programming Is a Matrix | pure, applied, combinatorics, computer-science, algorithms |
+| 2026-06-07 | `nullstellensatz` | The Nullstellensatz: A Dictionary Between Algebra and Geometry | pure, algebraic-geometry, commutative-algebra |
 <!-- AUTO:STATUS:END -->
 
 ---
@@ -37,6 +38,7 @@ One entry is appended automatically the first time `tools/worklog.py` sees a pub
 post (run via `python tools/blog.py worklog`). Newest on top.
 
 <!-- AUTO:LOG:START -->
+- **2026-06-07** — published `nullstellensatz`: The Nullstellensatz: A Dictionary Between Algebra and Geometry (pure, algebraic-geometry, commutative-algebra)
 - **2026-06-06** — published `domino-tilings`: Counting Domino Tilings: When Dynamic Programming Is a Matrix (pure, applied, combinatorics, computer-science, algorithms)
 - **2026-06-04** — published `on-learning-mathematics`: On Learning Mathematics (meta, learning)
 - **2026-06-04** — published `discrete-log`: The Discrete Logarithm: Easy to Make, Hard to Undo (pure, applied, number-theory, computer-science, algorithms, cryptography)
@@ -95,8 +97,16 @@ text as user-owned; `_site/` and `.quarto/` are disposable, keep `_freeze/`.
 
 ## Roadmap — next up
 
-**Immediate next post:** the Nullstellensatz "algebra ↔ geometry dictionary"
-(algebraic-geometry bridge).
+**Just shipped:** the Nullstellensatz "algebra ↔ geometry dictionary" (`nullstellensatz`,
+2026-06-07) — first algebraic-geometry post; weak/strong forms, the radical as the only lost
+word, Rabinowitsch trick mechanized with a Gröbner-basis check (added `sympy` to
+`requirements.txt`).
+
+**Immediate next post:** "Permanent vs. determinant" — the synthesis flagship. Same formula
+up to signs, yet the determinant is easy (Gaussian elimination) and the permanent is #P-hard
+(Valiant). Bridges Stanley (matchings/counting), linear algebra, and Demaine (counting
+hardness). Follow-ups in the algebraic-geometry vein: the chord-and-tangent group law on an
+elliptic curve, then ECC.
 
 **Richest veins** (see `content-plan.md` for the full mapping to the `MATHSnotes` library):
 

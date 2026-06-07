@@ -2,3 +2,5 @@ jupyter
 numpy
 matplotlib
 pyyaml
+sympy
+sympy

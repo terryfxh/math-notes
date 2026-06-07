@@ -1,0 +1,163 @@
+---
+title: "The Nullstellensatz: A Dictionary Between Algebra and Geometry"
+description: "Polynomial equations and the shapes they cut out are two languages for one idea, and Hilbert's Nullstellensatz is the dictionary that translates between them, with the radical ideal as the only word that ever gets lost."
+date: 2026-06-07
+categories: [pure, algebraic-geometry, commutative-algebra]
+bibliography: ../../references.bib
+draft: false
+---
+
+::: {.epigraph}
+"Philosophy is written in this grand book, the universe ... It is written in the language of mathematics, and its characters are triangles, circles, and other geometric figures."
+
+[— Galileo Galilei, *Il Saggiatore* (1623)]{.attribution}
+:::
+
+From the first time you graphed $y = x^2$ you have been doing one half of a two-way trade. You took an equation and you drew its shape. Algebra went in, geometry came out. The circle $x^2 + y^2 = 1$ is a shape because it is also an equation; the pair of lines $xy = 0$ is the picture that the algebra is quietly describing. We make that trip so often it stops feeling like a trip at all.
+
+Here is the question almost nobody asks out loud: can you make the journey in reverse? Hand me a shape, and let me hand you back the equations that carve it out. And if both directions work, are they perfect inverses of each other, so that going there and back lands you exactly where you started? That round trip is the whole subject of algebraic geometry, and the precise account of how nearly it succeeds is a theorem Hilbert proved in 1893 with a German name that sounds far scarier than the idea: the *Nullstellensatz*, literally the "zero-locus theorem" [@hilbert1893]. What I want to show you is that it is really just the dictionary between two languages, and that there is exactly one word that gets lost in translation. Once you can name that word, the dictionary is perfect.
+
+## Two directions, and the hope that they undo each other
+
+Let me set up the two trips carefully, because the whole story is about whether they cancel. Work in $n$-dimensional space over a field $k$ (keep $k = \mathbb{C}$ in your head for now; it will matter later). Polynomials in $x_1, \dots, x_n$ live in the ring $k[x_1, \dots, x_n]$.
+
+Going from algebra to geometry, take any collection of polynomials and look at the points where they *all* vanish at once. Call that common zero set the **variety** of the collection,
+$$
+V(S) = \{\, p \in k^n : f(p) = 0 \text{ for every } f \in S \,\}.
+$$
+This is the formal version of "draw the picture." Feed in $\{x^2 + y^2 - 1\}$ and out comes the circle.
+
+Going the other way, start with a set $X$ of points and sweep up *every* polynomial that happens to vanish on all of it,
+$$
+I(X) = \{\, f \in k[x_1,\dots,x_n] : f(p) = 0 \text{ for every } p \in X \,\}.
+$$
+This collection is not just a random bag of polynomials. If $f$ and $g$ both vanish on $X$ then so does $f + g$, and if $f$ vanishes then so does $h f$ for *any* polynomial $h$. A set closed under addition and under multiplication by anything in the ring is exactly what algebraists call an **ideal**. So the "shape to equations" direction always lands you on an ideal, never on something messier. That is the first quiet gift.
+
+Now the hope. We have a map $V$ from ideals to shapes and a map $I$ from shapes back to ideals. The dream is that they are inverse: that $V$ and $I$ are two ways of describing the *same* object, one drawn and one written. Take a shape, read off its equations, draw those equations, and you should get the shape back. In symbols, $V(I(X)) = X$, and the other round trip $I(V(J)) = J$.
+
+One half of that dream comes true cleanly and one half does not, and the gap between them is the entire content of the theorem. So let us go hunting for the crack.
+
+## The crack: $V$ throws information away
+
+Bring it down to one dimension, where we can see everything. On the line, what is the variety of $x$? The single point $0$. What is the variety of $x^2$? Also just $0$ — squaring does not move where a polynomial is zero, only how flatly it sits there. And $x^3$, and $x^{100}$, all of them vanish at $0$ and nowhere else.
+
+```{python}
+from sympy import symbols, solveset, S
+
+x = symbols('x')
+for f in (x, x**2, x**3):
+    print(f"zeros of {f}: {solveset(f, x, domain=S.Complexes)}")
+```
+
+Three different polynomials, one identical zero set. So the map $V$ is *many-to-one*: it cannot tell $x$ from $x^2$, because it only records *where* a polynomial vanishes and forgets *to what order*. The instant a map is many-to-one, it cannot be invertible, and our dream of a perfect round trip is in trouble. Take a moment to sit with that, because the fix is going to come from naming precisely what got forgotten.
+
+What did $V$ forget? It forgot powers. The polynomials $x, x^2, x^3, \dots$ all collapse to the same shape, and the thing they have in common is that some power of each lands on the others: $x^2$ is a power of $x$, and conversely $x$ is the "root" that $x^2$ came from. If we want to undo $V$, we will have to agree to treat a polynomial and its roots as the same word. That agreement has a name.
+
+## The word that gets lost: the radical
+
+Given an ideal $J$, its **radical** is
+$$
+\sqrt{J} = \{\, f : f^m \in J \text{ for some integer } m \ge 1 \,\},
+$$
+all the polynomials some power of which is already in $J$. In our one-variable example, $J = (x^2)$ is the ideal of multiples of $x^2$. The polynomial $x$ is not in it — $x$ is not a multiple of $x^2$. But $x^2$ *is* in $J$, so $x$ slips into the radical $\sqrt{J} = (x)$. Taking the radical is exactly the act of "forgiving powers," of declaring that $x$ and $x^2$ should count as the same. An ideal that already equals its own radical, so that it has done all this forgiving in advance, is called a **radical ideal**.
+
+You might have already guessed where this is heading. The information that $V$ destroys is precisely the information that the radical erases. So if we feed $V$ an ideal and then ask $I$ to reconstruct it, we should not expect the original ideal back — we should expect its radical. That guess is the strong form of the theorem.
+
+::: {#thm-strong}
+
+## Strong Nullstellensatz
+
+Let $k$ be an algebraically closed field and $J$ an ideal of $k[x_1,\dots,x_n]$. Then
+$$
+I\bigl(V(J)\bigr) = \sqrt{J}.
+$$
+
+:::
+
+Read it as the exact accounting of the round trip. You go from an ideal to its shape and back, and what returns is not $J$ but $\sqrt{J}$ — the original cleaned of the one thing geometry could never see. And now the dream comes true after all, just on the right objects: restrict attention to *radical* ideals, the ones already equal to their radicals, and $V$ and $I$ become honest mutual inverses. Varieties on one side, radical ideals on the other, in perfect bijection. The crack is sealed by being named.
+
+But I have been quietly leaning on a phrase, "algebraically closed," and if you do not lean on it too the whole thing falls apart.
+
+## Why the field has to be closed
+
+Try the dictionary over the real numbers and watch it break. Consider the single equation $x^2 + 1 = 0$. Over $\mathbb{R}$ it has no solutions — the parabola $y = x^2 + 1$ floats above the axis and never touches it. So $V(x^2+1) = \varnothing$, the empty shape.
+
+```{python}
+from sympy import symbols, groebner, solveset, S
+
+x = symbols('x')
+J = groebner([x**2 + 1], x, order='lex')
+print("a basis for the ideal (x^2+1):", list(J.exprs), " -> 1 is NOT in it, so the ideal is proper")
+print("real zeros   :", solveset(x**2 + 1, x, domain=S.Reals))
+print("complex zeros:", solveset(x**2 + 1, x, domain=S.Complexes))
+```
+
+Here is the catastrophe. The ideal $(x^2+1)$ is a *proper* ideal — it is not the whole ring, since $1$ is not a multiple of $x^2 + 1$ — yet its variety is empty. Geometry sees nothing, but algebra still has plenty to say. The two languages have stopped agreeing about whether anything is there. Over $\mathbb{R}$ a polynomial can fail to vanish anywhere without being trivial, and that single failure poisons the entire correspondence.
+
+The repair is to work where every non-constant polynomial *does* have a root, which is exactly what "algebraically closed" means; the complex numbers are the standard home. Over $\mathbb{C}$ the equation $x^2 + 1 = 0$ recovers its two honest solutions $\pm i$, and the missing points come back. This guarantee has its own name, the gentler companion to the theorem above.
+
+::: {#thm-weak}
+
+## Weak Nullstellensatz
+
+Let $k$ be algebraically closed. A system of polynomial equations $g_1 = \dots = g_m = 0$ has **no** common solution in $k^n$ if and only if $1$ can be written as a polynomial combination $1 = \sum_i h_i\, g_i$ — that is, if and only if the ideal $(g_1,\dots,g_m)$ is the whole ring.
+
+:::
+
+In one sentence: the *only* way for a system to be unsolvable is for it to be algebraically contradictory, for the equations to secretly add up to $1 = 0$. There is no such thing as a system that quietly has no solutions for geometric reasons that algebra cannot detect. Equivalently, every proper ideal carves out at least one point, and the single points correspond to the maximal ideals $(x_1 - a_1, \dots, x_n - a_n)$. Doesn't that just feel like the right state of affairs? The two languages are finally bound so tightly that "unsolvable" and "contradictory" mean the same thing.
+
+## The strong theorem is the weak one in disguise
+
+Here is my favorite part, because it is a pure example of the move this blog keeps coming back to: when a problem is stuck, add a new construct and reframe. The strong Nullstellensatz looks like a genuinely deeper statement than the weak one. It is not. It is the weak one, viewed from one dimension up. The trick is due to Rabinowitsch, and it is barely a page.
+
+Suppose $f$ vanishes on the whole variety $V(g_1, \dots, g_m)$, and we want to prove some power of $f$ lands in the ideal. The obstacle is that "$f$ vanishes wherever the $g_i$ vanish" is a statement about an infinite shape, hard to grab. So introduce a brand new variable $t$ — a new axis the problem never had — and pose a question about *solvability* instead:
+$$
+\text{does the enlarged system} \quad g_1 = \dots = g_m = 0, \quad t \cdot f = 1 \quad \text{have any solution?}
+$$
+Look at what we have demanded. The equation $t f = 1$ forces $f \neq 0$. But $g_1 = \dots = g_m = 0$ forces us onto $V(g_1,\dots,g_m)$, and that is exactly where $f$ *does* vanish, by assumption. We have asked $f$ to be both zero and nonzero at once. So the enlarged system has no solution at all — and now the *weak* theorem fires, telling us $1$ lies in the enlarged ideal $(g_1, \dots, g_m,\, 1 - t f)$. Substitute $t = 1/f$ back in, clear the denominators, and the powers of $f$ that appear are precisely the statement $f^N \in (g_1, \dots, g_m)$, i.e. $f \in \sqrt{(g_1,\dots,g_m)}$. The radical was the answer, the new variable was the key, and the deep theorem was the shallow one wearing a coat.
+
+That argument is not just elegant; it is *executable*. Testing whether $f$ vanishes on a variety becomes testing whether $1$ belongs to one explicit enlarged ideal, and a Gröbner basis decides ideal membership mechanically [@cox2015ideals]. If the basis collapses to $\{1\}$, the answer is yes.
+
+```{python}
+from sympy import symbols, groebner
+
+x, y, t = symbols('x y t')
+
+def vanishes_on_variety(f, gens):
+    """Strong Nullstellensatz, mechanized via the Rabinowitsch trick:
+    over an algebraically closed field, f vanishes on V(gens) exactly
+    when 1 lies in the enlarged ideal (gens, 1 - t*f)."""
+    G = groebner([*gens, 1 - t*f], x, y, t, order='lex')
+    return list(G.exprs) == [1]          # the basis collapses to {1}
+
+print("x  vanishes on V(x^2)?    ", vanishes_on_variety(x,   [x**2]))
+print("y  vanishes on V(x^2)?    ", vanishes_on_variety(y,   [x**2]))
+print("xy vanishes on V(x^2)?    ", vanishes_on_variety(x*y, [x**2]))
+print("y  vanishes on V(x^2, xy)?", vanishes_on_variety(y,   [x**2, x*y]))
+```
+
+The variety $V(x^2)$ is the line $x = 0$. The code confirms what the geometry says: $x$ vanishes there (it is in the radical of $(x^2)$, just as we found by hand), $xy$ vanishes there too, but $y$ does not — at the point $(0,1)$ we have $y = 1 \neq 0$. The theorem, the trick, and the machine all agree.
+
+## The finished dictionary
+
+Now we can write the translation table the whole post has been building toward. Each line is the same object said twice, once in the language of shapes and once in the language of ideals, with the field algebraically closed so that nothing goes missing.
+
+| Geometry (shapes) | Algebra (radical ideals) |
+|---|---|
+| a variety $X$ | the radical ideal $I(X)$ |
+| a single point $(a_1,\dots,a_n)$ | the maximal ideal $(x_1-a_1,\dots,x_n-a_n)$ |
+| the empty shape $\varnothing$ | the whole ring $(1)$ |
+| an irreducible variety | a prime ideal |
+| containment $X \subseteq Y$ | reversed containment $I(X) \supseteq I(Y)$ |
+| union $X \cup Y$ | intersection $I(X) \cap I(Y)$ |
+| intersection $X \cap Y$ | the radical of the sum, $\sqrt{I(X) + I(Y)}$ |
+
+Run your eye down it. "Irreducible," a geometric word meaning a shape that does not split into two smaller shapes, becomes "prime," an algebraic word about factoring; that one line alone is a small miracle, and it is why number theory and geometry keep turning out to be the same subject. Adding more equations (a bigger ideal) shrinks the shape, so inclusion flips. Gluing two shapes together corresponds to keeping only the polynomials that vanish on *both*, which is the intersection of the ideals. The dictionary is complete and it runs both ways. This is Poincaré's "same name to different things" made into a working tool: every theorem you prove about radical ideals is, for free, a theorem about geometry, and vice versa. That trade is the founding bargain of algebraic geometry, and Hilbert's theorem is the exchange rate [@hulek2003; @hartshorne1977].
+
+## What to remember
+
+There are two maps between equations and shapes: $V$ draws an ideal's common zero set, and $I$ collects every polynomial vanishing on a set of points. They want to be inverse, and the *only* obstruction is that $V$ cannot see powers — it confuses $x$ with $x^2$. The radical $\sqrt{J}$ names exactly that lost information, and the Strong Nullstellensatz says the round trip returns it precisely: $I(V(J)) = \sqrt{J}$, so varieties and radical ideals are in perfect bijection. All of this needs an algebraically closed field, because the Weak Nullstellensatz — a system is unsolvable if and only if its equations algebraically contradict, forcing $1$ into the ideal — fails the moment a polynomial like $x^2 + 1$ can avoid having roots. And the deep theorem is the shallow one plus a single extra variable, the Rabinowitsch trick, which also makes the whole correspondence something a computer can check. For the commutative-algebra background see @atiyah1969; for the algorithmic side, @cox2015ideals is the friendliest road in.
+
+## How to cite
+
+> Terry (2026). *The Nullstellensatz: A Dictionary Between Algebra and Geometry*. Retrieved from `https://terryfxh.github.io/math-notes/posts/nullstellensatz/`.
