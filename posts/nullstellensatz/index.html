@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-06-07">
+<meta name="description" content="Polynomial equations and the shapes they cut out are two languages for one idea, and Hilbert’s Nullstellensatz is the dictionary that translates between them, with the radical ideal as the only word that ever gets lost.">
+
+<title>The Nullstellensatz: A Dictionary Between Algebra and Geometry – (Terry) Xihan Fang — Math Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-2e1787f35859f4e47328aef9885308b8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="The Nullstellensatz: A Dictionary Between Algebra and Geometry – (Terry) Xihan Fang — Math Notes">
+<meta property="og:description" content="Polynomial equations and the shapes they cut out are two languages for one idea, and Hilbert’s Nullstellensatz is the dictionary that translates between them, with the radical ideal as the only word that ever gets lost.">
+<meta property="og:site_name" content="(Terry) Xihan Fang — Math Notes">
+<meta name="twitter:title" content="The Nullstellensatz: A Dictionary Between Algebra and Geometry – (Terry) Xihan Fang — Math Notes">
+<meta name="twitter:description" content="Polynomial equations and the shapes they cut out are two languages for one idea, and Hilbert’s Nullstellensatz is the dictionary that translates between them, with the radical ideal as the only word that ever gets lost.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">(Terry) Xihan Fang — Math Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/terryfxh"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#two-directions-and-the-hope-that-they-undo-each-other" id="toc-two-directions-and-the-hope-that-they-undo-each-other" class="nav-link active" data-scroll-target="#two-directions-and-the-hope-that-they-undo-each-other">Two directions, and the hope that they undo each other</a></li>
+  <li><a href="#the-crack-v-throws-information-away" id="toc-the-crack-v-throws-information-away" class="nav-link" data-scroll-target="#the-crack-v-throws-information-away">The crack: <span class="math inline">\(V\)</span> throws information away</a></li>
+  <li><a href="#the-word-that-gets-lost-the-radical" id="toc-the-word-that-gets-lost-the-radical" class="nav-link" data-scroll-target="#the-word-that-gets-lost-the-radical">The word that gets lost: the radical</a></li>
+  <li><a href="#why-the-field-has-to-be-closed" id="toc-why-the-field-has-to-be-closed" class="nav-link" data-scroll-target="#why-the-field-has-to-be-closed">Why the field has to be closed</a></li>
+  <li><a href="#the-strong-theorem-is-the-weak-one-in-disguise" id="toc-the-strong-theorem-is-the-weak-one-in-disguise" class="nav-link" data-scroll-target="#the-strong-theorem-is-the-weak-one-in-disguise">The strong theorem is the weak one in disguise</a></li>
+  <li><a href="#the-finished-dictionary" id="toc-the-finished-dictionary" class="nav-link" data-scroll-target="#the-finished-dictionary">The finished dictionary</a></li>
+  <li><a href="#what-to-remember" id="toc-what-to-remember" class="nav-link" data-scroll-target="#what-to-remember">What to remember</a></li>
+  <li><a href="#how-to-cite" id="toc-how-to-cite" class="nav-link" data-scroll-target="#how-to-cite">How to cite</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">The Nullstellensatz: A Dictionary Between Algebra and Geometry</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">pure</div>
+    <div class="quarto-category">algebraic-geometry</div>
+    <div class="quarto-category">commutative-algebra</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Polynomial equations and the shapes they cut out are two languages for one idea, and Hilbert’s Nullstellensatz is the dictionary that translates between them, with the radical ideal as the only word that ever gets lost.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 7, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="epigraph">
+<p>“Philosophy is written in this grand book, the universe … It is written in the language of mathematics, and its characters are triangles, circles, and other geometric figures.”</p>
+<p><span class="attribution">— Galileo Galilei, <em>Il Saggiatore</em> (1623)</span></p>
+</div>
+<p>From the first time you graphed <span class="math inline">\(y = x^2\)</span> you have been doing one half of a two-way trade. You took an equation and you drew its shape. Algebra went in, geometry came out. The circle <span class="math inline">\(x^2 + y^2 = 1\)</span> is a shape because it is also an equation; the pair of lines <span class="math inline">\(xy = 0\)</span> is the picture that the algebra is quietly describing. We make that trip so often it stops feeling like a trip at all.</p>
+<p>Here is the question almost nobody asks out loud: can you make the journey in reverse? Hand me a shape, and let me hand you back the equations that carve it out. And if both directions work, are they perfect inverses of each other, so that going there and back lands you exactly where you started? That round trip is the whole subject of algebraic geometry, and the precise account of how nearly it succeeds is a theorem Hilbert proved in 1893 with a German name that sounds far scarier than the idea: the <em>Nullstellensatz</em>, literally the “zero-locus theorem” <span class="citation" data-cites="hilbert1893"><a href="#ref-hilbert1893" role="doc-biblioref">[1]</a></span>. What I want to show you is that it is really just the dictionary between two languages, and that there is exactly one word that gets lost in translation. Once you can name that word, the dictionary is perfect.</p>
+<section id="two-directions-and-the-hope-that-they-undo-each-other" class="level2">
+<h2 class="anchored" data-anchor-id="two-directions-and-the-hope-that-they-undo-each-other">Two directions, and the hope that they undo each other</h2>
+<p>Let me set up the two trips carefully, because the whole story is about whether they cancel. Work in <span class="math inline">\(n\)</span>-dimensional space over a field <span class="math inline">\(k\)</span> (keep <span class="math inline">\(k = \mathbb{C}\)</span> in your head for now; it will matter later). Polynomials in <span class="math inline">\(x_1, \dots, x_n\)</span> live in the ring <span class="math inline">\(k[x_1, \dots, x_n]\)</span>.</p>
+<p>Going from algebra to geometry, take any collection of polynomials and look at the points where they <em>all</em> vanish at once. Call that common zero set the <strong>variety</strong> of the collection, <span class="math display">\[
+V(S) = \{\, p \in k^n : f(p) = 0 \text{ for every } f \in S \,\}.
+\]</span> This is the formal version of “draw the picture.” Feed in <span class="math inline">\(\{x^2 + y^2 - 1\}\)</span> and out comes the circle.</p>
+<p>Going the other way, start with a set <span class="math inline">\(X\)</span> of points and sweep up <em>every</em> polynomial that happens to vanish on all of it, <span class="math display">\[
+I(X) = \{\, f \in k[x_1,\dots,x_n] : f(p) = 0 \text{ for every } p \in X \,\}.
+\]</span> This collection is not just a random bag of polynomials. If <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> both vanish on <span class="math inline">\(X\)</span> then so does <span class="math inline">\(f + g\)</span>, and if <span class="math inline">\(f\)</span> vanishes then so does <span class="math inline">\(h f\)</span> for <em>any</em> polynomial <span class="math inline">\(h\)</span>. A set closed under addition and under multiplication by anything in the ring is exactly what algebraists call an <strong>ideal</strong>. So the “shape to equations” direction always lands you on an ideal, never on something messier. That is the first quiet gift.</p>
+<p>Now the hope. We have a map <span class="math inline">\(V\)</span> from ideals to shapes and a map <span class="math inline">\(I\)</span> from shapes back to ideals. The dream is that they are inverse: that <span class="math inline">\(V\)</span> and <span class="math inline">\(I\)</span> are two ways of describing the <em>same</em> object, one drawn and one written. Take a shape, read off its equations, draw those equations, and you should get the shape back. In symbols, <span class="math inline">\(V(I(X)) = X\)</span>, and the other round trip <span class="math inline">\(I(V(J)) = J\)</span>.</p>
+<p>One half of that dream comes true cleanly and one half does not, and the gap between them is the entire content of the theorem. So let us go hunting for the crack.</p>
+</section>
+<section id="the-crack-v-throws-information-away" class="level2">
+<h2 class="anchored" data-anchor-id="the-crack-v-throws-information-away">The crack: <span class="math inline">\(V\)</span> throws information away</h2>
+<p>Bring it down to one dimension, where we can see everything. On the line, what is the variety of <span class="math inline">\(x\)</span>? The single point <span class="math inline">\(0\)</span>. What is the variety of <span class="math inline">\(x^2\)</span>? Also just <span class="math inline">\(0\)</span> — squaring does not move where a polynomial is zero, only how flatly it sits there. And <span class="math inline">\(x^3\)</span>, and <span class="math inline">\(x^{100}\)</span>, all of them vanish at <span class="math inline">\(0\)</span> and nowhere else.</p>
+<div id="abcc4585" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> symbols, solveset, S</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> symbols(<span class="st">'x'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> (x, x<span class="op">**</span><span class="dv">2</span>, x<span class="op">**</span><span class="dv">3</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"zeros of </span><span class="sc">{</span>f<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>solveset(f, x, domain<span class="op">=</span>S.Complexes)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>zeros of x: {0}
+zeros of x**2: {0}
+zeros of x**3: {0}</code></pre>
+</div>
+</div>
+<p>Three different polynomials, one identical zero set. So the map <span class="math inline">\(V\)</span> is <em>many-to-one</em>: it cannot tell <span class="math inline">\(x\)</span> from <span class="math inline">\(x^2\)</span>, because it only records <em>where</em> a polynomial vanishes and forgets <em>to what order</em>. The instant a map is many-to-one, it cannot be invertible, and our dream of a perfect round trip is in trouble. Take a moment to sit with that, because the fix is going to come from naming precisely what got forgotten.</p>
+<p>What did <span class="math inline">\(V\)</span> forget? It forgot powers. The polynomials <span class="math inline">\(x, x^2, x^3, \dots\)</span> all collapse to the same shape, and the thing they have in common is that some power of each lands on the others: <span class="math inline">\(x^2\)</span> is a power of <span class="math inline">\(x\)</span>, and conversely <span class="math inline">\(x\)</span> is the “root” that <span class="math inline">\(x^2\)</span> came from. If we want to undo <span class="math inline">\(V\)</span>, we will have to agree to treat a polynomial and its roots as the same word. That agreement has a name.</p>
+</section>
+<section id="the-word-that-gets-lost-the-radical" class="level2">
+<h2 class="anchored" data-anchor-id="the-word-that-gets-lost-the-radical">The word that gets lost: the radical</h2>
+<p>Given an ideal <span class="math inline">\(J\)</span>, its <strong>radical</strong> is <span class="math display">\[
+\sqrt{J} = \{\, f : f^m \in J \text{ for some integer } m \ge 1 \,\},
+\]</span> all the polynomials some power of which is already in <span class="math inline">\(J\)</span>. In our one-variable example, <span class="math inline">\(J = (x^2)\)</span> is the ideal of multiples of <span class="math inline">\(x^2\)</span>. The polynomial <span class="math inline">\(x\)</span> is not in it — <span class="math inline">\(x\)</span> is not a multiple of <span class="math inline">\(x^2\)</span>. But <span class="math inline">\(x^2\)</span> <em>is</em> in <span class="math inline">\(J\)</span>, so <span class="math inline">\(x\)</span> slips into the radical <span class="math inline">\(\sqrt{J} = (x)\)</span>. Taking the radical is exactly the act of “forgiving powers,” of declaring that <span class="math inline">\(x\)</span> and <span class="math inline">\(x^2\)</span> should count as the same. An ideal that already equals its own radical, so that it has done all this forgiving in advance, is called a <strong>radical ideal</strong>.</p>
+<p>You might have already guessed where this is heading. The information that <span class="math inline">\(V\)</span> destroys is precisely the information that the radical erases. So if we feed <span class="math inline">\(V\)</span> an ideal and then ask <span class="math inline">\(I\)</span> to reconstruct it, we should not expect the original ideal back — we should expect its radical. That guess is the strong form of the theorem.</p>
+<div id="thm-strong" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Strong Nullstellensatz)</strong></span> Let <span class="math inline">\(k\)</span> be an algebraically closed field and <span class="math inline">\(J\)</span> an ideal of <span class="math inline">\(k[x_1,\dots,x_n]\)</span>. Then <span class="math display">\[
+I\bigl(V(J)\bigr) = \sqrt{J}.
+\]</span></p>
+</div>
+<p>Read it as the exact accounting of the round trip. You go from an ideal to its shape and back, and what returns is not <span class="math inline">\(J\)</span> but <span class="math inline">\(\sqrt{J}\)</span> — the original cleaned of the one thing geometry could never see. And now the dream comes true after all, just on the right objects: restrict attention to <em>radical</em> ideals, the ones already equal to their radicals, and <span class="math inline">\(V\)</span> and <span class="math inline">\(I\)</span> become honest mutual inverses. Varieties on one side, radical ideals on the other, in perfect bijection. The crack is sealed by being named.</p>
+<p>But I have been quietly leaning on a phrase, “algebraically closed,” and if you do not lean on it too the whole thing falls apart.</p>
+</section>
+<section id="why-the-field-has-to-be-closed" class="level2">
+<h2 class="anchored" data-anchor-id="why-the-field-has-to-be-closed">Why the field has to be closed</h2>
+<p>Try the dictionary over the real numbers and watch it break. Consider the single equation <span class="math inline">\(x^2 + 1 = 0\)</span>. Over <span class="math inline">\(\mathbb{R}\)</span> it has no solutions — the parabola <span class="math inline">\(y = x^2 + 1\)</span> floats above the axis and never touches it. So <span class="math inline">\(V(x^2+1) = \varnothing\)</span>, the empty shape.</p>
+<div id="a769299a" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> symbols, groebner, solveset, S</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> symbols(<span class="st">'x'</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>J <span class="op">=</span> groebner([x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>], x, order<span class="op">=</span><span class="st">'lex'</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a basis for the ideal (x^2+1):"</span>, <span class="bu">list</span>(J.exprs), <span class="st">" -&gt; 1 is NOT in it, so the ideal is proper"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"real zeros   :"</span>, solveset(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>, x, domain<span class="op">=</span>S.Reals))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"complex zeros:"</span>, solveset(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>, x, domain<span class="op">=</span>S.Complexes))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>a basis for the ideal (x^2+1): [x**2 + 1]  -&gt; 1 is NOT in it, so the ideal is proper
+real zeros   : EmptySet
+complex zeros: {-I, I}</code></pre>
+</div>
+</div>
+<p>Here is the catastrophe. The ideal <span class="math inline">\((x^2+1)\)</span> is a <em>proper</em> ideal — it is not the whole ring, since <span class="math inline">\(1\)</span> is not a multiple of <span class="math inline">\(x^2 + 1\)</span> — yet its variety is empty. Geometry sees nothing, but algebra still has plenty to say. The two languages have stopped agreeing about whether anything is there. Over <span class="math inline">\(\mathbb{R}\)</span> a polynomial can fail to vanish anywhere without being trivial, and that single failure poisons the entire correspondence.</p>
+<p>The repair is to work where every non-constant polynomial <em>does</em> have a root, which is exactly what “algebraically closed” means; the complex numbers are the standard home. Over <span class="math inline">\(\mathbb{C}\)</span> the equation <span class="math inline">\(x^2 + 1 = 0\)</span> recovers its two honest solutions <span class="math inline">\(\pm i\)</span>, and the missing points come back. This guarantee has its own name, the gentler companion to the theorem above.</p>
+<div id="thm-weak" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 2 (Weak Nullstellensatz)</strong></span> Let <span class="math inline">\(k\)</span> be algebraically closed. A system of polynomial equations <span class="math inline">\(g_1 = \dots = g_m = 0\)</span> has <strong>no</strong> common solution in <span class="math inline">\(k^n\)</span> if and only if <span class="math inline">\(1\)</span> can be written as a polynomial combination <span class="math inline">\(1 = \sum_i h_i\, g_i\)</span> — that is, if and only if the ideal <span class="math inline">\((g_1,\dots,g_m)\)</span> is the whole ring.</p>
+</div>
+<p>In one sentence: the <em>only</em> way for a system to be unsolvable is for it to be algebraically contradictory, for the equations to secretly add up to <span class="math inline">\(1 = 0\)</span>. There is no such thing as a system that quietly has no solutions for geometric reasons that algebra cannot detect. Equivalently, every proper ideal carves out at least one point, and the single points correspond to the maximal ideals <span class="math inline">\((x_1 - a_1, \dots, x_n - a_n)\)</span>. Doesn’t that just feel like the right state of affairs? The two languages are finally bound so tightly that “unsolvable” and “contradictory” mean the same thing.</p>
+</section>
+<section id="the-strong-theorem-is-the-weak-one-in-disguise" class="level2">
+<h2 class="anchored" data-anchor-id="the-strong-theorem-is-the-weak-one-in-disguise">The strong theorem is the weak one in disguise</h2>
+<p>Here is my favorite part, because it is a pure example of the move this blog keeps coming back to: when a problem is stuck, add a new construct and reframe. The strong Nullstellensatz looks like a genuinely deeper statement than the weak one. It is not. It is the weak one, viewed from one dimension up. The trick is due to Rabinowitsch, and it is barely a page.</p>
+<p>Suppose <span class="math inline">\(f\)</span> vanishes on the whole variety <span class="math inline">\(V(g_1, \dots, g_m)\)</span>, and we want to prove some power of <span class="math inline">\(f\)</span> lands in the ideal. The obstacle is that “<span class="math inline">\(f\)</span> vanishes wherever the <span class="math inline">\(g_i\)</span> vanish” is a statement about an infinite shape, hard to grab. So introduce a brand new variable <span class="math inline">\(t\)</span> — a new axis the problem never had — and pose a question about <em>solvability</em> instead: <span class="math display">\[
+\text{does the enlarged system} \quad g_1 = \dots = g_m = 0, \quad t \cdot f = 1 \quad \text{have any solution?}
+\]</span> Look at what we have demanded. The equation <span class="math inline">\(t f = 1\)</span> forces <span class="math inline">\(f \neq 0\)</span>. But <span class="math inline">\(g_1 = \dots = g_m = 0\)</span> forces us onto <span class="math inline">\(V(g_1,\dots,g_m)\)</span>, and that is exactly where <span class="math inline">\(f\)</span> <em>does</em> vanish, by assumption. We have asked <span class="math inline">\(f\)</span> to be both zero and nonzero at once. So the enlarged system has no solution at all — and now the <em>weak</em> theorem fires, telling us <span class="math inline">\(1\)</span> lies in the enlarged ideal <span class="math inline">\((g_1, \dots, g_m,\, 1 - t f)\)</span>. Substitute <span class="math inline">\(t = 1/f\)</span> back in, clear the denominators, and the powers of <span class="math inline">\(f\)</span> that appear are precisely the statement <span class="math inline">\(f^N \in (g_1, \dots, g_m)\)</span>, i.e.&nbsp;<span class="math inline">\(f \in \sqrt{(g_1,\dots,g_m)}\)</span>. The radical was the answer, the new variable was the key, and the deep theorem was the shallow one wearing a coat.</p>
+<p>That argument is not just elegant; it is <em>executable</em>. Testing whether <span class="math inline">\(f\)</span> vanishes on a variety becomes testing whether <span class="math inline">\(1\)</span> belongs to one explicit enlarged ideal, and a Gröbner basis decides ideal membership mechanically <span class="citation" data-cites="cox2015ideals"><a href="#ref-cox2015ideals" role="doc-biblioref">[2]</a></span>. If the basis collapses to <span class="math inline">\(\{1\}\)</span>, the answer is yes.</p>
+<div id="39863690" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> symbols, groebner</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>x, y, t <span class="op">=</span> symbols(<span class="st">'x y t'</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vanishes_on_variety(f, gens):</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Strong Nullstellensatz, mechanized via the Rabinowitsch trick:</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">    over an algebraically closed field, f vanishes on V(gens) exactly</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">    when 1 lies in the enlarged ideal (gens, 1 - t*f)."""</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    G <span class="op">=</span> groebner([<span class="op">*</span>gens, <span class="dv">1</span> <span class="op">-</span> t<span class="op">*</span>f], x, y, t, order<span class="op">=</span><span class="st">'lex'</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(G.exprs) <span class="op">==</span> [<span class="dv">1</span>]          <span class="co"># the basis collapses to {1}</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"x  vanishes on V(x^2)?    "</span>, vanishes_on_variety(x,   [x<span class="op">**</span><span class="dv">2</span>]))</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"y  vanishes on V(x^2)?    "</span>, vanishes_on_variety(y,   [x<span class="op">**</span><span class="dv">2</span>]))</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"xy vanishes on V(x^2)?    "</span>, vanishes_on_variety(x<span class="op">*</span>y, [x<span class="op">**</span><span class="dv">2</span>]))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"y  vanishes on V(x^2, xy)?"</span>, vanishes_on_variety(y,   [x<span class="op">**</span><span class="dv">2</span>, x<span class="op">*</span>y]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>x  vanishes on V(x^2)?     True
+y  vanishes on V(x^2)?     False
+xy vanishes on V(x^2)?     True
+y  vanishes on V(x^2, xy)? False</code></pre>
+</div>
+</div>
+<p>The variety <span class="math inline">\(V(x^2)\)</span> is the line <span class="math inline">\(x = 0\)</span>. The code confirms what the geometry says: <span class="math inline">\(x\)</span> vanishes there (it is in the radical of <span class="math inline">\((x^2)\)</span>, just as we found by hand), <span class="math inline">\(xy\)</span> vanishes there too, but <span class="math inline">\(y\)</span> does not — at the point <span class="math inline">\((0,1)\)</span> we have <span class="math inline">\(y = 1 \neq 0\)</span>. The theorem, the trick, and the machine all agree.</p>
+</section>
+<section id="the-finished-dictionary" class="level2">
+<h2 class="anchored" data-anchor-id="the-finished-dictionary">The finished dictionary</h2>
+<p>Now we can write the translation table the whole post has been building toward. Each line is the same object said twice, once in the language of shapes and once in the language of ideals, with the field algebraically closed so that nothing goes missing.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Geometry (shapes)</th>
+<th>Algebra (radical ideals)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>a variety <span class="math inline">\(X\)</span></td>
+<td>the radical ideal <span class="math inline">\(I(X)\)</span></td>
+</tr>
+<tr class="even">
+<td>a single point <span class="math inline">\((a_1,\dots,a_n)\)</span></td>
+<td>the maximal ideal <span class="math inline">\((x_1-a_1,\dots,x_n-a_n)\)</span></td>
+</tr>
+<tr class="odd">
+<td>the empty shape <span class="math inline">\(\varnothing\)</span></td>
+<td>the whole ring <span class="math inline">\((1)\)</span></td>
+</tr>
+<tr class="even">
+<td>an irreducible variety</td>
+<td>a prime ideal</td>
+</tr>
+<tr class="odd">
+<td>containment <span class="math inline">\(X \subseteq Y\)</span></td>
+<td>reversed containment <span class="math inline">\(I(X) \supseteq I(Y)\)</span></td>
+</tr>
+<tr class="even">
+<td>union <span class="math inline">\(X \cup Y\)</span></td>
+<td>intersection <span class="math inline">\(I(X) \cap I(Y)\)</span></td>
+</tr>
+<tr class="odd">
+<td>intersection <span class="math inline">\(X \cap Y\)</span></td>
+<td>the radical of the sum, <span class="math inline">\(\sqrt{I(X) + I(Y)}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Run your eye down it. “Irreducible,” a geometric word meaning a shape that does not split into two smaller shapes, becomes “prime,” an algebraic word about factoring; that one line alone is a small miracle, and it is why number theory and geometry keep turning out to be the same subject. Adding more equations (a bigger ideal) shrinks the shape, so inclusion flips. Gluing two shapes together corresponds to keeping only the polynomials that vanish on <em>both</em>, which is the intersection of the ideals. The dictionary is complete and it runs both ways. This is Poincaré’s “same name to different things” made into a working tool: every theorem you prove about radical ideals is, for free, a theorem about geometry, and vice versa. That trade is the founding bargain of algebraic geometry, and Hilbert’s theorem is the exchange rate <span class="citation" data-cites="hulek2003 hartshorne1977"><a href="#ref-hulek2003" role="doc-biblioref">[3]</a>, <a href="#ref-hartshorne1977" role="doc-biblioref">[4]</a></span>.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>There are two maps between equations and shapes: <span class="math inline">\(V\)</span> draws an ideal’s common zero set, and <span class="math inline">\(I\)</span> collects every polynomial vanishing on a set of points. They want to be inverse, and the <em>only</em> obstruction is that <span class="math inline">\(V\)</span> cannot see powers — it confuses <span class="math inline">\(x\)</span> with <span class="math inline">\(x^2\)</span>. The radical <span class="math inline">\(\sqrt{J}\)</span> names exactly that lost information, and the Strong Nullstellensatz says the round trip returns it precisely: <span class="math inline">\(I(V(J)) = \sqrt{J}\)</span>, so varieties and radical ideals are in perfect bijection. All of this needs an algebraically closed field, because the Weak Nullstellensatz — a system is unsolvable if and only if its equations algebraically contradict, forcing <span class="math inline">\(1\)</span> into the ideal — fails the moment a polynomial like <span class="math inline">\(x^2 + 1\)</span> can avoid having roots. And the deep theorem is the shallow one plus a single extra variable, the Rabinowitsch trick, which also makes the whole correspondence something a computer can check. For the commutative-algebra background see <span class="citation" data-cites="atiyah1969"><a href="#ref-atiyah1969" role="doc-biblioref">[5]</a></span>; for the algorithmic side, <span class="citation" data-cites="cox2015ideals"><a href="#ref-cox2015ideals" role="doc-biblioref">[2]</a></span> is the friendliest road in.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>The Nullstellensatz: A Dictionary Between Algebra and Geometry</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/nullstellensatz/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-hilbert1893" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">D. Hilbert, <span>“Ueber die vollen invariantensysteme,”</span> <em>Mathematische Annalen</em>, vol. 42, no. 3, pp. 313–373, 1893.</div>
+</div>
+<div id="ref-cox2015ideals" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">D. A. Cox, J. Little, and D. O’Shea, <em>Ideals, varieties, and algorithms</em>, 4th ed. in Undergraduate texts in mathematics. Springer, 2015.</div>
+</div>
+<div id="ref-hulek2003" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">K. Hulek, <em>Elementary algebraic geometry</em>, vol. 20. in Student mathematical library, vol. 20. American Mathematical Society, 2003.</div>
+</div>
+<div id="ref-hartshorne1977" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">R. Hartshorne, <em>Algebraic geometry</em>, vol. 52. in Graduate texts in mathematics, vol. 52. Springer, 1977.</div>
+</div>
+<div id="ref-atiyah1969" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">M. F. Atiyah and I. G. Macdonald, <em>Introduction to commutative algebra</em>. Addison-Wesley, 1969.</div>
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/terryfxh\.github\.io\/math-notes");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "The Nullstellensatz: A Dictionary Between Algebra and Geometry"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "Polynomial equations and the shapes they cut out are two languages for one idea, and Hilbert's Nullstellensatz is the dictionary that translates between them, with the radical ideal as the only word that ever gets lost."</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-06-07</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [pure, algebraic-geometry, commutative-algebra]</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> ../../references.bib</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="an">draft:</span><span class="co"> false</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>::: {.epigraph}</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>"Philosophy is written in this grand book, the universe ... It is written in the language of mathematics, and its characters are triangles, circles, and other geometric figures."</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">— Galileo Galilei, *Il Saggiatore* (1623)</span><span class="co">]</span>{.attribution}</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>From the first time you graphed $y = x^2$ you have been doing one half of a two-way trade. You took an equation and you drew its shape. Algebra went in, geometry came out. The circle $x^2 + y^2 = 1$ is a shape because it is also an equation; the pair of lines $xy = 0$ is the picture that the algebra is quietly describing. We make that trip so often it stops feeling like a trip at all.</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>Here is the question almost nobody asks out loud: can you make the journey in reverse? Hand me a shape, and let me hand you back the equations that carve it out. And if both directions work, are they perfect inverses of each other, so that going there and back lands you exactly where you started? That round trip is the whole subject of algebraic geometry, and the precise account of how nearly it succeeds is a theorem Hilbert proved in 1893 with a German name that sounds far scarier than the idea: the *Nullstellensatz*, literally the "zero-locus theorem" <span class="co">[</span><span class="ot">@hilbert1893</span><span class="co">]</span>. What I want to show you is that it is really just the dictionary between two languages, and that there is exactly one word that gets lost in translation. Once you can name that word, the dictionary is perfect.</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two directions, and the hope that they undo each other</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>Let me set up the two trips carefully, because the whole story is about whether they cancel. Work in $n$-dimensional space over a field $k$ (keep $k = \mathbb{C}$ in your head for now; it will matter later). Polynomials in $x_1, \dots, x_n$ live in the ring $k<span class="co">[</span><span class="ot">x_1, \dots, x_n</span><span class="co">]</span>$.</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>Going from algebra to geometry, take any collection of polynomials and look at the points where they *all* vanish at once. Call that common zero set the **variety** of the collection,</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>V(S) = <span class="sc">\{</span>\, p \in k^n : f(p) = 0 \text{ for every } f \in S \,<span class="sc">\}</span>.</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>This is the formal version of "draw the picture." Feed in $<span class="sc">\{</span>x^2 + y^2 - 1<span class="sc">\}</span>$ and out comes the circle.</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>Going the other way, start with a set $X$ of points and sweep up *every* polynomial that happens to vanish on all of it,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>I(X) = <span class="sc">\{</span>\, f \in k<span class="co">[</span><span class="ot">x_1,\dots,x_n</span><span class="co">]</span> : f(p) = 0 \text{ for every } p \in X \,<span class="sc">\}</span>.</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>This collection is not just a random bag of polynomials. If $f$ and $g$ both vanish on $X$ then so does $f + g$, and if $f$ vanishes then so does $h f$ for *any* polynomial $h$. A set closed under addition and under multiplication by anything in the ring is exactly what algebraists call an **ideal**. So the "shape to equations" direction always lands you on an ideal, never on something messier. That is the first quiet gift.</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>Now the hope. We have a map $V$ from ideals to shapes and a map $I$ from shapes back to ideals. The dream is that they are inverse: that $V$ and $I$ are two ways of describing the *same* object, one drawn and one written. Take a shape, read off its equations, draw those equations, and you should get the shape back. In symbols, $V(I(X)) = X$, and the other round trip $I(V(J)) = J$.</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>One half of that dream comes true cleanly and one half does not, and the gap between them is the entire content of the theorem. So let us go hunting for the crack.</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="fu">## The crack: $V$ throws information away</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>Bring it down to one dimension, where we can see everything. On the line, what is the variety of $x$? The single point $0$. What is the variety of $x^2$? Also just $0$ — squaring does not move where a polynomial is zero, only how flatly it sits there. And $x^3$, and $x^{100}$, all of them vanish at $0$ and nowhere else.</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> symbols, solveset, S</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> symbols(<span class="st">'x'</span>)</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> (x, x<span class="op">**</span><span class="dv">2</span>, x<span class="op">**</span><span class="dv">3</span>):</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"zeros of </span><span class="sc">{</span>f<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>solveset(f, x, domain<span class="op">=</span>S.Complexes)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>Three different polynomials, one identical zero set. So the map $V$ is *many-to-one*: it cannot tell $x$ from $x^2$, because it only records *where* a polynomial vanishes and forgets *to what order*. The instant a map is many-to-one, it cannot be invertible, and our dream of a perfect round trip is in trouble. Take a moment to sit with that, because the fix is going to come from naming precisely what got forgotten.</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>What did $V$ forget? It forgot powers. The polynomials $x, x^2, x^3, \dots$ all collapse to the same shape, and the thing they have in common is that some power of each lands on the others: $x^2$ is a power of $x$, and conversely $x$ is the "root" that $x^2$ came from. If we want to undo $V$, we will have to agree to treat a polynomial and its roots as the same word. That agreement has a name.</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## The word that gets lost: the radical</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>Given an ideal $J$, its **radical** is</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>\sqrt{J} = <span class="sc">\{</span>\, f : f^m \in J \text{ for some integer } m \ge 1 \,<span class="sc">\}</span>,</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>all the polynomials some power of which is already in $J$. In our one-variable example, $J = (x^2)$ is the ideal of multiples of $x^2$. The polynomial $x$ is not in it — $x$ is not a multiple of $x^2$. But $x^2$ *is* in $J$, so $x$ slips into the radical $\sqrt{J} = (x)$. Taking the radical is exactly the act of "forgiving powers," of declaring that $x$ and $x^2$ should count as the same. An ideal that already equals its own radical, so that it has done all this forgiving in advance, is called a **radical ideal**.</span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>You might have already guessed where this is heading. The information that $V$ destroys is precisely the information that the radical erases. So if we feed $V$ an ideal and then ask $I$ to reconstruct it, we should not expect the original ideal back — we should expect its radical. That guess is the strong form of the theorem.</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>::: {#thm-strong}</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="fu">## Strong Nullstellensatz</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>Let $k$ be an algebraically closed field and $J$ an ideal of $k<span class="co">[</span><span class="ot">x_1,\dots,x_n</span><span class="co">]</span>$. Then</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>I\bigl(V(J)\bigr) = \sqrt{J}.</span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>Read it as the exact accounting of the round trip. You go from an ideal to its shape and back, and what returns is not $J$ but $\sqrt{J}$ — the original cleaned of the one thing geometry could never see. And now the dream comes true after all, just on the right objects: restrict attention to *radical* ideals, the ones already equal to their radicals, and $V$ and $I$ become honest mutual inverses. Varieties on one side, radical ideals on the other, in perfect bijection. The crack is sealed by being named.</span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>But I have been quietly leaning on a phrase, "algebraically closed," and if you do not lean on it too the whole thing falls apart.</span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why the field has to be closed</span></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>Try the dictionary over the real numbers and watch it break. Consider the single equation $x^2 + 1 = 0$. Over $\mathbb{R}$ it has no solutions — the parabola $y = x^2 + 1$ floats above the axis and never touches it. So $V(x^2+1) = \varnothing$, the empty shape.</span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> symbols, groebner, solveset, S</span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> symbols(<span class="st">'x'</span>)</span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>J <span class="op">=</span> groebner([x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>], x, order<span class="op">=</span><span class="st">'lex'</span>)</span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"a basis for the ideal (x^2+1):"</span>, <span class="bu">list</span>(J.exprs), <span class="st">" -&gt; 1 is NOT in it, so the ideal is proper"</span>)</span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"real zeros   :"</span>, solveset(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>, x, domain<span class="op">=</span>S.Reals))</span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"complex zeros:"</span>, solveset(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>, x, domain<span class="op">=</span>S.Complexes))</span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>Here is the catastrophe. The ideal $(x^2+1)$ is a *proper* ideal — it is not the whole ring, since $1$ is not a multiple of $x^2 + 1$ — yet its variety is empty. Geometry sees nothing, but algebra still has plenty to say. The two languages have stopped agreeing about whether anything is there. Over $\mathbb{R}$ a polynomial can fail to vanish anywhere without being trivial, and that single failure poisons the entire correspondence.</span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>The repair is to work where every non-constant polynomial *does* have a root, which is exactly what "algebraically closed" means; the complex numbers are the standard home. Over $\mathbb{C}$ the equation $x^2 + 1 = 0$ recovers its two honest solutions $\pm i$, and the missing points come back. This guarantee has its own name, the gentler companion to the theorem above.</span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>::: {#thm-weak}</span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Weak Nullstellensatz</span></span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>Let $k$ be algebraically closed. A system of polynomial equations $g_1 = \dots = g_m = 0$ has **no** common solution in $k^n$ if and only if $1$ can be written as a polynomial combination $1 = \sum_i h_i\, g_i$ — that is, if and only if the ideal $(g_1,\dots,g_m)$ is the whole ring.</span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a>In one sentence: the *only* way for a system to be unsolvable is for it to be algebraically contradictory, for the equations to secretly add up to $1 = 0$. There is no such thing as a system that quietly has no solutions for geometric reasons that algebra cannot detect. Equivalently, every proper ideal carves out at least one point, and the single points correspond to the maximal ideals $(x_1 - a_1, \dots, x_n - a_n)$. Doesn't that just feel like the right state of affairs? The two languages are finally bound so tightly that "unsolvable" and "contradictory" mean the same thing.</span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a><span class="fu">## The strong theorem is the weak one in disguise</span></span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a>Here is my favorite part, because it is a pure example of the move this blog keeps coming back to: when a problem is stuck, add a new construct and reframe. The strong Nullstellensatz looks like a genuinely deeper statement than the weak one. It is not. It is the weak one, viewed from one dimension up. The trick is due to Rabinowitsch, and it is barely a page.</span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>Suppose $f$ vanishes on the whole variety $V(g_1, \dots, g_m)$, and we want to prove some power of $f$ lands in the ideal. The obstacle is that "$f$ vanishes wherever the $g_i$ vanish" is a statement about an infinite shape, hard to grab. So introduce a brand new variable $t$ — a new axis the problem never had — and pose a question about *solvability* instead:</span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>\text{does the enlarged system} \quad g_1 = \dots = g_m = 0, \quad t \cdot f = 1 \quad \text{have any solution?}</span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a>Look at what we have demanded. The equation $t f = 1$ forces $f \neq 0$. But $g_1 = \dots = g_m = 0$ forces us onto $V(g_1,\dots,g_m)$, and that is exactly where $f$ *does* vanish, by assumption. We have asked $f$ to be both zero and nonzero at once. So the enlarged system has no solution at all — and now the *weak* theorem fires, telling us $1$ lies in the enlarged ideal $(g_1, \dots, g_m,\, 1 - t f)$. Substitute $t = 1/f$ back in, clear the denominators, and the powers of $f$ that appear are precisely the statement $f^N \in (g_1, \dots, g_m)$, i.e. $f \in \sqrt{(g_1,\dots,g_m)}$. The radical was the answer, the new variable was the key, and the deep theorem was the shallow one wearing a coat.</span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>That argument is not just elegant; it is *executable*. Testing whether $f$ vanishes on a variety becomes testing whether $1$ belongs to one explicit enlarged ideal, and a Gröbner basis decides ideal membership mechanically <span class="co">[</span><span class="ot">@cox2015ideals</span><span class="co">]</span>. If the basis collapses to $<span class="sc">\{</span>1<span class="sc">\}</span>$, the answer is yes.</span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> symbols, groebner</span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a>x, y, t <span class="op">=</span> symbols(<span class="st">'x y t'</span>)</span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vanishes_on_variety(f, gens):</span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Strong Nullstellensatz, mechanized via the Rabinowitsch trick:</span></span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a><span class="co">    over an algebraically closed field, f vanishes on V(gens) exactly</span></span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a><span class="co">    when 1 lies in the enlarged ideal (gens, 1 - t*f)."""</span></span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a>    G <span class="op">=</span> groebner([<span class="op">*</span>gens, <span class="dv">1</span> <span class="op">-</span> t<span class="op">*</span>f], x, y, t, order<span class="op">=</span><span class="st">'lex'</span>)</span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(G.exprs) <span class="op">==</span> [<span class="dv">1</span>]          <span class="co"># the basis collapses to {1}</span></span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"x  vanishes on V(x^2)?    "</span>, vanishes_on_variety(x,   [x<span class="op">**</span><span class="dv">2</span>]))</span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"y  vanishes on V(x^2)?    "</span>, vanishes_on_variety(y,   [x<span class="op">**</span><span class="dv">2</span>]))</span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"xy vanishes on V(x^2)?    "</span>, vanishes_on_variety(x<span class="op">*</span>y, [x<span class="op">**</span><span class="dv">2</span>]))</span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"y  vanishes on V(x^2, xy)?"</span>, vanishes_on_variety(y,   [x<span class="op">**</span><span class="dv">2</span>, x<span class="op">*</span>y]))</span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a>The variety $V(x^2)$ is the line $x = 0$. The code confirms what the geometry says: $x$ vanishes there (it is in the radical of $(x^2)$, just as we found by hand), $xy$ vanishes there too, but $y$ does not — at the point $(0,1)$ we have $y = 1 \neq 0$. The theorem, the trick, and the machine all agree.</span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a><span class="fu">## The finished dictionary</span></span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a>Now we can write the translation table the whole post has been building toward. Each line is the same object said twice, once in the language of shapes and once in the language of ideals, with the field algebraically closed so that nothing goes missing.</span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Geometry (shapes) <span class="pp">|</span> Algebra (radical ideals) <span class="pp">|</span></span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> a variety $X$ <span class="pp">|</span> the radical ideal $I(X)$ <span class="pp">|</span></span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> a single point $(a_1,\dots,a_n)$ <span class="pp">|</span> the maximal ideal $(x_1-a_1,\dots,x_n-a_n)$ <span class="pp">|</span></span>
+<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> the empty shape $\varnothing$ <span class="pp">|</span> the whole ring $(1)$ <span class="pp">|</span></span>
+<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> an irreducible variety <span class="pp">|</span> a prime ideal <span class="pp">|</span></span>
+<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> containment $X \subseteq Y$ <span class="pp">|</span> reversed containment $I(X) \supseteq I(Y)$ <span class="pp">|</span></span>
+<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> union $X \cup Y$ <span class="pp">|</span> intersection $I(X) \cap I(Y)$ <span class="pp">|</span></span>
+<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> intersection $X \cap Y$ <span class="pp">|</span> the radical of the sum, $\sqrt{I(X) + I(Y)}$ <span class="pp">|</span></span>
+<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a>Run your eye down it. "Irreducible," a geometric word meaning a shape that does not split into two smaller shapes, becomes "prime," an algebraic word about factoring; that one line alone is a small miracle, and it is why number theory and geometry keep turning out to be the same subject. Adding more equations (a bigger ideal) shrinks the shape, so inclusion flips. Gluing two shapes together corresponds to keeping only the polynomials that vanish on *both*, which is the intersection of the ideals. The dictionary is complete and it runs both ways. This is Poincaré's "same name to different things" made into a working tool: every theorem you prove about radical ideals is, for free, a theorem about geometry, and vice versa. That trade is the founding bargain of algebraic geometry, and Hilbert's theorem is the exchange rate <span class="co">[</span><span class="ot">@hulek2003; @hartshorne1977</span><span class="co">]</span>.</span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to remember</span></span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a>There are two maps between equations and shapes: $V$ draws an ideal's common zero set, and $I$ collects every polynomial vanishing on a set of points. They want to be inverse, and the *only* obstruction is that $V$ cannot see powers — it confuses $x$ with $x^2$. The radical $\sqrt{J}$ names exactly that lost information, and the Strong Nullstellensatz says the round trip returns it precisely: $I(V(J)) = \sqrt{J}$, so varieties and radical ideals are in perfect bijection. All of this needs an algebraically closed field, because the Weak Nullstellensatz — a system is unsolvable if and only if its equations algebraically contradict, forcing $1$ into the ideal — fails the moment a polynomial like $x^2 + 1$ can avoid having roots. And the deep theorem is the shallow one plus a single extra variable, the Rabinowitsch trick, which also makes the whole correspondence something a computer can check. For the commutative-algebra background see @atiyah1969; for the algorithmic side, @cox2015ideals is the friendliest road in.</span>
+<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *The Nullstellensatz: A Dictionary Between Algebra and Geometry*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/nullstellensatz/`</span><span class="at">.</span></span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Terry Fang · All rights reserved · Reproduction or republication in any form requires attribution and the author’s prior permission.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

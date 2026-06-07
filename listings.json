@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/nullstellensatz/index.html",
       "/posts/domino-tilings/index.html",
       "/posts/discrete-log/index.html",
       "/posts/on-learning-mathematics/index.html",
