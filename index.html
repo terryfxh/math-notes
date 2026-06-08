@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-174467f373e25f860a8cd06cfb143204.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ed39cb5cb8d38265b779b0d710d5b272.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -75,20 +75,104 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-pure-notes .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-description','listing-categories','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-pure-notes'] = new List('listing-pure-notes', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-applied-notes .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-applied-notes'] = new List('listing-applied-notes', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-reflection-notes .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-reflection-notes'] = new List('listing-reflection-notes', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-all-notes .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-description','listing-categories','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] }],
+      
+      searchColumns: ["listing-title","listing-description","listing-categories"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-all-notes'] = new List('listing-all-notes', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -143,7 +227,7 @@ window.Quarto = {
 <body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -180,63 +264,261 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Math Notes</h1>
-            <p class="subtitle lead">A place where I try to <em>see</em> mathematics, not just compute it.</p>
-                      </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta column-page-left">
-
-      
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(11)</span></div><div class="category" data-category="YWxnZWJyYWljLWdlb21ldHJ5">algebraic-geometry <span class="quarto-category-count">(1)</span></div><div class="category" data-category="YWxnb3JpdGhtcw==">algorithms <span class="quarto-category-count">(3)</span></div><div class="category" data-category="YXBwbGllZA==">applied <span class="quarto-category-count">(6)</span></div><div class="category" data-category="Y29tYmluYXRvcmljcw==">combinatorics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y29tbXV0YXRpdmUtYWxnZWJyYQ==">commutative-algebra <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y29tcHV0ZXItc2NpZW5jZQ==">computer-science <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Y3J5cHRvZ3JhcGh5">cryptography <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Zm91bmRhdGlvbnM=">foundations <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bGVhcm5pbmc=">learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="bGluZWFyLWFsZ2VicmE=">linear-algebra <span class="quarto-category-count">(2)</span></div><div class="category" data-category="bWV0YQ==">meta <span class="quarto-category-count">(3)</span></div><div class="category" data-category="bnVtYmVyLXRoZW9yeQ==">number-theory <span class="quarto-category-count">(3)</span></div><div class="category" data-category="bnVtZXJpY2FsLW1ldGhvZHM=">numerical-methods <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cHVyZQ==">pure <span class="quarto-category-count">(8)</span></div><div class="category" data-category="cmVhbC1hbmFseXNpcw==">real-analysis <span class="quarto-category-count">(1)</span></div></div></div>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Math Notes</h1>
+<p class="subtitle lead">A place where I try to <em>see</em> mathematics, not just compute it.</p>
+</div>
 
 
 
+<div class="quarto-title-meta column-page">
+
+    
+  
+    
+  </div>
+  
 
 
+</header>
+
+
+<div class="home-page">
+<div class="home-introduction">
+<div class="home-epigraph">
 <div class="epigraph epigraph-center">
 <p>“The introduction of numbers as coordinates … is an act of violence.”</p>
 <p><span class="attribution">— Hermann Weyl, <em>Philosophy of Mathematics and Natural Science</em></span></p>
 </div>
+</div>
+<div class="home-copy">
 <p>Most of the time, mathematics gets handed to us as a list of things to calculate. I have always been far more curious about the picture sitting underneath all that machinery: the reason a theorem has no choice but to be true, the quiet moment when a row of abstract symbols suddenly turns into something you can picture and almost touch.</p>
 <p>This is where I work that out in the open. Each post starts from the simplest version of an idea I can find, builds up the intuition until the result feels inevitable, and only then writes down the formal proof. Where a picture or a few lines of runnable code make the idea easier to believe, I include them.</p>
 <p>I write these mostly for the version of me who was once stuck on the very same thing. If you happen to be stuck there too, I hope they help.</p>
+</div>
+</div>
+<div class="home-browse">
 <p>Browse by topic with the category filter below.</p>
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="home-directory" role="navigation" aria-label="Browse notes by section">
+<p><a href="#pure-mathematics" class="home-topic-link">Pure Mathematics</a> <a href="#applied-computation" class="home-topic-link">Applied &amp; Computation</a> <a href="#learning-philosophical-reflections" class="home-topic-link">Learning &amp; Philosophical Reflections</a> <a href="#all-notes-section" class="home-topic-link">All Notes</a></p>
+</div>
+</div>
+<section id="pure-mathematics" class="level2 home-note-section">
+<h2 class="anchored" data-anchor-id="pure-mathematics">Pure Mathematics</h2>
+<div id="listing-pure-notes" class="quarto-listing quarto-listing-container-default">
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="cHVyZSUyQ2FsZ2VicmFpYy1nZW9tZXRyeSUyQ2NvbW11dGF0aXZlLWFsZ2VicmE=" data-listing-date-sort="1780790400000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2514">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/nullstellensatz/index.html" class="no-external">The Nullstellensatz: A Dictionary Between Algebra and Geometry</a>
+</h3>
+</div>
+<div class="metadata">
+<a href="./posts/nullstellensatz/index.html" class="no-external">
+<div class="listing-date">
+Jun 7, 2026
+</div>
+<div class="listing-reading-time">13 min</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="cHVyZSUyQ3JlYWwtYW5hbHlzaXMlMkNmb3VuZGF0aW9ucw==" data-listing-date-sort="1780790400000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4326">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/reconstructing-calculus/index.html" class="no-external">Real Analysis: What Calculus Becomes When We Ask Why</a>
+</h3>
+</div>
+<div class="metadata">
+<a href="./posts/reconstructing-calculus/index.html" class="no-external">
+<div class="listing-date">
+Jun 7, 2026
+</div>
+<div class="listing-reading-time">22 min</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNsaW5lYXItYWxnZWJyYSUyQ251bWVyaWNhbC1tZXRob2Rz" data-listing-date-sort="1780444800000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1505">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/gram-schmidt/index.html" class="no-external">Gram–Schmidt: Straightening a Tangle of Vectors</a>
+</h3>
+</div>
+<div class="metadata">
+<a href="./posts/gram-schmidt/index.html" class="no-external">
+<div class="listing-date">
+Jun 3, 2026
+</div>
+<div class="listing-reading-time">8 min</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNsaW5lYXItYWxnZWJyYQ==" data-listing-date-sort="1780272000000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1077">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/spectral-theorem/index.html" class="no-external">The Spectral Theorem for Symmetric Matrices</a>
+</h3>
+</div>
+<div class="metadata">
+<a href="./posts/spectral-theorem/index.html" class="no-external">
+<div class="listing-date">
+Jun 1, 2026
+</div>
+<div class="listing-reading-time">6 min</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
+</section>
+<section id="applied-computation" class="level2 home-note-section">
+<h2 class="anchored" data-anchor-id="applied-computation">Applied &amp; Computation</h2>
+<div id="listing-applied-notes" class="quarto-listing quarto-listing-container-default">
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNjb21iaW5hdG9yaWNzJTJDY29tcHV0ZXItc2NpZW5jZSUyQ2FsZ29yaXRobXM=" data-listing-date-sort="1780704000000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2522">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/domino-tilings/index.html" class="no-external">Counting Domino Tilings: When Dynamic Programming Is a Matrix</a>
+</h3>
+</div>
+<div class="metadata">
+<a href="./posts/domino-tilings/index.html" class="no-external">
+<div class="listing-date">
+Jun 6, 2026
+</div>
+<div class="listing-reading-time">13 min</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNudW1iZXItdGhlb3J5JTJDY29tcHV0ZXItc2NpZW5jZSUyQ2FsZ29yaXRobXMlMkNjcnlwdG9ncmFwaHk=" data-listing-date-sort="1780531200000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2660">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/discrete-log/index.html" class="no-external">The Discrete Logarithm: Easy to Make, Hard to Undo</a>
+</h3>
+</div>
+<div class="metadata">
+<a href="./posts/discrete-log/index.html" class="no-external">
+<div class="listing-date">
+Jun 4, 2026
+</div>
+<div class="listing-reading-time">14 min</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNudW1iZXItdGhlb3J5JTJDY29tcHV0ZXItc2NpZW5jZSUyQ2NyeXB0b2dyYXBoeQ==" data-listing-date-sort="1780444800000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1763">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/chinese-remainder-theorem/index.html" class="no-external">The Chinese Remainder Theorem: Residues as Coordinates</a>
+</h3>
+</div>
+<div class="metadata">
+<a href="./posts/chinese-remainder-theorem/index.html" class="no-external">
+<div class="listing-date">
+Jun 3, 2026
+</div>
+<div class="listing-reading-time">9 min</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNudW1iZXItdGhlb3J5JTJDY29tcHV0ZXItc2NpZW5jZSUyQ2FsZ29yaXRobXMlMkNjcnlwdG9ncmFwaHk=" data-listing-date-sort="1780444800000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1753">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/miller-rabin/index.html" class="no-external">Miller–Rabin: How to Believe a Number Is Prime</a>
+</h3>
+</div>
+<div class="metadata">
+<a href="./posts/miller-rabin/index.html" class="no-external">
+<div class="listing-date">
+Jun 3, 2026
+</div>
+<div class="listing-reading-time">9 min</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
+</section>
+<section id="learning-philosophical-reflections" class="level2 home-note-section">
+<h2 class="anchored" data-anchor-id="learning-philosophical-reflections">Learning &amp; Philosophical Reflections</h2>
+<div id="listing-reflection-notes" class="quarto-listing quarto-listing-container-default">
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="bWV0YSUyQ2xlYXJuaW5n" data-listing-date-sort="1780531200000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2796">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/on-learning-mathematics/index.html" class="no-external">On Learning Mathematics</a>
+</h3>
+</div>
+<div class="metadata">
+<a href="./posts/on-learning-mathematics/index.html" class="no-external">
+<div class="listing-date">
+Jun 4, 2026
+</div>
+<div class="listing-reading-time">14 min</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="bWV0YSUyQ2xlYXJuaW5n" data-listing-date-sort="1780444800000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2011">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/hidden-mechanics-of-math/index.html" class="no-external">Mathematics Is Not a Spectator Sport</a>
+</h3>
+</div>
+<div class="metadata">
+<a href="./posts/hidden-mechanics-of-math/index.html" class="no-external">
+<div class="listing-date">
+Jun 3, 2026
+</div>
+<div class="listing-reading-time">11 min</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="bWV0YQ==" data-listing-date-sort="1780358400000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="285">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/welcome/index.html" class="no-external">Welcome, and what this blog is for</a>
+</h3>
+</div>
+<div class="metadata">
+<a href="./posts/welcome/index.html" class="no-external">
+<div class="listing-date">
+Jun 2, 2026
+</div>
+<div class="listing-reading-time">2 min</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div>
+</section>
+<section id="all-notes-section" class="level2 home-note-section home-all-notes">
+<h2 class="anchored" data-anchor-id="all-notes-section">All Notes</h2>
+<div id="listing-all-notes" class="quarto-listing quarto-listing-container-default">
 <div class="listing-actions-group">
    <div class="input-group input-group-sm quarto-listing-sort">
     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-    <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+    <select id="listing-all-notes-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-all-notes'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
       <option value="" disabled="" selected="" hidden="">Order By</option>
       <option value="index" data-direction="asc">Default</option>
-      <option value="listing-title" data-direction="asc">
-        Title
-      </option>
       <option value="listing-date-sort" data-direction="asc">
         Date - Oldest
       </option>
       <option value="listing-date-sort" data-direction="desc">
         Date - Newest
+      </option>
+      <option value="listing-title" data-direction="asc">
+        Title
       </option>
     </select>
   </div>
@@ -246,7 +528,7 @@ window.Quarto = {
     </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="cHVyZSUyQ2FsZ2VicmFpYy1nZW9tZXRyeSUyQ2NvbW11dGF0aXZlLWFsZ2VicmE=" data-listing-date-sort="1780790400000" data-listing-file-modified-sort="1780878829094" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2514">
+<div class="quarto-post image-right" data-index="0" data-categories="cHVyZSUyQ2FsZ2VicmFpYy1nZW9tZXRyeSUyQ2NvbW11dGF0aXZlLWFsZ2VicmE=" data-listing-date-sort="1780790400000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2514">
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/nullstellensatz/index.html" class="no-external">The Nullstellensatz: A Dictionary Between Algebra and Geometry</a>
@@ -273,7 +555,7 @@ Jun 7, 2026
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="cHVyZSUyQ3JlYWwtYW5hbHlzaXMlMkNmb3VuZGF0aW9ucw==" data-listing-date-sort="1780790400000" data-listing-file-modified-sort="1780878829095" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4326">
+<div class="quarto-post image-right" data-index="1" data-categories="cHVyZSUyQ3JlYWwtYW5hbHlzaXMlMkNmb3VuZGF0aW9ucw==" data-listing-date-sort="1780790400000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4326">
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/reconstructing-calculus/index.html" class="no-external">Real Analysis: What Calculus Becomes When We Ask Why</a>
@@ -300,7 +582,7 @@ Jun 7, 2026
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNjb21iaW5hdG9yaWNzJTJDY29tcHV0ZXItc2NpZW5jZSUyQ2FsZ29yaXRobXM=" data-listing-date-sort="1780704000000" data-listing-file-modified-sort="1780878829094" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2522">
+<div class="quarto-post image-right" data-index="2" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNjb21iaW5hdG9yaWNzJTJDY29tcHV0ZXItc2NpZW5jZSUyQ2FsZ29yaXRobXM=" data-listing-date-sort="1780704000000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2522">
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/domino-tilings/index.html" class="no-external">Counting Domino Tilings: When Dynamic Programming Is a Matrix</a>
@@ -331,7 +613,7 @@ Jun 6, 2026
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNudW1iZXItdGhlb3J5JTJDY29tcHV0ZXItc2NpZW5jZSUyQ2FsZ29yaXRobXMlMkNjcnlwdG9ncmFwaHk=" data-listing-date-sort="1780531200000" data-listing-file-modified-sort="1780878829094" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2660">
+<div class="quarto-post image-right" data-index="3" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNudW1iZXItdGhlb3J5JTJDY29tcHV0ZXItc2NpZW5jZSUyQ2FsZ29yaXRobXMlMkNjcnlwdG9ncmFwaHk=" data-listing-date-sort="1780531200000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2660">
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/discrete-log/index.html" class="no-external">The Discrete Logarithm: Easy to Make, Hard to Undo</a>
@@ -364,7 +646,7 @@ Jun 4, 2026
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="bWV0YSUyQ2xlYXJuaW5n" data-listing-date-sort="1780531200000" data-listing-file-modified-sort="1780878829094" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2796">
+<div class="quarto-post image-right" data-index="4" data-categories="bWV0YSUyQ2xlYXJuaW5n" data-listing-date-sort="1780531200000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2796">
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/on-learning-mathematics/index.html" class="no-external">On Learning Mathematics</a>
@@ -389,7 +671,7 @@ Jun 4, 2026
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNudW1iZXItdGhlb3J5JTJDY29tcHV0ZXItc2NpZW5jZSUyQ2NyeXB0b2dyYXBoeQ==" data-listing-date-sort="1780444800000" data-listing-file-modified-sort="1780878829094" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1763">
+<div class="quarto-post image-right" data-index="5" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNudW1iZXItdGhlb3J5JTJDY29tcHV0ZXItc2NpZW5jZSUyQ2NyeXB0b2dyYXBoeQ==" data-listing-date-sort="1780444800000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1763">
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/chinese-remainder-theorem/index.html" class="no-external">The Chinese Remainder Theorem: Residues as Coordinates</a>
@@ -420,7 +702,7 @@ Jun 3, 2026
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNsaW5lYXItYWxnZWJyYSUyQ251bWVyaWNhbC1tZXRob2Rz" data-listing-date-sort="1780444800000" data-listing-file-modified-sort="1780878829094" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1505">
+<div class="quarto-post image-right" data-index="6" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNsaW5lYXItYWxnZWJyYSUyQ251bWVyaWNhbC1tZXRob2Rz" data-listing-date-sort="1780444800000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1505">
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/gram-schmidt/index.html" class="no-external">Gram–Schmidt: Straightening a Tangle of Vectors</a>
@@ -449,7 +731,7 @@ Jun 3, 2026
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="bWV0YSUyQ2xlYXJuaW5n" data-listing-date-sort="1780444800000" data-listing-file-modified-sort="1780878829094" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2011">
+<div class="quarto-post image-right" data-index="7" data-categories="bWV0YSUyQ2xlYXJuaW5n" data-listing-date-sort="1780444800000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2011">
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/hidden-mechanics-of-math/index.html" class="no-external">Mathematics Is Not a Spectator Sport</a>
@@ -474,7 +756,7 @@ Jun 3, 2026
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNudW1iZXItdGhlb3J5JTJDY29tcHV0ZXItc2NpZW5jZSUyQ2FsZ29yaXRobXMlMkNjcnlwdG9ncmFwaHk=" data-listing-date-sort="1780444800000" data-listing-file-modified-sort="1780878829094" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1753">
+<div class="quarto-post image-right" data-index="8" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNudW1iZXItdGhlb3J5JTJDY29tcHV0ZXItc2NpZW5jZSUyQ2FsZ29yaXRobXMlMkNjcnlwdG9ncmFwaHk=" data-listing-date-sort="1780444800000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1753">
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/miller-rabin/index.html" class="no-external">Miller–Rabin: How to Believe a Number Is Prime</a>
@@ -507,7 +789,7 @@ Jun 3, 2026
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="bWV0YQ==" data-listing-date-sort="1780358400000" data-listing-file-modified-sort="1780878829095" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="285">
+<div class="quarto-post image-right" data-index="9" data-categories="bWV0YQ==" data-listing-date-sort="1780358400000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="285">
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/welcome/index.html" class="no-external">Welcome, and what this blog is for</a>
@@ -530,7 +812,7 @@ Jun 2, 2026
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNsaW5lYXItYWxnZWJyYQ==" data-listing-date-sort="1780272000000" data-listing-file-modified-sort="1780878829095" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1077">
+<div class="quarto-post image-right" data-index="10" data-categories="cHVyZSUyQ2FwcGxpZWQlMkNsaW5lYXItYWxnZWJyYQ==" data-listing-date-sort="1780272000000" data-listing-file-modified-sort="1780880263294" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1077">
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/spectral-theorem/index.html" class="no-external">The Spectral Theorem for Symmetric Matrices</a>
@@ -559,7 +841,14 @@ Jun 1, 2026
 </div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div>
+</section>
+</div>
+
+
+
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

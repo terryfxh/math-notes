@@ -2682,6 +2682,312 @@ first 16 hex digits of the shared key: 1ee4349d39644140 ...</code></pre>
   <pubDate>Thu, 04 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
+  <title>Gram–Schmidt: Straightening a Tangle of Vectors</title>
+  <link>https://terryfxh.github.io/math-notes/posts/gram-schmidt/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p>“A mathematician, like a painter or a poet, is a maker of patterns.”</p>
+<p><span class="attribution">— G. H. Hardy, <em>A Mathematician’s Apology</em></span></p>
+</div>
+<p>Imagine a handful of vectors that all lean in roughly the same direction. They span some subspace, but they describe it badly: each one carries a little of every other one inside it, and it is hard to tell what is genuinely new about each. What we would love instead is a clean frame for that same subspace, a set of directions that are perfectly perpendicular and each of unit length, so that every vector in the space splits into independent, non-overlapping pieces. Gram–Schmidt is the simple, almost obvious procedure that builds exactly such a frame, one vector at a time. And once you see the picture, the QR decomposition falls out for free.</p>
+<section id="first-the-picture" class="level2">
+<h2 class="anchored" data-anchor-id="first-the-picture">First, the picture</h2>
+<p>Start with the very first vector and do nothing clever at all. Just keep its direction; call that your first axis. The honest work begins with the second vector.</p>
+<p>The second vector points partly along the first axis and partly away from it. The part along the first axis is redundant, since you already have that direction. So subtract it off. Concretely, cast a shadow of the second vector onto the first axis, the orthogonal projection, and remove that shadow. What survives points in a direction the first axis could never reach: it is perpendicular to the first by construction. That perpendicular remainder becomes your second axis.</p>
+<p>Now the pattern repeats. Bring in the third vector, look at the shadow it casts on the plane already spanned by your first two axes, subtract that shadow, and whatever remains sticks out perpendicular to both. Keep going. At every step you take the next raw vector, strip away everything your existing axes already explain, and keep only the genuinely new direction left over. Normalize each remainder to unit length and you have an orthonormal frame.</p>
+<p>That is the whole idea. Every formula below is just bookkeeping for “subtract the shadow.”</p>
+</section>
+<section id="writing-it-down" class="level2">
+<h2 class="anchored" data-anchor-id="writing-it-down">Writing it down</h2>
+<p>Let <img src="https://latex.codecogs.com/png.latex?v_1,%20%5Cdots,%20v_n%20%5Cin%20%5Cmathbb%7BR%7D%5Em"> be linearly independent, and write the inner product as <img src="https://latex.codecogs.com/png.latex?%5Clangle%20x,%20y%5Crangle%20=%20x%5E%5Ctop%20y">. The projection of a vector <img src="https://latex.codecogs.com/png.latex?v"> onto a unit vector <img src="https://latex.codecogs.com/png.latex?q"> is <img src="https://latex.codecogs.com/png.latex?%5Clangle%20q,%20v%5Crangle%5C,%20q">: the shadow’s length times the direction. Gram–Schmidt then reads</p>
+<p><span id="eq-gs"><img src="https://latex.codecogs.com/png.latex?%0Au_k%20=%20v_k%20-%20%5Csum_%7Bj=1%7D%5E%7Bk-1%7D%20%5Clangle%20q_j,%20v_k%5Crangle%5C,%20q_j,%0A%5Cqquad%0Aq_k%20=%20%5Cfrac%7Bu_k%7D%7B%5ClVert%20u_k%20%5CrVert%7D.%0A%5Ctag%7B1%7D"></span></p>
+<p>The sum is everything the earlier axes already account for; <img src="https://latex.codecogs.com/png.latex?u_k"> is the leftover that they cannot. We normalize it to get the next unit axis <img src="https://latex.codecogs.com/png.latex?q_k">.</p>
+</section>
+<section id="it-was-qr-all-along" class="level2">
+<h2 class="anchored" data-anchor-id="it-was-qr-all-along">It was QR all along</h2>
+<p>Look again at Equation&nbsp;1 and rearrange it to express the original vector in terms of the new frame:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Av_k%20=%20%5ClVert%20u_k%20%5CrVert%5C,%20q_k%20+%20%5Csum_%7Bj=1%7D%5E%7Bk-1%7D%20%5Clangle%20q_j,%20v_k%5Crangle%5C,%20q_j%20.%0A"></p>
+<p>Read this as a recipe for rebuilding <img src="https://latex.codecogs.com/png.latex?v_k"> out of the <img src="https://latex.codecogs.com/png.latex?q">’s. The crucial detail is which <img src="https://latex.codecogs.com/png.latex?q">’s appear: only <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_k">, never any with a higher index. Each original vector lives entirely inside the axes built up to its own turn.</p>
+<p>Stack the vectors as columns of a matrix <img src="https://latex.codecogs.com/png.latex?A%20=%20%5B%5C,v_1%20%5Cmid%20%5Ccdots%20%5Cmid%20v_n%5C,%5D"> and the new axes as columns of <img src="https://latex.codecogs.com/png.latex?Q%20=%20%5B%5C,q_1%20%5Cmid%20%5Ccdots%20%5Cmid%20q_n%5C,%5D">. The coefficients above assemble into a matrix <img src="https://latex.codecogs.com/png.latex?R">, and because <img src="https://latex.codecogs.com/png.latex?v_k"> uses no axis past <img src="https://latex.codecogs.com/png.latex?q_k">, every entry of <img src="https://latex.codecogs.com/png.latex?R"> below the diagonal is zero. We have landed on</p>
+<p><span id="eq-qr"><img src="https://latex.codecogs.com/png.latex?%0AA%20=%20QR,%0A%5Ctag%7B2%7D"></span></p>
+<p>with <img src="https://latex.codecogs.com/png.latex?Q"> holding orthonormal columns and <img src="https://latex.codecogs.com/png.latex?R"> upper triangular, its diagonal entries <img src="https://latex.codecogs.com/png.latex?r_%7Bkk%7D%20=%20%5ClVert%20u_k%20%5CrVert"> all positive. The geometric act of straightening a tangle of vectors and the algebraic factorization Equation&nbsp;2 are the same thing seen from two sides.</p>
+</section>
+<section id="why-the-frame-is-genuinely-orthonormal" class="level2">
+<h2 class="anchored" data-anchor-id="why-the-frame-is-genuinely-orthonormal">Why the frame is genuinely orthonormal</h2>
+<p>It is worth checking that the picture delivers what it promises, rather than just feeling like it should.</p>
+<div id="thm-qr" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (QR by Gram–Schmidt)</strong></span> If the columns of <img src="https://latex.codecogs.com/png.latex?A%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bm%20%5Ctimes%20n%7D"> are linearly independent, then Equation&nbsp;1 produces vectors <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_n"> that are orthonormal and satisfy <img src="https://latex.codecogs.com/png.latex?A%20=%20QR"> with <img src="https://latex.codecogs.com/png.latex?R"> upper triangular and <img src="https://latex.codecogs.com/png.latex?r_%7Bkk%7D%20%3E%200">.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>We argue by induction on <img src="https://latex.codecogs.com/png.latex?k"> that <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_k"> are orthonormal and span the same subspace as <img src="https://latex.codecogs.com/png.latex?v_1,%20%5Cdots,%20v_k">.</p>
+<p>For <img src="https://latex.codecogs.com/png.latex?k%20=%201">, <img src="https://latex.codecogs.com/png.latex?q_1%20=%20v_1%20/%20%5ClVert%20v_1%20%5CrVert"> is a single unit vector spanning the same line as <img src="https://latex.codecogs.com/png.latex?v_1">, and <img src="https://latex.codecogs.com/png.latex?%5ClVert%20v_1%5CrVert%20%3E%200"> because the columns are independent.</p>
+<p>Assume the claim for <img src="https://latex.codecogs.com/png.latex?k-1">. Form <img src="https://latex.codecogs.com/png.latex?u_k"> as in Equation&nbsp;1. For any earlier index <img src="https://latex.codecogs.com/png.latex?i%20%3C%20k">, take the inner product with <img src="https://latex.codecogs.com/png.latex?q_i"> and use orthonormality of the previous axes, <img src="https://latex.codecogs.com/png.latex?%5Clangle%20q_i,%20q_j%5Crangle%20=%20%5Cdelta_%7Bij%7D">: <img src="https://latex.codecogs.com/png.latex?%0A%5Clangle%20q_i,%20u_k%5Crangle%20=%20%5Clangle%20q_i,%20v_k%5Crangle%20-%20%5Csum_%7Bj=1%7D%5E%7Bk-1%7D%20%5Clangle%20q_j,%20v_k%5Crangle%5C,%5Clangle%20q_i,%20q_j%5Crangle%20=%20%5Clangle%20q_i,%20v_k%5Crangle%20-%20%5Clangle%20q_i,%20v_k%5Crangle%20=%200%20.%0A"> So <img src="https://latex.codecogs.com/png.latex?u_k"> is perpendicular to every previous axis. It is also nonzero: if it vanished, Equation&nbsp;1 would write <img src="https://latex.codecogs.com/png.latex?v_k"> as a combination of <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_%7Bk-1%7D">, hence of <img src="https://latex.codecogs.com/png.latex?v_1,%20%5Cdots,%20v_%7Bk-1%7D">, contradicting linear independence. Therefore <img src="https://latex.codecogs.com/png.latex?q_k%20=%20u_k%20/%20%5ClVert%20u_k%5CrVert"> is a unit vector orthogonal to all earlier ones, and since <img src="https://latex.codecogs.com/png.latex?u_k"> is <img src="https://latex.codecogs.com/png.latex?v_k"> plus a combination of the previous axes, the spans still agree. The induction closes. Collecting the coefficients into <img src="https://latex.codecogs.com/png.latex?R"> gives Equation&nbsp;2, and <img src="https://latex.codecogs.com/png.latex?r_%7Bkk%7D%20=%20%5ClVert%20u_k%5CrVert%20%3E%200">. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
+</div>
+</section>
+<section id="where-the-naive-version-breaks" class="level2">
+<h2 class="anchored" data-anchor-id="where-the-naive-version-breaks">Where the naive version breaks</h2>
+<p>Here the story takes a turn that pure mathematics alone would never warn you about. On paper, Equation&nbsp;1 is flawless. On a computer, the order in which you subtract the shadows turns out to matter enormously.</p>
+<p>There are two ways to organize the subtraction. <em>Classical</em> Gram–Schmidt computes every projection against the <strong>original</strong> vector <img src="https://latex.codecogs.com/png.latex?v_k"> and removes them together. <em>Modified</em> Gram–Schmidt removes each shadow one at a time, always projecting the <strong>running remainder</strong> that is left so far. Algebraically the two are identical. In floating-point arithmetic they are not, because the modified version always works with the most up-to-date, mostly-perpendicular remainder, and so it never lets rounding errors pile up unexamined.</p>
+<p>To see the gap, feed both versions a deliberately nasty matrix: the <img src="https://latex.codecogs.com/png.latex?8%20%5Ctimes%208"> Hilbert matrix, whose columns are so nearly parallel that its condition number runs into the billions.</p>
+<div id="8796dd26" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> gram_schmidt(A, modified):</span>
+<span id="cb1-4">    m, n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> A.shape</span>
+<span id="cb1-5">    Q <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.zeros((m, n))</span>
+<span id="cb1-6">    R <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.zeros((n, n))</span>
+<span id="cb1-7">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> k <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(n):</span>
+<span id="cb1-8">        v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> A[:, k].copy()</span>
+<span id="cb1-9">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> j <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(k):</span>
+<span id="cb1-10">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># classical projects the original column; modified the running remainder</span></span>
+<span id="cb1-11">            R[j, k] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Q[:, j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> (v <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> modified <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> A[:, k])</span>
+<span id="cb1-12">            v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> R[j, k] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> Q[:, j]</span>
+<span id="cb1-13">        R[k, k] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linalg.norm(v)</span>
+<span id="cb1-14">        Q[:, k] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> R[k, k]</span>
+<span id="cb1-15">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> Q, R</span>
+<span id="cb1-16"></span>
+<span id="cb1-17">n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span></span>
+<span id="cb1-18">H <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([[<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> j <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> j <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(n)] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(n)])</span>
+<span id="cb1-19"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"condition number of H: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>linalg<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>cond(H)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2e}</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb1-20"></span>
+<span id="cb1-21"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> name, modified <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> [(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"classical"</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>), (<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"modified"</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)]:</span>
+<span id="cb1-22">    Q, R <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> gram_schmidt(H, modified)</span>
+<span id="cb1-23">    orthogonality <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linalg.norm(Q.T <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> Q <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> np.eye(n))</span>
+<span id="cb1-24">    reconstruction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linalg.norm(H <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> Q <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> R)</span>
+<span id="cb1-25">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>name<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:9s}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:  |Q^T Q - I| = </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>orthogonality<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    |H - QR| = </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>reconstruction<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb1-26"></span>
+<span id="cb1-27">Qh, _ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linalg.qr(H)   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># numpy uses Householder reflections</span></span>
+<span id="cb1-28"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'numpy.qr'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:9s}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:  |Q^T Q - I| = </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>linalg<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>norm(Qh.T <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> Qh <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> np.eye(n))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>condition number of H: 1.53e+10
+
+classical:  |Q^T Q - I| = 1.42e+00    |H - QR| = 9.71e-17
+modified :  |Q^T Q - I| = 3.62e-07    |H - QR| = 1.07e-16
+numpy.qr :  |Q^T Q - I| = 1.46e-15</code></pre>
+</div>
+</div>
+<p>Both methods rebuild <img src="https://latex.codecogs.com/png.latex?H"> from <img src="https://latex.codecogs.com/png.latex?Q"> and <img src="https://latex.codecogs.com/png.latex?R"> essentially perfectly, with <img src="https://latex.codecogs.com/png.latex?%5ClVert%20H%20-%20QR%5CrVert"> down at roundoff. That is not where the danger lives. Look instead at <img src="https://latex.codecogs.com/png.latex?%5ClVert%20Q%5E%5Ctop%20Q%20-%20I%5CrVert">, the honest test of whether the columns of <img src="https://latex.codecogs.com/png.latex?Q"> really are orthonormal. Classical Gram–Schmidt scores around <img src="https://latex.codecogs.com/png.latex?1">, meaning its “orthonormal” axes are nothing of the sort, they have collapsed back toward each other. The modified version holds the error near <img src="https://latex.codecogs.com/png.latex?10%5E%7B-7%7D">, and the Householder-based routine in NumPy reaches full machine precision around <img src="https://latex.codecogs.com/png.latex?10%5E%7B-15%7D">.</p>
+<p>The lesson is not that Gram–Schmidt is wrong. It is that a formula can be exactly true and still be the wrong thing to type, because finite-precision arithmetic has a geometry of its own. When you actually need a stable orthonormal frame, reach for modified Gram–Schmidt or, better still, a Householder QR like the one inside <code>numpy.linalg.qr</code>. A careful account of all this lives in <span class="citation" data-cites="trefethen1997numerical">[1]</span>.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>The heart of Gram–Schmidt is a single move repeated: take the next vector, subtract the shadow your existing axes already explain, and keep the perpendicular remainder. That move, written out, is the factorization <img src="https://latex.codecogs.com/png.latex?A%20=%20QR">, with the orthonormal frame in <img src="https://latex.codecogs.com/png.latex?Q"> and the bookkeeping in an upper-triangular <img src="https://latex.codecogs.com/png.latex?R">. The proof that the frame is truly orthonormal is a short induction resting on one cancellation. And the moment you run it, a quieter truth appears: on a real machine the naive ordering can throw the orthogonality away entirely, so the version you compute should be the modified one, or Householder if you can afford it.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Gram–Schmidt: Straightening a Tangle of Vectors</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/gram-schmidt/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
+<div id="ref-trefethen1997numerical" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. N. Trefethen and D. Bau, <em>Numerical linear algebra</em>. SIAM, 1997.</div>
+</div>
+</div></section></div> ]]></description>
+  <category>pure</category>
+  <category>applied</category>
+  <category>linear-algebra</category>
+  <category>numerical-methods</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/gram-schmidt/</guid>
+  <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
+</item>
+<item>
   <title>The Chinese Remainder Theorem: Residues as Coordinates</title>
   <link>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/</link>
   <description><![CDATA[ 
@@ -3406,379 +3712,6 @@ speedup: 2.8x   (results agree: True)</code></pre>
   <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
-  <title>Gram–Schmidt: Straightening a Tangle of Vectors</title>
-  <link>https://terryfxh.github.io/math-notes/posts/gram-schmidt/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="epigraph">
-<p>“A mathematician, like a painter or a poet, is a maker of patterns.”</p>
-<p><span class="attribution">— G. H. Hardy, <em>A Mathematician’s Apology</em></span></p>
-</div>
-<p>Imagine a handful of vectors that all lean in roughly the same direction. They span some subspace, but they describe it badly: each one carries a little of every other one inside it, and it is hard to tell what is genuinely new about each. What we would love instead is a clean frame for that same subspace, a set of directions that are perfectly perpendicular and each of unit length, so that every vector in the space splits into independent, non-overlapping pieces. Gram–Schmidt is the simple, almost obvious procedure that builds exactly such a frame, one vector at a time. And once you see the picture, the QR decomposition falls out for free.</p>
-<section id="first-the-picture" class="level2">
-<h2 class="anchored" data-anchor-id="first-the-picture">First, the picture</h2>
-<p>Start with the very first vector and do nothing clever at all. Just keep its direction; call that your first axis. The honest work begins with the second vector.</p>
-<p>The second vector points partly along the first axis and partly away from it. The part along the first axis is redundant, since you already have that direction. So subtract it off. Concretely, cast a shadow of the second vector onto the first axis, the orthogonal projection, and remove that shadow. What survives points in a direction the first axis could never reach: it is perpendicular to the first by construction. That perpendicular remainder becomes your second axis.</p>
-<p>Now the pattern repeats. Bring in the third vector, look at the shadow it casts on the plane already spanned by your first two axes, subtract that shadow, and whatever remains sticks out perpendicular to both. Keep going. At every step you take the next raw vector, strip away everything your existing axes already explain, and keep only the genuinely new direction left over. Normalize each remainder to unit length and you have an orthonormal frame.</p>
-<p>That is the whole idea. Every formula below is just bookkeeping for “subtract the shadow.”</p>
-</section>
-<section id="writing-it-down" class="level2">
-<h2 class="anchored" data-anchor-id="writing-it-down">Writing it down</h2>
-<p>Let <img src="https://latex.codecogs.com/png.latex?v_1,%20%5Cdots,%20v_n%20%5Cin%20%5Cmathbb%7BR%7D%5Em"> be linearly independent, and write the inner product as <img src="https://latex.codecogs.com/png.latex?%5Clangle%20x,%20y%5Crangle%20=%20x%5E%5Ctop%20y">. The projection of a vector <img src="https://latex.codecogs.com/png.latex?v"> onto a unit vector <img src="https://latex.codecogs.com/png.latex?q"> is <img src="https://latex.codecogs.com/png.latex?%5Clangle%20q,%20v%5Crangle%5C,%20q">: the shadow’s length times the direction. Gram–Schmidt then reads</p>
-<p><span id="eq-gs"><img src="https://latex.codecogs.com/png.latex?%0Au_k%20=%20v_k%20-%20%5Csum_%7Bj=1%7D%5E%7Bk-1%7D%20%5Clangle%20q_j,%20v_k%5Crangle%5C,%20q_j,%0A%5Cqquad%0Aq_k%20=%20%5Cfrac%7Bu_k%7D%7B%5ClVert%20u_k%20%5CrVert%7D.%0A%5Ctag%7B1%7D"></span></p>
-<p>The sum is everything the earlier axes already account for; <img src="https://latex.codecogs.com/png.latex?u_k"> is the leftover that they cannot. We normalize it to get the next unit axis <img src="https://latex.codecogs.com/png.latex?q_k">.</p>
-</section>
-<section id="it-was-qr-all-along" class="level2">
-<h2 class="anchored" data-anchor-id="it-was-qr-all-along">It was QR all along</h2>
-<p>Look again at Equation&nbsp;1 and rearrange it to express the original vector in terms of the new frame:</p>
-<p><img src="https://latex.codecogs.com/png.latex?%0Av_k%20=%20%5ClVert%20u_k%20%5CrVert%5C,%20q_k%20+%20%5Csum_%7Bj=1%7D%5E%7Bk-1%7D%20%5Clangle%20q_j,%20v_k%5Crangle%5C,%20q_j%20.%0A"></p>
-<p>Read this as a recipe for rebuilding <img src="https://latex.codecogs.com/png.latex?v_k"> out of the <img src="https://latex.codecogs.com/png.latex?q">’s. The crucial detail is which <img src="https://latex.codecogs.com/png.latex?q">’s appear: only <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_k">, never any with a higher index. Each original vector lives entirely inside the axes built up to its own turn.</p>
-<p>Stack the vectors as columns of a matrix <img src="https://latex.codecogs.com/png.latex?A%20=%20%5B%5C,v_1%20%5Cmid%20%5Ccdots%20%5Cmid%20v_n%5C,%5D"> and the new axes as columns of <img src="https://latex.codecogs.com/png.latex?Q%20=%20%5B%5C,q_1%20%5Cmid%20%5Ccdots%20%5Cmid%20q_n%5C,%5D">. The coefficients above assemble into a matrix <img src="https://latex.codecogs.com/png.latex?R">, and because <img src="https://latex.codecogs.com/png.latex?v_k"> uses no axis past <img src="https://latex.codecogs.com/png.latex?q_k">, every entry of <img src="https://latex.codecogs.com/png.latex?R"> below the diagonal is zero. We have landed on</p>
-<p><span id="eq-qr"><img src="https://latex.codecogs.com/png.latex?%0AA%20=%20QR,%0A%5Ctag%7B2%7D"></span></p>
-<p>with <img src="https://latex.codecogs.com/png.latex?Q"> holding orthonormal columns and <img src="https://latex.codecogs.com/png.latex?R"> upper triangular, its diagonal entries <img src="https://latex.codecogs.com/png.latex?r_%7Bkk%7D%20=%20%5ClVert%20u_k%20%5CrVert"> all positive. The geometric act of straightening a tangle of vectors and the algebraic factorization Equation&nbsp;2 are the same thing seen from two sides.</p>
-</section>
-<section id="why-the-frame-is-genuinely-orthonormal" class="level2">
-<h2 class="anchored" data-anchor-id="why-the-frame-is-genuinely-orthonormal">Why the frame is genuinely orthonormal</h2>
-<p>It is worth checking that the picture delivers what it promises, rather than just feeling like it should.</p>
-<div id="thm-qr" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 1 (QR by Gram–Schmidt)</strong></span> If the columns of <img src="https://latex.codecogs.com/png.latex?A%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bm%20%5Ctimes%20n%7D"> are linearly independent, then Equation&nbsp;1 produces vectors <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_n"> that are orthonormal and satisfy <img src="https://latex.codecogs.com/png.latex?A%20=%20QR"> with <img src="https://latex.codecogs.com/png.latex?R"> upper triangular and <img src="https://latex.codecogs.com/png.latex?r_%7Bkk%7D%20%3E%200">.</p>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>We argue by induction on <img src="https://latex.codecogs.com/png.latex?k"> that <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_k"> are orthonormal and span the same subspace as <img src="https://latex.codecogs.com/png.latex?v_1,%20%5Cdots,%20v_k">.</p>
-<p>For <img src="https://latex.codecogs.com/png.latex?k%20=%201">, <img src="https://latex.codecogs.com/png.latex?q_1%20=%20v_1%20/%20%5ClVert%20v_1%20%5CrVert"> is a single unit vector spanning the same line as <img src="https://latex.codecogs.com/png.latex?v_1">, and <img src="https://latex.codecogs.com/png.latex?%5ClVert%20v_1%5CrVert%20%3E%200"> because the columns are independent.</p>
-<p>Assume the claim for <img src="https://latex.codecogs.com/png.latex?k-1">. Form <img src="https://latex.codecogs.com/png.latex?u_k"> as in Equation&nbsp;1. For any earlier index <img src="https://latex.codecogs.com/png.latex?i%20%3C%20k">, take the inner product with <img src="https://latex.codecogs.com/png.latex?q_i"> and use orthonormality of the previous axes, <img src="https://latex.codecogs.com/png.latex?%5Clangle%20q_i,%20q_j%5Crangle%20=%20%5Cdelta_%7Bij%7D">: <img src="https://latex.codecogs.com/png.latex?%0A%5Clangle%20q_i,%20u_k%5Crangle%20=%20%5Clangle%20q_i,%20v_k%5Crangle%20-%20%5Csum_%7Bj=1%7D%5E%7Bk-1%7D%20%5Clangle%20q_j,%20v_k%5Crangle%5C,%5Clangle%20q_i,%20q_j%5Crangle%20=%20%5Clangle%20q_i,%20v_k%5Crangle%20-%20%5Clangle%20q_i,%20v_k%5Crangle%20=%200%20.%0A"> So <img src="https://latex.codecogs.com/png.latex?u_k"> is perpendicular to every previous axis. It is also nonzero: if it vanished, Equation&nbsp;1 would write <img src="https://latex.codecogs.com/png.latex?v_k"> as a combination of <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_%7Bk-1%7D">, hence of <img src="https://latex.codecogs.com/png.latex?v_1,%20%5Cdots,%20v_%7Bk-1%7D">, contradicting linear independence. Therefore <img src="https://latex.codecogs.com/png.latex?q_k%20=%20u_k%20/%20%5ClVert%20u_k%5CrVert"> is a unit vector orthogonal to all earlier ones, and since <img src="https://latex.codecogs.com/png.latex?u_k"> is <img src="https://latex.codecogs.com/png.latex?v_k"> plus a combination of the previous axes, the spans still agree. The induction closes. Collecting the coefficients into <img src="https://latex.codecogs.com/png.latex?R"> gives Equation&nbsp;2, and <img src="https://latex.codecogs.com/png.latex?r_%7Bkk%7D%20=%20%5ClVert%20u_k%5CrVert%20%3E%200">. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
-</div>
-</section>
-<section id="where-the-naive-version-breaks" class="level2">
-<h2 class="anchored" data-anchor-id="where-the-naive-version-breaks">Where the naive version breaks</h2>
-<p>Here the story takes a turn that pure mathematics alone would never warn you about. On paper, Equation&nbsp;1 is flawless. On a computer, the order in which you subtract the shadows turns out to matter enormously.</p>
-<p>There are two ways to organize the subtraction. <em>Classical</em> Gram–Schmidt computes every projection against the <strong>original</strong> vector <img src="https://latex.codecogs.com/png.latex?v_k"> and removes them together. <em>Modified</em> Gram–Schmidt removes each shadow one at a time, always projecting the <strong>running remainder</strong> that is left so far. Algebraically the two are identical. In floating-point arithmetic they are not, because the modified version always works with the most up-to-date, mostly-perpendicular remainder, and so it never lets rounding errors pile up unexamined.</p>
-<p>To see the gap, feed both versions a deliberately nasty matrix: the <img src="https://latex.codecogs.com/png.latex?8%20%5Ctimes%208"> Hilbert matrix, whose columns are so nearly parallel that its condition number runs into the billions.</p>
-<div id="8796dd26" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> np</span>
-<span id="cb1-2"></span>
-<span id="cb1-3"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> gram_schmidt(A, modified):</span>
-<span id="cb1-4">    m, n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> A.shape</span>
-<span id="cb1-5">    Q <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.zeros((m, n))</span>
-<span id="cb1-6">    R <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.zeros((n, n))</span>
-<span id="cb1-7">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> k <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(n):</span>
-<span id="cb1-8">        v <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> A[:, k].copy()</span>
-<span id="cb1-9">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> j <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(k):</span>
-<span id="cb1-10">            <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># classical projects the original column; modified the running remainder</span></span>
-<span id="cb1-11">            R[j, k] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Q[:, j] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> (v <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> modified <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">else</span> A[:, k])</span>
-<span id="cb1-12">            v <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> v <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> R[j, k] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> Q[:, j]</span>
-<span id="cb1-13">        R[k, k] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.linalg.norm(v)</span>
-<span id="cb1-14">        Q[:, k] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> v <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> R[k, k]</span>
-<span id="cb1-15">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> Q, R</span>
-<span id="cb1-16"></span>
-<span id="cb1-17">n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">8</span></span>
-<span id="cb1-18">H <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.array([[<span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> (i <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> j <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>) <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> j <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(n)] <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(n)])</span>
-<span id="cb1-19"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"condition number of H: </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span>linalg<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span>cond(H)<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2e}</span><span class="ch" style="color: #20794D;
-background-color: null;
-font-style: inherit;">\n</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span>
-<span id="cb1-20"></span>
-<span id="cb1-21"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> name, modified <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> [(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"classical"</span>, <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span>), (<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"modified"</span>, <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>)]:</span>
-<span id="cb1-22">    Q, R <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> gram_schmidt(H, modified)</span>
-<span id="cb1-23">    orthogonality <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.linalg.norm(Q.T <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> Q <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> np.eye(n))</span>
-<span id="cb1-24">    reconstruction <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.linalg.norm(H <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> Q <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> R)</span>
-<span id="cb1-25">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>name<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:9s}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">:  |Q^T Q - I| = </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>orthogonality<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">    |H - QR| = </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>reconstruction<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span>
-<span id="cb1-26"></span>
-<span id="cb1-27">Qh, _ <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.linalg.qr(H)   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># numpy uses Householder reflections</span></span>
-<span id="cb1-28"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'numpy.qr'</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:9s}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">:  |Q^T Q - I| = </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span>linalg<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span>norm(Qh.T <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> Qh <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> np.eye(n))<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>condition number of H: 1.53e+10
-
-classical:  |Q^T Q - I| = 1.42e+00    |H - QR| = 9.71e-17
-modified :  |Q^T Q - I| = 3.62e-07    |H - QR| = 1.07e-16
-numpy.qr :  |Q^T Q - I| = 1.46e-15</code></pre>
-</div>
-</div>
-<p>Both methods rebuild <img src="https://latex.codecogs.com/png.latex?H"> from <img src="https://latex.codecogs.com/png.latex?Q"> and <img src="https://latex.codecogs.com/png.latex?R"> essentially perfectly, with <img src="https://latex.codecogs.com/png.latex?%5ClVert%20H%20-%20QR%5CrVert"> down at roundoff. That is not where the danger lives. Look instead at <img src="https://latex.codecogs.com/png.latex?%5ClVert%20Q%5E%5Ctop%20Q%20-%20I%5CrVert">, the honest test of whether the columns of <img src="https://latex.codecogs.com/png.latex?Q"> really are orthonormal. Classical Gram–Schmidt scores around <img src="https://latex.codecogs.com/png.latex?1">, meaning its “orthonormal” axes are nothing of the sort, they have collapsed back toward each other. The modified version holds the error near <img src="https://latex.codecogs.com/png.latex?10%5E%7B-7%7D">, and the Householder-based routine in NumPy reaches full machine precision around <img src="https://latex.codecogs.com/png.latex?10%5E%7B-15%7D">.</p>
-<p>The lesson is not that Gram–Schmidt is wrong. It is that a formula can be exactly true and still be the wrong thing to type, because finite-precision arithmetic has a geometry of its own. When you actually need a stable orthonormal frame, reach for modified Gram–Schmidt or, better still, a Householder QR like the one inside <code>numpy.linalg.qr</code>. A careful account of all this lives in <span class="citation" data-cites="trefethen1997numerical">[1]</span>.</p>
-</section>
-<section id="what-to-remember" class="level2">
-<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
-<p>The heart of Gram–Schmidt is a single move repeated: take the next vector, subtract the shadow your existing axes already explain, and keep the perpendicular remainder. That move, written out, is the factorization <img src="https://latex.codecogs.com/png.latex?A%20=%20QR">, with the orthonormal frame in <img src="https://latex.codecogs.com/png.latex?Q"> and the bookkeeping in an upper-triangular <img src="https://latex.codecogs.com/png.latex?R">. The proof that the frame is truly orthonormal is a short induction resting on one cancellation. And the moment you run it, a quieter truth appears: on a real machine the naive ordering can throw the orthogonality away entirely, so the version you compute should be the modified one, or Householder if you can afford it.</p>
-</section>
-<section id="how-to-cite" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
-<blockquote class="blockquote">
-<p>Terry (2026). <em>Gram–Schmidt: Straightening a Tangle of Vectors</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/gram-schmidt/</code>.</p>
-</blockquote>
-
-
-<!-- -->
-
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
-<div id="ref-trefethen1997numerical" class="csl-entry">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. N. Trefethen and D. Bau, <em>Numerical linear algebra</em>. SIAM, 1997.</div>
-</div>
-</div></section></div> ]]></description>
-  <category>pure</category>
-  <category>applied</category>
-  <category>linear-algebra</category>
-  <category>numerical-methods</category>
-  <guid>https://terryfxh.github.io/math-notes/posts/gram-schmidt/</guid>
-  <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Mathematics Is Not a Spectator Sport</title>
-  <link>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="epigraph">
-<p>“What I cannot create, I do not understand.”</p>
-<p><span class="attribution">— Richard Feynman, found on his blackboard, 1988</span></p>
-</div>
-<p>There is a particular pleasure in watching a beautiful explanation. You sit through a Feynman lecture, or a 3Blue1Brown animation, and somewhere near the end a warm click happens behind your eyes. The pieces fall together, the idea gleams, and you lean back feeling that you have understood. I want to argue that this feeling, satisfying as it is, deserves your suspicion. Most of what we call learning mathematics is spent in the audience, and mathematics is not a spectator sport.</p>
-<section id="the-illusion-of-understanding" class="level2">
-<h2 class="anchored" data-anchor-id="the-illusion-of-understanding">The illusion of understanding</h2>
-<p>The click is real, but it is usually borrowed. A great explainer has done something quietly enormous on your behalf: they have taken a tangled, stubborn idea and removed every snag, smoothed every transition, and handed you the result frictionless. What you feel as understanding is often just the pleasure of watching someone else chew. Call it the Feynman effect, with apologies to the man whose blackboard gives this essay its motto. You mistake the elegance of the finished path for the experience of having walked it.</p>
-<p>The cruel detail is that the friction was the lesson. A proof feels effortless to watch for exactly the reason it was hard to discover, and by sanding away the difficulty, the explainer also sands away the part where learning lives. This is why you can nod along to a derivation in the evening and find, the next morning, that you cannot reproduce a single line of it. You never owned it. You only visited.</p>
-<p>The remedy is older than any video, and it is unglamorous: reinvention. When you meet an elegant result, the most valuable thing you can do is press pause, pick up a pencil, and try to rebuild it yourself before reading another word. Struggle with the algebra. Get it wrong. Hit the wall the original author hit, and feel why their clever step was clever. The single greatest trap for a self-learner is skipping the computation because the argument seems to “follow.” Intuition does not take root in the eyes. It takes root in the hand, on paper, in the act of producing the thing rather than recognizing it.</p>
-<p>Take a small, almost insulting example. Nearly everyone has seen the proof that the square root of two is irrational, and nearly everyone, watching it, finds it obvious. Now close the page and rebuild it. Suppose it were a fraction in lowest terms, square both sides, notice that the numerator is forced to be even, and watch the contradiction bloom when the denominator is dragged into being even too. The first time you assemble that argument with your own hand, the phrase “in lowest terms” stops being a decoration at the start and becomes the hinge the entire proof swings on. You cannot feel that hinge from the audience. You can only feel it with the pencil.</p>
-<p>All of this used to be merely good advice. In the age of AI it has become the whole game. A model will now hand you a flawless derivation, correctly formatted, on demand, and it will do this faster than you can find your pencil. The temptation to outsource the struggle has never been stronger, and the cost of giving in has never been higher, because the machine can manufacture the answer but it cannot manufacture your understanding. What I cannot create, I do not understand. Now that creation has become optional, choosing to create anyway is what separates a person who learns from a person who merely collects.</p>
-</section>
-<section id="the-bottleneck-was-never-the-explanation" class="level2">
-<h2 class="anchored" data-anchor-id="the-bottleneck-was-never-the-explanation">The bottleneck was never the explanation</h2>
-<p>Here is a puzzle worth sitting with. We are living in the richest moment in the history of mathematical exposition. There are free, world-class, lovingly animated explanations of nearly every undergraduate idea, available to anyone with a phone. If the problem with mathematics education had really been a shortage of good explanations, the internet should have ended mathematical struggle a decade ago. It plainly has not. So the missing ingredient was never clarity.</p>
-<p>The missing ingredient is desire, and desire is a stubbornly human thing. The most powerful engine I know for actually learning is social. It is a friend arguing with you across a table until you both see it. It is a study group where being confused out loud is allowed. Above all, it is the moment a teacher you respect pulls you aside and says, quietly, that you have a real gift for this. That single sentence has launched more mathematicians than any textbook ever written. No perfectly tuned AI tutor, however patient, reproduces the gravitational pull of another person believing in you.</p>
-<p>Part of the reason is memory. An AI tutor answers your question at midnight with bottomless patience and then forgets you completely. It will never be disappointed that you quit, never be quietly proud that you did not, never raise your half-formed idea again three weeks later because it has been turning the idea over too. Learning is partly the act of becoming someone in the eyes of people whose opinion you have chosen to care about, and that gentle human pressure is doing far more of the work than we like to admit. It is not a feature a model can ship.</p>
-<p>It helps to remember what the word education actually means. It comes from <em>educere</em>, to lead out, to draw forth what is already latent in someone. Its opposite is the thing we usually do instead: pouring facts into a container. You cannot pour someone into caring. You can only draw it out, and that almost always happens through a relationship, not a transmission.</p>
-</section>
-<section id="stop-asking-what-it-is-for" class="level2">
-<h2 class="anchored" data-anchor-id="stop-asking-what-it-is-for">Stop asking what it is for</h2>
-<p>There is a tax we levy on mathematics that we levy on almost nothing else we love, and it is the question “what is this good for?” We ask it of eigenvalues and we never ask it of novels. Nobody finishes <em>Harry Potter</em> and demands to know the return on investment. We read it because we were curious about what happens, because the world it built was worth living in for an afternoon. Mathematics deserves the same permission, and it rewards the same posture.</p>
-<p>Approached as an art rather than a tool, a piece of mathematics reads like a story. It has characters, which are its objects and structures. It has tension, the gap between what you can see and what you can prove. And it has a climax, the moment two seemingly unrelated ideas collide and turn out to be the same idea wearing two costumes. Think of the first time you meet Euler’s identity, <img src="https://latex.codecogs.com/png.latex?e%5E%7Bi%5Cpi%7D%20+%201%20=%200">, and realize that five constants from five unrelated corners of mathematics were quietly relatives all along. Or the moment, which I have written about elsewhere on this blog, when a forbidding symmetric matrix turns out to be nothing more than a stretch along a set of perpendicular axes. These are not facts to be filed away for later. They are plot twists, and they land with the same jolt as the turn of a good novel. A good explanation of a theorem is closer to good storytelling than to good plumbing, and the people who fall in love with the subject are, almost without exception, the ones who were allowed to read it that way.</p>
-<p>The beautiful joke at the end of this argument is that the gloriously useless turns out to be useful anyway. G. H. Hardy prized number theory precisely because he believed it would never touch the grubby world, and it now stands guard over every password and bank transfer on Earth. The notion of a number as a coordinate, which Hermann Weyl once called an act of violence, runs the graphics on the screen in front of you. Chase the wonder and the utility arrives on its own, uninvited, often a century late. Chase only the utility and you usually get neither.</p>
-</section>
-<section id="intuition-before-the-axioms" class="level2">
-<h2 class="anchored" data-anchor-id="intuition-before-the-axioms">Intuition before the axioms</h2>
-<p>Open many a mathematics textbook and the first thing it does is hit you with a definition. An axiom, stated cold, in full generality, before you have any reason to want it. This is a strange way to teach a living idea. It is, as someone once put it, like handing a baby a dictionary and expecting it to learn to speak. The baby needs to babble, to point, to associate sounds with warm familiar things, long before any word has a definition.</p>
-<p>So resist the axiom-first order, and build the picture first. Before a vector is a list of numbers or an element of an abstract space, let it be an arrow in the plane with its tail at the origin, something you can stretch and turn and add by walking. Once that image is in your hands, the symbols arrive as descriptions of something you already understand, rather than as commandments to be memorized. The same move rescues almost everything that looks forbidding. A group, defined cold, is a set with an operation obeying four dry axioms; met first as a picture, it is simply the collection of ways you can pick up a triangle and set it back down so that it looks unchanged, the rotations and flips you can perform with your hands. A limit, defined cold, is a thicket of epsilons and deltas; met first, it is a chase, where you name how close you demand to get and the function promises it can stay at least that close from some point on. The axioms do not vanish, and you will still need their precision, but now they read as the careful transcript of something you have already felt in your body.</p>
-<p>The difference in feeling is everything. Concepts you have visualized feel like yours; you have a sense of ownership over them. Concepts handed down as definitions feel like furniture in someone else’s house. Abstraction is the genuine and necessary price we pay for generality, but intuition is the bridge that lets you afford it, and the bridge has to come first.</p>
-</section>
-<section id="read-the-book-backwards" class="level2">
-<h2 class="anchored" data-anchor-id="read-the-book-backwards">Read the book backwards</h2>
-<p>This suggests a final, slightly subversive habit: stop reading mathematics like a novel, dutifully from page one. Mathematical texts are not built to be consumed in order, and treating them that way is how curious people grind themselves into boredom.</p>
-<p>Try the opposite. Before you read a new chapter, flip to the exercises at its end. If the problems are a wall of unfamiliar words, the chapter is laying dry foundations, and you can read it quickly, knowing what it is for. But if you can understand what a problem is even asking, then you have found something precious: a question you want answered. Now go back and read the chapter as a hunt for that answer, and watch how differently the same paragraphs read when you are looking for something in them. Treat every theorem not as a verdict to accept but as a challenge thrown in your direction, a problem you attempt before you are allowed to peek at the solution. A proof you have wrestled with for ten minutes teaches more than ten proofs you have watched glide by.</p>
-</section>
-<section id="what-to-remember" class="level2">
-<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
-<p>The machines have made answers nearly free. A correct, polished, well-explained solution to almost any solved problem is now the cheapest thing in the world, available instantly and without effort. What remains scarce, and therefore precious, is understanding, and understanding has stubbornly refused to become a spectator activity. It is still earned the old way: by reinventing instead of replaying, by finding your own reasons to care, by reading mathematics as both a story and a hunt, and by seeing the picture before you trust the symbol. The point of learning mathematics was never merely to obtain the answer. The point was, and still is, to become the kind of mind that could have found it.</p>
-<p><em>Acknowledgment: this essay argues with the work of explainers I admire, Richard Feynman and Grant Sanderson’s <a href="https://www.3blue1brown.com/">3Blue1Brown</a> among them, and the vector picture above follows his</em> Essence of Linear Algebra. <em>The quarrel is a loving one.</em></p>
-</section>
-<section id="how-to-cite" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
-<blockquote class="blockquote">
-<p>Terry (2026). <em>Mathematics Is Not a Spectator Sport</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/</code>.</p>
-</blockquote>
-
-
-<!-- -->
-
-</section>
-
- ]]></description>
-  <category>meta</category>
-  <category>learning</category>
-  <guid>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/</guid>
-  <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
-</item>
-<item>
   <title>Miller–Rabin: How to Believe a Number Is Prime</title>
   <link>https://terryfxh.github.io/math-notes/posts/miller-rabin/</link>
   <description><![CDATA[ 
@@ -4328,6 +4261,73 @@ font-style: inherit;">"</span>)</span></code></pre></div></div>
   <category>algorithms</category>
   <category>cryptography</category>
   <guid>https://terryfxh.github.io/math-notes/posts/miller-rabin/</guid>
+  <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Mathematics Is Not a Spectator Sport</title>
+  <link>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p>“What I cannot create, I do not understand.”</p>
+<p><span class="attribution">— Richard Feynman, found on his blackboard, 1988</span></p>
+</div>
+<p>There is a particular pleasure in watching a beautiful explanation. You sit through a Feynman lecture, or a 3Blue1Brown animation, and somewhere near the end a warm click happens behind your eyes. The pieces fall together, the idea gleams, and you lean back feeling that you have understood. I want to argue that this feeling, satisfying as it is, deserves your suspicion. Most of what we call learning mathematics is spent in the audience, and mathematics is not a spectator sport.</p>
+<section id="the-illusion-of-understanding" class="level2">
+<h2 class="anchored" data-anchor-id="the-illusion-of-understanding">The illusion of understanding</h2>
+<p>The click is real, but it is usually borrowed. A great explainer has done something quietly enormous on your behalf: they have taken a tangled, stubborn idea and removed every snag, smoothed every transition, and handed you the result frictionless. What you feel as understanding is often just the pleasure of watching someone else chew. Call it the Feynman effect, with apologies to the man whose blackboard gives this essay its motto. You mistake the elegance of the finished path for the experience of having walked it.</p>
+<p>The cruel detail is that the friction was the lesson. A proof feels effortless to watch for exactly the reason it was hard to discover, and by sanding away the difficulty, the explainer also sands away the part where learning lives. This is why you can nod along to a derivation in the evening and find, the next morning, that you cannot reproduce a single line of it. You never owned it. You only visited.</p>
+<p>The remedy is older than any video, and it is unglamorous: reinvention. When you meet an elegant result, the most valuable thing you can do is press pause, pick up a pencil, and try to rebuild it yourself before reading another word. Struggle with the algebra. Get it wrong. Hit the wall the original author hit, and feel why their clever step was clever. The single greatest trap for a self-learner is skipping the computation because the argument seems to “follow.” Intuition does not take root in the eyes. It takes root in the hand, on paper, in the act of producing the thing rather than recognizing it.</p>
+<p>Take a small, almost insulting example. Nearly everyone has seen the proof that the square root of two is irrational, and nearly everyone, watching it, finds it obvious. Now close the page and rebuild it. Suppose it were a fraction in lowest terms, square both sides, notice that the numerator is forced to be even, and watch the contradiction bloom when the denominator is dragged into being even too. The first time you assemble that argument with your own hand, the phrase “in lowest terms” stops being a decoration at the start and becomes the hinge the entire proof swings on. You cannot feel that hinge from the audience. You can only feel it with the pencil.</p>
+<p>All of this used to be merely good advice. In the age of AI it has become the whole game. A model will now hand you a flawless derivation, correctly formatted, on demand, and it will do this faster than you can find your pencil. The temptation to outsource the struggle has never been stronger, and the cost of giving in has never been higher, because the machine can manufacture the answer but it cannot manufacture your understanding. What I cannot create, I do not understand. Now that creation has become optional, choosing to create anyway is what separates a person who learns from a person who merely collects.</p>
+</section>
+<section id="the-bottleneck-was-never-the-explanation" class="level2">
+<h2 class="anchored" data-anchor-id="the-bottleneck-was-never-the-explanation">The bottleneck was never the explanation</h2>
+<p>Here is a puzzle worth sitting with. We are living in the richest moment in the history of mathematical exposition. There are free, world-class, lovingly animated explanations of nearly every undergraduate idea, available to anyone with a phone. If the problem with mathematics education had really been a shortage of good explanations, the internet should have ended mathematical struggle a decade ago. It plainly has not. So the missing ingredient was never clarity.</p>
+<p>The missing ingredient is desire, and desire is a stubbornly human thing. The most powerful engine I know for actually learning is social. It is a friend arguing with you across a table until you both see it. It is a study group where being confused out loud is allowed. Above all, it is the moment a teacher you respect pulls you aside and says, quietly, that you have a real gift for this. That single sentence has launched more mathematicians than any textbook ever written. No perfectly tuned AI tutor, however patient, reproduces the gravitational pull of another person believing in you.</p>
+<p>Part of the reason is memory. An AI tutor answers your question at midnight with bottomless patience and then forgets you completely. It will never be disappointed that you quit, never be quietly proud that you did not, never raise your half-formed idea again three weeks later because it has been turning the idea over too. Learning is partly the act of becoming someone in the eyes of people whose opinion you have chosen to care about, and that gentle human pressure is doing far more of the work than we like to admit. It is not a feature a model can ship.</p>
+<p>It helps to remember what the word education actually means. It comes from <em>educere</em>, to lead out, to draw forth what is already latent in someone. Its opposite is the thing we usually do instead: pouring facts into a container. You cannot pour someone into caring. You can only draw it out, and that almost always happens through a relationship, not a transmission.</p>
+</section>
+<section id="stop-asking-what-it-is-for" class="level2">
+<h2 class="anchored" data-anchor-id="stop-asking-what-it-is-for">Stop asking what it is for</h2>
+<p>There is a tax we levy on mathematics that we levy on almost nothing else we love, and it is the question “what is this good for?” We ask it of eigenvalues and we never ask it of novels. Nobody finishes <em>Harry Potter</em> and demands to know the return on investment. We read it because we were curious about what happens, because the world it built was worth living in for an afternoon. Mathematics deserves the same permission, and it rewards the same posture.</p>
+<p>Approached as an art rather than a tool, a piece of mathematics reads like a story. It has characters, which are its objects and structures. It has tension, the gap between what you can see and what you can prove. And it has a climax, the moment two seemingly unrelated ideas collide and turn out to be the same idea wearing two costumes. Think of the first time you meet Euler’s identity, <img src="https://latex.codecogs.com/png.latex?e%5E%7Bi%5Cpi%7D%20+%201%20=%200">, and realize that five constants from five unrelated corners of mathematics were quietly relatives all along. Or the moment, which I have written about elsewhere on this blog, when a forbidding symmetric matrix turns out to be nothing more than a stretch along a set of perpendicular axes. These are not facts to be filed away for later. They are plot twists, and they land with the same jolt as the turn of a good novel. A good explanation of a theorem is closer to good storytelling than to good plumbing, and the people who fall in love with the subject are, almost without exception, the ones who were allowed to read it that way.</p>
+<p>The beautiful joke at the end of this argument is that the gloriously useless turns out to be useful anyway. G. H. Hardy prized number theory precisely because he believed it would never touch the grubby world, and it now stands guard over every password and bank transfer on Earth. The notion of a number as a coordinate, which Hermann Weyl once called an act of violence, runs the graphics on the screen in front of you. Chase the wonder and the utility arrives on its own, uninvited, often a century late. Chase only the utility and you usually get neither.</p>
+</section>
+<section id="intuition-before-the-axioms" class="level2">
+<h2 class="anchored" data-anchor-id="intuition-before-the-axioms">Intuition before the axioms</h2>
+<p>Open many a mathematics textbook and the first thing it does is hit you with a definition. An axiom, stated cold, in full generality, before you have any reason to want it. This is a strange way to teach a living idea. It is, as someone once put it, like handing a baby a dictionary and expecting it to learn to speak. The baby needs to babble, to point, to associate sounds with warm familiar things, long before any word has a definition.</p>
+<p>So resist the axiom-first order, and build the picture first. Before a vector is a list of numbers or an element of an abstract space, let it be an arrow in the plane with its tail at the origin, something you can stretch and turn and add by walking. Once that image is in your hands, the symbols arrive as descriptions of something you already understand, rather than as commandments to be memorized. The same move rescues almost everything that looks forbidding. A group, defined cold, is a set with an operation obeying four dry axioms; met first as a picture, it is simply the collection of ways you can pick up a triangle and set it back down so that it looks unchanged, the rotations and flips you can perform with your hands. A limit, defined cold, is a thicket of epsilons and deltas; met first, it is a chase, where you name how close you demand to get and the function promises it can stay at least that close from some point on. The axioms do not vanish, and you will still need their precision, but now they read as the careful transcript of something you have already felt in your body.</p>
+<p>The difference in feeling is everything. Concepts you have visualized feel like yours; you have a sense of ownership over them. Concepts handed down as definitions feel like furniture in someone else’s house. Abstraction is the genuine and necessary price we pay for generality, but intuition is the bridge that lets you afford it, and the bridge has to come first.</p>
+</section>
+<section id="read-the-book-backwards" class="level2">
+<h2 class="anchored" data-anchor-id="read-the-book-backwards">Read the book backwards</h2>
+<p>This suggests a final, slightly subversive habit: stop reading mathematics like a novel, dutifully from page one. Mathematical texts are not built to be consumed in order, and treating them that way is how curious people grind themselves into boredom.</p>
+<p>Try the opposite. Before you read a new chapter, flip to the exercises at its end. If the problems are a wall of unfamiliar words, the chapter is laying dry foundations, and you can read it quickly, knowing what it is for. But if you can understand what a problem is even asking, then you have found something precious: a question you want answered. Now go back and read the chapter as a hunt for that answer, and watch how differently the same paragraphs read when you are looking for something in them. Treat every theorem not as a verdict to accept but as a challenge thrown in your direction, a problem you attempt before you are allowed to peek at the solution. A proof you have wrestled with for ten minutes teaches more than ten proofs you have watched glide by.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>The machines have made answers nearly free. A correct, polished, well-explained solution to almost any solved problem is now the cheapest thing in the world, available instantly and without effort. What remains scarce, and therefore precious, is understanding, and understanding has stubbornly refused to become a spectator activity. It is still earned the old way: by reinventing instead of replaying, by finding your own reasons to care, by reading mathematics as both a story and a hunt, and by seeing the picture before you trust the symbol. The point of learning mathematics was never merely to obtain the answer. The point was, and still is, to become the kind of mind that could have found it.</p>
+<p><em>Acknowledgment: this essay argues with the work of explainers I admire, Richard Feynman and Grant Sanderson’s <a href="https://www.3blue1brown.com/">3Blue1Brown</a> among them, and the vector picture above follows his</em> Essence of Linear Algebra. <em>The quarrel is a loving one.</em></p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Mathematics Is Not a Spectator Sport</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+</section>
+
+ ]]></description>
+  <category>meta</category>
+  <category>learning</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/</guid>
   <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 <item>

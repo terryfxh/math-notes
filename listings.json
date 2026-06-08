@@ -4,15 +4,15 @@
     "items": [
       "/posts/nullstellensatz/index.html",
       "/posts/reconstructing-calculus/index.html",
+      "/posts/gram-schmidt/index.html",
+      "/posts/spectral-theorem/index.html",
       "/posts/domino-tilings/index.html",
       "/posts/discrete-log/index.html",
-      "/posts/on-learning-mathematics/index.html",
       "/posts/chinese-remainder-theorem/index.html",
-      "/posts/gram-schmidt/index.html",
-      "/posts/hidden-mechanics-of-math/index.html",
       "/posts/miller-rabin/index.html",
-      "/posts/welcome/index.html",
-      "/posts/spectral-theorem/index.html"
+      "/posts/on-learning-mathematics/index.html",
+      "/posts/hidden-mechanics-of-math/index.html",
+      "/posts/welcome/index.html"
     ]
   }
 ]
