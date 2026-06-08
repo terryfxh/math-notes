@@ -1,0 +1,79 @@
+/* ============================================================
+   Math Notes — Base element defaults
+   Quiet, opinionated defaults so a bare page already reads as
+   "Math Notes". Consumers get these for free via styles.css.
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: var(--size-body);
+  line-height: var(--leading-prose);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings: editorial serif, modest and proportional. */
+h1, h2, h3, h4 {
+  margin: 0 0 0.5em;
+  color: var(--text-strong);
+  font-family: var(--font-serif);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-heading);
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--size-title); letter-spacing: var(--tracking-title); }
+h2 { font-size: var(--size-section); }
+h3 { font-size: var(--size-subsection); }
+
+/* Long-form prose */
+p {
+  margin: 0 0 1rem;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color var(--dur-fast) var(--ease);
+}
+
+a:hover {
+  color: var(--accent-strong);
+}
+
+code, pre, kbd {
+  font-family: var(--font-mono);
+}
+
+code {
+  font-size: 0.92em;
+}
+
+hr {
+  height: 0;
+  margin: var(--space-34) 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+::selection {
+  background: var(--accent-tint);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

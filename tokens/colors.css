@@ -1,0 +1,57 @@
+/* ============================================================
+   Math Notes — Colour tokens
+   A near-monochrome ink scale on white, with a single quiet
+   sage accent. Colour is used sparingly; typography, mathematics
+   and structure carry the visual character.
+   ============================================================ */
+
+:root {
+  /* --- Surfaces --- */
+  --paper:            #ffffff; /* page background */
+  --surface-hover:    #f5f5f2; /* subtle hover wash */
+  --surface-sunken:   #f6f6f3; /* pressed / inset wash */
+
+  /* --- Ink scale (warm-neutral greys) --- */
+  --ink-900:          #202123; /* primary ink: titles, strong text */
+  --ink-700:          #35373a; /* body text */
+  --ink-600:          #4e5155; /* quiet body / lead-in prose */
+  --ink-500:          #686b70; /* muted text, metadata */
+  --ink-400:          #85898d; /* faint labels, dates, captions */
+  --ink-300:          #96999d; /* index numerals, hairline labels */
+
+  /* --- Lines --- */
+  --line-strong:      #b9bbb8; /* control outlines (buttons, inputs) */
+  --line:             #d8d8d3; /* dividers, section rules */
+  --line-soft:        #e4e4e0; /* faintest hairline */
+
+  /* --- Accent: quiet sage --- */
+  --sage:             #768b78; /* the single accent — rules, marks, focus */
+  --sage-strong:      #5d7160; /* hover / active accent */
+  --sage-tint:        #eef1ee; /* whisper-soft sage wash */
+
+  /* ============================================================
+     Semantic aliases — reference THESE in components, not the
+     raw scale above.
+     ============================================================ */
+  --bg:               var(--paper);
+  --bg-hover:         var(--surface-hover);
+  --bg-active:        var(--surface-sunken);
+
+  --text-strong:      var(--ink-900);
+  --text-body:        var(--ink-700);
+  --text-quiet:       var(--ink-600);
+  --text-muted:       var(--ink-500);
+  --text-faint:       var(--ink-400);
+  --text-index:       var(--ink-300);
+
+  --border:           var(--line);
+  --border-strong:    var(--line-strong);
+  --border-soft:      var(--line-soft);
+
+  --accent:           var(--sage);
+  --accent-strong:    var(--sage-strong);
+  --accent-tint:      var(--sage-tint);
+
+  --focus-ring:       rgba(32, 33, 35, 0.08);
+  --link:             var(--ink-900);
+}

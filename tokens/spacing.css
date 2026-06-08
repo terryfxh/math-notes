@@ -1,0 +1,69 @@
+/* ============================================================
+   Math Notes — Spacing, layout, radius & motion tokens
+   The spacing rhythm follows a Fibonacci progression
+   (8, 13, 21, 34, 55, 89) so that gaps relate the way the
+   golden ratio relates them. Sections alternate between
+   compact and generous to create clear reading rhythm.
+   ============================================================ */
+
+:root {
+  /* --- Fibonacci spacing scale (px) --- */
+  --space-2:    2px;
+  --space-3:    3px;
+  --space-5:    5px;
+  --space-8:    8px;
+  --space-13:  13px;
+  --space-21:  21px;
+  --space-34:  34px;
+  --space-55:  55px;
+  --space-89:  89px;
+  --space-144: 144px;
+
+  /* --- Semantic spacing --- */
+  --gap-inline:     var(--space-8);   /* between inline controls */
+  --gap-tight:      var(--space-13);  /* compact stacks */
+  --gap-row:        var(--space-21);  /* index rows, list items */
+  --gap-block:      var(--space-34);  /* between content blocks */
+  --section-compact: var(--space-55); /* compact section rhythm */
+  --section-loose:   var(--space-89); /* generous section rhythm */
+
+  /* --- Layout --- */
+  --page-max:        1180px; /* maximum page width */
+  --measure-index:   54rem;  /* compact indexes / directories: 52–56rem */
+  --golden-minor:    38.2%;  /* two-column: minor rail */
+  --golden-major:    61.8%;  /* two-column: major column */
+  --page-margin:     25px;   /* mobile horizontal page margin (24–26px) */
+
+  /* --- Corner radius ---
+     Restrained, Apple-like controls. Buttons 8–11px; cards
+     a touch larger; pills reserved for filters / compact chips. */
+  --radius-sm:       6px;
+  --radius:          10px;  /* default control radius */
+  --radius-lg:       14px;  /* cards, dialogs */
+  --radius-pill:     999px; /* filters & compact controls only */
+
+  /* --- Elevation ---
+     Shadows stay barely-there; structure comes from hairlines,
+     not heavy drop shadows. */
+  --shadow-none:     none;
+  --shadow-hairline: 0 0 0 1px var(--border);
+  --shadow-soft:     0 1px 2px rgba(32, 33, 35, 0.04);
+  --shadow-pop:      0 6px 24px rgba(32, 33, 35, 0.10);
+
+  /* --- Motion ---
+     160–200ms, quiet easing, hover lifts at most 1px. */
+  --ease:            cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+  --dur-fast:        160ms; /* @kind other */
+  --dur:             180ms; /* @kind other */
+  --dur-slow:        200ms; /* @kind other */
+  --lift:            -1px; /* maximum hover translateY */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms; /* @kind other */
+    --dur:      0ms; /* @kind other */
+    --dur-slow: 0ms; /* @kind other */
+    --lift:     0px;
+  }
+}

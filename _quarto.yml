@@ -34,6 +34,9 @@ format:
   html:
     theme:
       - cosmo
+      - tokens/colors.css
+      - tokens/typography.css
+      - tokens/spacing.css
       - styles.css
     toc: true
     toc-depth: 3
