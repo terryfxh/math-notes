@@ -2,17 +2,59 @@
 title: "Math Notes"
 subtitle: "A place where I try to *see* mathematics, not just compute it."
 listing:
-  contents: posts
-  sort: "date desc"
-  type: default
-  categories: true
-  sort-ui: true
-  filter-ui: true
-  feed: true
-  fields: [date, title, description, categories, reading-time]
+  - id: pure-notes
+    contents:
+      - posts/nullstellensatz/index.qmd
+      - posts/reconstructing-calculus/index.qmd
+      - posts/spectral-theorem/index.qmd
+      - posts/gram-schmidt/index.qmd
+    sort: "date desc"
+    type: default
+    categories: false
+    sort-ui: false
+    filter-ui: false
+    fields: [date, title, reading-time]
+  - id: applied-notes
+    contents:
+      - posts/domino-tilings/index.qmd
+      - posts/discrete-log/index.qmd
+      - posts/chinese-remainder-theorem/index.qmd
+      - posts/miller-rabin/index.qmd
+    sort: "date desc"
+    type: default
+    categories: false
+    sort-ui: false
+    filter-ui: false
+    fields: [date, title, reading-time]
+  - id: reflection-notes
+    contents:
+      - posts/on-learning-mathematics/index.qmd
+      - posts/hidden-mechanics-of-math/index.qmd
+      - posts/welcome/index.qmd
+    sort: "date desc"
+    type: default
+    categories: false
+    sort-ui: false
+    filter-ui: false
+    fields: [date, title, reading-time]
+  - id: all-notes
+    contents: posts
+    sort: "date desc"
+    type: default
+    categories: false
+    sort-ui: [date, title]
+    filter-ui: [title, description, categories]
+    feed: true
+    fields: [date, title, description, categories, reading-time]
 page-layout: full
-title-block-banner: true
+title-block-banner: false
 ---
+
+::: {.home-page}
+
+::: {.home-introduction}
+
+::: {.home-epigraph}
 
 ::: {.epigraph .epigraph-center}
 "The introduction of numbers as coordinates ... is an act of violence."
@@ -20,10 +62,69 @@ title-block-banner: true
 [— Hermann Weyl, *Philosophy of Mathematics and Natural Science*]{.attribution}
 :::
 
+:::
+
+::: {.home-copy}
+
 Most of the time, mathematics gets handed to us as a list of things to calculate. I have always been far more curious about the picture sitting underneath all that machinery: the reason a theorem has no choice but to be true, the quiet moment when a row of abstract symbols suddenly turns into something you can picture and almost touch.
 
 This is where I work that out in the open. Each post starts from the simplest version of an idea I can find, builds up the intuition until the result feels inevitable, and only then writes down the formal proof. Where a picture or a few lines of runnable code make the idea easier to believe, I include them.
 
 I write these mostly for the version of me who was once stuck on the very same thing. If you happen to be stuck there too, I hope they help.
 
+:::
+
+:::
+
+::: {.home-browse}
+
 Browse by topic with the category filter below.
+
+::: {.home-directory role="navigation" aria-label="Browse notes by section"}
+
+[Pure Mathematics](#pure-mathematics){.home-topic-link}
+[Applied & Computation](#applied-computation){.home-topic-link}
+[Learning & Philosophical Reflections](#learning-philosophical-reflections){.home-topic-link}
+[All Notes](#all-notes-section){.home-topic-link}
+
+:::
+
+:::
+
+::: {.home-note-section}
+
+## Pure Mathematics {#pure-mathematics}
+
+::: {#pure-notes}
+:::
+
+:::
+
+::: {.home-note-section}
+
+## Applied & Computation {#applied-computation}
+
+::: {#applied-notes}
+:::
+
+:::
+
+::: {.home-note-section}
+
+## Learning & Philosophical Reflections {#learning-philosophical-reflections}
+
+::: {#reflection-notes}
+:::
+
+:::
+
+::: {.home-note-section .home-all-notes}
+
+## All Notes {#all-notes-section}
+
+::: {#all-notes}
+:::
+
+:::
+
+:::
