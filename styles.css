@@ -288,6 +288,63 @@ body:has(.home-page) .quarto-title .subtitle {
   border-bottom: 0;
 }
 
+.home-note-section:not(.home-all-notes) {
+  display: block;
+  width: min(100%, 56rem);
+  margin: 0 auto;
+  padding: clamp(2.4rem, 4.5vw, 3.5rem) 0;
+}
+
+.home-note-section:not(.home-all-notes) > h2 {
+  position: static;
+  max-width: none;
+  margin-bottom: 0.85rem;
+  font-size: clamp(1.35rem, 1.8vw, 1.55rem);
+  line-height: 1.2;
+}
+
+.home-note-section:not(.home-all-notes) .quarto-listing {
+  margin: 0;
+}
+
+.home-note-section:not(.home-all-notes) .quarto-post {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  align-items: center;
+  min-height: 4.35rem;
+  padding: 0.85rem 0;
+}
+
+.home-note-section:not(.home-all-notes) .body {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.home-note-section:not(.home-all-notes) .metadata {
+  display: flex;
+  grid-column: 2;
+  grid-row: 1;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.home-note-section:not(.home-all-notes) .metadata > a {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-note-section:not(.home-all-notes) .listing-title {
+  font-size: clamp(1.02rem, 1.25vw, 1.14rem);
+  line-height: 1.35;
+}
+
 .home-all-notes .listing-actions-group {
   gap: 0.65rem;
   margin-bottom: 1.75rem;
@@ -605,6 +662,10 @@ body:has(.about-page) main.content {
     grid-row: 2;
   }
 
+  .home-note-section:not(.home-all-notes) {
+    display: block;
+  }
+
   .about-page {
     grid-template-areas:
       "rail"
@@ -681,6 +742,35 @@ body:has(.about-page) main.content {
 
   .home-note-section .metadata {
     grid-row: 2;
+  }
+
+  .home-note-section:not(.home-all-notes) {
+    padding: 2.25rem 0;
+  }
+
+  .home-note-section:not(.home-all-notes) > h2 {
+    margin-bottom: 0.65rem;
+  }
+
+  .home-note-section:not(.home-all-notes) .quarto-post {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    min-height: 0;
+    padding: 0.9rem 0;
+  }
+
+  .home-note-section:not(.home-all-notes) .body,
+  .home-note-section:not(.home-all-notes) .metadata {
+    grid-column: 1;
+  }
+
+  .home-note-section:not(.home-all-notes) .body {
+    grid-row: 1;
+  }
+
+  .home-note-section:not(.home-all-notes) .metadata {
+    grid-row: 2;
+    justify-content: flex-start;
   }
 
   .about-page {
