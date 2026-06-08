@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "defaultMode": "default",
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(rm -fr *)",
+      "Bash(rm -r *)",
+      "Bash(rm -f *)",
+      "Bash(rmdir /s *)",
+      "Bash(rd /s *)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean -f *)",
+      "Bash(git clean -fd *)",
+      "Bash(git clean -d *)",
+      "Bash(git clean -x *)",
+      "Bash(git checkout -- *)",
+      "Bash(git checkout .)",
+      "Bash(git restore .)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git push --force-with-lease *)",
+      "Bash(git branch -D *)",
+      "Bash(Remove-Item -Recurse *)",
+      "Bash(Remove-Item -Force *)",
+      "Bash(del /s *)",
+      "Bash(del /q *)"
+    ]
+  }
+}
