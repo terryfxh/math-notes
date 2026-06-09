@@ -7,6 +7,53 @@
    ============================================================ */
 
 /* ============================================================
+   0. Base — site-wide reading baseline
+   Quarto/Bootstrap defaults body to 16px on pure white; the
+   brand baseline is a 17px / 1.8 measure on warm near-white.
+   ============================================================ */
+body {
+  background-color: var(--bg, #fcfcfc);
+  font-size: var(--size-body, 1rem); /* 17px — root is 17px */
+  line-height: var(--leading-prose, 1.8);
+}
+
+/* Pull-quotes — quotations in prose use the serif's true italic
+   (the designed slant, not a synthetic skew), per the epigraph
+   card in guidelines/type-epigraph.html. Citation blocks under
+   "How to cite" are exempted below. */
+blockquote {
+  margin: 2rem 0;
+  padding: 0.1rem 0 0.1rem 1.15rem;
+  border-left: 2px solid var(--accent, #768b78);
+}
+blockquote p {
+  font-family: var(--font-serif, 'Lora', Georgia, serif);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-strong, #202123);
+}
+blockquote p:last-child { margin-bottom: 0; }
+.quote-attribution {
+  display: block;
+  margin-top: 0.6rem;
+  font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: var(--tracking-attribution, 0.3em);
+  text-transform: uppercase;
+  color: var(--text-muted, #686b70);
+  opacity: 0.7;
+}
+#how-to-cite blockquote { border-left-color: var(--border, #d8d8d3); }
+#how-to-cite blockquote p {
+  font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
+  font-style: normal;
+  font-size: 0.9rem;
+  color: var(--text-muted, #686b70);
+}
+
+/* ============================================================
    1. Quarto chrome resets
    ============================================================ */
 
@@ -112,40 +159,56 @@ main#quarto-document-content {
 }
 
 /* ============================================================
-   3. Home: introduction block
+   3. Home: introduction block — centered epigraph hero
+   The quote is the visual protagonist: centered serif italic
+   at 24px, an uppercase letter-spaced attribution, a short
+   hairline divider, then the introduction copy below.
    ============================================================ */
 .home-introduction {
-  display: grid;
-  grid-template-columns: 0.618fr 1fr;
-  gap: clamp(3rem, 7vw, 6rem);
-  padding: clamp(3rem, 6vw, 5rem) 0;
+  padding: clamp(4rem, 9vw, 6.5rem) 0 clamp(3rem, 6vw, 5rem);
 }
 .home-epigraph {
-  align-self: start;
+  max-width: 800px;
+  margin: 0 auto;
 }
 .epigraph, .epigraph-center {
   padding: 0;
   margin: 0;
   border: 0;
+  text-align: center;
 }
 .epigraph p,
 .epigraph-center p {
   font-family: var(--font-serif, 'Lora', Georgia, serif);
   font-style: italic;
-  font-size: clamp(1.08rem, 1.4vw, 1.2rem);
-  line-height: 1.6;
+  font-size: var(--size-epigraph, 1.5rem);
+  line-height: var(--leading-epigraph, 1.5);
   color: var(--text-quiet, #4e5155);
-  margin: 0 0 0.5rem;
+  margin: 0;
 }
 .attribution {
   display: block;
-  margin-top: 0.75rem;
+  margin-top: 1.5rem;
   font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
-  font-size: 0.82rem;
-  color: var(--text-faint, #85898d);
+  font-style: normal;
+  font-size: 0.75rem; /* ~12.8px at 17px root */
+  letter-spacing: var(--tracking-attribution, 0.3em);
+  text-transform: uppercase;
+  color: var(--text-muted, #686b70);
+  opacity: 0.7;
+}
+/* Rendered as an empty fenced div in index.qmd (raw <hr> HTML
+   breaks Pandoc's fenced-div nesting there). */
+.quote-divider {
+  height: 0;
+  margin: clamp(2.5rem, 5vw, 3.5rem) auto;
+  max-width: 60px;
+  border: 0;
+  border-top: 1px solid var(--border-soft, #e4e4e0);
 }
 .home-copy {
   max-width: 46rem;
+  margin: 0 auto;
 }
 .home-copy > p {
   margin: 0 0 1rem;
@@ -276,6 +339,26 @@ main#quarto-document-content {
 @keyframes mn-drift { to { transform: translateX(-120px); } }
 @media (prefers-reduced-motion: reduce) {
   .mn-motif__spin, .mn-motif__spin-rev, .mn-motif__drift { animation: none; }
+}
+
+/* ============================================================
+   4b. Home: compact section indexes — the per-topic listings
+       between Browse-by-topic and All Notes use a tighter
+       vertical rhythm than long-form prose.
+   ============================================================ */
+.home-note-section:not(.home-all-notes) h2 {
+  margin: 1.6rem 0 0.3rem;
+  padding-bottom: 0.35rem;
+}
+.home-note-section:not(.home-all-notes) .quarto-post {
+  padding: 0.55rem 0;
+  gap: 1.1rem;
+}
+.home-note-section:not(.home-all-notes) .quarto-post .metadata {
+  line-height: 1.35;
+}
+.home-note-section:not(.home-all-notes) .listing-title {
+  line-height: 1.25;
 }
 
 /* ============================================================
@@ -633,14 +716,17 @@ body:has(.notes-head) #title-block-header { display: none !important; }
   border-top: 0 !important;
 }
 .quarto-listing-default .quarto-post:first-child { padding-top: 0; }
+/* Pin both cells to row 1 — with auto rows the date column drifts
+   into a second implicit row below the title, doubling row height. */
 .quarto-listing-default .quarto-post .metadata {
   grid-column: 1;
+  grid-row: 1;
   color: var(--text-faint, #85898d);
   font-size: 0.78rem;
   line-height: 1.45;
   font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
 }
-.quarto-listing-default .quarto-post .body { grid-column: 2; }
+.quarto-listing-default .quarto-post .body { grid-column: 2; grid-row: 1; }
 .quarto-listing-default .quarto-post .thumbnail { display: none !important; }
 
 /* Listing title */
@@ -702,7 +788,6 @@ body:has(.notes-head) #title-block-header { display: none !important; }
    8. Responsive
    ============================================================ */
 @media (max-width: 860px) {
-  .home-introduction { grid-template-columns: 1fr; gap: 2.25rem; }
   .home-topics { grid-template-columns: 1fr; }
   .home-topic { min-height: 0; flex-direction: row; }
   .home-topic__art {
