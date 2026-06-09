@@ -481,7 +481,7 @@ body:has(.notes-head) #title-block-header { display: none !important; }
   padding: clamp(3rem, 6vw, 5rem) 0 clamp(4rem, 8vw, 7rem);
 }
 .notes-all > h2 {
-  margin: 0 0 1.5rem;
+  margin: 0 0 0.6rem;
   padding: 0;
   border: 0;
   font-family: var(--font-serif, 'Lora', Georgia, serif);
@@ -582,7 +582,7 @@ body:has(.notes-head) #title-block-header { display: none !important; }
 .listing-actions-group {
   display: flex;
   gap: 0.65rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.85rem;
   max-width: 38rem;
 }
 .listing-actions-group .form-select,
