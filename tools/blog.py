@@ -15,6 +15,27 @@ def run(args: list[str]) -> int:
     return subprocess.call(args, cwd=ROOT)
 
 
+def capture(args: list[str]) -> str:
+    """Run a command and return its stdout (stripped); '' on failure."""
+    try:
+        out = subprocess.run(args, cwd=ROOT, capture_output=True, text=True)
+    except OSError:
+        return ""
+    return out.stdout.strip()
+
+
+def actions_url() -> str:
+    """Best-effort GitHub Actions URL for this repo, derived from the remote."""
+    url = capture(["git", "remote", "get-url", "origin"])
+    if not url:
+        return ""
+    if url.startswith("git@"):  # git@github.com:owner/repo.git
+        url = "https://github.com/" + url.split(":", 1)[-1]
+    if url.endswith(".git"):
+        url = url[:-4]
+    return url + "/actions"
+
+
 def install_hooks() -> int:
     """Install a git pre-commit hook that keeps WORKLOG.md in sync and fast-checks."""
     hooks_dir = ROOT / ".git" / "hooks"
@@ -40,6 +61,50 @@ def install_hooks() -> int:
     return 0
 
 
+def deploy(message: str, full: bool, dry_run: bool) -> int:
+    """Check, commit every tracked change, push, and print the CI run URL.
+
+    Turns the design->live loop into one step. Design-system scratch files are
+    gitignored, so staging everything is safe; the file list is always printed
+    so nothing slips in unseen. Use --dry-run to preview without committing.
+    """
+    check = [sys.executable, "tools/check.py"] + ([] if full else ["--fast"])
+    if run(check) != 0:
+        print("deploy: checks failed; nothing committed or pushed.")
+        return 1
+
+    pending = capture(["git", "status", "--short"])
+    print("\nChanges to deploy:\n" + (pending or "  (working tree clean)"))
+
+    if dry_run:
+        print("\ndry-run: would `git add -A`, commit, and push to the upstream branch.")
+        url = actions_url()
+        if url:
+            print(f"dry-run: CI would run at {url}")
+        return 0
+
+    if pending:
+        if run(["git", "add", "-A"]) != 0:
+            return 1
+        # Only commit if something is actually staged.
+        if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT).returncode != 0:
+            if run(["git", "commit", "-m", message]) != 0:
+                return 1
+
+    # Push the current branch to its upstream (fall back to origin HEAD).
+    rc = run(["git", "push"])
+    if rc != 0:
+        rc = run(["git", "push", "origin", "HEAD"])
+        if rc != 0:
+            print("deploy: push failed (check your GitHub credentials and upstream).")
+            return rc
+
+    url = actions_url()
+    if url:
+        print(f"\nPushed. CI is rendering and publishing to gh-pages — watch it at:\n  {url}")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Convenience commands for writing and publishing.")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -59,6 +124,14 @@ def main() -> int:
     pre.add_argument("--fast", action="store_true", help="Skip code execution (fast-check).")
     sub.add_parser("install-hooks", help="Install a git pre-commit hook (worklog + fast-check).")
     sub.add_parser("preview", help="Start Quarto preview.")
+
+    dep = sub.add_parser(
+        "deploy",
+        help="Check, commit all changes, push to main, and print the CI run URL (design->live in one step).",
+    )
+    dep.add_argument("-m", "--message", required=True, help="Commit message.")
+    dep.add_argument("--full", action="store_true", help="Run full-check (execute code cells) instead of fast-check.")
+    dep.add_argument("--dry-run", action="store_true", help="Preview what would be committed/pushed without doing it.")
 
     render = sub.add_parser("render", help="Render the site locally.")
     render.add_argument("--execute", action="store_true", help="Execute code cells during render.")
@@ -89,6 +162,8 @@ def main() -> int:
         return run([sys.executable, "tools/worklog.py"])
     if args.command == "install-hooks":
         return install_hooks()
+    if args.command == "deploy":
+        return deploy(args.message, args.full, args.dry_run)
     if args.command == "preview":
         return run(["quarto", "preview"])
     if args.command == "render":
