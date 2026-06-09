@@ -19,6 +19,8 @@ website:
     left:
       - text: Home
         href: index.qmd
+      - text: Notes
+        href: notes.qmd
       - text: About
         href: about.qmd
     right:
@@ -34,6 +36,7 @@ format:
   html:
     theme:
       - cosmo
+      - tokens/fonts.css
       - tokens/colors.css
       - tokens/typography.css
       - tokens/spacing.css

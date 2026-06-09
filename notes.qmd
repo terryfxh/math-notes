@@ -1,0 +1,141 @@
+---
+title: "All Notes"
+page-layout: full
+title-block-banner: false
+listing:
+  - id: all-notes
+    contents: posts
+    sort: "date desc"
+    type: default
+    categories: true
+    sort-ui: [date, title]
+    filter-ui: [title, description, categories]
+    feed: true
+    fields: [date, title, description, categories, reading-time]
+---
+
+::: {.mn-notes-page}
+
+```{=html}
+<svg width="0" height="0" class="mn-iconsprite" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="ic-pure" viewBox="0 0 16 16"><rect x="8" y="1.5" width="9.2" height="9.2" rx="1" transform="rotate(45 8 8)" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="ic-applied" viewBox="0 0 16 16"><path d="M1.5 8 Q4 2.5 6.5 8 T11.5 8 T16.5 8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+    <symbol id="ic-meta" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M8 3.5C6.5 2.4 4.4 2.4 2.5 3v9c1.9-.6 4-.6 5.5.5"/><path d="M8 3.5c1.5-1.1 3.6-1.1 5.5-.5v9c-1.9-.6-4-.6-5.5.5z"/></g></symbol>
+    <symbol id="ic-computer-science" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 4.5 2.5 8l3 3.5M10.5 4.5 13.5 8l-3 3.5"/></g></symbol>
+    <symbol id="ic-algorithms" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="3.5" cy="4" r="1.6"/><circle cx="12.5" cy="4" r="1.6"/><circle cx="8" cy="12" r="1.6"/><path d="M4.8 5.2 6.9 10.8M11.2 5.2 9.1 10.8M5.1 4h5.8"/></g></symbol>
+    <symbol id="ic-cryptography" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="5" r="2.6"/><path d="M6.8 6.8 13 13M11 11l1.5-1.5M13 13l1.5-1.5"/></g></symbol>
+    <symbol id="ic-number-theory" viewBox="0 0 16 16"><g fill="currentColor"><circle cx="3" cy="3" r="1.1"/><circle cx="8" cy="3" r="1.1"/><circle cx="13" cy="3" r="1.1"/><circle cx="3" cy="8" r="1.1"/><circle cx="8" cy="8" r="1.1"/><circle cx="13" cy="8" r="1.1"/><circle cx="3" cy="13" r="1.1"/><circle cx="8" cy="13" r="1.1"/><circle cx="13" cy="13" r="1.1"/></g></symbol>
+    <symbol id="ic-learning" viewBox="0 0 16 16"><path d="M8 8a1.4 1.4 0 1 1 1.4 1.4 2.8 2.8 0 1 1-2.8-2.8 4.2 4.2 0 1 1 4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+    <symbol id="ic-linear-algebra" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.5" y="2.5" width="11" height="11" rx="1"/><path d="M8 2.5v11M2.5 8h11"/></g></symbol>
+    <symbol id="ic-algebraic-geometry" viewBox="0 0 16 16"><path d="M3 13C9 13 5 3 8 3s-1 10 5 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+    <symbol id="ic-combinatorics" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M8 3 13 12.5H3z"/><g fill="currentColor" stroke="none"><circle cx="8" cy="3" r="1.3"/><circle cx="3" cy="12.5" r="1.3"/><circle cx="13" cy="12.5" r="1.3"/></g></g></symbol>
+    <symbol id="ic-commutative-algebra" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M6 2.5H3.5v11H6M10 2.5h2.5v11H10"/></g></symbol>
+    <symbol id="ic-foundations" viewBox="0 0 16 16"><g fill="currentColor"><circle cx="8" cy="4" r="1.3"/><circle cx="4.5" cy="11" r="1.3"/><circle cx="11.5" cy="11" r="1.3"/></g></symbol>
+    <symbol id="ic-numerical-methods" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 11h12"/><path d="M4 11V8M7 11V6.5M10 11V8M13 11V6.5"/></g></symbol>
+    <symbol id="ic-real-analysis" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13.5H14M2.5 13.5V2"/><path d="M3.5 12.5C8 12.5 11 9 11.5 3"/></g></symbol>
+  </defs>
+</svg>
+
+<header class="notes-head">
+  <p class="notes-eyebrow">The Directory</p>
+  <h1 class="notes-h1">All Notes</h1>
+  <p class="notes-sub">Every note, gathered by theme. Each begins from the simplest version of an idea and builds until the result feels inevitable.</p>
+  <nav class="notes-directory" aria-label="Jump to a section">
+    <a class="notes-chip" href="#reflection">Learning &amp; Philosophical Reflections</a>
+    <a class="notes-chip" href="#pure">Pure Mathematics</a>
+    <a class="notes-chip" href="#applied">Applied &amp; Computation</a>
+    <a class="notes-chip" href="#all-notes-section">All</a>
+  </nav>
+</header>
+
+<section class="notes-section" id="reflection">
+  <h2>Learning &amp; Philosophical Reflections</h2>
+  <div class="notes-index">
+    <a class="notes-row" href="posts/on-learning-mathematics/"><span class="notes-row__title">On Learning Mathematics</span><span class="notes-row__meta"><span>Jun 4, 2026</span><span class="notes-row__dot">·</span><span>10 min</span></span></a>
+    <a class="notes-row" href="posts/hidden-mechanics-of-math/"><span class="notes-row__title">Mathematics Is Not a Spectator Sport</span><span class="notes-row__meta"><span>Jun 3, 2026</span><span class="notes-row__dot">·</span><span>7 min</span></span></a>
+    <a class="notes-row" href="posts/welcome/"><span class="notes-row__title">Welcome, and what this blog is for</span><span class="notes-row__meta"><span>Jun 2, 2026</span><span class="notes-row__dot">·</span><span>4 min</span></span></a>
+  </div>
+</section>
+
+<section class="notes-section" id="pure">
+  <h2>Pure Mathematics</h2>
+  <div class="notes-index">
+    <a class="notes-row" href="posts/nullstellensatz/"><span class="notes-row__title">The Nullstellensatz: A Dictionary Between Algebra and Geometry</span><span class="notes-row__meta"><span>Jun 7, 2026</span><span class="notes-row__dot">·</span><span>16 min</span></span></a>
+    <a class="notes-row" href="posts/reconstructing-calculus/"><span class="notes-row__title">Real Analysis: What Calculus Becomes When We Ask Why</span><span class="notes-row__meta"><span>Jun 7, 2026</span><span class="notes-row__dot">·</span><span>22 min</span></span></a>
+    <a class="notes-row" href="posts/gram-schmidt/"><span class="notes-row__title">Gram–Schmidt: Straightening a Tangle of Vectors</span><span class="notes-row__meta"><span>Jun 3, 2026</span><span class="notes-row__dot">·</span><span>11 min</span></span></a>
+    <a class="notes-row" href="posts/spectral-theorem/"><span class="notes-row__title">The Spectral Theorem for Symmetric Matrices</span><span class="notes-row__meta"><span>Jun 1, 2026</span><span class="notes-row__dot">·</span><span>9 min</span></span></a>
+  </div>
+</section>
+
+<section class="notes-section" id="applied">
+  <h2>Applied &amp; Computation</h2>
+  <div class="notes-index">
+    <a class="notes-row" href="posts/domino-tilings/"><span class="notes-row__title">Counting Domino Tilings: When Dynamic Programming Is a Matrix</span><span class="notes-row__meta"><span>Jun 6, 2026</span><span class="notes-row__dot">·</span><span>14 min</span></span></a>
+    <a class="notes-row" href="posts/discrete-log/"><span class="notes-row__title">The Discrete Logarithm: Easy to Make, Hard to Undo</span><span class="notes-row__meta"><span>Jun 4, 2026</span><span class="notes-row__dot">·</span><span>13 min</span></span></a>
+    <a class="notes-row" href="posts/chinese-remainder-theorem/"><span class="notes-row__title">The Chinese Remainder Theorem: Residues as Coordinates</span><span class="notes-row__meta"><span>Jun 3, 2026</span><span class="notes-row__dot">·</span><span>11 min</span></span></a>
+    <a class="notes-row" href="posts/miller-rabin/"><span class="notes-row__title">Miller–Rabin: How to Believe a Number Is Prime</span><span class="notes-row__meta"><span>Jun 3, 2026</span><span class="notes-row__dot">·</span><span>12 min</span></span></a>
+  </div>
+</section>
+```
+
+::: {.notes-all}
+
+## All Notes {#all-notes-section}
+
+::: {.notes-split}
+
+```{=html}
+<aside class="notes-catrail" aria-label="Filter by category">
+  <p class="notes-catrail__label">Categories</p>
+  <ul class="notes-catrail__list">
+    <li><button class="notes-catrail__item is-active" data-cat="" onclick="window.quartoListingCategory(''); mnSetCat(this); return false;"><span class="notes-catrail__name">All notes</span><span class="notes-catrail__n">11</span></button></li>
+    <li><button class="notes-catrail__item is-kind" data-cat="pure" onclick="window.quartoListingCategory('cHVyZQ=='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-pure"></use></svg></span><span class="notes-catrail__name">Pure</span><span class="notes-catrail__n">8</span></button></li>
+    <li><button class="notes-catrail__item is-kind" data-cat="applied" onclick="window.quartoListingCategory('YXBwbGllZA=='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-applied"></use></svg></span><span class="notes-catrail__name">Applied</span><span class="notes-catrail__n">6</span></button></li>
+    <li><button class="notes-catrail__item is-kind" data-cat="meta" onclick="window.quartoListingCategory('bWV0YQ=='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-meta"></use></svg></span><span class="notes-catrail__name">Meta</span><span class="notes-catrail__n">3</span></button></li>
+    <li><button class="notes-catrail__item" data-cat="computer-science" onclick="window.quartoListingCategory('Y29tcHV0ZXItc2NpZW5jZQ=='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-computer-science"></use></svg></span><span class="notes-catrail__name">Computer Science</span><span class="notes-catrail__n">4</span></button></li>
+    <li><button class="notes-catrail__item" data-cat="algorithms" onclick="window.quartoListingCategory('YWxnb3JpdGhtcw=='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-algorithms"></use></svg></span><span class="notes-catrail__name">Algorithms</span><span class="notes-catrail__n">3</span></button></li>
+    <li><button class="notes-catrail__item" data-cat="cryptography" onclick="window.quartoListingCategory('Y3J5cHRvZ3JhcGh5'); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-cryptography"></use></svg></span><span class="notes-catrail__name">Cryptography</span><span class="notes-catrail__n">3</span></button></li>
+    <li><button class="notes-catrail__item" data-cat="number-theory" onclick="window.quartoListingCategory('bnVtYmVyLXRoZW9yeQ=='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-number-theory"></use></svg></span><span class="notes-catrail__name">Number Theory</span><span class="notes-catrail__n">3</span></button></li>
+    <li><button class="notes-catrail__item" data-cat="learning" onclick="window.quartoListingCategory('bGVhcm5pbmc='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-learning"></use></svg></span><span class="notes-catrail__name">Learning</span><span class="notes-catrail__n">2</span></button></li>
+    <li><button class="notes-catrail__item" data-cat="linear-algebra" onclick="window.quartoListingCategory('bGluZWFyLWFsZ2VicmE='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-linear-algebra"></use></svg></span><span class="notes-catrail__name">Linear Algebra</span><span class="notes-catrail__n">2</span></button></li>
+    <li><button class="notes-catrail__item" data-cat="algebraic-geometry" onclick="window.quartoListingCategory('YWxnZWJyYWljLWdlb21ldHJ5'); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-algebraic-geometry"></use></svg></span><span class="notes-catrail__name">Algebraic Geometry</span><span class="notes-catrail__n">1</span></button></li>
+    <li><button class="notes-catrail__item" data-cat="combinatorics" onclick="window.quartoListingCategory('Y29tYmluYXRvcmljcw=='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-combinatorics"></use></svg></span><span class="notes-catrail__name">Combinatorics</span><span class="notes-catrail__n">1</span></button></li>
+    <li><button class="notes-catrail__item" data-cat="commutative-algebra" onclick="window.quartoListingCategory('Y29tbXV0YXRpdmUtYWxnZWJyYQ=='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-commutative-algebra"></use></svg></span><span class="notes-catrail__name">Commutative Algebra</span><span class="notes-catrail__n">1</span></button></li>
+    <li><button class="notes-catrail__item" data-cat="foundations" onclick="window.quartoListingCategory('Zm91bmRhdGlvbnM='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-foundations"></use></svg></span><span class="notes-catrail__name">Foundations</span><span class="notes-catrail__n">1</span></button></li>
+    <li><button class="notes-catrail__item" data-cat="numerical-methods" onclick="window.quartoListingCategory('bnVtZXJpY2FsLW1ldGhvZHM='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-numerical-methods"></use></svg></span><span class="notes-catrail__name">Numerical Methods</span><span class="notes-catrail__n">1</span></button></li>
+    <li><button class="notes-catrail__item" data-cat="real-analysis" onclick="window.quartoListingCategory('cmVhbC1hbmFseXNpcw=='); mnSetCat(this); return false;"><span class="notes-catrail__icon"><svg viewBox="0 0 16 16"><use href="#ic-real-analysis"></use></svg></span><span class="notes-catrail__name">Real Analysis</span><span class="notes-catrail__n">1</span></button></li>
+  </ul>
+</aside>
+```
+
+::: {#all-notes}
+:::
+
+:::
+
+:::
+
+```{=html}
+<script>
+  // Keep the custom rail's active state in sync with Quarto's category filter.
+  function mnSetCat(el) {
+    document.querySelectorAll('.notes-catrail__item').forEach(function (x) {
+      x.classList.remove('is-active');
+    });
+    if (el) el.classList.add('is-active');
+  }
+  (function () {
+    function syncFromHash() {
+      var m = location.hash.match(/category=([^&]*)/);
+      var active = m ? decodeURIComponent(m[1]) : '';
+      var match = document.querySelector('.notes-catrail__item[data-cat="' + (active || '') + '"]');
+      if (match) mnSetCat(match);
+    }
+    window.addEventListener('load', syncFromHash);
+    window.addEventListener('hashchange', syncFromHash);
+  })();
+</script>
+```
+
+:::
