@@ -16,3 +16,18 @@ __pycache__/
 Thumbs.db
 
 **/*.quarto_ipynb
+
+# Design-system export artifacts (scratch from the design tooling).
+# The published site only consumes the token CSS in tokens/ and styles.css;
+# these exports are kept locally for reference but must not enter the repo.
+/components/
+/ui_kits/
+/guidelines/
+/publish/
+/scraps/
+/uploads/
+/_ds_bundle.js
+/_ds_manifest.json
+/Math Notes - Website.html
+/SKILL.md
+/_adherence.oxlintrc.json

@@ -25,6 +25,12 @@ jobs:
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          # Pin to the same Quarto version used to author/render locally.
+          # The site renders cleanly on 1.9.38; leaving this unpinned let CI
+          # install a different version that failed to render the design-system
+          # pages. Keep this in sync with your local `quarto --version`.
+          version: 1.9.38
 
       - name: Set up Python (for runnable code cells)
         uses: actions/setup-python@v5

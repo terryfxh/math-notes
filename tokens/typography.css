@@ -1,21 +1,23 @@
+/*-- scss:rules --*/
 /* ============================================================
    Math Notes — Typography tokens
    An editorial old-style serif for titles and reflections;
    a quiet system sans for body, navigation, metadata and
    controls; a system mono for code. No webfonts are loaded —
-   the brand uses native system faces on purpose (Apple-like
-   clarity, zero load cost). Iowan Old Style appears on macOS,
-   Palatino on Windows, Georgia everywhere else.
+   Substitution: Iowan Old Style → Lora (Google Fonts, free);
+   SF Pro Text → Inter (Google Fonts, free). Upload the original
+   licensed files (Iowan Old Style, SF Pro Text) to restore the
+   exact brand faces; the token values will only need updating here.
    ============================================================ */
 
 :root {
   /* --- Families --- */
   --font-serif:
-    "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua",
+    'Lora', "Iowan Old Style", "Palatino Linotype", Palatino,
     Georgia, "Times New Roman", serif;
   --font-sans:
-    system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    'Inter', system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono:
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
     "Liberation Mono", monospace;
