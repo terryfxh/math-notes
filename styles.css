@@ -498,6 +498,27 @@ body:has(.notes-head) #title-block-header { display: none !important; }
   align-items: start;
 }
 
+/* Quarto's full-page layout tags this div `.page-columns`; its own grid sends
+   the category rail into the right margin column and then auto-flows the
+   listing into a SECOND row — below the full height of the rail — leaving a
+   tall empty gap under the "All Notes" heading. Re-assert our two-column grid
+   and pin both children to row 1 so the listing sits flush under the heading. */
+.notes-split.page-columns {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 13.5rem;
+  gap: clamp(1.5rem, 3vw, 2.6rem);
+  align-items: start;
+}
+.notes-split.page-columns > .notes-catrail {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
+.notes-split.page-columns > :not(.notes-catrail) {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  min-width: 0;
+}
+
 /* Vertical category rail */
 .notes-catrail { position: sticky; top: 76px; }
 .notes-catrail__label {
@@ -692,6 +713,12 @@ body:has(.notes-head) #title-block-header { display: none !important; }
   }
   .home-topic__label { padding: 1rem 1.1rem; }
   .notes-split { grid-template-columns: 1fr; gap: 1.5rem; }
+  .notes-split.page-columns { grid-template-columns: 1fr !important; }
+  .notes-split.page-columns > .notes-catrail,
+  .notes-split.page-columns > :not(.notes-catrail) {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+  }
   .notes-catrail { position: static; }
   .notes-catrail__list { flex-flow: row wrap; gap: 0.4rem; }
   .notes-catrail__item { width: auto; border: 1px solid var(--border, #d8d8d3); }
