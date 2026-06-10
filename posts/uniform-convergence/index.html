@@ -307,7 +307,7 @@ f(x) =
 1, &amp; x = 1,
 \end{cases}
 \]</span> which has a jump. A sequence of unbreakably smooth curves converges, point by point, to a broken one.</p>
-<div id="4ee825b8" class="cell" data-execution_count="1">
+<div id="75f5f70a" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># x^n on [0,1]: every f_n is continuous, but watch the limit tear.</span></span>
@@ -338,7 +338,7 @@ at x = 0.999: need n &gt;= 4603</code></pre>
 <section id="second-betrayal-the-spike" class="level3">
 <h3 class="anchored" data-anchor-id="second-betrayal-the-spike">Second betrayal: the spike</h3>
 <p>The sliding spike from Lesson One is the same disease in integral form. Let <span class="math inline">\(f_n\)</span> equal <span class="math inline">\(n\)</span> on <span class="math inline">\((0,\tfrac1n]\)</span> and <span class="math inline">\(0\)</span> elsewhere.</p>
-<div id="14e37b4c" class="cell" data-execution_count="2">
+<div id="1a6d407f" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The sliding spike: pointwise limit 0, yet the area never budges.</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> (<span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">10</span><span class="op">**</span><span class="dv">6</span>):</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    area <span class="op">=</span> n <span class="op">*</span> (<span class="dv">1</span> <span class="op">/</span> n)              <span class="co"># height times width</span></span>
@@ -364,7 +364,7 @@ values at x = 0.001: [10, 100, 1000, 0]</code></pre>
 <p>One more, because it fails in the opposite direction and will matter later. Let <span class="math display">\[
 f_n(x) = \frac{\sin(n^2 x)}{n} .
 \]</span> Since <span class="math inline">\(|\sin| \le 1\)</span>, the worst-case gap <span class="math inline">\(\sup_x |f_n(x) - 0|\)</span> is <span class="math inline">\(\tfrac1n\)</span> — these functions converge to zero in the strongest sense imaginable, uniformly in <span class="math inline">\(x\)</span> (we are about to make that official). Yet their derivatives <span class="math inline">\(f_n'(x) = n\cos(n^2 x)\)</span> oscillate with amplitude <span class="math inline">\(n\)</span>.</p>
-<div id="6eac30ba" class="cell" data-execution_count="3">
+<div id="8df7f4fc" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> np.linspace(<span class="dv">0</span>, np.pi, <span class="dv">100_003</span>)   <span class="co"># sample count coprime to the oscillation</span></span>
@@ -406,7 +406,7 @@ n = 1000:  sup|f_n| = 0.0010   sup|f_n'| = 1000</code></pre>
 <p>To see a uniform limit doing honest work, here is a sequence of perfectly smooth functions closing in on the absolute value: <span class="math display">\[
 f_n(x) = \sqrt{x^2 + \tfrac{1}{n^2}} \longrightarrow |x| .
 \]</span></p>
-<div id="1ea7a665" class="cell" data-execution_count="4">
+<div id="0399673f" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">200_001</span>)</span>
@@ -497,7 +497,7 @@ f' = g = \lim_{n\to\infty} f_n' .
 \]</span> for every <span class="math inline">\(x\)</span> at once — the bound on the right <em>never mentions <span class="math inline">\(x\)</span></em>. Since <span class="math inline">\(\sum M_k\)</span> converges, its tails are eventually below any <span class="math inline">\(\epsilon\)</span>, so the partial sums are uniformly Cauchy, and <a href="#thm-ucc" class="quarto-xref">Theorem&nbsp;4</a> finishes the proof. <span class="math inline">\(\qquad\blacksquare\)</span></p>
 </div>
 <p>The trade is almost embarrassing in its generosity: dominate each function by a single number, check one convergent series of numbers, and receive uniform convergence — with all of its consequences, continuity of the sum included — for free. This is the license under which the familiar manipulations of power series operate. Inside its radius of convergence <span class="math inline">\(R\)</span>, a power series <span class="math inline">\(\sum a_k x^k\)</span> converges uniformly on every closed interval <span class="math inline">\([-c, c]\)</span> with <span class="math inline">\(c &lt; R\)</span> (compare <span class="math inline">\(|a_k x^k| \le |a_k| c^k\)</span>, a convergent geometric-style series), which is exactly the “uniform on every compact subinterval” compromise we met with <span class="math inline">\(x^n\)</span>. Continuity of the sum, term-by-term integration, and — via <a href="#thm-deriv" class="quarto-xref">Theorem&nbsp;3</a> applied to the differentiated series — term-by-term differentiation all follow. Every time a Taylor series is differentiated term by term, this lesson’s theorems are silently countersigning the step.</p>
-<div id="945ac160" class="cell" data-execution_count="5">
+<div id="e1e684db" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># M-test in action on  sum 2^{-k} cos(13^k pi x):  each term is dominated</span></span>
@@ -529,7 +529,7 @@ W(x) \;=\; \sum_{k=0}^{\infty} \frac{1}{2^k}\cos\!\bigl(13^k \pi x\bigr),
 \]</span> an instance of the function Weierstrass presented to the Berlin Academy in 1872. The M-test has already certified that <span class="math inline">\(W\)</span> is continuous everywhere. Weierstrass proved that it is differentiable <em>nowhere</em>: at no single point does the graph admit a tangent line.</p>
 <p>It is hard to overstate how violently this collides with the picture of continuity most of us carry. A continuous curve, the intuition says, is a curve drawn without lifting the pen, and a pen stroke surely has a direction at most points — perhaps with finitely many corners, like <span class="math inline">\(|x|\)</span>. The nineteenth century largely believed exactly that; the result scandalized analysts, and Hermite famously recoiled from “this lamentable plague of functions without derivatives.” Yet the mechanism is in plain sight once you know where to look. Each term adds wiggles that are <span class="math inline">\(2\)</span> times smaller in height but <span class="math inline">\(13\)</span> times faster in oscillation. Heights shrink fast enough for the M-test to keep the sum continuous; but slopes pick up a factor of <span class="math inline">\(\tfrac{13}{2}\)</span> per term, so the local steepness <em>diverges</em>. It is the third betrayal — small functions with huge derivatives — stacked into a single function, with the geometric decay <span class="math inline">\(\tfrac1{2^k}\)</span> calibrated to keep continuity alive while killing differentiability at every point. (The classical sufficient condition for <span class="math inline">\(\sum a^k\cos(b^k\pi x)\)</span> is <span class="math inline">\(ab &gt; 1 + \tfrac{3\pi}{2}\)</span>; here <span class="math inline">\(ab = 6.5\)</span>.)</p>
 <p>A full proof is beyond one blog post, but the failure is observable. Differentiability at <span class="math inline">\(x_0\)</span> means the difference quotients <span class="math inline">\(\bigl(W(x_0+h)-W(x_0)\bigr)/h\)</span> settle toward a single slope as <span class="math inline">\(h \to 0\)</span>. Watch them instead refuse:</p>
-<div id="f64202a0" class="cell" data-execution_count="6">
+<div id="68c5f9d2" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> W(x, K<span class="op">=</span><span class="dv">22</span>):                       <span class="co"># truncated Weierstrass function</span></span>
