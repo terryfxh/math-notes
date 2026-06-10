@@ -99,7 +99,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-b2f19e8b9742f76eae9990f7c4f8cd98.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-b806793a49aed1407121cbdf8360a762.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -292,7 +292,7 @@ window.Quarto = {
 <p>Take the simplest infinite sum that misbehaves, the alternating ones and minus-ones, <span class="math display">\[
 S = 1 - 1 + 1 - 1 + 1 - 1 + \cdots .
 \]</span> Grouping the terms as <span class="math inline">\((1-1) + (1-1) + \cdots\)</span> suggests <span class="math inline">\(S=0\)</span>. Grouping them as <span class="math inline">\(1 + (-1+1) + (-1+1) + \cdots\)</span> suggests <span class="math inline">\(S=1\)</span>. The formal manipulation <span class="math inline">\(S=1-S\)</span> suggests <span class="math inline">\(S=\tfrac12\)</span>. Three familiar algebraic moves produce three incompatible answers.</p>
-<div id="1b00274f" class="cell" data-execution_count="1">
+<div id="b820fae3" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The partial sums of 1 - 1 + 1 - 1 + ... never settle on anything.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>partial, s <span class="op">=</span> [], <span class="dv">0</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>):</span>
@@ -326,7 +326,7 @@ running averages: [1, 0.5, 0.667, 0.5, 0.6, 0.5, 0.571, 0.5, 0.556, 0.5]</code><
 <h3 class="anchored" data-anchor-id="the-hole-in-the-number-line">The hole in the number line</h3>
 <p>There is a second, deeper crack, and it is not about infinity at all. It is about the numbers themselves.</p>
 <p>A right triangle with two unit legs has a hypotenuse of length <span class="math inline">\(\sqrt2\)</span>. Geometrically the segment is unambiguous, but no rational number represents its length: no fraction <span class="math inline">\(\tfrac pq\)</span> has square equal to <span class="math inline">\(2\)</span>.</p>
-<div id="724301c5" class="cell" data-execution_count="2">
+<div id="e1b4fe1b" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fractions <span class="im">import</span> Fraction</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Bisection for x^2 = 2, played entirely inside the rationals.</span></span>
@@ -372,7 +372,7 @@ A=\{q\in\mathbb{Q}:q^2&lt;2\},
 <section id="watching-completeness-build-a-number" class="level3">
 <h3 class="anchored" data-anchor-id="watching-completeness-build-a-number">Watching completeness build a number</h3>
 <p>Bisection now acquires a different meaning. The same shrinking rational brackets no longer merely approximate an imagined point; completeness guarantees that the nested constraints determine a real point.</p>
-<div id="add382a6" class="cell" data-execution_count="3">
+<div id="fff100ea" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Nested halving traps a single real point: the least upper bound of</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># { x : x^2 &lt;= 2 }, which the rationals could not supply.</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>lo, hi <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">2.0</span></span>
@@ -423,7 +423,7 @@ I_1\supseteq I_2\supseteq I_3\supseteq\cdots.
 L-\epsilon&lt;x_N\le x_n\le L
 \qquad(n\ge N),
 \]</span> and therefore <span class="math inline">\(|x_n-L|&lt;\epsilon\)</span>. The visual staircase and the formal proof meet at the same point: the lowest ceiling is the limit.</p>
-<div id="789ab034" class="cell" data-execution_count="4">
+<div id="b1d7ae6c" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This sequence is decreasing and bounded below by sqrt(2),</span></span>
@@ -453,7 +453,7 @@ gap to sqrt(2): -2.220446049250313e-16</code></pre>
 <p><span class="theorem-title"><strong>Theorem 3 (Bolzano–Weierstrass Theorem)</strong></span> Every bounded sequence of real numbers has a convergent subsequence.</p>
 </div>
 <p>Bisect the containing interval. At least one half contains infinitely many terms; otherwise the original interval would contain only finitely many. Retain that half and repeat. This produces nested closed intervals whose lengths tend to zero, each containing infinitely many terms. The Nested Interval Property supplies a common point <span class="math inline">\(x\)</span>. Choosing, in increasing index order, one term from each interval produces a subsequence converging to <span class="math inline">\(x\)</span>. The sequence may remain globally irregular, but repeated magnification exposes a locally convergent thread.</p>
-<div id="52c45cee" class="cell" data-execution_count="5">
+<div id="9f3bcb3c" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># A bounded but jumpy sequence: sin(1), sin(2), sin(3), ... never settles,</span></span>
@@ -497,7 +497,7 @@ the subsequence is closing in on about -0.99997</code></pre>
 \]</span> Thus <span class="math inline">\(x_n\to L\)</span>. <span class="math inline">\(\qquad\blacksquare\)</span></p>
 </div>
 <p>The criterion certifies convergence without first naming the limit. This becomes especially useful for an infinite series, where convergence concerns the sequence of finite partial sums rather than a literal act of infinite addition.</p>
-<div id="e774d2e0" class="cell" data-execution_count="6">
+<div id="97f1b6b7" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Partial sums of 1 + 1/4 + 1/9 + ... . We judge convergence by the</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sequence's INTERNAL gaps, never once mentioning the (famous) limit.</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>S, total <span class="op">=</span> [], <span class="fl">0.0</span></span>
@@ -565,7 +565,7 @@ f(a + h) = f(a) + f'(a)\,h + (\text{error that shrinks faster than } h),
 <p><span class="theorem-title"><strong>Definition 3 (The Riemann integral)</strong></span> A bounded function is <strong>integrable</strong> on <span class="math inline">\([a,b]\)</span> if, by taking the partition fine enough, the lower sums and the upper sums can be brought arbitrarily close together. Their common squeezed value is the integral <span class="math inline">\(\int_a^b f\)</span>.</p>
 </div>
 <p>This squeezing definition remains meaningful when the graph has jumps and the informal area picture becomes unreliable.</p>
-<div id="3d2f8f30" class="cell" data-execution_count="7">
+<div id="72b57970" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># A function with a clean jump at x = 1/2. Still integrable, because the</span></span>
