@@ -946,18 +946,9 @@ body:has(.home-page) #title-block-header .subtitle {
   padding: clamp(4.5rem, 10vw, 7.5rem) 0 clamp(3.5rem, 7vw, 5.5rem);
 }
 
-/* — Epigraph: italic and quiet — a soft secondary note, not a
-   headline. Smaller, lighter weight, premium-grey so it recedes. — */
-.home-page .epigraph p,
-.home-page .epigraph-center p {
-  font-family: var(--font-sans);
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(1.2rem, 1.9vw, 1.55rem);
-  line-height: 1.4;
-  letter-spacing: -0.012em;
-  color: #86868b;
-}
+/* (The home epigraph display style — Bodoni Didone italic — is defined
+   once in section 3 above. The old sans override that used to live here
+   silently won the cascade and killed the Bodoni face; do not re-add.) */
 .home-page .attribution {
   font-weight: 500;
   letter-spacing: 0.04em;

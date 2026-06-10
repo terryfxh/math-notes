@@ -9,7 +9,7 @@ draft: false
 ---
 
 ::: {.epigraph}
-"Mathematics, rightly viewed, possesses not only truth, but supreme beauty — a beauty cold and austere, like that of sculpture."
+*"Mathematics, rightly viewed, possesses not only truth, but supreme beauty — a beauty cold and austere, like that of sculpture."*
 
 [— Bertrand Russell, *The Study of Mathematics* (1902)]{.attribution}
 :::

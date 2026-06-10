@@ -8,7 +8,7 @@ draft: false
 ---
 
 ::: {.epigraph}
-"A mathematician, like a painter or a poet, is a maker of patterns."
+*"A mathematician, like a painter or a poet, is a maker of patterns."*
 
 [— G. H. Hardy, *A Mathematician's Apology*]{.attribution}
 :::

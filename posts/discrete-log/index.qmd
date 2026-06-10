@@ -8,7 +8,7 @@ draft: false
 ---
 
 ::: {.epigraph}
-"Invert, always invert."
+*"Invert, always invert."*
 
 [— Carl Gustav Jacob Jacobi (attributed)]{.attribution}
 :::

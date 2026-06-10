@@ -8,14 +8,14 @@ draft: false
 ---
 
 ::: {.epigraph}
-"Mathematics is the queen of the sciences, and number theory is the queen of mathematics."
+*"Mathematics is the queen of the sciences, and number theory is the queen of mathematics."*
 
 [— Carl Friedrich Gauss, as recorded by Sartorius von Waltershausen (1856)]{.attribution}
 :::
 
 Sometime around the fourth century, a Chinese text called the *Sunzi Suanjing* posed a small riddle:
 
-> There are certain things whose number is unknown. Counted in threes, two are left over; counted in fives, three are left over; counted in sevens, two are left over. How many things are there?
+> *There are certain things whose number is unknown. Counted in threes, two are left over; counted in fives, three are left over; counted in sevens, two are left over. How many things are there?*
 
 You can find the answer by patient trial, and the book does: twenty-three. What the book could not have known is that the little procedure hiding behind this puzzle would, more than a millennium later, sit quietly inside almost every secure connection your computer makes. The Chinese Remainder Theorem is the bridge between a counting game and the arithmetic of machines, and the reason is a single change of viewpoint: a remainder is not a leftover, it is a coordinate.
 

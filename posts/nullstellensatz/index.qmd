@@ -8,7 +8,7 @@ draft: false
 ---
 
 ::: {.epigraph}
-"Philosophy is written in this grand book, the universe ... It is written in the language of mathematics, and its characters are triangles, circles, and other geometric figures."
+*"Philosophy is written in this grand book, the universe ... It is written in the language of mathematics, and its characters are triangles, circles, and other geometric figures."*
 
 [— Galileo Galilei, *Il Saggiatore* (1623)]{.attribution}
 :::

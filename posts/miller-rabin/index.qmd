@@ -8,7 +8,7 @@ draft: false
 ---
 
 ::: {.epigraph}
-"The problem of distinguishing prime numbers from composite numbers ... is known to be one of the most important and useful in arithmetic."
+*"The problem of distinguishing prime numbers from composite numbers ... is known to be one of the most important and useful in arithmetic."*
 
 [— Carl Friedrich Gauss, *Disquisitiones Arithmeticae*, Art. 329 (1801)]{.attribution}
 :::

@@ -57,7 +57,7 @@ title-block-banner: false
 ::: {.home-epigraph}
 
 ::: {.epigraph .epigraph-center}
-"The introduction of numbers as coordinates ... is an act of violence."
+*"The introduction of numbers as coordinates ... is an act of violence."*
 
 [Hermann Weyl — *Philosophy of Mathematics and Natural Science*]{.attribution}
 :::

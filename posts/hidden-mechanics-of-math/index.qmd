@@ -7,7 +7,7 @@ draft: false
 ---
 
 ::: {.epigraph}
-"What I cannot create, I do not understand."
+*"What I cannot create, I do not understand."*
 
 [— Richard Feynman, found on his blackboard, 1988]{.attribution}
 :::

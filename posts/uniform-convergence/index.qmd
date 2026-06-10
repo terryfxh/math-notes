@@ -9,7 +9,7 @@ draft: false
 ---
 
 ::: {.epigraph}
-"In mathematics you don't understand things. You just get used to them."
+*"In mathematics you don't understand things. You just get used to them."*
 
 [— John von Neumann (attributed)]{.attribution}
 :::
