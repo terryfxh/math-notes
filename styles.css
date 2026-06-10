@@ -1092,4 +1092,3 @@ body:has(.home-page) #quarto-header .navbar a:focus-visible {
   .quarto-listing-default .quarto-post .metadata { grid-column: 1; grid-row: 2; }
   .quarto-listing-default .quarto-post .body { grid-column: 1; grid-row: 1; }
 }
-                                                                                                       
