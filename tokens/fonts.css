@@ -14,7 +14,7 @@
    Newsreader is the New York-like literary serif used as the
    non-Apple fallback on the Home page (variable optical sizes +
    italic, the closest free analogue to Apple's New York). */
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;450;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;450;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Bodoni+Moda:ital,opsz,wght@1,6..96,400;1,6..96,500&display=swap');
 
 /* @font-face declarations — used by the design-system compiler
    and as a fallback for environments where the @import above

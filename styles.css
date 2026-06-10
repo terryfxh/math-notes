@@ -222,7 +222,16 @@ main#quarto-document-content {
 }
 
 .home-introduction {
-  padding: clamp(4rem, 9vw, 6.5rem) 0 clamp(3rem, 6vw, 5rem);
+  /* Top gap (tagline -> quote) is tuned together with the home-scoped
+     title-block padding below so their sum sits at 1/phi of the
+     attribution -> intro gap (the quote-divider's 2x clamp margins):
+     golden-section whitespace, minor segment on top.
+     bottom gap = 2*clamp(2.5rem,5vw,3.5rem) = clamp(5rem,10vw,7rem)
+     top gap    = bottom/1.618              = clamp(3.09rem,6.18vw,4.33rem) */
+  padding: clamp(1.24rem, 2.48vw, 1.73rem) 0 clamp(3rem, 6vw, 5rem);
+}
+body:has(.home-page) #title-block-header.quarto-title-block {
+  padding-bottom: clamp(1.85rem, 3.7vw, 2.6rem);
 }
 .home-epigraph {
   max-width: 800px;
@@ -245,6 +254,15 @@ main#quarto-document-content {
   margin: 0;
   /* large size → display optical cut (New York / Newsreader) */
   font-optical-sizing: auto;
+}
+/* Home quote — Didone display italic. Apple's Bodoni 72 Oldstyle when
+   available (macOS/iOS), Bodoni Moda webfont everywhere else. */
+.home-page .epigraph p,
+.home-page .epigraph-center p {
+  font-family: 'Bodoni 72 Oldstyle', 'Bodoni 72', 'Bodoni Moda', 'Didot', 'Bodoni MT', 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.45rem, 2.2vw, 1.75rem);
+  line-height: 1.4;
+  letter-spacing: 0;
 }
 .attribution {
   display: block;
