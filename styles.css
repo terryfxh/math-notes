@@ -102,8 +102,35 @@ blockquote p:last-child { margin-bottom: 0; }
   color: var(--text-muted, #686b70);
 }
 
-/* Hide Quarto's search / toolbar decorations we don't need */
-#quarto-search { display: none !important; }
+/* Navbar search — visible again, styled as a flat, borderless field
+   that sits quietly in the chrome (no box, soft grey fill). */
+#quarto-search { display: flex; align-items: center; }
+#quarto-search .aa-Form,
+#quarto-search .form-control,
+#quarto-search input.search,
+#quarto-search input.aa-Input {
+  border: 0 !important;
+  background: var(--surface-hover, #f5f5f2);
+  border-radius: 8px;
+  box-shadow: none !important;
+  font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
+  font-size: 0.85rem;
+  color: var(--text-strong, #202123);
+}
+#quarto-search input.search::placeholder,
+#quarto-search input.aa-Input::placeholder { color: var(--text-faint, #85898d); }
+#quarto-search .aa-Form:focus-within,
+#quarto-search input.search:focus,
+#quarto-search input.aa-Input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.10) !important;
+}
+/* On the Apple-styled home page, the focus ring uses the key colour. */
+body:has(.home-page) #quarto-search .aa-Form:focus-within,
+body:has(.home-page) #quarto-search input.search:focus,
+body:has(.home-page) #quarto-search input.aa-Input:focus {
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.22) !important;
+}
 
 /* Main content area */
 #quarto-content {
@@ -164,6 +191,36 @@ main#quarto-document-content {
    at 24px, an uppercase letter-spaced attribution, a short
    hairline divider, then the introduction copy below.
    ============================================================ */
+
+/* Home only — Apple HIG refactor tokens. One native system type
+   ramp for every element (deference: the type defers to content), an
+   Apple neutral grey scale, and EXACTLY ONE key colour for interactive
+   elements. Scoped to .home-page so posts and Notes keep their original
+   editorial serif + sage identity. The structural Apple overrides
+   (flat cards, no dividers, no shadows) live in section 7b below. */
+.home-page {
+  /* System font stack — both roles point at it, so quote, titles,
+     body and UI all render in SF Pro / system sans (PingFang SC for
+     any CJK). No webfont embedding; uses the OS faces directly. */
+  --font-sans:
+    system-ui, -apple-system, BlinkMacSystemFont, "SF Pro",
+    "PingFang SC", "Helvetica Neue", sans-serif;
+  --font-serif:
+    system-ui, -apple-system, BlinkMacSystemFont, "SF Pro",
+    "PingFang SC", "Helvetica Neue", sans-serif;
+
+  /* Apple neutral ramp — deep black to premium greys, low noise. */
+  --text-strong: #1d1d1f;
+  --text-body:   #1d1d1f;
+  --text-quiet:  #515154;
+  --text-muted:  #6e6e73;
+  --text-faint:  #86868b;
+
+  /* The single key colour — Apple system blue, interactive only. */
+  --key:       #007aff;
+  --key-press: #0051d5;
+}
+
 .home-introduction {
   padding: clamp(4rem, 9vw, 6.5rem) 0 clamp(3rem, 6vw, 5rem);
 }
@@ -181,10 +238,13 @@ main#quarto-document-content {
 .epigraph-center p {
   font-family: var(--font-serif, 'Lora', Georgia, serif);
   font-style: italic;
-  font-size: var(--size-epigraph, 1.5rem);
-  line-height: var(--leading-epigraph, 1.5);
+  font-size: clamp(1.3rem, 1.9vw, 1.5rem);
+  line-height: 1.45;
+  letter-spacing: -0.011em;
   color: var(--text-quiet, #4e5155);
   margin: 0;
+  /* large size → display optical cut (New York / Newsreader) */
+  font-optical-sizing: auto;
 }
 .attribution {
   display: block;
@@ -210,18 +270,27 @@ main#quarto-document-content {
   max-width: 46rem;
   margin: 0 auto;
 }
+/* One voice for the whole intro: all paragraphs are SF Pro, so the
+   hero reads as a single Apple-style block instead of a serif lead
+   colliding with grey sans body. Hierarchy comes from size, weight
+   and colour — a near-black lead settling into quiet grey copy. */
 .home-copy > p {
-  margin: 0 0 1rem;
-  color: var(--text-body, #35373a);
+  margin: 0 0 1.15rem;
+  font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
+  color: var(--text-quiet, #4e5155);
   font-size: 1.05rem;
-  line-height: 1.75;
+  line-height: 1.7;
+  letter-spacing: -0.003em;
 }
 .home-copy > p:first-child {
-  font-family: var(--font-serif, 'Lora', Georgia, serif);
-  font-size: clamp(1.2rem, 1.6vw, 1.42rem);
-  letter-spacing: -0.012em;
-  line-height: 1.55;
+  /* Lead sits a golden modular step (√φ ≈ 1.272) above the 1.05rem
+     body — a gentle, proportional rise rather than a jump. */
+  font-size: clamp(1.22rem, 1.6vw, 1.34rem);
+  font-weight: 400;
+  letter-spacing: -0.014em;
+  line-height: 1.45;
   color: var(--text-strong, #202123);
+  margin-bottom: 1.45rem;
 }
 .home-copy em { font-style: italic; }
 
@@ -346,19 +415,35 @@ main#quarto-document-content {
        between Browse-by-topic and All Notes use a tighter
        vertical rhythm than long-form prose.
    ============================================================ */
-.home-note-section:not(.home-all-notes) h2 {
-  margin: 1.6rem 0 0.3rem;
-  padding-bottom: 0.35rem;
+/* Section labels: a quiet SF Pro header sitting above the serif
+   article titles — the same pairing Apple uses (sans section header,
+   serif reading content). */
+.home-note-section h2 {
+  font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--text-strong, #202123);
 }
+.home-note-section:not(.home-all-notes) h2 {
+  font-size: 1.3rem;
+  margin: 1.5rem 0 0.1rem;
+  padding-bottom: 0;
+}
+/* Even, scannable rhythm: single-step padding, with the date column
+   nudged onto the serif title's optical baseline. */
 .home-note-section:not(.home-all-notes) .quarto-post {
-  padding: 0.55rem 0;
-  gap: 1.1rem;
+  padding: 0.46rem 0;
+  gap: 1.25rem;
+  align-items: baseline;
 }
 .home-note-section:not(.home-all-notes) .quarto-post .metadata {
-  line-height: 1.35;
+  line-height: 1.4;
+  align-self: start;
+  padding-top: 0.18rem;
 }
 .home-note-section:not(.home-all-notes) .listing-title {
-  line-height: 1.25;
+  line-height: 1.3;
+  letter-spacing: -0.011em;
 }
 
 /* ============================================================
@@ -738,6 +823,7 @@ body:has(.notes-head) #title-block-header { display: none !important; }
   letter-spacing: -0.012em;
   line-height: 1.3;
   color: var(--text-strong, #202123);
+  font-optical-sizing: auto;
 }
 .quarto-listing-default .listing-title a {
   color: inherit;
@@ -782,6 +868,181 @@ body:has(.notes-head) #title-block-header { display: none !important; }
 .quarto-listing-default .listing-reading-time {
   color: var(--text-faint, #85898d);
   font-size: 0.78rem;
+}
+
+/* ============================================================
+   7b. Apple-style Home refactor (HIG) — HOME PAGE ONLY
+   Flat, borderless, deferential. Pure white ground, deep-black &
+   premium-grey type, EXACTLY ONE key colour (#007aff) for interactive
+   elements. No translucency, no backdrop-blur, no gradients, no heavy
+   shadows, no dividing lines — whitespace does the separating. Scoped
+   with .home-page / body:has(.home-page) so other pages are untouched.
+   This section intentionally supersedes the editorial serif treatment
+   on the home page.
+   ============================================================ */
+
+/* — Chrome: a solid, opaque navbar on home (no glassmorphism) — */
+body:has(.home-page) #quarto-header .navbar {
+  background: #ffffff !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  border-bottom: 0;
+}
+body:has(.home-page) #quarto-header .navbar .navbar-title,
+body:has(.home-page) #quarto-header .navbar .navbar-brand {
+  font-family: var(--font-sans) !important;
+  font-weight: 600 !important;
+  color: #1d1d1f !important;
+}
+body:has(.home-page) #quarto-header .navbar .nav-link:hover,
+body:has(.home-page) #quarto-header .navbar .nav-link.active {
+  color: var(--key) !important;
+  background: transparent !important;
+}
+
+/* — Masthead: Large Title scale, bold, tight — */
+body:has(.home-page) #title-block-header { border: 0; }
+body:has(.home-page) #title-block-header .title {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 5.2vw, 3.6rem);
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: #1d1d1f;
+}
+body:has(.home-page) #title-block-header .subtitle {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  letter-spacing: -0.01em;
+  color: #86868b;
+}
+
+/* — More room to breathe (deference through negative space) — */
+.home-page { max-width: 1240px; }
+.home-introduction {
+  padding: clamp(4.5rem, 10vw, 7.5rem) 0 clamp(3.5rem, 7vw, 5.5rem);
+}
+
+/* — Epigraph: system sans, display weight, no italic, no divider — */
+.home-page .epigraph p,
+.home-page .epigraph-center p {
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(1.7rem, 2.8vw, 2.25rem);
+  line-height: 1.22;
+  letter-spacing: -0.021em;
+  color: #1d1d1f;
+}
+.home-page .attribution {
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #86868b;
+  opacity: 1;
+}
+.home-page .quote-divider { border: 0; height: 0; }
+
+/* — Intro copy: bold lead, premium-grey body, blue links — */
+.home-page .home-copy > p {
+  color: #6e6e73;
+  font-size: 1.08rem;
+  line-height: 1.62;
+}
+.home-page .home-copy > p:first-child {
+  color: #1d1d1f;
+  font-weight: 600;
+  font-size: clamp(1.4rem, 2vw, 1.7rem);
+  letter-spacing: -0.02em;
+  line-height: 1.38;
+}
+.home-page .home-copy a { color: var(--key); text-decoration: none; }
+.home-page .home-copy a:hover { text-decoration: underline; }
+
+/* — Browse header: drop the top divider; key-blue action link — */
+.home-page .home-browse { border-top: 0; padding-top: clamp(1.5rem, 3vw, 2.5rem); }
+.home-page .home-all-link { color: var(--key); }
+.home-page .home-all-link:hover { color: var(--key-press); text-decoration: underline; }
+
+/* — Topic cards: borderless flat surfaces, no shadow, soft hover — */
+.home-page .home-topic {
+  border: 0;
+  border-radius: 18px;
+  background: #f5f5f7;
+  box-shadow: none;
+}
+.home-page .home-topic:hover {
+  background: #ececef;
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+.home-page .home-topic__art {
+  border-bottom: 0;
+  color: #c7c7cc;            /* decorative line art — neutral grey, never the key colour */
+  opacity: 1;
+}
+.home-page .home-topic:hover .home-topic__art { color: #aeaeb2; opacity: 1; }
+.home-page .home-topic__title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: #1d1d1f;
+}
+.home-page .home-topic__arrow { color: #86868b; }
+.home-page .home-topic:hover .home-topic__arrow { color: var(--key); transform: translateX(3px); }
+
+/* — Section labels & article rows: system sans, no dividing lines — */
+.home-page .home-note-section h2 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: #1d1d1f;
+}
+.home-page .quarto-listing-default .quarto-post {
+  border-bottom: 0;
+  border-top: 0 !important;
+}
+.home-page .home-note-section:not(.home-all-notes) .quarto-post { padding: 0.66rem 0; }
+.home-page .listing-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: #1d1d1f;
+}
+.home-page .listing-title a { color: inherit; }
+.home-page .listing-title a:hover { color: var(--key); }
+.home-page .quarto-listing-default .quarto-post .metadata,
+.home-page .listing-reading-time { color: #86868b; }
+
+/* — Filter / sort controls: borderless, flat grey fields — */
+.home-page .listing-actions-group .form-select,
+.home-page .listing-actions-group .form-control {
+  border: 0;
+  background: #f5f5f7;
+  border-radius: 10px;
+  color: #1d1d1f;
+}
+.home-page .listing-actions-group .form-select:focus,
+.home-page .listing-actions-group .form-control:focus {
+  border: 0;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25);
+}
+/* Category chips: flat grey pills, key-blue on hover — */
+.home-page .quarto-listing-default .listing-category {
+  border: 0;
+  background: #f5f5f7;
+  color: #6e6e73;
+}
+.home-page .quarto-listing-default .listing-category:hover {
+  background: #ececef;
+  color: var(--key);
+}
+
+/* — Focus: a clean key-colour ring, no glow — */
+.home-page a:focus-visible,
+body:has(.home-page) #title-block-header a:focus-visible,
+body:has(.home-page) #quarto-header .navbar a:focus-visible {
+  outline: 2px solid var(--key);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 /* ============================================================

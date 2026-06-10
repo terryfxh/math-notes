@@ -139,3 +139,34 @@ I write these mostly for the version of me who was once stuck on the very same t
 :::
 
 :::
+
+```{=html}
+<script>
+/* Pangu spacing — insert a half-width space (U+0020) at CJK <-> Latin/
+   number boundaries for reading fluency (Apple-style typographic detail).
+   Scoped to .home-page; skips code, math, and script/style nodes.
+   English-only copy has no CJK boundaries, so wording is never changed. */
+(function () {
+  var CJK = '⺀-⻿⼀-⿟぀-ヿ㐀-䶿一-鿿豈-﫿＀-￯';
+  var reAfterCJK  = new RegExp('([' + CJK + '])([A-Za-z0-9@&%$])', 'g');
+  var reBeforeCJK = new RegExp('([A-Za-z0-9!~&%;=)\\]\\.\\:\\?])([' + CJK + '])', 'g');
+  var SKIP = { SCRIPT: 1, STYLE: 1, CODE: 1, PRE: 1, KBD: 1, SAMP: 1, TEXTAREA: 1 };
+  function walk(node) {
+    for (var n = node.firstChild; n; n = n.nextSibling) {
+      if (n.nodeType === 3) {
+        var t = n.nodeValue;
+        var s = t.replace(reAfterCJK, '$1 $2').replace(reBeforeCJK, '$1 $2');
+        if (s !== t) n.nodeValue = s;
+      } else if (n.nodeType === 1 && !SKIP[n.tagName] &&
+                 !n.classList.contains('math') &&
+                 n.tagName.toLowerCase().indexOf('mjx') !== 0) {
+        walk(n);
+      }
+    }
+  }
+  function run() { var root = document.querySelector('.home-page'); if (root) walk(root); }
+  if (document.readyState !== 'loading') run();
+  else document.addEventListener('DOMContentLoaded', run);
+})();
+</script>
+```
