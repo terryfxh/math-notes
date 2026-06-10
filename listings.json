@@ -1,5 +1,22 @@
 [
   {
+    "listing": "/notes.html",
+    "items": [
+      "/posts/uniform-convergence/index.html",
+      "/posts/nullstellensatz/index.html",
+      "/posts/reconstructing-calculus/index.html",
+      "/posts/domino-tilings/index.html",
+      "/posts/discrete-log/index.html",
+      "/posts/on-learning-mathematics/index.html",
+      "/posts/chinese-remainder-theorem/index.html",
+      "/posts/gram-schmidt/index.html",
+      "/posts/hidden-mechanics-of-math/index.html",
+      "/posts/miller-rabin/index.html",
+      "/posts/welcome/index.html",
+      "/posts/spectral-theorem/index.html"
+    ]
+  },
+  {
     "listing": "/index.html",
     "items": [
       "/posts/nullstellensatz/index.html",
@@ -12,23 +29,8 @@
       "/posts/miller-rabin/index.html",
       "/posts/on-learning-mathematics/index.html",
       "/posts/hidden-mechanics-of-math/index.html",
-      "/posts/welcome/index.html"
-    ]
-  },
-  {
-    "listing": "/notes.html",
-    "items": [
-      "/posts/nullstellensatz/index.html",
-      "/posts/reconstructing-calculus/index.html",
-      "/posts/domino-tilings/index.html",
-      "/posts/discrete-log/index.html",
-      "/posts/on-learning-mathematics/index.html",
-      "/posts/chinese-remainder-theorem/index.html",
-      "/posts/gram-schmidt/index.html",
-      "/posts/hidden-mechanics-of-math/index.html",
-      "/posts/miller-rabin/index.html",
       "/posts/welcome/index.html",
-      "/posts/spectral-theorem/index.html"
+      "/posts/uniform-convergence/index.html"
     ]
   }
 ]
