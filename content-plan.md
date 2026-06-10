@@ -151,6 +151,31 @@ the number-theory/CS vein is already your spine. A natural ordering:
 Items 1–3 are high-overlap, runnable, and on-brand right now; 4–6 broaden the blog's range
 once the spine is established.
 
+## 6. Real analysis series — "What Calculus Becomes When We Ask Why" (running)
+
+An off-library series (Abbott / Rudin / Tao rather than the `MATHSnotes` five), opened
+June 2026. Proof-heavy posts in the Abbott voice: paradox first, crisis of intuition,
+definition as rescue, logical cascade.
+
+1. **Lesson One — Why the Real Line Has No Holes** (`reconstructing-calculus`,
+   2026-06-07, published): completeness → nested intervals → Bolzano–Weierstrass →
+   Cauchy criterion, then limits, compactness, FTC.
+2. **Lesson Two — Pointwise vs. Uniform Convergence** (`uniform-convergence`,
+   2026-06-10): the sliding-spike debt repaid; quantifier diagnosis, ε/3 theorem,
+   integrable/differentiable limit theorems, M-test, Weierstrass monster.
+3. **Lesson Three — candidates** (pick when the series resumes):
+   - *Series and rearrangements*: conditional vs. absolute convergence, the Riemann
+     rearrangement theorem with a runnable rearrange-to-any-target algorithm
+     (Abbott Ch. 2). Pays off Lesson One's alternating-series hook.
+   - *Continuity and the IVT, deep dive*: uniform continuity, Dirichlet/Thomae
+     pathologies, the Darboux property of derivatives, MVT (Abbott Ch. 4–5). Pays off
+     Lesson One's compactness sketch.
+   - Loose threads planted in Lesson Two for later lessons: dominated convergence
+     (the door to measure theory), Dini's theorem.
+
+Interleave these with the MATHSnotes roadmap above (whose next item remains
+"Permanent vs. determinant") rather than running the series back-to-back.
+
 ## Style fit
 
 Everything above is chosen to support the blog's "see it first, then prove it" approach:
