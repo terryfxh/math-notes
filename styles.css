@@ -239,7 +239,9 @@ body:has(.home-page) #title-block-header.quarto-title-block {
 }
 .epigraph, .epigraph-center {
   padding: 0;
-  margin: 0;
+  /* Body-sized quote: set apart from the prose by clear space above and
+     below, not by display size. (The home hero overrides this below.) */
+  margin: 2.75rem 0 3.25rem;
   border: 0;
   text-align: center;
 }
@@ -247,14 +249,16 @@ body:has(.home-page) #title-block-header.quarto-title-block {
 .epigraph-center p {
   font-family: var(--font-serif, 'Lora', Georgia, serif);
   font-style: italic;
-  font-size: clamp(1.3rem, 1.9vw, 1.5rem);
-  line-height: 1.45;
+  font-size: var(--size-body, 1rem);          /* match running text */
+  line-height: var(--leading-prose, 1.8);
   letter-spacing: -0.011em;
   color: var(--text-quiet, #4e5155);
   margin: 0;
   /* large size → display optical cut (New York / Newsreader) */
   font-optical-sizing: auto;
 }
+.home-page .epigraph,
+.home-page .epigraph-center { margin: 0; }
 /* Home quote — Didone display italic. Apple's Bodoni 72 Oldstyle when
    available (macOS/iOS), Bodoni Moda webfont everywhere else. */
 .home-page .epigraph p,
