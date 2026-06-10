@@ -1,0 +1,78 @@
+---
+title: "Nobody Asks What Quidditch Is For"
+description: "Two TEDx talks — Grant Sanderson on why 'useless' math out-pulls useful math, and Eddie Woo on mathematics as a sense — braided into one reflection on what actually makes people engage with math."
+date: 2026-06-10
+categories: [meta, learning]
+bibliography: ../../references.bib
+draft: false
+---
+
+::: {.epigraph}
+*"A mathematician, like a painter or a poet, is a maker of patterns. If his patterns are more permanent than theirs, it is because they are made with ideas."*
+
+[— G. H. Hardy, *A Mathematician's Apology*]{.attribution}
+:::
+
+Here is an uncomfortable fact about teaching math today: your audience sits one click away from billions of hours of content engineered, A/B-tested, and lovingly tuned to be more fun than you. Engagement is not a birthright. So what actually pulls people into mathematics — voluntarily, on a weeknight, with no exam in sight?
+
+I've been chewing on two talks that attack this question from opposite ends: Grant Sanderson's TEDxBerkeley talk on engagement [@sanderson2020engage], and Eddie Woo's TEDxSydney talk on mathematics as a sense [@woo2018sense]. Each gave me half an answer. This post lays out the chain, link by link.
+
+## The respectable theory
+
+If you had asked me beforehand, I'd have said engagement comes from two ingredients. First, *show before you formalize*. Look up the Fourier transform on Wikipedia and you're greeted by a wall of integrals and complex exponentials — a bouncer checking IDs at the door. But watch a graph get wrapped around a circle and the center of mass lurch sideways at resonance, and you understand what the formula *is* before reading a single symbol. Second, *answer the eternal question*: "when will I ever use this?" If algebra class feels like lifting weights — good for you, allegedly, and joyless — then showing how the same machinery decomposes a sound wave or teaches a machine to read digits turns drudgery into a superpower. Useful plus visual. Case closed.
+
+This theory is respectable, intuitive, and at least half wrong.
+
+## The data misbehaves
+
+On Sanderson's own channel, the neural network series ranks second and the Fourier video fourth. The first and third spots belong to two problems of magnificent uselessness: the probability that a tetrahedron formed by four random points on a sphere contains the center, and how many times two blocks collide on a frictionless floor. No engineer has ever billed an hour for either. Yet they out-pulled the useful stuff — the market has spoken, and it prefers blocks bonking into a wall.
+
+Take a moment to chew on that. The videos engineered to answer "what's this for?" lost to videos that can't even pretend to have an answer.
+
+## Nobody asks what Quidditch is for
+
+Sanderson's resolution is a comparison I can't unsee: far more people read fiction last night than went to the gym, and nobody closes *Harry Potter* demanding the practical ROI of a levitation charm. Stories pull us in through mystery, character, and emotion — through what they are, not what they promise to pay out later. Hardy said as much about why mathematicians do mathematics at all: not usefulness, but beauty [@hardy1940apology].
+
+And the "useless" videos are, structurally, stories. Count the block collisions as the mass ratio grows: 3, then 31, then 314, then 3141. That's π, surfacing in a one-dimensional world that contains no circle — a familiar fingerprint at a crime scene the culprit had no business visiting. You don't push through the analysis because it's useful; you push through because you *need to find the hidden circle*. The tetrahedron problem, meanwhile, is staged as the hardest question on the notoriously hard Putnam exam, and the viewer walks the solver's path — the same fantasy that powers *Star Wars*, except the Force is "reduce the problem by a dimension."
+
+## A skeptic's pause
+
+Before we rebuild the curriculum around campfire tales, three caveats. First, *selection bias*: people watching a math channel already opted in; view counts measure the curiosity of the curious, not the conversion of the indifferent. Second, *clicks are not comprehension*: educational psychologists warn of "seductive details," story elements that delight while displacing content. A narrative that makes you *feel* understanding is not the same as one that builds it. Third, four videos is an anecdote wearing a lab coat.
+
+But notice precisely what the story theory does and doesn't explain. It explains why people click, and why they stay for twenty minutes. It says nothing about why anyone keeps doing mathematics after the credits roll. Attention is necessary; it isn't identity. For that, we need the second talk.
+
+## From drill to sense
+
+Eddie Woo's story begins at a piano. As a child he was made to practice — weekends filled with scales and rote memorization — until, two years in, his teacher dropped him on the grounds that his fingers were too short. Music, he concluded, was a dry, lonely form of torture. Eleven years later, wanting to play at church (and, he admits, to impress a girl), he picked up a steel-string guitar, learned a few chords from his brother, and felt rhythm move through his body in a band. He had been surrounded by an ocean of music all along; he had finally learned to swim.
+
+Now watch the logic of this anecdote, because it's doing real work: same person, same discipline, opposite outcomes. You could object that eleven years grow fingers — but his second encounter didn't involve drills suddenly becoming pleasant. What changed was the framing: scales decoupled from music versus participation *in* music. That is exactly Sanderson's dichotomy — the drill is the gym; the band is the story.
+
+But Woo pushes one step further. At university the same awakening happened with mathematics. What he had taken for memorizing impenetrable formulas to solve meaningless abstractions turned out to be practical, beautiful, and — crucially — less about finding answers than about learning to ask the right questions. His conclusion: mathematics is not a subject. It is a *sense* — like sight, rhythm, or humor — for perceiving pattern, relationship, and logical connection in realities that are otherwise invisible.
+
+## What the sense perceives
+
+Once you take the metaphor seriously, examples crowd in. Lightning, river deltas, tree branches, and the blood vessels threading every cubic centimeter of your body all repeat one recursive geometry — parts echoing the whole — which we call *fractal*, cousin to "fraction" and "fracture." Train the sense and you start seeing it in broccoli, fern leaves, clouds.
+
+Or take a flower. Grow each new petal at 90° from the last and you get a wasteful cross; at 62°, rounder but still wasteful. The sunflower's choice is 137.5° — the golden angle, born of the golden ratio — which packs seeds with astonishing efficiency and, as a side effect, paints those magnificent interlocking spirals.
+
+This reframing also dissolves a familiar self-imposed verdict. Woo was born with terrible eyesight, and he has never once declared "I'm just not a seeing person" — he puts on glasses. Yet people announce "I don't have a maths brain" daily, with conviction. Senses differ in native acuity, and every one of them improves with training; good teaching is simply the corrective lens. To opt out is to seal off a vast region of human experience — in a universe we literally named *Cosmos*, "ordered and patterned," the sworn opposite of chaos.
+
+## A sense that must doubt itself
+
+Here is where I want to be critical, because the pattern-sense has a known failure mode: it overfires. We see faces in clouds and canals on Mars. The golden ratio, in particular, is a folklore magnet — it allegedly hides in the Parthenon, your finger bones, every seashell. Measure enough things with enough freedom in where you place the ruler, and 1.618 obligingly appears. The sunflower angle is the real deal, a provable optimum; much of the rest is myth retrofitted onto monuments.
+
+So if mathematics is a sense, it must be the sense that includes its own skeptic: the reflex of asking *is the pattern actually there, or did I put it there?* That reflex has a name — proof. Far from weakening Woo's metaphor, this completes it: every sense can hallucinate, but mathematics ships with its own error correction.
+
+## The braid
+
+Now the strands tie together. Hardy boasted that his number theory would never serve war or commerce; it now underwrites the cryptography securing this very page. The block-collision puzzle turned out to share its mathematics with a famous quantum search algorithm [@brown2019playing]. Playing with primes in polar coordinates, purely for the pleasure of the spirals, walks you straight into Dirichlet's theorem [@sanderson2019spirals] — a path I retraced in [my prime spirals post](../prime-spirals/). Even proofs are built like stories: the Möbius strip hung on the wall in act one of the [inscribed rectangle problem](../the-inscribed-rectangle-problem/) fires, Chekhov-style, in act three [@sanderson2016topology].
+
+So the answer is not "make it useful," and not even "make it a story." Story is what captures attention; the sense is what you grow by staying; and usefulness is what keeps arriving afterward, uninvited. Each talk alone is a half-truth — braided, they hold.
+
+## What to remember
+
+"When will I ever use this?" is a symptom, not a question — it's what students ask when the mystery is missing and the sense has never been switched on. The goal isn't to answer it better; it's to make it not come up. Pull people in with a story, train the sense (and its skeptic), and let usefulness do what it has always done: show up later, unannounced.
+
+## How to cite
+
+> Terry (2026). *Nobody Asks What Quidditch Is For*. Retrieved from `https://terryfxh.github.io/math-notes/posts/nobody-asks-what-quidditch-is-for/`.
