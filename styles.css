@@ -924,16 +924,17 @@ body:has(.home-page) #title-block-header .subtitle {
   padding: clamp(4.5rem, 10vw, 7.5rem) 0 clamp(3.5rem, 7vw, 5.5rem);
 }
 
-/* — Epigraph: system sans, display weight, no italic, no divider — */
+/* — Epigraph: italic and quiet — a soft secondary note, not a
+   headline. Smaller, lighter weight, premium-grey so it recedes. — */
 .home-page .epigraph p,
 .home-page .epigraph-center p {
   font-family: var(--font-sans);
-  font-style: normal;
-  font-weight: 500;
-  font-size: clamp(1.7rem, 2.8vw, 2.25rem);
-  line-height: 1.22;
-  letter-spacing: -0.021em;
-  color: #1d1d1f;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.2rem, 1.9vw, 1.55rem);
+  line-height: 1.4;
+  letter-spacing: -0.012em;
+  color: #86868b;
 }
 .home-page .attribution {
   font-weight: 500;
