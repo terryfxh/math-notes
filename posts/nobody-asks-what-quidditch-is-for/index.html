@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-06-10">
+<meta name="description" content="Two TEDx talks — Grant Sanderson on why ‘useless’ math out-pulls useful math, and Eddie Woo on mathematics as a sense — braided into one reflection on what actually makes people engage with math.">
+
+<title>Nobody Asks What Quidditch Is For – (Terry) Xihan Fang — Math Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f32019f3c99af8076ea5391d972fcba4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Nobody Asks What Quidditch Is For – (Terry) Xihan Fang — Math Notes">
+<meta property="og:description" content="Two TEDx talks — Grant Sanderson on why ‘useless’ math out-pulls useful math, and Eddie Woo on mathematics as a sense — braided into one reflection on what actually makes people engage with math.">
+<meta property="og:site_name" content="(Terry) Xihan Fang — Math Notes">
+<meta name="twitter:title" content="Nobody Asks What Quidditch Is For – (Terry) Xihan Fang — Math Notes">
+<meta name="twitter:description" content="Two TEDx talks — Grant Sanderson on why ‘useless’ math out-pulls useful math, and Eddie Woo on mathematics as a sense — braided into one reflection on what actually makes people engage with math.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">(Terry) Xihan Fang — Math Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/terryfxh"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-respectable-theory" id="toc-the-respectable-theory" class="nav-link active" data-scroll-target="#the-respectable-theory">The respectable theory</a></li>
+  <li><a href="#the-data-misbehaves" id="toc-the-data-misbehaves" class="nav-link" data-scroll-target="#the-data-misbehaves">The data misbehaves</a></li>
+  <li><a href="#nobody-asks-what-quidditch-is-for" id="toc-nobody-asks-what-quidditch-is-for" class="nav-link" data-scroll-target="#nobody-asks-what-quidditch-is-for">Nobody asks what Quidditch is for</a></li>
+  <li><a href="#a-skeptics-pause" id="toc-a-skeptics-pause" class="nav-link" data-scroll-target="#a-skeptics-pause">A skeptic’s pause</a></li>
+  <li><a href="#from-drill-to-sense" id="toc-from-drill-to-sense" class="nav-link" data-scroll-target="#from-drill-to-sense">From drill to sense</a></li>
+  <li><a href="#what-the-sense-perceives" id="toc-what-the-sense-perceives" class="nav-link" data-scroll-target="#what-the-sense-perceives">What the sense perceives</a></li>
+  <li><a href="#a-sense-that-must-doubt-itself" id="toc-a-sense-that-must-doubt-itself" class="nav-link" data-scroll-target="#a-sense-that-must-doubt-itself">A sense that must doubt itself</a></li>
+  <li><a href="#the-braid" id="toc-the-braid" class="nav-link" data-scroll-target="#the-braid">The braid</a></li>
+  <li><a href="#what-to-remember" id="toc-what-to-remember" class="nav-link" data-scroll-target="#what-to-remember">What to remember</a></li>
+  <li><a href="#how-to-cite" id="toc-how-to-cite" class="nav-link" data-scroll-target="#how-to-cite">How to cite</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Nobody Asks What Quidditch Is For</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">meta</div>
+    <div class="quarto-category">learning</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Two TEDx talks — Grant Sanderson on why ‘useless’ math out-pulls useful math, and Eddie Woo on mathematics as a sense — braided into one reflection on what actually makes people engage with math.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 10, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="epigraph">
+<p><em>“A mathematician, like a painter or a poet, is a maker of patterns. If his patterns are more permanent than theirs, it is because they are made with ideas.”</em></p>
+<p><span class="attribution">— G. H. Hardy, <em>A Mathematician’s Apology</em></span></p>
+</div>
+<p>Here is an uncomfortable fact about teaching math today: your audience sits one click away from billions of hours of content engineered, A/B-tested, and lovingly tuned to be more fun than you. Engagement is not a birthright. So what actually pulls people into mathematics — voluntarily, on a weeknight, with no exam in sight?</p>
+<p>I’ve been chewing on two talks that attack this question from opposite ends: Grant Sanderson’s TEDxBerkeley talk on engagement <span class="citation" data-cites="sanderson2020engage"><a href="#ref-sanderson2020engage" role="doc-biblioref">[1]</a></span>, and Eddie Woo’s TEDxSydney talk on mathematics as a sense <span class="citation" data-cites="woo2018sense"><a href="#ref-woo2018sense" role="doc-biblioref">[2]</a></span>. Each gave me half an answer. This post lays out the chain, link by link.</p>
+<section id="the-respectable-theory" class="level2">
+<h2 class="anchored" data-anchor-id="the-respectable-theory">The respectable theory</h2>
+<p>If you had asked me beforehand, I’d have said engagement comes from two ingredients. First, <em>show before you formalize</em>. Look up the Fourier transform on Wikipedia and you’re greeted by a wall of integrals and complex exponentials — a bouncer checking IDs at the door. But watch a graph get wrapped around a circle and the center of mass lurch sideways at resonance, and you understand what the formula <em>is</em> before reading a single symbol. Second, <em>answer the eternal question</em>: “when will I ever use this?” If algebra class feels like lifting weights — good for you, allegedly, and joyless — then showing how the same machinery decomposes a sound wave or teaches a machine to read digits turns drudgery into a superpower. Useful plus visual. Case closed.</p>
+<p>This theory is respectable, intuitive, and at least half wrong.</p>
+</section>
+<section id="the-data-misbehaves" class="level2">
+<h2 class="anchored" data-anchor-id="the-data-misbehaves">The data misbehaves</h2>
+<p>On Sanderson’s own channel, the neural network series ranks second and the Fourier video fourth. The first and third spots belong to two problems of magnificent uselessness: the probability that a tetrahedron formed by four random points on a sphere contains the center, and how many times two blocks collide on a frictionless floor. No engineer has ever billed an hour for either. Yet they out-pulled the useful stuff — the market has spoken, and it prefers blocks bonking into a wall.</p>
+<p>Take a moment to chew on that. The videos engineered to answer “what’s this for?” lost to videos that can’t even pretend to have an answer.</p>
+</section>
+<section id="nobody-asks-what-quidditch-is-for" class="level2">
+<h2 class="anchored" data-anchor-id="nobody-asks-what-quidditch-is-for">Nobody asks what Quidditch is for</h2>
+<p>Sanderson’s resolution is a comparison I can’t unsee: far more people read fiction last night than went to the gym, and nobody closes <em>Harry Potter</em> demanding the practical ROI of a levitation charm. Stories pull us in through mystery, character, and emotion — through what they are, not what they promise to pay out later. Hardy said as much about why mathematicians do mathematics at all: not usefulness, but beauty <span class="citation" data-cites="hardy1940apology"><a href="#ref-hardy1940apology" role="doc-biblioref">[3]</a></span>.</p>
+<p>And the “useless” videos are, structurally, stories. Count the block collisions as the mass ratio grows: 3, then 31, then 314, then 3141. That’s π, surfacing in a one-dimensional world that contains no circle — a familiar fingerprint at a crime scene the culprit had no business visiting. You don’t push through the analysis because it’s useful; you push through because you <em>need to find the hidden circle</em>. The tetrahedron problem, meanwhile, is staged as the hardest question on the notoriously hard Putnam exam, and the viewer walks the solver’s path — the same fantasy that powers <em>Star Wars</em>, except the Force is “reduce the problem by a dimension.”</p>
+</section>
+<section id="a-skeptics-pause" class="level2">
+<h2 class="anchored" data-anchor-id="a-skeptics-pause">A skeptic’s pause</h2>
+<p>Before we rebuild the curriculum around campfire tales, three caveats. First, <em>selection bias</em>: people watching a math channel already opted in; view counts measure the curiosity of the curious, not the conversion of the indifferent. Second, <em>clicks are not comprehension</em>: educational psychologists warn of “seductive details,” story elements that delight while displacing content. A narrative that makes you <em>feel</em> understanding is not the same as one that builds it. Third, four videos is an anecdote wearing a lab coat.</p>
+<p>But notice precisely what the story theory does and doesn’t explain. It explains why people click, and why they stay for twenty minutes. It says nothing about why anyone keeps doing mathematics after the credits roll. Attention is necessary; it isn’t identity. For that, we need the second talk.</p>
+</section>
+<section id="from-drill-to-sense" class="level2">
+<h2 class="anchored" data-anchor-id="from-drill-to-sense">From drill to sense</h2>
+<p>Eddie Woo’s story begins at a piano. As a child he was made to practice — weekends filled with scales and rote memorization — until, two years in, his teacher dropped him on the grounds that his fingers were too short. Music, he concluded, was a dry, lonely form of torture. Eleven years later, wanting to play at church (and, he admits, to impress a girl), he picked up a steel-string guitar, learned a few chords from his brother, and felt rhythm move through his body in a band. He had been surrounded by an ocean of music all along; he had finally learned to swim.</p>
+<p>Now watch the logic of this anecdote, because it’s doing real work: same person, same discipline, opposite outcomes. You could object that eleven years grow fingers — but his second encounter didn’t involve drills suddenly becoming pleasant. What changed was the framing: scales decoupled from music versus participation <em>in</em> music. That is exactly Sanderson’s dichotomy — the drill is the gym; the band is the story.</p>
+<p>But Woo pushes one step further. At university the same awakening happened with mathematics. What he had taken for memorizing impenetrable formulas to solve meaningless abstractions turned out to be practical, beautiful, and — crucially — less about finding answers than about learning to ask the right questions. His conclusion: mathematics is not a subject. It is a <em>sense</em> — like sight, rhythm, or humor — for perceiving pattern, relationship, and logical connection in realities that are otherwise invisible.</p>
+</section>
+<section id="what-the-sense-perceives" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-sense-perceives">What the sense perceives</h2>
+<p>Once you take the metaphor seriously, examples crowd in. Lightning, river deltas, tree branches, and the blood vessels threading every cubic centimeter of your body all repeat one recursive geometry — parts echoing the whole — which we call <em>fractal</em>, cousin to “fraction” and “fracture.” Train the sense and you start seeing it in broccoli, fern leaves, clouds.</p>
+<p>Or take a flower. Grow each new petal at 90° from the last and you get a wasteful cross; at 62°, rounder but still wasteful. The sunflower’s choice is 137.5° — the golden angle, born of the golden ratio — which packs seeds with astonishing efficiency and, as a side effect, paints those magnificent interlocking spirals.</p>
+<p>This reframing also dissolves a familiar self-imposed verdict. Woo was born with terrible eyesight, and he has never once declared “I’m just not a seeing person” — he puts on glasses. Yet people announce “I don’t have a maths brain” daily, with conviction. Senses differ in native acuity, and every one of them improves with training; good teaching is simply the corrective lens. To opt out is to seal off a vast region of human experience — in a universe we literally named <em>Cosmos</em>, “ordered and patterned,” the sworn opposite of chaos.</p>
+</section>
+<section id="a-sense-that-must-doubt-itself" class="level2">
+<h2 class="anchored" data-anchor-id="a-sense-that-must-doubt-itself">A sense that must doubt itself</h2>
+<p>Here is where I want to be critical, because the pattern-sense has a known failure mode: it overfires. We see faces in clouds and canals on Mars. The golden ratio, in particular, is a folklore magnet — it allegedly hides in the Parthenon, your finger bones, every seashell. Measure enough things with enough freedom in where you place the ruler, and 1.618 obligingly appears. The sunflower angle is the real deal, a provable optimum; much of the rest is myth retrofitted onto monuments.</p>
+<p>So if mathematics is a sense, it must be the sense that includes its own skeptic: the reflex of asking <em>is the pattern actually there, or did I put it there?</em> That reflex has a name — proof. Far from weakening Woo’s metaphor, this completes it: every sense can hallucinate, but mathematics ships with its own error correction.</p>
+</section>
+<section id="the-braid" class="level2">
+<h2 class="anchored" data-anchor-id="the-braid">The braid</h2>
+<p>Now the strands tie together. Hardy boasted that his number theory would never serve war or commerce; it now underwrites the cryptography securing this very page. The block-collision puzzle turned out to share its mathematics with a famous quantum search algorithm <span class="citation" data-cites="brown2019playing"><a href="#ref-brown2019playing" role="doc-biblioref">[4]</a></span>. Playing with primes in polar coordinates, purely for the pleasure of the spirals, walks you straight into Dirichlet’s theorem <span class="citation" data-cites="sanderson2019spirals"><a href="#ref-sanderson2019spirals" role="doc-biblioref">[5]</a></span> — a path I retraced in <a href="../prime-spirals/">my prime spirals post</a>. Even proofs are built like stories: the Möbius strip hung on the wall in act one of the <a href="../the-inscribed-rectangle-problem/">inscribed rectangle problem</a> fires, Chekhov-style, in act three <span class="citation" data-cites="sanderson2016topology"><a href="#ref-sanderson2016topology" role="doc-biblioref">[6]</a></span>.</p>
+<p>So the answer is not “make it useful,” and not even “make it a story.” Story is what captures attention; the sense is what you grow by staying; and usefulness is what keeps arriving afterward, uninvited. Each talk alone is a half-truth — braided, they hold.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>“When will I ever use this?” is a symptom, not a question — it’s what students ask when the mystery is missing and the sense has never been switched on. The goal isn’t to answer it better; it’s to make it not come up. Pull people in with a story, train the sense (and its skeptic), and let usefulness do what it has always done: show up later, unannounced.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Nobody Asks What Quidditch Is For</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/nobody-asks-what-quidditch-is-for/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-sanderson2020engage" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">G. Sanderson, <span>“What makes people engage with math.”</span> TEDxBerkeley talk, 2020. Available: <a href="https://www.ted.com/talks/grant_sanderson_what_makes_people_engage_with_math">https://www.ted.com/talks/grant_sanderson_what_makes_people_engage_with_math</a></div>
+</div>
+<div id="ref-woo2018sense" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">E. Woo, <span>“Mathematics is the sense you never knew you had.”</span> TEDxSydney talk, 2018. Available: <a href="https://www.ted.com/talks/eddie_woo_how_math_is_our_real_sixth_sense">https://www.ted.com/talks/eddie_woo_how_math_is_our_real_sixth_sense</a></div>
+</div>
+<div id="ref-hardy1940apology" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">G. H. Hardy, <em>A mathematician’s apology</em>. Cambridge University Press, 1940.</div>
+</div>
+<div id="ref-brown2019playing" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">A. R. Brown, <span>“Playing pool with <span class="math inline">\(|\psi\rangle\)</span>: From bouncing billiards to quantum search.”</span> arXiv preprint arXiv:1912.02207, 2019.</div>
+</div>
+<div id="ref-sanderson2019spirals" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">G. Sanderson, <span>“Why do prime numbers make these spirals?”</span> 3Blue1Brown, YouTube video, 2019. Available: <a href="https://www.youtube.com/watch?v=EK32jo7i5LQ">https://www.youtube.com/watch?v=EK32jo7i5LQ</a></div>
+</div>
+<div id="ref-sanderson2016topology" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">G. Sanderson, <span>“Who cares about topology? (Inscribed rectangle problem).”</span> 3Blue1Brown, YouTube video, 2016. Available: <a href="https://www.youtube.com/watch?v=AmgkSdhK4K8">https://www.youtube.com/watch?v=AmgkSdhK4K8</a></div>
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/terryfxh\.github\.io\/math-notes");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Nobody Asks What Quidditch Is For"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "Two TEDx talks — Grant Sanderson on why 'useless' math out-pulls useful math, and Eddie Woo on mathematics as a sense — braided into one reflection on what actually makes people engage with math."</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-06-10</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [meta, learning]</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> ../../references.bib</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">draft:</span><span class="co"> false</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>::: {.epigraph}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>*"A mathematician, like a painter or a poet, is a maker of patterns. If his patterns are more permanent than theirs, it is because they are made with ideas."*</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">— G. H. Hardy, *A Mathematician's Apology*</span><span class="co">]</span>{.attribution}</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Here is an uncomfortable fact about teaching math today: your audience sits one click away from billions of hours of content engineered, A/B-tested, and lovingly tuned to be more fun than you. Engagement is not a birthright. So what actually pulls people into mathematics — voluntarily, on a weeknight, with no exam in sight?</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>I've been chewing on two talks that attack this question from opposite ends: Grant Sanderson's TEDxBerkeley talk on engagement <span class="co">[</span><span class="ot">@sanderson2020engage</span><span class="co">]</span>, and Eddie Woo's TEDxSydney talk on mathematics as a sense <span class="co">[</span><span class="ot">@woo2018sense</span><span class="co">]</span>. Each gave me half an answer. This post lays out the chain, link by link.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## The respectable theory</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>If you had asked me beforehand, I'd have said engagement comes from two ingredients. First, *show before you formalize*. Look up the Fourier transform on Wikipedia and you're greeted by a wall of integrals and complex exponentials — a bouncer checking IDs at the door. But watch a graph get wrapped around a circle and the center of mass lurch sideways at resonance, and you understand what the formula *is* before reading a single symbol. Second, *answer the eternal question*: "when will I ever use this?" If algebra class feels like lifting weights — good for you, allegedly, and joyless — then showing how the same machinery decomposes a sound wave or teaches a machine to read digits turns drudgery into a superpower. Useful plus visual. Case closed.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>This theory is respectable, intuitive, and at least half wrong.</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## The data misbehaves</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>On Sanderson's own channel, the neural network series ranks second and the Fourier video fourth. The first and third spots belong to two problems of magnificent uselessness: the probability that a tetrahedron formed by four random points on a sphere contains the center, and how many times two blocks collide on a frictionless floor. No engineer has ever billed an hour for either. Yet they out-pulled the useful stuff — the market has spoken, and it prefers blocks bonking into a wall.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>Take a moment to chew on that. The videos engineered to answer "what's this for?" lost to videos that can't even pretend to have an answer.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## Nobody asks what Quidditch is for</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>Sanderson's resolution is a comparison I can't unsee: far more people read fiction last night than went to the gym, and nobody closes *Harry Potter* demanding the practical ROI of a levitation charm. Stories pull us in through mystery, character, and emotion — through what they are, not what they promise to pay out later. Hardy said as much about why mathematicians do mathematics at all: not usefulness, but beauty <span class="co">[</span><span class="ot">@hardy1940apology</span><span class="co">]</span>.</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>And the "useless" videos are, structurally, stories. Count the block collisions as the mass ratio grows: 3, then 31, then 314, then 3141. That's π, surfacing in a one-dimensional world that contains no circle — a familiar fingerprint at a crime scene the culprit had no business visiting. You don't push through the analysis because it's useful; you push through because you *need to find the hidden circle*. The tetrahedron problem, meanwhile, is staged as the hardest question on the notoriously hard Putnam exam, and the viewer walks the solver's path — the same fantasy that powers *Star Wars*, except the Force is "reduce the problem by a dimension."</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## A skeptic's pause</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>Before we rebuild the curriculum around campfire tales, three caveats. First, *selection bias*: people watching a math channel already opted in; view counts measure the curiosity of the curious, not the conversion of the indifferent. Second, *clicks are not comprehension*: educational psychologists warn of "seductive details," story elements that delight while displacing content. A narrative that makes you *feel* understanding is not the same as one that builds it. Third, four videos is an anecdote wearing a lab coat.</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>But notice precisely what the story theory does and doesn't explain. It explains why people click, and why they stay for twenty minutes. It says nothing about why anyone keeps doing mathematics after the credits roll. Attention is necessary; it isn't identity. For that, we need the second talk.</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## From drill to sense</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>Eddie Woo's story begins at a piano. As a child he was made to practice — weekends filled with scales and rote memorization — until, two years in, his teacher dropped him on the grounds that his fingers were too short. Music, he concluded, was a dry, lonely form of torture. Eleven years later, wanting to play at church (and, he admits, to impress a girl), he picked up a steel-string guitar, learned a few chords from his brother, and felt rhythm move through his body in a band. He had been surrounded by an ocean of music all along; he had finally learned to swim.</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>Now watch the logic of this anecdote, because it's doing real work: same person, same discipline, opposite outcomes. You could object that eleven years grow fingers — but his second encounter didn't involve drills suddenly becoming pleasant. What changed was the framing: scales decoupled from music versus participation *in* music. That is exactly Sanderson's dichotomy — the drill is the gym; the band is the story.</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>But Woo pushes one step further. At university the same awakening happened with mathematics. What he had taken for memorizing impenetrable formulas to solve meaningless abstractions turned out to be practical, beautiful, and — crucially — less about finding answers than about learning to ask the right questions. His conclusion: mathematics is not a subject. It is a *sense* — like sight, rhythm, or humor — for perceiving pattern, relationship, and logical connection in realities that are otherwise invisible.</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## What the sense perceives</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>Once you take the metaphor seriously, examples crowd in. Lightning, river deltas, tree branches, and the blood vessels threading every cubic centimeter of your body all repeat one recursive geometry — parts echoing the whole — which we call *fractal*, cousin to "fraction" and "fracture." Train the sense and you start seeing it in broccoli, fern leaves, clouds.</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>Or take a flower. Grow each new petal at 90° from the last and you get a wasteful cross; at 62°, rounder but still wasteful. The sunflower's choice is 137.5° — the golden angle, born of the golden ratio — which packs seeds with astonishing efficiency and, as a side effect, paints those magnificent interlocking spirals.</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>This reframing also dissolves a familiar self-imposed verdict. Woo was born with terrible eyesight, and he has never once declared "I'm just not a seeing person" — he puts on glasses. Yet people announce "I don't have a maths brain" daily, with conviction. Senses differ in native acuity, and every one of them improves with training; good teaching is simply the corrective lens. To opt out is to seal off a vast region of human experience — in a universe we literally named *Cosmos*, "ordered and patterned," the sworn opposite of chaos.</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="fu">## A sense that must doubt itself</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>Here is where I want to be critical, because the pattern-sense has a known failure mode: it overfires. We see faces in clouds and canals on Mars. The golden ratio, in particular, is a folklore magnet — it allegedly hides in the Parthenon, your finger bones, every seashell. Measure enough things with enough freedom in where you place the ruler, and 1.618 obligingly appears. The sunflower angle is the real deal, a provable optimum; much of the rest is myth retrofitted onto monuments.</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>So if mathematics is a sense, it must be the sense that includes its own skeptic: the reflex of asking *is the pattern actually there, or did I put it there?* That reflex has a name — proof. Far from weakening Woo's metaphor, this completes it: every sense can hallucinate, but mathematics ships with its own error correction.</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="fu">## The braid</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>Now the strands tie together. Hardy boasted that his number theory would never serve war or commerce; it now underwrites the cryptography securing this very page. The block-collision puzzle turned out to share its mathematics with a famous quantum search algorithm <span class="co">[</span><span class="ot">@brown2019playing</span><span class="co">]</span>. Playing with primes in polar coordinates, purely for the pleasure of the spirals, walks you straight into Dirichlet's theorem <span class="co">[</span><span class="ot">@sanderson2019spirals</span><span class="co">]</span> — a path I retraced in <span class="co">[</span><span class="ot">my prime spirals post</span><span class="co">](../prime-spirals/)</span>. Even proofs are built like stories: the Möbius strip hung on the wall in act one of the <span class="co">[</span><span class="ot">inscribed rectangle problem</span><span class="co">](../the-inscribed-rectangle-problem/)</span> fires, Chekhov-style, in act three <span class="co">[</span><span class="ot">@sanderson2016topology</span><span class="co">]</span>.</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>So the answer is not "make it useful," and not even "make it a story." Story is what captures attention; the sense is what you grow by staying; and usefulness is what keeps arriving afterward, uninvited. Each talk alone is a half-truth — braided, they hold.</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to remember</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>"When will I ever use this?" is a symptom, not a question — it's what students ask when the mystery is missing and the sense has never been switched on. The goal isn't to answer it better; it's to make it not come up. Pull people in with a story, train the sense (and its skeptic), and let usefulness do what it has always done: show up later, unannounced.</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *Nobody Asks What Quidditch Is For*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/nobody-asks-what-quidditch-is-for/`</span><span class="at">.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Terry Fang · All rights reserved · Reproduction or republication in any form requires attribution and the author’s prior permission.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

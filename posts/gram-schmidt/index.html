@@ -99,7 +99,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-b806793a49aed1407121cbdf8360a762.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-f32019f3c99af8076ea5391d972fcba4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -321,7 +321,7 @@ A = QR,
 <p>Here the story takes a turn that pure mathematics alone would never warn you about. On paper, <a href="#eq-gs" class="quarto-xref">Equation&nbsp;1</a> is flawless. On a computer, the order in which you subtract the shadows turns out to matter enormously.</p>
 <p>There are two ways to organize the subtraction. <em>Classical</em> Gram–Schmidt computes every projection against the <strong>original</strong> vector <span class="math inline">\(v_k\)</span> and removes them together. <em>Modified</em> Gram–Schmidt removes each shadow one at a time, always projecting the <strong>running remainder</strong> that is left so far. Algebraically the two are identical. In floating-point arithmetic they are not, because the modified version always works with the most up-to-date, mostly-perpendicular remainder, and so it never lets rounding errors pile up unexamined.</p>
 <p>To see the gap, feed both versions a deliberately nasty matrix: the <span class="math inline">\(8 \times 8\)</span> Hilbert matrix, whose columns are so nearly parallel that its condition number runs into the billions.</p>
-<div id="a178d889" class="cell" data-execution_count="1">
+<div id="d69da8cf" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gram_schmidt(A, modified):</span>
@@ -355,7 +355,7 @@ A = QR,
 
 classical:  |Q^T Q - I| = 1.42e+00    |H - QR| = 1.02e-16
 modified :  |Q^T Q - I| = 3.62e-07    |H - QR| = 1.04e-16
-numpy.qr :  |Q^T Q - I| = 8.33e-16</code></pre>
+numpy.qr :  |Q^T Q - I| = 1.11e-15</code></pre>
 </div>
 </div>
 <p>Both methods rebuild <span class="math inline">\(H\)</span> from <span class="math inline">\(Q\)</span> and <span class="math inline">\(R\)</span> essentially perfectly, with <span class="math inline">\(\lVert H - QR\rVert\)</span> down at roundoff. That is not where the danger lives. Look instead at <span class="math inline">\(\lVert Q^\top Q - I\rVert\)</span>, the honest test of whether the columns of <span class="math inline">\(Q\)</span> really are orthonormal. Classical Gram–Schmidt scores around <span class="math inline">\(1\)</span>, meaning its “orthonormal” axes are nothing of the sort, they have collapsed back toward each other. The modified version holds the error near <span class="math inline">\(10^{-7}\)</span>, and the Householder-based routine in NumPy reaches full machine precision around <span class="math inline">\(10^{-15}\)</span>.</p>
