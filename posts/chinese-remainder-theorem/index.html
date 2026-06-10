@@ -306,7 +306,7 @@ window.Quarto = {
 n = \sum_{i=1}^{k} a_i\, M_i\, y_i \pmod{M}.
 \tag{1}\]</span></span></p>
 <p>Check it against any single modulus <span class="math inline">\(m_j\)</span>. Every term with <span class="math inline">\(i \neq j\)</span> carries the factor <span class="math inline">\(M_i\)</span>, which is divisible by <span class="math inline">\(m_j\)</span>, so it contributes nothing. The surviving term is <span class="math inline">\(a_j M_j y_j \equiv a_j \cdot 1 = a_j \pmod{m_j}\)</span>. The construction hits the target in every coordinate at once. <a href="#eq-crt-formula" class="quarto-xref">Equation&nbsp;1</a> is the whole algorithm, and the code below is nothing more than this sum.</p>
-<div id="b7a293cb" class="cell" data-execution_count="1">
+<div id="cd32ad04" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> prod</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> crt(residues, moduli):</span>
@@ -333,7 +333,7 @@ solutions repeat every M = 105</code></pre>
 <h2 class="anchored" data-anchor-id="why-a-computer-cares">Why a computer cares</h2>
 <p>So far this is elegant number theory. The reason it became infrastructure is that the isomorphism in <a href="#thm-crt" class="quarto-xref">Theorem&nbsp;1</a> does something a computer scientist dreams about: it turns one hard arithmetic problem into several small, independent ones.</p>
 <p>Because <span class="math inline">\(\varphi\)</span> respects <span class="math inline">\(+\)</span> and <span class="math inline">\(\times\)</span>, to add or multiply two numbers modulo <span class="math inline">\(M\)</span> you may add or multiply their coordinates <em>separately</em>, each in its own little world modulo <span class="math inline">\(m_i\)</span>, and then read the answer back. The coordinates never talk to each other. There is no carrying between them. This is the idea behind a <strong>residue number system</strong>: store a huge integer as its remainders against a set of coprime moduli, and every multiplication becomes a handful of small multiplications that a machine can run side by side.</p>
-<div id="d4b9061d" class="cell" data-execution_count="2">
+<div id="6b7053b3" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>moduli <span class="op">=</span> [<span class="dv">101</span>, <span class="dv">103</span>, <span class="dv">107</span>, <span class="dv">109</span>]    <span class="co"># pairwise coprime; M is their product</span></span>
@@ -353,7 +353,7 @@ solutions repeat every M = 105</code></pre>
 </div>
 </div>
 <p>The most familiar place this shows up is RSA. Decrypting a message means computing <span class="math inline">\(c^{d} \bmod N\)</span> where <span class="math inline">\(N = pq\)</span> is a product of two large primes. That exponentiation is the expensive heartbeat of the whole scheme, and its cost grows faster than linearly in the size of the modulus. The Chinese Remainder Theorem offers a shortcut: instead of working modulo the giant <span class="math inline">\(N\)</span>, work modulo <span class="math inline">\(p\)</span> and modulo <span class="math inline">\(q\)</span> separately, where every number is half the size, then glue the two results back together with <a href="#eq-crt-formula" class="quarto-xref">Equation&nbsp;1</a>. Two small exponentiations plus a recombination beat one large exponentiation, and in practice the speedup is roughly threefold. Every serious RSA implementation does exactly this <span class="citation" data-cites="rivest1978rsa"><a href="#ref-rivest1978rsa" role="doc-biblioref">[1]</a></span>.</p>
-<div id="32663451" class="cell" data-execution_count="3">
+<div id="01bcde36" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_prime(n, k<span class="op">=</span><span class="dv">20</span>):</span>
@@ -402,8 +402,8 @@ solutions repeat every M = 105</code></pre>
 <span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"CRT    : </span><span class="sc">{</span>(t3 <span class="op">-</span> t2) <span class="op">/</span> <span class="dv">50</span> <span class="op">*</span> <span class="dv">1000</span><span class="sc">:.2f}</span><span class="ss"> ms"</span>)</span>
 <span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"speedup: </span><span class="sc">{</span>(t1 <span class="op">-</span> t0) <span class="op">/</span> (t3 <span class="op">-</span> t2)<span class="sc">:.1f}</span><span class="ss">x   (results agree: </span><span class="sc">{</span>m_direct <span class="op">==</span> m_crt<span class="sc">}</span><span class="ss">)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>direct : 3.72 ms
-CRT    : 1.30 ms
+<pre><code>direct : 3.52 ms
+CRT    : 1.23 ms
 speedup: 2.9x   (results agree: True)</code></pre>
 </div>
 </div>

@@ -2,6 +2,7 @@
   {
     "listing": "/notes.html",
     "items": [
+      "/posts/the-inscribed-rectangle-problem/index.html",
       "/posts/uniform-convergence/index.html",
       "/posts/nullstellensatz/index.html",
       "/posts/reconstructing-calculus/index.html",

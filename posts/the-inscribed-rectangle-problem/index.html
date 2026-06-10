@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-06-10">
+<meta name="description" content="How a Möbius strip and a Klein bottle conspire to prove that every closed loop you can draw contains four points forming a perfect rectangle.">
+
+<title>The Inscribed Rectangle Problem – (Terry) Xihan Fang — Math Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b806793a49aed1407121cbdf8360a762.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="The Inscribed Rectangle Problem – (Terry) Xihan Fang — Math Notes">
+<meta property="og:description" content="How a Möbius strip and a Klein bottle conspire to prove that every closed loop you can draw contains four points forming a perfect rectangle.">
+<meta property="og:image" content="https://terryfxh.github.io/math-notes/posts/the-inscribed-rectangle-problem/index_files/figure-html/fig-rectangle-output-2.png">
+<meta property="og:site_name" content="(Terry) Xihan Fang — Math Notes">
+<meta property="og:image:height" content="777">
+<meta property="og:image:width" content="852">
+<meta name="twitter:title" content="The Inscribed Rectangle Problem – (Terry) Xihan Fang — Math Notes">
+<meta name="twitter:description" content="How a Möbius strip and a Klein bottle conspire to prove that every closed loop you can draw contains four points forming a perfect rectangle.">
+<meta name="twitter:image" content="https://terryfxh.github.io/math-notes/posts/the-inscribed-rectangle-problem/index_files/figure-html/fig-rectangle-output-2.png">
+<meta name="twitter:image-height" content="777">
+<meta name="twitter:image-width" content="852">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">(Terry) Xihan Fang — Math Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/terryfxh"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#stop-looking-for-rectangles" id="toc-stop-looking-for-rectangles" class="nav-link active" data-scroll-target="#stop-looking-for-rectangles">Stop looking for rectangles</a></li>
+  <li><a href="#a-surface-made-of-measurements" id="toc-a-surface-made-of-measurements" class="nav-link" data-scroll-target="#a-surface-made-of-measurements">A surface made of measurements</a></li>
+  <li><a href="#what-is-the-space-of-pairs-of-points" id="toc-what-is-the-space-of-pairs-of-points" class="nav-link" data-scroll-target="#what-is-the-space-of-pairs-of-points">What is the space of pairs of points?</a></li>
+  <li><a href="#the-klein-bottle-pulls-the-trigger" id="toc-the-klein-bottle-pulls-the-trigger" class="nav-link" data-scroll-target="#the-klein-bottle-pulls-the-trigger">The Klein bottle pulls the trigger</a></li>
+  <li><a href="#a-check" id="toc-a-check" class="nav-link" data-scroll-target="#a-check">A check</a></li>
+  <li><a href="#what-about-the-square" id="toc-what-about-the-square" class="nav-link" data-scroll-target="#what-about-the-square">What about the square?</a></li>
+  <li><a href="#what-to-remember" id="toc-what-to-remember" class="nav-link" data-scroll-target="#what-to-remember">What to remember</a></li>
+  <li><a href="#how-to-cite" id="toc-how-to-cite" class="nav-link" data-scroll-target="#how-to-cite">How to cite</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">The Inscribed Rectangle Problem</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">pure</div>
+    <div class="quarto-category">topology</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    How a Möbius strip and a Klein bottle conspire to prove that every closed loop you can draw contains four points forming a perfect rectangle.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 10, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="epigraph">
+<p><em>“We must know. We shall know.”</em></p>
+<p><span class="attribution">— David Hilbert, Königsberg address (1930)</span></p>
+</div>
+<p>In 1911, Otto Toeplitz asked a question that sounds like it belongs in a children’s puzzle book: if you draw any closed loop on a piece of paper — any loop at all, as long as the pen comes back to where it started without lifting — can you always find four points on it that form a perfect square? <span class="citation" data-cites="toeplitz1911"><a href="#ref-toeplitz1911" role="doc-biblioref">[1]</a></span></p>
+<p>More than a century later, nobody knows. The <em>square peg problem</em>, as it came to be called, is still open in general. Mathematicians have chipped away at special cases for decades — convex curves, smooth curves, curves with mild regularity — but the full question, for an arbitrary continuous loop, has resisted everything thrown at it <span class="citation" data-cites="matschke2014survey"><a href="#ref-matschke2014survey" role="doc-biblioref">[2]</a></span>.</p>
+<p>Here is the part I find delightful, though. If you relax the question just slightly — ask for an inscribed <em>rectangle</em> instead of a square — the problem snaps open, and the proof, due to Herbert Vaughan <span class="citation" data-cites="meyerson1981balancing"><a href="#ref-meyerson1981balancing" role="doc-biblioref">[3]</a></span>, is one of the most beautiful arguments I know. It uses a Möbius strip and a Klein bottle. Not as curiosities, not as party tricks for math outreach, but as <em>load-bearing logical machinery</em>. Topology has a reputation as the study of weird shapes — “rubber-sheet geometry,” coffee cups turning into donuts. This proof is the best answer I know to the question “but what is all that <em>for</em>?” The weird shapes show up because they are the honest answer to a concrete question about points on a curve, and their weirdness is precisely what forces the rectangle to exist.</p>
+<p>I first met this argument through Grant Sanderson’s wonderful video on the topic <span class="citation" data-cites="sanderson2016topology"><a href="#ref-sanderson2016topology" role="doc-biblioref">[4]</a></span>, and what follows is my attempt to walk through it slowly, in prose, the way I wish someone had walked me through it.</p>
+<p>So here is the claim we are going to prove:</p>
+<blockquote class="blockquote">
+<p><strong>Every continuous closed curve in the plane contains four points that form a rectangle.</strong></p>
+</blockquote>
+<p>No smoothness assumed. The curve can have corners, it can wiggle like a coastline. As long as it is a continuous closed loop, a rectangle hides on it. Let’s find it.</p>
+<section id="stop-looking-for-rectangles" class="level2">
+<h2 class="anchored" data-anchor-id="stop-looking-for-rectangles">Stop looking for rectangles</h2>
+<p>The first move is the kind of reframing that makes or breaks a hard problem. Searching a curve for “four points forming a rectangle” is miserable: four points means eight coordinates, and the rectangle condition tangles them all together. So let’s ask a different question that turns out to be the same question.</p>
+<p>What is a rectangle, really? Picture one, and draw its two diagonals. Notice two things about them: they cut each other exactly in half, and they have the same length. That is not just a property of rectangles — it is a <em>characterization</em>. If two segments share a common midpoint and have equal length, their four endpoints always form a rectangle. (Take a moment to convince yourself: the common midpoint means all four endpoints lie on a circle centered there, with radius half the common length, and the two segments are diameters of that circle. Two diameters of a circle always span a rectangle.)</p>
+<p>So the hunt changes shape entirely:</p>
+<blockquote class="blockquote">
+<p>Finding an inscribed rectangle is the same as finding <strong>two different pairs of points</strong> on the curve that share the <strong>same midpoint</strong> and the <strong>same distance</strong> apart.</p>
+</blockquote>
+<p>Read that again, because the whole proof lives here. We no longer care about angles or sides or any rectangle-ness at all. We are looking for a <em>coincidence</em>: two unrelated pairs of points on the loop that happen to agree on two simple measurements. The question “does a rectangle exist?” has become “does a collision exist?”</p>
+<p>How do we systematically hunt for a collision? We build a function and ask whether it ever sends two inputs to the same output.</p>
+</section>
+<section id="a-surface-made-of-measurements" class="level2">
+<h2 class="anchored" data-anchor-id="a-surface-made-of-measurements">A surface made of measurements</h2>
+<p>Take your closed loop <span class="math inline">\(\gamma\)</span>, sitting in the <span class="math inline">\(xy\)</span>-plane. For any pair of points <span class="math inline">\(A, B\)</span> on the loop, record three numbers:</p>
+<p><span class="math display">\[
+f(A, B) \;=\; \Big(\underbrace{\tfrac{A_x + B_x}{2}}_{\text{midpoint } x}, \;\underbrace{\tfrac{A_y + B_y}{2}}_{\text{midpoint } y}, \;\underbrace{\|A - B\|}_{\text{distance}}\Big).
+\]</span></p>
+<p>The first two coordinates locate the midpoint of the pair; the third lifts that midpoint <em>upward</em>, off the page, by the distance between the two points. So every pair of points on the loop gets plotted as a single point floating in 3D space, hovering directly above its own midpoint at a height equal to its length.</p>
+<p>I want you to actually picture this. Imagine grabbing two points on the loop and sliding them around continuously. Their midpoint drifts around inside the loop; their separation stretches and shrinks; and the corresponding 3D point glides around smoothly above the plane. As the pair sweeps through <em>all</em> possible configurations, the 3D points sweep out some kind of continuous surface, draped over the interior of the curve like a tent.</p>
+<p>Our reframed goal, reframed once more: a rectangle exists exactly when this surface <strong>collides with itself</strong> — when two genuinely different pairs of points land on the <em>same</em> 3D point. Same first two coordinates means same midpoint; same third coordinate means same distance. A self-intersection of the tent <em>is</em> a rectangle.</p>
+<p>Before we go on, notice one special feature of this tent — hang it on the wall now, because it fires later. What happens when the two points of a pair slide together, so that <span class="math inline">\(A = B\)</span>? The midpoint is just the point itself, and the distance is <span class="math inline">\(0\)</span>. So pairs of <em>coincident</em> points get mapped right down onto the plane, tracing out a copy of the original loop <span class="math inline">\(\gamma\)</span> at height zero. The rim of the tent is the curve itself, and it is the <strong>only</strong> part of the surface allowed to touch the ground: any pair of distinct points has positive distance and floats strictly above the plane.</p>
+<p>So the picture is this: a continuous surface whose boundary is nailed to the loop in the plane, with its interior held strictly aloft. The question is whether such a surface can avoid passing through itself. To answer that, we need to know what shape the surface is — not its lumps and bumps, which depend on the particular loop, but its intrinsic, topological shape. And that means asking a lovely question: <em>what is the shape of the space of all pairs of points on a loop?</em></p>
+</section>
+<section id="what-is-the-space-of-pairs-of-points" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-the-space-of-pairs-of-points">What is the space of pairs of points?</h2>
+<p>This is where the famous shapes earn their keep. We are going to build, from scratch, the natural geometric object whose points are “pairs of points on a circle.”</p>
+<p>Bring the problem down to its skeleton. A closed loop, as far as topology cares, is just a circle: let’s give it an internal coordinate running from <span class="math inline">\(0\)</span> to <span class="math inline">\(1\)</span>, where <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span> label the same spot (the loop closes up). A pair of points on the loop is then a pair of numbers <span class="math inline">\((x, y)\)</span> with <span class="math inline">\(x, y \in [0,1]\)</span> — which is to say, a point in the <strong>unit square</strong>.</p>
+<p>To make this concrete, the pair “the point <span class="math inline">\(30\%\)</span> of the way around, together with the point <span class="math inline">\(70\%\)</span> of the way around” is the point <span class="math inline">\((0.3, 0.7)\)</span> in the square. Slide either point along the loop and you slide around inside the square. So far, so flat.</p>
+<p>But the square is lying to us in two ways, and fixing each lie is what creates the topology.</p>
+<p><strong>First lie: the edges.</strong> On the loop, coordinate <span class="math inline">\(0\)</span> <em>is</em> coordinate <span class="math inline">\(1\)</span>. So the point <span class="math inline">\((0, y)\)</span> of the square and the point <span class="math inline">\((1, y)\)</span> represent the exact same pair, and honesty demands we <strong>glue the left edge to the right edge</strong>. Roll the square into a cylinder. The same goes for the top and bottom edges: glue them too, and the cylinder closes up into a <strong>torus</strong> — the surface of a donut. This is a fact worth savoring on its own: <em>the space of ordered pairs of points on a circle is a torus.</em> Every ordered pair corresponds to exactly one point of the donut’s surface, and sliding the pair of points moves you continuously around it.</p>
+<p><strong>Second lie: the ordering.</strong> Our function <span class="math inline">\(f\)</span> doesn’t care which point you call <span class="math inline">\(A\)</span> and which you call <span class="math inline">\(B\)</span> — the midpoint of <span class="math inline">\(\{A, B\}\)</span> is the midpoint of <span class="math inline">\(\{B, A\}\)</span>, and likewise the distance. The pairs we care about are <em>unordered</em>. But the square (and the torus) counts <span class="math inline">\((0.3, 0.7)\)</span> and <span class="math inline">\((0.7, 0.3)\)</span> as different points. Geometrically, these duplicates sit at mirror positions across the square’s main diagonal. To stop double-counting, we should <strong>fold the square along the diagonal</strong> and keep just one triangular half.</p>
+<p>Now comes the subtle part, and it is worth slowing down for. After folding, we hold a triangle: the diagonal edge represents pairs of <em>identical</em> points (where <span class="math inline">\(x = y\)</span>), and the two other edges — the leftovers of the square’s edges — still carry gluing debts from the first lie. Chase carefully which point on one edge must attach to which point on the other (this is exactly the kind of thing best done by drawing arrows on paper, and I encourage you to try), and you discover the gluing only matches up if you attach the two edges <em>with a flip</em> — orientation reversed, like closing a band with a half-twist.</p>
+<p>A band glued shut with a half-twist. You might have already guessed: it’s a <strong>Möbius strip</strong>.</p>
+<p>Pause here, because this deserves to be chewed on. The Möbius strip was not chosen. Nobody reached into the cabinet of famous shapes and picked the quirky one. We asked an utterly pedestrian question — <em>what is the set of all unordered pairs of points on a loop?</em> — and followed the gluing rules where they led, and the answer <strong>is</strong> a Möbius strip, in the same matter-of-fact way that the answer to “what are the whole-number solutions of <span class="math inline">\(x^2 = 4\)</span>” is <span class="math inline">\(\pm 2\)</span>. The half-twist is the geometric residue of unorderedness. That, to me, is the moment this proof changes what topology is <em>about</em>: these shapes are not exotic specimens, they are the inevitable forms of ordinary configuration spaces.</p>
+<p>And note what the strip’s <strong>edge</strong> is: it is the fold line, the old diagonal <span class="math inline">\(x = y\)</span> — the pairs of coincident points. The boundary circle of the Möbius strip corresponds exactly to the “pairs” of distance zero. The pistol on the wall is cocked.</p>
+</section>
+<section id="the-klein-bottle-pulls-the-trigger" class="level2">
+<h2 class="anchored" data-anchor-id="the-klein-bottle-pulls-the-trigger">The Klein bottle pulls the trigger</h2>
+<p>Let’s assemble what we have.</p>
+<p>The function <span class="math inline">\(f\)</span> takes an unordered pair of points on the loop and outputs a point in 3D. We now know its domain is a Möbius strip, and <span class="math inline">\(f\)</span> maps that strip continuously into space, with two hard constraints we established earlier: the strip’s interior (pairs of distinct points) lands <em>strictly above</em> the plane, and the strip’s boundary circle (coincident pairs) lands <em>exactly on</em> the original curve <span class="math inline">\(\gamma\)</span>, down at height zero — tracing around it faithfully, once.</p>
+<p>Suppose, for contradiction, that no rectangle exists. Then <span class="math inline">\(f\)</span> never sends two different pairs to the same output — no collisions — which means <span class="math inline">\(f\)</span> embeds the Möbius strip into 3D space without any self-intersection. So the supposed counterexample hands us:</p>
+<blockquote class="blockquote">
+<p>A Möbius strip, floating in 3D without passing through itself, its interior strictly above a plane, its boundary circle lying in that plane along a simple closed curve.</p>
+</blockquote>
+<p>Does that sound plausible? Here is the move that kills it, and it is pure elegance. Take this floating strip and <strong>reflect it through the plane</strong>. The mirror image is another Möbius strip, hanging strictly <em>below</em> the plane, with its boundary circle tracing the <em>same</em> curve <span class="math inline">\(\gamma\)</span>. Now look at the two strips together: an upper surface and a lower surface, meeting precisely along their shared boundary circle. Welded along <span class="math inline">\(\gamma\)</span>, they merge into a single closed surface with no edge at all — a surface built by <strong>gluing two Möbius strips together along their boundaries</strong>.</p>
+<p>Topology has a name for that object. It is the <strong>Klein bottle</strong>.</p>
+<p>And the Klein bottle has one famous, fundamental property: it <strong>cannot exist in 3D space without passing through itself</strong>. Every picture you have ever seen of a Klein bottle — the bottle whose neck dives through its own side — shows that forced self-intersection. This is a theorem, not a failure of glassblowers’ imagination: a closed surface embedded in <span class="math inline">\(\mathbb{R}^3\)</span> must have a well-defined inside and outside, hence an orientation, and the Klein bottle is non-orientable — it is, after all, made of Möbius strips, the original one-sided surface. (By the way, this inside/outside fact is the surface cousin of the Jordan curve theorem; intuitive-sounding, surprisingly deep.)</p>
+<p>So walk the chain backwards, and feel each link click:</p>
+<p>The Klein bottle cannot sit in 3D without self-intersection. Our two-strip surface would <em>be</em> a Klein bottle in 3D — and the mirror trick means a self-crossing anywhere forces one in the upper strip itself.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> So the upper Möbius strip must pass through itself. A self-intersection of the strip is two distinct unordered pairs with the same <span class="math inline">\(f\)</span>-output. Same output means same midpoint and same distance. And same midpoint plus same distance means: <strong>a rectangle</strong>.</p>
+<p>Every continuous closed loop inscribes a rectangle. <span class="math inline">\(\blacksquare\)</span></p>
+<p>Doesn’t that just feel beautiful? At no point did we compute anything. We never wrote down the curve, never solved an equation. We simply identified what shape the space of pairs <em>is</em>, noticed that a no-rectangle world would force that shape to do something a Klein bottle is logically incapable of doing, and let the impossibility do all the work. The Möbius strip and the Klein bottle entered the proof not as decoration but as the hypothesis-crushing machinery itself.</p>
+</section>
+<section id="a-check" class="level2">
+<h2 class="anchored" data-anchor-id="a-check">A check</h2>
+<p>The proof guarantees a rectangle exists but is gloriously non-constructive — it points at a collision without telling you where. So let’s go find one numerically. The code below builds a lumpy, asymmetric closed curve, computes the triple (midpoint, distance) for a dense set of point pairs, and hunts for two different pairs whose triples nearly coincide — the self-intersection of our tent, made tangible.</p>
+<div id="cell-fig-rectangle" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> curve(t):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""A lumpy, asymmetric closed curve, parametrized by t in [0, 1)."""</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    th <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> t</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> <span class="fl">0.30</span> <span class="op">*</span> np.sin(<span class="dv">3</span> <span class="op">*</span> th) <span class="op">+</span> <span class="fl">0.12</span> <span class="op">*</span> np.cos(<span class="dv">5</span> <span class="op">*</span> th <span class="op">+</span> <span class="fl">1.0</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.column_stack([r <span class="op">*</span> np.cos(th), <span class="fl">0.85</span> <span class="op">*</span> r <span class="op">*</span> np.sin(th)])</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">800</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> curve(np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, N, endpoint<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># All pairs: midpoint (x, y) and distance -&gt; a point of the "tent" surface</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>i, j <span class="op">=</span> np.triu_indices(N, k<span class="op">=</span><span class="dv">5</span>)              <span class="co"># skip near-coincident pairs</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>mid  <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> (P[i] <span class="op">+</span> P[j])</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>dist <span class="op">=</span> np.linalg.norm(P[i] <span class="op">-</span> P[j], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>triple <span class="op">=</span> np.column_stack([mid, dist])</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Hash triples into coarse buckets; a bucket holding two pairs with four</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># distinct endpoints is a candidate collision (i.e., a rectangle).</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>buckets <span class="op">=</span> defaultdict(<span class="bu">list</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, key <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">map</span>(<span class="bu">tuple</span>, np.<span class="bu">round</span>(triple <span class="op">/</span> <span class="fl">0.02</span>))):</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    buckets[key].append(idx)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Among near-collisions, prefer a "fat" rectangle (large shortest side).</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>best, best_score <span class="op">=</span> <span class="va">None</span>, <span class="fl">0.0</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> members <span class="kw">in</span> buckets.values():</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> a_pos, a <span class="kw">in</span> <span class="bu">enumerate</span>(members):</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> b <span class="kw">in</span> members[a_pos <span class="op">+</span> <span class="dv">1</span>:]:</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>({i[a], j[a], i[b], j[b]}) <span class="op">==</span> <span class="dv">4</span> <span class="op">\</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>               <span class="kw">and</span> np.linalg.norm(triple[a] <span class="op">-</span> triple[b]) <span class="op">&lt;</span> <span class="fl">0.005</span>:</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>                corners <span class="op">=</span> P[[i[a], i[b], j[a], j[b]]]</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                sides <span class="op">=</span> np.linalg.norm(</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>                    np.diff(np.vstack([corners, corners[:<span class="dv">1</span>]]), axis<span class="op">=</span><span class="dv">0</span>), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> sides.<span class="bu">min</span>() <span class="op">&gt;</span> best_score:</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>                    best, best_score <span class="op">=</span> (a, b), sides.<span class="bu">min</span>()</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> best</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>quad <span class="op">=</span> P[[i[a], i[b], j[a], j[b]]]          <span class="co"># interleave to order the corners</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.linalg.norm(triple[a] <span class="op">-</span> triple[b])</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"mismatch between the two (midpoint, distance) triples: </span><span class="sc">{</span>err<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="op">*</span>np.vstack([P, P[:<span class="dv">1</span>]]).T, lw<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">"steelblue"</span>)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="op">*</span>np.vstack([quad, quad[:<span class="dv">1</span>]]).T, lw<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">"goldenrod"</span>, marker<span class="op">=</span><span class="st">"o"</span>)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> (a, b):</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    ax.plot(<span class="op">*</span>P[[i[k], j[k]]].T, ls<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">"equal"</span>)<span class="op">;</span> ax.axis(<span class="st">"off"</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>mismatch between the two (midpoint, distance) triples: 0.0043</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-rectangle" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rectangle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-rectangle-output-2.png" width="426" height="389" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rectangle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: A numerically found inscribed rectangle (gold) on a lumpy closed curve, located by searching for two chords (dashed) with matching midpoints and lengths.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The mismatch printed above is the residual error of the collision — with a finer sample it shrinks toward zero, exactly as the theorem says it must. The dashed chords are the two “diagonals”: different pairs of points, same midpoint, same length.</p>
+</section>
+<section id="what-about-the-square" class="level2">
+<h2 class="anchored" data-anchor-id="what-about-the-square">What about the square?</h2>
+<p>So why doesn’t this argument settle Toeplitz’s original question? Because a square demands one more coincidence. Two pairs with a shared midpoint and equal distance give a rectangle of <em>some</em> aspect ratio — whatever the curve happens to offer. To force a square, the two diagonals must also cross at <span class="math inline">\(90°\)</span>. That extra angle condition adds a dimension to the data: instead of a map into 3D, the natural setting becomes a Möbius strip mapped into <strong>four</strong>-dimensional space, where self-intersections are no longer forced by any easy parity argument — surfaces in 4D have room to slip past each other, the way curves that must cross in 2D can dodge in 3D.</p>
+<p>There has been real movement, though. In 2020, Joshua Greene and Andrew Lobb proved a stunning result: for every <strong>smooth</strong> closed curve, you can inscribe not just a square but a rectangle of <em>every</em> aspect ratio you like <span class="citation" data-cites="greene2021rectangular"><a href="#ref-greene2021rectangular" role="doc-biblioref">[5]</a></span>. Their tools come from symplectic geometry — the Möbius strip reappears as a Lagrangian surface in <span class="math inline">\(\mathbb{C}^2\)</span> — but the spirit is recognizably the same: configuration spaces, forced intersections.</p>
+<p>And here the pistol from the wall fires one last time. Why does smoothness matter? Remember the rim of our tent — the limit of pairs of points sliding together. For a smooth curve, that limiting process is tame: as two points merge, the chord between them settles into a definite direction, the tangent line, so the angle data behaves continuously all the way down to the boundary. For a rough curve — picture a fractal coastline, crinkled at every scale — nearby points can sit in wildly fluctuating directions no matter how close they get. There is no tangent, no limiting angle, and the boundary behavior of the relevant configuration space breaks down precisely where the argument needs it most. That is the technical crack through which the general square peg problem still escapes. As of today it remains open for arbitrary continuous curves <span class="citation" data-cites="matschke2014survey"><a href="#ref-matschke2014survey" role="doc-biblioref">[2]</a></span> — a question a child can ask, holding out against a century of professionals.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>A Möbius strip is not a shape so much as an <em>answer</em> — the inevitable form of the space of unordered pairs of points on a loop, with the half-twist as the geometric cost of forgetting order. And the impossibilities topology catalogs, like the Klein bottle’s refusal to embed in 3D, are not curiosities: they are weapons. Vaughan’s proof wins by maneuvering a hypothetical no-rectangle world into building a Klein bottle in 3D space, then letting the impossibility detonate. When someone asks what the weird shapes are for, this is the answer: they are where honest questions about ordinary configurations were always headed.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>The Inscribed Rectangle Problem</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/the-inscribed-rectangle-problem/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-toeplitz1911" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">O. Toeplitz, <span>“<span>Ü</span>ber einige aufgaben der analysis situs,”</span> <em>Verhandlungen der Schweizerischen Naturforschenden Gesellschaft in Solothurn</em>, vol. 4, p. 197, 1911.</div>
+</div>
+<div id="ref-matschke2014survey" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">B. Matschke, <span>“A survey on the square peg problem,”</span> <em>Notices of the American Mathematical Society</em>, vol. 61, no. 4, pp. 346–352, 2014.</div>
+</div>
+<div id="ref-meyerson1981balancing" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">M. D. Meyerson, <span>“Balancing acts,”</span> <em>Topology Proceedings</em>, vol. 6, pp. 59–75, 1981.</div>
+</div>
+<div id="ref-sanderson2016topology" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">G. Sanderson, <span>“Who cares about topology? (Inscribed rectangle problem).”</span> 3Blue1Brown, YouTube video, 2016. Available: <a href="https://www.youtube.com/watch?v=AmgkSdhK4K8">https://www.youtube.com/watch?v=AmgkSdhK4K8</a></div>
+</div>
+<div id="ref-greene2021rectangular" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">J. E. Greene and A. Lobb, <span>“The rectangular peg problem,”</span> <em>Annals of Mathematics</em>, vol. 194, no. 2, pp. 509–517, 2021.</div>
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>The two halves can’t collide with <em>each other</em> away from the plane — one is strictly above, one strictly below — and along <span class="math inline">\(\gamma\)</span> they only meet at the shared rim, since a curve homeomorphic to a circle… well, since the boundary traces <span class="math inline">\(\gamma\)</span> exactly once. So the self-intersection must already live in the upper strip.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/terryfxh\.github\.io\/math-notes");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "The Inscribed Rectangle Problem"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "How a Möbius strip and a Klein bottle conspire to prove that every closed loop you can draw contains four points forming a perfect rectangle."</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-06-10</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [pure, topology]</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> ../../references.bib</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="an">draft:</span><span class="co"> false</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>::: {.epigraph}</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>*"We must know. We shall know."*</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">— David Hilbert, Königsberg address (1930)</span><span class="co">]</span>{.attribution}</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>In 1911, Otto Toeplitz asked a question that sounds like it belongs in a children's puzzle book: if you draw any closed loop on a piece of paper — any loop at all, as long as the pen comes back to where it started without lifting — can you always find four points on it that form a perfect square? <span class="co">[</span><span class="ot">@toeplitz1911</span><span class="co">]</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>More than a century later, nobody knows. The *square peg problem*, as it came to be called, is still open in general. Mathematicians have chipped away at special cases for decades — convex curves, smooth curves, curves with mild regularity — but the full question, for an arbitrary continuous loop, has resisted everything thrown at it <span class="co">[</span><span class="ot">@matschke2014survey</span><span class="co">]</span>.</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>Here is the part I find delightful, though. If you relax the question just slightly — ask for an inscribed *rectangle* instead of a square — the problem snaps open, and the proof, due to Herbert Vaughan [@meyerson1981balancing], is one of the most beautiful arguments I know. It uses a Möbius strip and a Klein bottle. Not as curiosities, not as party tricks for math outreach, but as *load-bearing logical machinery*. Topology has a reputation as the study of weird shapes — "rubber-sheet geometry," coffee cups turning into donuts. This proof is the best answer I know to the question "but what is all that *for*?" The weird shapes show up because they are the honest answer to a concrete question about points on a curve, and their weirdness is precisely what forces the rectangle to exist.</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>I first met this argument through Grant Sanderson's wonderful video on the topic <span class="co">[</span><span class="ot">@sanderson2016topology</span><span class="co">]</span>, and what follows is my attempt to walk through it slowly, in prose, the way I wish someone had walked me through it.</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>So here is the claim we are going to prove:</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Every continuous closed curve in the plane contains four points that form a rectangle.**</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>No smoothness assumed. The curve can have corners, it can wiggle like a coastline. As long as it is a continuous closed loop, a rectangle hides on it. Let's find it.</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Stop looking for rectangles</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>The first move is the kind of reframing that makes or breaks a hard problem. Searching a curve for "four points forming a rectangle" is miserable: four points means eight coordinates, and the rectangle condition tangles them all together. So let's ask a different question that turns out to be the same question.</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>What is a rectangle, really? Picture one, and draw its two diagonals. Notice two things about them: they cut each other exactly in half, and they have the same length. That is not just a property of rectangles — it is a *characterization*. If two segments share a common midpoint and have equal length, their four endpoints always form a rectangle. (Take a moment to convince yourself: the common midpoint means all four endpoints lie on a circle centered there, with radius half the common length, and the two segments are diameters of that circle. Two diameters of a circle always span a rectangle.)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>So the hunt changes shape entirely:</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Finding an inscribed rectangle is the same as finding **two different pairs of points** on the curve that share the **same midpoint** and the **same distance** apart.</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>Read that again, because the whole proof lives here. We no longer care about angles or sides or any rectangle-ness at all. We are looking for a *coincidence*: two unrelated pairs of points on the loop that happen to agree on two simple measurements. The question "does a rectangle exist?" has become "does a collision exist?"</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>How do we systematically hunt for a collision? We build a function and ask whether it ever sends two inputs to the same output.</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## A surface made of measurements</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>Take your closed loop $\gamma$, sitting in the $xy$-plane. For any pair of points $A, B$ on the loop, record three numbers:</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>f(A, B) \;=\; \Big(\underbrace{\tfrac{A_x + B_x}{2}}_{\text{midpoint } x}, \;\underbrace{\tfrac{A_y + B_y}{2}}_{\text{midpoint } y}, \;\underbrace{\|A - B\|}_{\text{distance}}\Big).</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>The first two coordinates locate the midpoint of the pair; the third lifts that midpoint *upward*, off the page, by the distance between the two points. So every pair of points on the loop gets plotted as a single point floating in 3D space, hovering directly above its own midpoint at a height equal to its length.</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>I want you to actually picture this. Imagine grabbing two points on the loop and sliding them around continuously. Their midpoint drifts around inside the loop; their separation stretches and shrinks; and the corresponding 3D point glides around smoothly above the plane. As the pair sweeps through *all* possible configurations, the 3D points sweep out some kind of continuous surface, draped over the interior of the curve like a tent.</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>Our reframed goal, reframed once more: a rectangle exists exactly when this surface **collides with itself** — when two genuinely different pairs of points land on the *same* 3D point. Same first two coordinates means same midpoint; same third coordinate means same distance. A self-intersection of the tent *is* a rectangle.</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>Before we go on, notice one special feature of this tent — hang it on the wall now, because it fires later. What happens when the two points of a pair slide together, so that $A = B$? The midpoint is just the point itself, and the distance is $0$. So pairs of *coincident* points get mapped right down onto the plane, tracing out a copy of the original loop $\gamma$ at height zero. The rim of the tent is the curve itself, and it is the **only** part of the surface allowed to touch the ground: any pair of distinct points has positive distance and floats strictly above the plane.</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>So the picture is this: a continuous surface whose boundary is nailed to the loop in the plane, with its interior held strictly aloft. The question is whether such a surface can avoid passing through itself. To answer that, we need to know what shape the surface is — not its lumps and bumps, which depend on the particular loop, but its intrinsic, topological shape. And that means asking a lovely question: *what is the shape of the space of all pairs of points on a loop?*</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## What is the space of pairs of points?</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>This is where the famous shapes earn their keep. We are going to build, from scratch, the natural geometric object whose points are "pairs of points on a circle."</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>Bring the problem down to its skeleton. A closed loop, as far as topology cares, is just a circle: let's give it an internal coordinate running from $0$ to $1$, where $0$ and $1$ label the same spot (the loop closes up). A pair of points on the loop is then a pair of numbers $(x, y)$ with $x, y \in <span class="co">[</span><span class="ot">0,1</span><span class="co">]</span>$ — which is to say, a point in the **unit square**.</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>To make this concrete, the pair "the point $30\%$ of the way around, together with the point $70\%$ of the way around" is the point $(0.3, 0.7)$ in the square. Slide either point along the loop and you slide around inside the square. So far, so flat.</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>But the square is lying to us in two ways, and fixing each lie is what creates the topology.</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>**First lie: the edges.** On the loop, coordinate $0$ *is* coordinate $1$. So the point $(0, y)$ of the square and the point $(1, y)$ represent the exact same pair, and honesty demands we **glue the left edge to the right edge**. Roll the square into a cylinder. The same goes for the top and bottom edges: glue them too, and the cylinder closes up into a **torus** — the surface of a donut. This is a fact worth savoring on its own: *the space of ordered pairs of points on a circle is a torus.* Every ordered pair corresponds to exactly one point of the donut's surface, and sliding the pair of points moves you continuously around it.</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>**Second lie: the ordering.** Our function $f$ doesn't care which point you call $A$ and which you call $B$ — the midpoint of $\{A, B\}$ is the midpoint of $\{B, A\}$, and likewise the distance. The pairs we care about are *unordered*. But the square (and the torus) counts $(0.3, 0.7)$ and $(0.7, 0.3)$ as different points. Geometrically, these duplicates sit at mirror positions across the square's main diagonal. To stop double-counting, we should **fold the square along the diagonal** and keep just one triangular half.</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>Now comes the subtle part, and it is worth slowing down for. After folding, we hold a triangle: the diagonal edge represents pairs of *identical* points (where $x = y$), and the two other edges — the leftovers of the square's edges — still carry gluing debts from the first lie. Chase carefully which point on one edge must attach to which point on the other (this is exactly the kind of thing best done by drawing arrows on paper, and I encourage you to try), and you discover the gluing only matches up if you attach the two edges *with a flip* — orientation reversed, like closing a band with a half-twist.</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>A band glued shut with a half-twist. You might have already guessed: it's a **Möbius strip**.</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>Pause here, because this deserves to be chewed on. The Möbius strip was not chosen. Nobody reached into the cabinet of famous shapes and picked the quirky one. We asked an utterly pedestrian question — *what is the set of all unordered pairs of points on a loop?* — and followed the gluing rules where they led, and the answer **is** a Möbius strip, in the same matter-of-fact way that the answer to "what are the whole-number solutions of $x^2 = 4$" is $\pm 2$. The half-twist is the geometric residue of unorderedness. That, to me, is the moment this proof changes what topology is *about*: these shapes are not exotic specimens, they are the inevitable forms of ordinary configuration spaces.</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>And note what the strip's **edge** is: it is the fold line, the old diagonal $x = y$ — the pairs of coincident points. The boundary circle of the Möbius strip corresponds exactly to the "pairs" of distance zero. The pistol on the wall is cocked.</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## The Klein bottle pulls the trigger</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>Let's assemble what we have.</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>The function $f$ takes an unordered pair of points on the loop and outputs a point in 3D. We now know its domain is a Möbius strip, and $f$ maps that strip continuously into space, with two hard constraints we established earlier: the strip's interior (pairs of distinct points) lands *strictly above* the plane, and the strip's boundary circle (coincident pairs) lands *exactly on* the original curve $\gamma$, down at height zero — tracing around it faithfully, once.</span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>Suppose, for contradiction, that no rectangle exists. Then $f$ never sends two different pairs to the same output — no collisions — which means $f$ embeds the Möbius strip into 3D space without any self-intersection. So the supposed counterexample hands us:</span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; A Möbius strip, floating in 3D without passing through itself, its interior strictly above a plane, its boundary circle lying in that plane along a simple closed curve.</span></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>Does that sound plausible? Here is the move that kills it, and it is pure elegance. Take this floating strip and **reflect it through the plane**. The mirror image is another Möbius strip, hanging strictly *below* the plane, with its boundary circle tracing the *same* curve $\gamma$. Now look at the two strips together: an upper surface and a lower surface, meeting precisely along their shared boundary circle. Welded along $\gamma$, they merge into a single closed surface with no edge at all — a surface built by **gluing two Möbius strips together along their boundaries**.</span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>Topology has a name for that object. It is the **Klein bottle**.</span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>And the Klein bottle has one famous, fundamental property: it **cannot exist in 3D space without passing through itself**. Every picture you have ever seen of a Klein bottle — the bottle whose neck dives through its own side — shows that forced self-intersection. This is a theorem, not a failure of glassblowers' imagination: a closed surface embedded in $\mathbb{R}^3$ must have a well-defined inside and outside, hence an orientation, and the Klein bottle is non-orientable — it is, after all, made of Möbius strips, the original one-sided surface. (By the way, this inside/outside fact is the surface cousin of the Jordan curve theorem; intuitive-sounding, surprisingly deep.)</span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>So walk the chain backwards, and feel each link click:</span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>The Klein bottle cannot sit in 3D without self-intersection. Our two-strip surface would *be* a Klein bottle in 3D — and the mirror trick means a self-crossing anywhere forces one in the upper strip itself.^[The two halves can't collide with *each other* away from the plane — one is strictly above, one strictly below — and along $\gamma$ they only meet at the shared rim, since a curve homeomorphic to a circle... well, since the boundary traces $\gamma$ exactly once. So the self-intersection must already live in the upper strip.] So the upper Möbius strip must pass through itself. A self-intersection of the strip is two distinct unordered pairs with the same $f$-output. Same output means same midpoint and same distance. And same midpoint plus same distance means: **a rectangle**.</span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>Every continuous closed loop inscribes a rectangle. $\blacksquare$</span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>Doesn't that just feel beautiful? At no point did we compute anything. We never wrote down the curve, never solved an equation. We simply identified what shape the space of pairs *is*, noticed that a no-rectangle world would force that shape to do something a Klein bottle is logically incapable of doing, and let the impossibility do all the work. The Möbius strip and the Klein bottle entered the proof not as decoration but as the hypothesis-crushing machinery itself.</span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a><span class="fu">## A check</span></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>The proof guarantees a rectangle exists but is gloriously non-constructive — it points at a collision without telling you where. So let's go find one numerically. The code below builds a lumpy, asymmetric closed curve, computes the triple (midpoint, distance) for a dense set of point pairs, and hunts for two different pairs whose triples nearly coincide — the self-intersection of our tent, made tangible.</span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-rectangle</span></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "A numerically found inscribed rectangle (gold) on a lumpy closed curve, located by searching for two chords (dashed) with matching midpoints and lengths."</span></span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> curve(t):</span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""A lumpy, asymmetric closed curve, parametrized by t in [0, 1)."""</span></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>    th <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> t</span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> <span class="fl">0.30</span> <span class="op">*</span> np.sin(<span class="dv">3</span> <span class="op">*</span> th) <span class="op">+</span> <span class="fl">0.12</span> <span class="op">*</span> np.cos(<span class="dv">5</span> <span class="op">*</span> th <span class="op">+</span> <span class="fl">1.0</span>)</span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.column_stack([r <span class="op">*</span> np.cos(th), <span class="fl">0.85</span> <span class="op">*</span> r <span class="op">*</span> np.sin(th)])</span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">800</span></span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> curve(np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, N, endpoint<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a><span class="co"># All pairs: midpoint (x, y) and distance -&gt; a point of the "tent" surface</span></span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>i, j <span class="op">=</span> np.triu_indices(N, k<span class="op">=</span><span class="dv">5</span>)              <span class="co"># skip near-coincident pairs</span></span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>mid  <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> (P[i] <span class="op">+</span> P[j])</span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>dist <span class="op">=</span> np.linalg.norm(P[i] <span class="op">-</span> P[j], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>triple <span class="op">=</span> np.column_stack([mid, dist])</span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a><span class="co"># Hash triples into coarse buckets; a bucket holding two pairs with four</span></span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a><span class="co"># distinct endpoints is a candidate collision (i.e., a rectangle).</span></span>
+<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a>buckets <span class="op">=</span> defaultdict(<span class="bu">list</span>)</span>
+<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, key <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">map</span>(<span class="bu">tuple</span>, np.<span class="bu">round</span>(triple <span class="op">/</span> <span class="fl">0.02</span>))):</span>
+<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>    buckets[key].append(idx)</span>
+<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a><span class="co"># Among near-collisions, prefer a "fat" rectangle (large shortest side).</span></span>
+<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a>best, best_score <span class="op">=</span> <span class="va">None</span>, <span class="fl">0.0</span></span>
+<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> members <span class="kw">in</span> buckets.values():</span>
+<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> a_pos, a <span class="kw">in</span> <span class="bu">enumerate</span>(members):</span>
+<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> b <span class="kw">in</span> members[a_pos <span class="op">+</span> <span class="dv">1</span>:]:</span>
+<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>({i[a], j[a], i[b], j[b]}) <span class="op">==</span> <span class="dv">4</span> <span class="op">\</span></span>
+<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a>               <span class="kw">and</span> np.linalg.norm(triple[a] <span class="op">-</span> triple[b]) <span class="op">&lt;</span> <span class="fl">0.005</span>:</span>
+<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a>                corners <span class="op">=</span> P[[i[a], i[b], j[a], j[b]]]</span>
+<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a>                sides <span class="op">=</span> np.linalg.norm(</span>
+<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a>                    np.diff(np.vstack([corners, corners[:<span class="dv">1</span>]]), axis<span class="op">=</span><span class="dv">0</span>), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> sides.<span class="bu">min</span>() <span class="op">&gt;</span> best_score:</span>
+<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a>                    best, best_score <span class="op">=</span> (a, b), sides.<span class="bu">min</span>()</span>
+<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> best</span>
+<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a>quad <span class="op">=</span> P[[i[a], i[b], j[a], j[b]]]          <span class="co"># interleave to order the corners</span></span>
+<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.linalg.norm(triple[a] <span class="op">-</span> triple[b])</span>
+<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"mismatch between the two (midpoint, distance) triples: </span><span class="sc">{</span>err<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
+<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="op">*</span>np.vstack([P, P[:<span class="dv">1</span>]]).T, lw<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">"steelblue"</span>)</span>
+<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a>ax.plot(<span class="op">*</span>np.vstack([quad, quad[:<span class="dv">1</span>]]).T, lw<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">"goldenrod"</span>, marker<span class="op">=</span><span class="st">"o"</span>)</span>
+<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> (a, b):</span>
+<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a>    ax.plot(<span class="op">*</span>P[[i[k], j[k]]].T, ls<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">"gray"</span>)</span>
+<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a>ax.set_aspect(<span class="st">"equal"</span>)<span class="op">;</span> ax.axis(<span class="st">"off"</span>)</span>
+<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a>The mismatch printed above is the residual error of the collision — with a finer sample it shrinks toward zero, exactly as the theorem says it must. The dashed chords are the two "diagonals": different pairs of points, same midpoint, same length.</span>
+<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a><span class="fu">## What about the square?</span></span>
+<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a>So why doesn't this argument settle Toeplitz's original question? Because a square demands one more coincidence. Two pairs with a shared midpoint and equal distance give a rectangle of *some* aspect ratio — whatever the curve happens to offer. To force a square, the two diagonals must also cross at $90°$. That extra angle condition adds a dimension to the data: instead of a map into 3D, the natural setting becomes a Möbius strip mapped into **four**-dimensional space, where self-intersections are no longer forced by any easy parity argument — surfaces in 4D have room to slip past each other, the way curves that must cross in 2D can dodge in 3D.</span>
+<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a>There has been real movement, though. In 2020, Joshua Greene and Andrew Lobb proved a stunning result: for every **smooth** closed curve, you can inscribe not just a square but a rectangle of *every* aspect ratio you like <span class="co">[</span><span class="ot">@greene2021rectangular</span><span class="co">]</span>. Their tools come from symplectic geometry — the Möbius strip reappears as a Lagrangian surface in $\mathbb{C}^2$ — but the spirit is recognizably the same: configuration spaces, forced intersections.</span>
+<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a>And here the pistol from the wall fires one last time. Why does smoothness matter? Remember the rim of our tent — the limit of pairs of points sliding together. For a smooth curve, that limiting process is tame: as two points merge, the chord between them settles into a definite direction, the tangent line, so the angle data behaves continuously all the way down to the boundary. For a rough curve — picture a fractal coastline, crinkled at every scale — nearby points can sit in wildly fluctuating directions no matter how close they get. There is no tangent, no limiting angle, and the boundary behavior of the relevant configuration space breaks down precisely where the argument needs it most. That is the technical crack through which the general square peg problem still escapes. As of today it remains open for arbitrary continuous curves <span class="co">[</span><span class="ot">@matschke2014survey</span><span class="co">]</span> — a question a child can ask, holding out against a century of professionals.</span>
+<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to remember</span></span>
+<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a>A Möbius strip is not a shape so much as an *answer* — the inevitable form of the space of unordered pairs of points on a loop, with the half-twist as the geometric cost of forgetting order. And the impossibilities topology catalogs, like the Klein bottle's refusal to embed in 3D, are not curiosities: they are weapons. Vaughan's proof wins by maneuvering a hypothetical no-rectangle world into building a Klein bottle in 3D space, then letting the impossibility detonate. When someone asks what the weird shapes are for, this is the answer: they are where honest questions about ordinary configurations were always headed.</span>
+<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *The Inscribed Rectangle Problem*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/the-inscribed-rectangle-problem/`</span><span class="at">.</span></span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Terry Fang · All rights reserved · Reproduction or republication in any form requires attribution and the author’s prior permission.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

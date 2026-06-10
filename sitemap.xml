@@ -2,62 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/welcome/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.095Z</lastmod>
+    <lastmod>2026-06-10T19:32:01.665Z</lastmod>
   </url>
   <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/spectral-theorem/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.095Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/on-learning-mathematics/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.095Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/miller-rabin/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.095Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/gram-schmidt/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.095Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/discrete-log/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.095Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/notes.html</loc>
-    <lastmod>2026-06-10T18:29:04.094Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/about.html</loc>
-    <lastmod>2026-06-10T18:29:04.094Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.094Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.095Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/domino-tilings/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.095Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.095Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/nullstellensatz/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.095Z</lastmod>
+    <loc>https://terryfxh.github.io/math-notes/posts/the-inscribed-rectangle-problem/index.html</loc>
+    <lastmod>2026-06-10T19:32:01.664Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/reconstructing-calculus/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.095Z</lastmod>
+    <lastmod>2026-06-10T19:32:01.664Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/nullstellensatz/index.html</loc>
+    <lastmod>2026-06-10T19:32:01.664Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/index.html</loc>
+    <lastmod>2026-06-10T19:32:01.664Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/domino-tilings/index.html</loc>
+    <lastmod>2026-06-10T19:32:01.664Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/index.html</loc>
+    <lastmod>2026-06-10T19:32:01.664Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/index.html</loc>
+    <lastmod>2026-06-10T19:32:01.663Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/about.html</loc>
+    <lastmod>2026-06-10T19:32:01.663Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/notes.html</loc>
+    <lastmod>2026-06-10T19:32:01.663Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/discrete-log/index.html</loc>
+    <lastmod>2026-06-10T19:32:01.664Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/gram-schmidt/index.html</loc>
+    <lastmod>2026-06-10T19:32:01.664Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/miller-rabin/index.html</loc>
+    <lastmod>2026-06-10T19:32:01.664Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/on-learning-mathematics/index.html</loc>
+    <lastmod>2026-06-10T19:32:01.664Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/spectral-theorem/index.html</loc>
+    <lastmod>2026-06-10T19:32:01.664Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/uniform-convergence/index.html</loc>
-    <lastmod>2026-06-10T18:29:04.095Z</lastmod>
+    <lastmod>2026-06-10T19:32:01.665Z</lastmod>
   </url>
 </urlset>
