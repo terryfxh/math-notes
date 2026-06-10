@@ -222,16 +222,14 @@ main#quarto-document-content {
 }
 
 .home-introduction {
-  /* Top gap (tagline -> quote) is tuned together with the home-scoped
-     title-block padding below so their sum sits at 1/phi of the
-     attribution -> intro gap (the quote-divider's 2x clamp margins):
-     golden-section whitespace, minor segment on top.
-     bottom gap = 2*clamp(2.5rem,5vw,3.5rem) = clamp(5rem,10vw,7rem)
-     top gap    = bottom/1.618              = clamp(3.09rem,6.18vw,4.33rem) */
-  padding: clamp(1.24rem, 2.48vw, 1.73rem) 0 clamp(3rem, 6vw, 5rem);
+  /* Tagline -> quote gap: previously the duplicate rule in section 11
+     won the cascade (top clamp(4.5rem,10vw,7.5rem)); the effective gap
+     was that plus the title-block padding below. Both are now halved
+     per request, defined once here. */
+  padding: clamp(2.25rem, 5vw, 3.75rem) 0 clamp(3rem, 6vw, 5rem);
 }
 body:has(.home-page) #title-block-header.quarto-title-block {
-  padding-bottom: clamp(1.85rem, 3.7vw, 2.6rem);
+  padding-bottom: clamp(0.92rem, 1.85vw, 1.3rem);
 }
 .home-epigraph {
   max-width: 800px;
@@ -942,9 +940,8 @@ body:has(.home-page) #title-block-header .subtitle {
 
 /* — More room to breathe (deference through negative space) — */
 .home-page { max-width: 1240px; }
-.home-introduction {
-  padding: clamp(4.5rem, 10vw, 7.5rem) 0 clamp(3.5rem, 7vw, 5.5rem);
-}
+/* (.home-introduction spacing is defined once in section 3 above —
+   the duplicate that used to live here won the cascade; do not re-add.) */
 
 /* (The home epigraph display style — Bodoni Didone italic — is defined
    once in section 3 above. The old sans override that used to live here
@@ -1095,3 +1092,4 @@ body:has(.home-page) #quarto-header .navbar a:focus-visible {
   .quarto-listing-default .quarto-post .metadata { grid-column: 1; grid-row: 2; }
   .quarto-listing-default .quarto-post .body { grid-column: 1; grid-row: 1; }
 }
+                                                                                                       
