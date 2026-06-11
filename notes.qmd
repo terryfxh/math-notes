@@ -70,7 +70,7 @@ listing:
     <span class="notes-section__meta"><span class="notes-section__count">8 notes</span><svg class="notes-section__chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5 10.5 8l-5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
   </summary>
   <div class="notes-index">
-    <a class="notes-row" href="posts/quaternions/"><span class="notes-row__title">Quaternions: Seeing Four Dimensions with Three-Dimensional Eyes</span><span class="notes-row__meta"><span>Jun 11, 2026</span><span class="notes-row__dot">·</span><span>21 min</span></span></a>
+    <a class="notes-row" href="posts/quaternions/"><span class="notes-row__title">Quaternions: Seeing Four Dimensions with Three-Dimensional Eyes</span><span class="notes-row__meta"><span>Jun 11, 2026</span><span class="notes-row__dot">·</span><span>18 min</span></span></a>
     <a class="notes-row" href="posts/prime-spirals/"><span class="notes-row__title">Prime Spirals</span><span class="notes-row__meta"><span>Jun 10, 2026</span><span class="notes-row__dot">·</span><span>14 min</span></span></a>
     <a class="notes-row" href="posts/the-inscribed-rectangle-problem/"><span class="notes-row__title">The Inscribed Rectangle Problem</span><span class="notes-row__meta"><span>Jun 10, 2026</span><span class="notes-row__dot">·</span><span>17 min</span></span></a>
     <a class="notes-row" href="posts/uniform-convergence/"><span class="notes-row__title">Real Analysis: How a Limit of Functions Can Lie</span><span class="notes-row__meta"><span>Jun 10, 2026</span><span class="notes-row__dot">·</span><span>22 min</span></span></a>
