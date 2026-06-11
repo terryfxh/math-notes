@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -29,7 +31,7 @@ def actions_url() -> str:
     url = capture(["git", "remote", "get-url", "origin"])
     if not url:
         return ""
-    if url.startswith("git@"):  # git@github.com:owner/repo.git
+    if url.startswith("git@"):
         url = "https://github.com/" + url.split(":", 1)[-1]
     if url.endswith(".git"):
         url = url[:-4]
@@ -55,19 +57,14 @@ def install_hooks() -> int:
     try:
         hook.chmod(0o755)
     except OSError:
-        pass  # Windows ignores the bit; Git for Windows runs the hook via sh regardless.
+        pass
     print(f"Installed pre-commit hook at {hook.relative_to(ROOT).as_posix()}")
     print("Each commit now refreshes WORKLOG.md and runs `check.py --fast` first.")
     return 0
 
 
 def deploy(message: str, full: bool, dry_run: bool) -> int:
-    """Check, commit every tracked change, push, and print the CI run URL.
-
-    Turns the design->live loop into one step. Design-system scratch files are
-    gitignored, so staging everything is safe; the file list is always printed
-    so nothing slips in unseen. Use --dry-run to preview without committing.
-    """
+    """Check, commit every tracked change, push, and print the CI run URL."""
     check = [sys.executable, "tools/check.py"] + ([] if full else ["--fast"])
     if run(check) != 0:
         print("deploy: checks failed; nothing committed or pushed.")
@@ -86,12 +83,10 @@ def deploy(message: str, full: bool, dry_run: bool) -> int:
     if pending:
         if run(["git", "add", "-A"]) != 0:
             return 1
-        # Only commit if something is actually staged.
         if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT).returncode != 0:
             if run(["git", "commit", "-m", message]) != 0:
                 return 1
 
-    # Push the current branch to its upstream (fall back to origin HEAD).
     rc = run(["git", "push"])
     if rc != 0:
         rc = run(["git", "push", "origin", "HEAD"])
@@ -101,7 +96,62 @@ def deploy(message: str, full: bool, dry_run: bool) -> int:
 
     url = actions_url()
     if url:
-        print(f"\nPushed. CI is rendering and publishing to gh-pages — watch it at:\n  {url}")
+        print(f"\nPushed. CI is rendering -- watch it at:\n  {url}")
+    return 0
+
+
+def unpublish(slug_or_title: str) -> int:
+    """Set a post to draft=true, strip its freeze cache and _site output.
+
+    Source files under posts/ are NOT touched. Run `blog.py deploy` to push live.
+    """
+    posts_dir = ROOT / "posts"
+
+    candidate = posts_dir / slug_or_title
+    if not candidate.is_dir():
+        needle = slug_or_title.lower()
+        matches = [d for d in posts_dir.iterdir() if d.is_dir() and needle in d.name.lower()]
+        if not matches:
+            print(f"unpublish: no post found matching '{slug_or_title}'")
+            return 1
+        if len(matches) > 1:
+            names = ", ".join(d.name for d in matches)
+            print(f"unpublish: ambiguous -- matched: {names}")
+            print("Re-run with the exact slug.")
+            return 1
+        candidate = matches[0]
+
+    qmd = candidate / "index.qmd"
+    if not qmd.exists():
+        print(f"unpublish: {candidate.name}/index.qmd not found")
+        return 1
+
+    text = qmd.read_text(encoding="utf-8")
+    if "draft: true" in text:
+        print(f"unpublish: {candidate.name} already draft=true")
+    else:
+        new_text = re.sub(r"draft:\s*false", "draft: true", text)
+        if new_text == text:
+            new_text = re.sub(r"(\n---\n)", r"\ndraft: true\1", text, count=1)
+        qmd.write_text(new_text, encoding="utf-8")
+        print(f"  set draft=true : {qmd.relative_to(ROOT).as_posix()}")
+
+    freeze = ROOT / "_freeze" / "posts" / candidate.name
+    if freeze.exists():
+        shutil.rmtree(freeze)
+        print(f"  removed freeze  : {freeze.relative_to(ROOT).as_posix()}/")
+
+    site_page = ROOT / "_site" / "posts" / candidate.name
+    if site_page.exists():
+        try:
+            shutil.rmtree(site_page)
+            print(f"  removed _site   : {site_page.relative_to(ROOT).as_posix()}/")
+        except OSError:
+            print(f"  _site not removed (CI will clean it on next deploy): {site_page.relative_to(ROOT).as_posix()}/")
+
+
+    print(f"\nPost '{candidate.name}' unpublished locally.")
+    print("Next: python tools/blog.py deploy -m 'unpublish: <title>'")
     return 0
 
 
@@ -117,24 +167,30 @@ def main() -> int:
     sub.add_parser("worklog", help="Sync WORKLOG.md with published posts (run after publishing).")
     sub.add_parser("fast-check", help="Run quick checks without executing code cells.")
     sub.add_parser("full-check", help="Run full checks including Python code cells.")
-    pre = sub.add_parser(
-        "preflight",
-        help="One-step pre-publish: run checks, then sync WORKLOG.md.",
-    )
+    pre = sub.add_parser("preflight", help="One-step pre-publish: run checks, then sync WORKLOG.md.")
     pre.add_argument("--fast", action="store_true", help="Skip code execution (fast-check).")
     sub.add_parser("install-hooks", help="Install a git pre-commit hook (worklog + fast-check).")
     sub.add_parser("preview", help="Start Quarto preview.")
 
     dep = sub.add_parser(
         "deploy",
-        help="Check, commit all changes, push to main, and print the CI run URL (design->live in one step).",
+        help="Check, commit all changes, push to main, and print the CI run URL.",
     )
     dep.add_argument("-m", "--message", required=True, help="Commit message.")
-    dep.add_argument("--full", action="store_true", help="Run full-check (execute code cells) instead of fast-check.")
-    dep.add_argument("--dry-run", action="store_true", help="Preview what would be committed/pushed without doing it.")
+    dep.add_argument("--full", action="store_true", help="Run full-check instead of fast-check.")
+    dep.add_argument("--dry-run", action="store_true", help="Preview without committing/pushing.")
 
     render = sub.add_parser("render", help="Render the site locally.")
     render.add_argument("--execute", action="store_true", help="Execute code cells during render.")
+
+    unpub = sub.add_parser(
+        "unpublish",
+        help="Hide a post: set draft=true, clear freeze cache, remove _site output.",
+    )
+    unpub.add_argument(
+        "slug",
+        help="Exact post directory slug or a substring (e.g. 'quidditch').",
+    )
 
     args = parser.parse_args()
 
@@ -171,6 +227,8 @@ def main() -> int:
         if not args.execute:
             cmd.append("--no-execute")
         return run(cmd)
+    if args.command == "unpublish":
+        return unpublish(args.slug)
     parser.print_help()
     return 1
 
