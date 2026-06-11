@@ -281,7 +281,7 @@ window.Quarto = {
 <p>Let <span class="math inline">\(f(n)\)</span> be the number of tilings of the <span class="math inline">\(2 \times n\)</span> board. The reasoning above says, in one line, <span class="math display">\[
 f(n) = f(n-1) + f(n-2),
 \]</span> with the base cases <span class="math inline">\(f(0) = 1\)</span> (the empty board has one tiling, the empty one) and <span class="math inline">\(f(1) = 1\)</span> (a single standing domino). You might have already guessed what is coming. That is the Fibonacci recurrence, and our tiling counts are Fibonacci numbers marching by.</p>
-<div id="e7a1ab00" class="cell" data-execution_count="1">
+<div id="3dd108e4" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tilings_2xn(n):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    a, b <span class="op">=</span> <span class="dv">1</span>, <span class="dv">1</span>                      <span class="co"># a = f(k-1), b = f(k); start at f(0)=f(1)=1</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):</span>
@@ -303,7 +303,7 @@ f(n) = f(n-1) + f(n-2),
 \begin{pmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{pmatrix}
 \begin{pmatrix} f(k) \\ f(k-1) \end{pmatrix}.
 \]</span> Call that matrix <span class="math inline">\(M\)</span>. One turn of the loop is one multiplication by <span class="math inline">\(M\)</span>. So running the loop <span class="math inline">\(n\)</span> times is multiplying by <span class="math inline">\(M\)</span> a total of <span class="math inline">\(n\)</span> times, which is to say <span class="math inline">\(f(n)\)</span> lives inside <span class="math inline">\(M^{n}\)</span>. The dynamic program was matrix exponentiation in disguise the whole time.</p>
-<div id="c7d922a7" class="cell" data-execution_count="2">
+<div id="280488af" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> np.array([[<span class="dv">1</span>, <span class="dv">1</span>],</span>
@@ -335,7 +335,7 @@ f(n) = f(n-1) + f(n-2),
 \]</span> The first is the golden ratio. Because <span class="math inline">\(M\)</span> stretches by <span class="math inline">\(\varphi\)</span> along one eigen-direction and by <span class="math inline">\(\psi\)</span> (a small number) along the other, after many steps the <span class="math inline">\(\varphi\)</span> direction completely dominates, and the counts grow like <span class="math inline">\(\varphi^{\,n}\)</span>. Diagonalizing <span class="math inline">\(M\)</span> turns the recurrence into pure powers and hands back the exact formula, <span class="math display">\[
 f(n) = \frac{\varphi^{\,n+1} - \psi^{\,n+1}}{\sqrt{5}},
 \]</span> the Binet formula for Fibonacci. A problem about laying down little wooden tiles has produced the golden ratio with no prompting. Doesn’t that just feel beautiful?</p>
-<div id="7c13370c" class="cell" data-execution_count="3">
+<div id="fdf61996" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>phi <span class="op">=</span> (<span class="dv">1</span> <span class="op">+</span> <span class="dv">5</span><span class="op">**</span><span class="fl">0.5</span>) <span class="op">/</span> <span class="dv">2</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>psi <span class="op">=</span> (<span class="dv">1</span> <span class="op">-</span> <span class="dv">5</span><span class="op">**</span><span class="fl">0.5</span>) <span class="op">/</span> <span class="dv">2</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>closed <span class="op">=</span> <span class="bu">round</span>((phi<span class="op">**</span>(n <span class="op">+</span> <span class="dv">1</span>) <span class="op">-</span> psi<span class="op">**</span>(n <span class="op">+</span> <span class="dv">1</span>)) <span class="op">/</span> <span class="dv">5</span><span class="op">**</span><span class="fl">0.5</span>)</span>
@@ -358,7 +358,7 @@ each extra column multiplies the count by about phi = 1.618034</code></pre>
 \]</span></p>
 </div>
 <p>The reasoning is the same one twice over. Multiplying by <span class="math inline">\(T\)</span> once advances the boundary across one column and sums over every legal way to do it, exactly as a step of dynamic programming sums over every choice. Multiplying <span class="math inline">\(n\)</span> times threads the boundary across all <span class="math inline">\(n\)</span> columns. We start from the empty boundary, nothing poking into column one, and we demand the empty boundary at the end, nothing poking past column <span class="math inline">\(n\)</span>, which is just the statement that the finished tiling stays inside the board. Reading <span class="math inline">\((T^n)_{\mathbf 0,\mathbf 0}\)</span> off the matrix power is reading the answer. This is the transfer-matrix method, and a careful treatment lives in <span class="citation" data-cites="stanley2012"><a href="#ref-stanley2012" role="doc-biblioref">[1]</a></span>.</p>
-<div id="a95591e9" class="cell" data-execution_count="4">
+<div id="5493b7bb" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_transfer(m):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Transfer matrix for m-row boards: T[t][s] = ways to fill a column</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">    that enters in boundary state s and leaves in boundary state t."""</span></span>
@@ -394,7 +394,7 @@ each extra column multiplies the count by about phi = 1.618034</code></pre>
 <section id="the-growth-rate-hiding-in-the-largest-eigenvalue" class="level2">
 <h2 class="anchored" data-anchor-id="the-growth-rate-hiding-in-the-largest-eigenvalue">The growth rate hiding in the largest eigenvalue</h2>
 <p>The eigenvalue story scales up too, and it ends somewhere lovely. Just as <span class="math inline">\(\varphi\)</span> governed the <span class="math inline">\(2 \times n\)</span> growth, the largest eigenvalue <span class="math inline">\(\lambda_{\max}\)</span> of the transfer matrix sets the growth rate of the count as the board gets longer: adding one more column multiplies the number of tilings by roughly <span class="math inline">\(\lambda_{\max}\)</span>. So <span class="math inline">\(\lambda_{\max}\)</span> is a kind of entropy per column, a measure of how many genuine new choices each column opens up.</p>
-<div id="06b4f6a8" class="cell" data-execution_count="5">
+<div id="eab5851b" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m <span class="kw">in</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>]:</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    Tf <span class="op">=</span> np.array(build_transfer(m), dtype<span class="op">=</span><span class="bu">float</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    lam <span class="op">=</span> <span class="bu">max</span>(<span class="bu">abs</span>(np.linalg.eigvals(Tf)))                 <span class="co"># largest eigenvalue</span></span>
