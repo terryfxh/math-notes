@@ -4,7 +4,7 @@ description: "Two TEDx talks — Grant Sanderson on why 'useless' math out-pulls
 date: 2026-06-10
 categories: [meta, learning]
 bibliography: ../../references.bib
-draft: false
+draft: true
 ---
 
 ::: {.epigraph}
@@ -76,3 +76,4 @@ So the answer is not "make it useful," and not even "make it a story." Story is 
 ## How to cite
 
 > Terry (2026). *Nobody Asks What Quidditch Is For*. Retrieved from `https://terryfxh.github.io/math-notes/posts/nobody-asks-what-quidditch-is-for/`.
+ 
