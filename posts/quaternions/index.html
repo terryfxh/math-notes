@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-06-11">
+<meta name="description" content="Why a number system for space is forced to have four dimensions, how Hamilton’s product secretly contains the dot and cross products, and how to watch quaternion multiplication — a double rotation of a four-dimensional sphere — with ordinary eyes.">
+
+<title>Quaternions: Seeing Four Dimensions with Three-Dimensional Eyes – (Terry) Xihan Fang — Math Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d652a8b432bb3d0f423f3afe24e628cf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Quaternions: Seeing Four Dimensions with Three-Dimensional Eyes – (Terry) Xihan Fang — Math Notes">
+<meta property="og:description" content="Why a number system for space is forced to have four dimensions, how Hamilton’s product secretly contains the dot and cross products, and how to watch quaternion multiplication — a double rotation of a four-dimensional sphere — with ordinary eyes.">
+<meta property="og:site_name" content="(Terry) Xihan Fang — Math Notes">
+<meta name="twitter:title" content="Quaternions: Seeing Four Dimensions with Three-Dimensional Eyes – (Terry) Xihan Fang — Math Notes">
+<meta name="twitter:description" content="Why a number system for space is forced to have four dimensions, how Hamilton’s product secretly contains the dot and cross products, and how to watch quaternion multiplication — a double rotation of a four-dimensional sphere — with ordinary eyes.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">(Terry) Xihan Fang — Math Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/terryfxh"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#a-flash-of-genius-on-a-dublin-bridge" id="toc-a-flash-of-genius-on-a-dublin-bridge" class="nav-link active" data-scroll-target="#a-flash-of-genius-on-a-dublin-bridge">A flash of genius on a Dublin bridge</a></li>
+  <li><a href="#the-innocent-question" id="toc-the-innocent-question" class="nav-link" data-scroll-target="#the-innocent-question">The innocent question</a></li>
+  <li><a href="#why-three-dimensions-refuse" id="toc-why-three-dimensions-refuse" class="nav-link" data-scroll-target="#why-three-dimensions-refuse">Why three dimensions refuse</a></li>
+  <li><a href="#the-product-that-contains-a-geometry-course" id="toc-the-product-that-contains-a-geometry-course" class="nav-link" data-scroll-target="#the-product-that-contains-a-geometry-course">The product that contains a geometry course</a></li>
+  <li><a href="#the-shape-of-the-unit-quaternions" id="toc-the-shape-of-the-unit-quaternions" class="nav-link" data-scroll-target="#the-shape-of-the-unit-quaternions">The shape of the unit quaternions</a></li>
+  <li><a href="#borrowing-eyes" id="toc-borrowing-eyes" class="nav-link" data-scroll-target="#borrowing-eyes">Borrowing eyes</a></li>
+  <li><a href="#watching-the-multiplication" id="toc-watching-the-multiplication" class="nav-link" data-scroll-target="#watching-the-multiplication">Watching the multiplication</a></li>
+  <li><a href="#two-hands-all-of-rotation" id="toc-two-hands-all-of-rotation" class="nav-link" data-scroll-target="#two-hands-all-of-rotation">Two hands, all of rotation</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Quaternions: Seeing Four Dimensions with Three-Dimensional Eyes</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">pure</div>
+    <div class="quarto-category">algebra</div>
+    <div class="quarto-category">geometry</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Why a number system for space is forced to have four dimensions, how Hamilton’s product secretly contains the dot and cross products, and how to watch quaternion multiplication — a double rotation of a four-dimensional sphere — with ordinary eyes.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 11, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="epigraph">
+<p><em>“Here as he walked by on the 16th of October 1843, Sir William Rowan Hamilton, in a flash of genius, discovered the fundamental formula for quaternion multiplication <span class="math inline">\(i^2 = j^2 = k^2 = ijk = -1\)</span> &amp; cut it on a stone of this bridge.”</em></p>
+<p><span class="attribution">— plaque on Broom Bridge, Dublin</span></p>
+</div>
+<p>Quaternions have a public relations problem that is almost two centuries old. They are four-dimensional numbers, which already sounds like a provocation; their multiplication refuses to commute, which feels like a betrayal; and the standard introduction — here is a table, <span class="math inline">\(ij = k\)</span>, <span class="math inline">\(ji = -k\)</span>, memorize it — manages to make one of the most geometric objects in mathematics feel like an arbitrary list of rules. If you have met quaternions before and bounced off, the problem was almost certainly not you.</p>
+<p>This post makes two promises. The first is about <em>logic</em>: I want to show you that almost nothing about the quaternions is arbitrary — not the strange dimension count, not the multiplication rules, not even the failure of commutativity. Each is forced, step by inevitable step, the moment you ask one innocent question about multiplying points in space. The second is about <em>sight</em>: by the end, I want you to be able to read a product like <span class="math inline">\(i \cdot j = k\)</span> and watch a specific, rigid motion of a four-dimensional sphere, using nothing but your three-dimensional imagination.</p>
+<section id="a-flash-of-genius-on-a-dublin-bridge" class="level2">
+<h2 class="anchored" data-anchor-id="a-flash-of-genius-on-a-dublin-bridge">A flash of genius on a Dublin bridge</h2>
+<p>By the 1830s, mathematicians had made peace with complex numbers, and more than peace — they had fallen in love. A number <span class="math inline">\(a + bi\)</span> is a point in the plane, and multiplication by it <em>rotates and stretches</em> that plane. Algebra and plane geometry turned out to be two languages for one thing. The Irish mathematician William Rowan Hamilton was gripped by the obvious next question: we live in three dimensions, so where is the number system for <em>space</em>?</p>
+<p>He searched for over a decade. The story goes that his sons would ask at breakfast, “Papa, can you multiply triplets?” and he would shake his head: “No, I can only add and subtract them.” Then, on October 16th, 1843, walking along the Royal Canal, he saw it in a flash: the answer was not to add one imaginary axis to the complex numbers but <em>two</em> — three imaginary units <span class="math inline">\(i\)</span>, <span class="math inline">\(j\)</span>, <span class="math inline">\(k\)</span> for space, bound to a real axis standing perpendicular to all of them. He scratched the governing law into the stone of Broom Bridge,</p>
+<p><span id="eq-hamilton"><span class="math display">\[
+i^2 = j^2 = k^2 = ijk = -1,
+\tag{1}\]</span></span></p>
+<p>and announced the discovery to the world within weeks <span class="citation" data-cites="hamilton1844"><a href="#ref-hamilton1844" role="doc-biblioref">[1]</a></span>. He called the new numbers <em>quaternions</em>, and what followed is one of the great turf wars in the history of mathematics. Hamilton — and after him an actual official society — pushed quaternions as <em>the</em> language of three-dimensional science. The opposition produced some genuinely magnificent trash talk: Lord Kelvin wrote that quaternions, “though beautifully ingenious, have been an unmixed evil to those who have touched them in any way.” There is even a theory, taken half-seriously by historians, that the Mad Hatter’s endless rotation around the tea table — written, remember, by an Oxford mathematician — is a satire of their order-sensitive multiplication.</p>
+<p>The vector calculus of Gibbs and Heaviside won the textbooks, and we will see in a moment that it won them by <em>strip-mining Hamilton’s formula</em>. But the twentieth century staged two rescues: computer graphics and robotics rediscovered that quaternions encode 3D rotations more compactly and stably than anything else — your phone and every spacecraft attitude controller multiply them constantly — and quantum mechanics found that the algebra of a spinning electron is Hamilton’s algebra in a lab coat. Numbers this inevitable do not stay buried.</p>
+<p>So let’s do what Hamilton could not do on the bridge, with no flash of genius required: walk the logic slowly enough that four dimensions become the <em>obvious</em> answer.</p>
+</section>
+<section id="the-innocent-question" class="level2">
+<h2 class="anchored" data-anchor-id="the-innocent-question">The innocent question</h2>
+<p>What should “multiplying points” even mean? Let’s write down our demands honestly, because everything follows from them. We have points in some <span class="math inline">\(n\)</span>-dimensional space, we can already add them and scale them, and we want a multiplication such that, first, it distributes over addition the way any self-respecting product does; second, we can <em>divide</em> — every nonzero point has a reciprocal; and third, it respects geometry. That last demand has a precise, modest form. Every point <span class="math inline">\(q\)</span> has a size <span class="math inline">\(|q|\)</span>, its distance from the origin, and we ask that</p>
+<p><span id="eq-norm"><span class="math display">\[
+|q_1 q_2| \;=\; |q_1|\,|q_2|.
+\tag{2}\]</span></span></p>
+<p>Lengths multiply. That is all. It looks like a throwaway technicality, and it is in fact the steel beam holding up everything in this post.</p>
+<p>Watch what <a href="#eq-norm" class="quarto-xref">Equation&nbsp;2</a> already does in two dimensions. Write the squared length of <span class="math inline">\((a,b)\)</span> as <span class="math inline">\(a^2 + b^2\)</span>. If a length-respecting multiplication exists, then the product of two sums of two squares must again <em>be</em> a sum of two squares — and it is, by an identity that was known to Diophantus seventeen centuries before complex numbers existed:</p>
+<p><span id="eq-twosquare"><span class="math display">\[
+(a^2 + b^2)(c^2 + d^2) \;=\; (ac - bd)^2 + (ad + bc)^2.
+\tag{3}\]</span></span></p>
+<p>Now look closely at the right-hand side. The expressions <span class="math inline">\(ac - bd\)</span> and <span class="math inline">\(ad + bc\)</span> are precisely the real and imaginary parts of the product <span class="math inline">\((a + bi)(c + di)\)</span>. The multiplication rule of complex numbers is not a convention someone chose; it is the <em>unique way to factor the two-square identity</em>. The algebra was hiding inside an arithmetic fact all along. Take a moment with that — it is the cleanest example I know of a number system being discovered rather than invented.</p>
+</section>
+<section id="why-three-dimensions-refuse" class="level2">
+<h2 class="anchored" data-anchor-id="why-three-dimensions-refuse">Why three dimensions refuse</h2>
+<p>So Hamilton’s program needs a <em>three</em>-square identity: the product of two sums of three squares should be a sum of three squares. And here the universe says no, and it says it with a concrete counterexample rather than abstract hand-wringing. Both <span class="math inline">\(3 = 1^2 + 1^2 + 1^2\)</span> and <span class="math inline">\(5 = 0^2 + 1^2 + 2^2\)</span> are sums of three squares. Their product is <span class="math inline">\(15\)</span> — and <span class="math inline">\(15\)</span> simply is not. Try it: <span class="math inline">\(9 + 4 + 1\)</span> overshoots at <span class="math inline">\(14\)</span>, every other combination misses too. (Number theorists know the full story: integers of the form <span class="math inline">\(8b + 7\)</span> refuse to be three squares, and <span class="math inline">\(15\)</span> is the smallest product to weaponize this.)</p>
+<p>Sit with what just happened. A fact about the integer <span class="math inline">\(15\)</span> reaches up and forbids an entire algebra. No bilinear, length-respecting multiplication of 3D points can exist, no matter how clever you are, because if it did, <a href="#eq-norm" class="quarto-xref">Equation&nbsp;2</a> would manufacture a three-square identity and <span class="math inline">\(15\)</span> stands in the way. Hamilton’s decade of frustration was not a failure of imagination — he was pushing against a theorem.</p>
+<p>But Euler, a century before Hamilton, had found that <em>four</em> squares work <span class="citation" data-cites="conway2003"><a href="#ref-conway2003" role="doc-biblioref">[2]</a></span>:</p>
+<p><span id="eq-foursquare"><span class="math display">\[
+(a^2+b^2+c^2+d^2)(e^2+f^2+g^2+h^2) = (ae-bf-cg-dh)^2 + (af+be+ch-dg)^2 + (ag-bh+ce+df)^2 + (ah+bg-cf+de)^2.
+\tag{4}\]</span></span></p>
+<p>At first glance this looks like a wall of symbols, but you have already seen its little sibling <a href="#eq-twosquare" class="quarto-xref">Equation&nbsp;3</a> and you know how to read it: <em>those four expressions on the right are a multiplication rule trying to be born.</em> Factor the four-square identity the way the two-square identity factors, and the structure constants of <a href="#eq-hamilton" class="quarto-xref">Equation&nbsp;1</a> fall out — not chosen, <em>forced</em>. The quaternions had been waiting inside Euler’s identity since 1748, ninety-five years before Hamilton heard them knocking. And the pattern stops where it stops for a reason: Hurwitz proved in 1898 that such identities exist only for <span class="math inline">\(n = 1, 2, 4, 8\)</span> — reals, complexes, quaternions, and (by the way, with division but at the price of associativity) the eight-dimensional octonions, after which the door closes forever <span class="citation" data-cites="conway2003"><a href="#ref-conway2003" role="doc-biblioref">[2]</a></span>. The dimension four was never strange. It was one of the only four options the integers ever put on the table.</p>
+</section>
+<section id="the-product-that-contains-a-geometry-course" class="level2">
+<h2 class="anchored" data-anchor-id="the-product-that-contains-a-geometry-course">The product that contains a geometry course</h2>
+<p>Now let’s actually hold the multiplication in our hands, because it has more inside it than its definition suggests. Split a quaternion into Hamilton’s two parts: a real number plus a 3D point, <span class="math inline">\(q = a + \mathbf{v}\)</span>. Hamilton needed a name for that pure spatial part, the piece spanned by <span class="math inline">\(i, j, k\)</span>, and the word he coined was <em>vector</em> — the everyday word is a fossil of this exact construction. Multiply two quaternions <span class="math inline">\((a + \mathbf{v})(b + \mathbf{w})\)</span> by brute distribution using <a href="#eq-hamilton" class="quarto-xref">Equation&nbsp;1</a>, collect terms, and the result organizes itself into something startling:</p>
+<p><span id="eq-product"><span class="math display">\[
+(a + \mathbf{v})(b + \mathbf{w}) \;=\; \underbrace{ab - \mathbf{v}\cdot\mathbf{w}}_{\text{real part}} \;+\; \underbrace{a\,\mathbf{w} + b\,\mathbf{v} + \mathbf{v}\times\mathbf{w}}_{\text{vector part}}.
+\tag{5}\]</span></span></p>
+<p>Look at what surfaced: the dot product and the cross product, both of them, with their signs and their geometry, born as the real and vector shrapnel of a single quaternion product. This is not an analogy — it is ancestry. Gibbs and Heaviside built vector analysis by taking <a href="#eq-product" class="quarto-xref">Equation&nbsp;5</a> apart and keeping the pieces; the dot and cross products you learned as separate gadgets are the two halves of one multiplication that predates them both. Doesn’t that just feel beautiful? Every identity that mixes dot and cross products is secretly a statement about associativity in Hamilton’s algebra.</p>
+<p>And the famous rules are now corollaries you can see. For pure vectors the real parts vanish, so <span class="math inline">\(\mathbf{v}\mathbf{w} = -\mathbf{v}\cdot\mathbf{w} + \mathbf{v}\times\mathbf{w}\)</span>. Take <span class="math inline">\(\mathbf{v} = i\)</span>, <span class="math inline">\(\mathbf{w} = j\)</span>: perpendicular, so the dot part is zero, and <span class="math inline">\(i \times j = k\)</span>. Hence <span class="math inline">\(ij = k\)</span>. Swap the order and the cross product flips sign: <span class="math inline">\(ji = -k\)</span>. The notorious non-commutativity of quaternions is nothing but the antisymmetry of the cross product — which is itself the honest geometric fact that orientation matters in space. A number system that <em>truly</em> speaks for 3D geometry had no choice but to give up commutativity; a commutative one would have been lying about space. Even <span class="math inline">\(\mathbf{v}^2 = -|\mathbf{v}|^2\)</span>, the rule that every unit vector is a square root of <span class="math inline">\(-1\)</span>, falls out of <a href="#eq-product" class="quarto-xref">Equation&nbsp;5</a> in one line.</p>
+<p>That last sentence deserves its own paragraph, because it quietly hands us the entire shape of what comes next. <em>Every</em> unit vector <span class="math inline">\(\mathbf{u}\)</span> — not just <span class="math inline">\(i\)</span> — satisfies <span class="math inline">\(\mathbf{u}^2 = -1\)</span>. So inside the quaternions, the plane spanned by <span class="math inline">\(1\)</span> and <span class="math inline">\(\mathbf{u}\)</span> is a perfect copy of the complex numbers, and every unit quaternion can be written as</p>
+<p><span id="eq-polar"><span class="math display">\[
+q \;=\; \cos\theta + \mathbf{u}\sin\theta,
+\tag{6}\]</span></span></p>
+<p>an “<span class="math inline">\(e^{i\theta}\)</span>” with a <em>choice of which <span class="math inline">\(i\)</span></em>. The unit quaternions are a book whose pages are complex unit circles, all bound together along the spine <span class="math inline">\(\{1, -1\}\)</span>, one page for every direction <span class="math inline">\(\mathbf{u}\)</span> in space.</p>
+</section>
+<section id="the-shape-of-the-unit-quaternions" class="level2">
+<h2 class="anchored" data-anchor-id="the-shape-of-the-unit-quaternions">The shape of the unit quaternions</h2>
+<p>Where do those unit quaternions live? In four coordinates <span class="math inline">\((a,b,c,d)\)</span> with <span class="math inline">\(a^2+b^2+c^2+d^2 = 1\)</span>: the unit <em>hypersphere</em> <span class="math inline">\(S^3\)</span>, a three-dimensional surface curving through four-dimensional space. And <a href="#eq-norm" class="quarto-xref">Equation&nbsp;2</a> gives this sphere a property that ordinary spheres can only envy: the product of two unit quaternions is again a unit quaternion. The hypersphere is <em>closed under multiplication</em> — it is a group, a space whose every point is also a motion of that space. Among all spheres of all dimensions, essentially only the circle <span class="math inline">\(S^1\)</span> and this hypersphere <span class="math inline">\(S^3\)</span> carry such a structure. The circle’s multiplication runs the theory of angles and Fourier series; its big sibling’s multiplication runs the theory of spatial rotation. We have walked into very select company.</p>
+<p>So the object of study is fixed: a 4D sphere we cannot see, on which multiplication acts by — what, exactly? By <a href="#eq-norm" class="quarto-xref">Equation&nbsp;2</a>, multiplying by a unit quaternion preserves all lengths: it is a <em>rigid rotation of four-dimensional space</em>. The two promises of this post have become one task. See the hypersphere; watch it turn.</p>
+</section>
+<section id="borrowing-eyes" class="level2">
+<h2 class="anchored" data-anchor-id="borrowing-eyes">Borrowing eyes</h2>
+<p>Here is the move, and it is a move worth owning for life: when a space has one dimension too many for your eyes, ask how you would show <em>your</em> world to a creature with one dimension too few — then accept the same charity from above. Mathematicians have a precise instrument for this, <strong>stereographic projection</strong>, and we will rehearse it twice before using it in earnest.</p>
+<p>Rehearsal one: show a circle to a creature who knows only a line. The unit complex numbers form a circle; rotation is its native motion; and a rotation has just <em>one</em> degree of freedom, so a line ought to suffice to display it. Project from the point <span class="math inline">\(-1\)</span>: for each other point of the circle, draw the straight line from <span class="math inline">\(-1\)</span> through it and mark where it crosses the tangent line at the opposite pole. The point <span class="math inline">\(1\)</span> lands at the center; <span class="math inline">\(i\)</span> and <span class="math inline">\(-i\)</span> stay put; arcs near <span class="math inline">\(-1\)</span> fly off toward the two infinite ends, and <span class="math inline">\(-1\)</span> itself becomes the <em>point at infinity</em>. Now multiply the circle by <span class="math inline">\(i\)</span> — a crisp quarter turn — and watch its shadow: the center point slides to <span class="math inline">\(i\)</span>, the point at <span class="math inline">\(i\)</span> flees off the end of the line, infinity wraps around and re-enters at <span class="math inline">\(-i\)</span>, and four repetitions bring every point home: <span class="math inline">\(i^4 = 1\)</span>, visible. The motion looks stretchy and strange, but that is the lens, not the motion. Holding those two truths at once — <em>the shadow distorts, the object is rigid</em> — is the entire skill.</p>
+<p>Rehearsal two: show a rotating sphere to a creature who knows only a plane, and — this is the version we need — build the sphere out of number axes: real axis vertical, two imaginary axes <span class="math inline">\(i, j\)</span> spanning the floor. Project the unit sphere from its south pole <span class="math inline">\(-1\)</span> onto the floor. The north pole <span class="math inline">\(1\)</span> lands at the origin. The equator through <span class="math inline">\(\pm i, \pm j\)</span> <em>is already in the floor</em> and does not move: one honest, undistorted circle amid the shadows. The northern hemisphere (positive real part) lands inside it, the southern outside, and <span class="math inline">\(-1\)</span> is again the point at infinity. One dictionary entry pays for the whole rehearsal: every straight line the flat creature sees is the shadow of a circle through <span class="math inline">\(-1\)</span>. <em>A line is a circle through infinity.</em> Once that clicks, a rotation that appears to deform a circle into a line stops being alarming — upstairs it is just a circle turning rigidly through the south pole. Spin the sphere a quarter turn about the <span class="math inline">\(j\)</span>-axis (<span class="math inline">\(1 \to i \to -1 \to -i\)</span>) and the flat creature sees, embedded along one line of their floor, exactly the lurching motion of rehearsal one, while the honest circle swings up into a vertical line. Nothing stretched. It never does.</p>
+<p>Now the real thing, with practiced eyes. Project the hypersphere of unit quaternions from <span class="math inline">\(-1\)</span> into our 3D space. The number <span class="math inline">\(1\)</span> lands at the center of the room. The “equator” — all unit quaternions with zero real part, which is exactly the sphere of unit <em>vectors</em> through <span class="math inline">\(i, j, k\)</span> — lies in our space already and projects to itself: an honest unit sphere around the origin, the one fully trustworthy object in view. Unit quaternions with positive real part fill the inside of that sphere; negative real parts land outside; <span class="math inline">\(-1\)</span> is the point at infinity, in every direction at once. And the dictionary carries up a dimension: every plane through the origin is secretly a great sphere through <span class="math inline">\(-1\)</span>; every line through the origin is secretly a great circle through <span class="math inline">\(-1\)</span>. The line you see through <span class="math inline">\(1\)</span>, <span class="math inline">\(i\)</span>, <span class="math inline">\(-i\)</span> <em>is</em> the unit circle of the complex numbers — one page of the book from <a href="#eq-polar" class="quarto-xref">Equation&nbsp;6</a>, lying open in the room. Pause here until the sentence “everything I see is at distance exactly <span class="math inline">\(1\)</span> from a number zero that is nowhere in the picture” stops hurting. It does stop.</p>
+</section>
+<section id="watching-the-multiplication" class="level2">
+<h2 class="anchored" data-anchor-id="watching-the-multiplication">Watching the multiplication</h2>
+<p>What does left-multiplication by a unit quaternion do to this picture? Here is the answer, and every clause of it is now checkable with your own eyes:</p>
+<blockquote class="blockquote">
+<p>Multiplying on the left by <span class="math inline">\(q = \cos\theta + \mathbf{u}\sin\theta\)</span> rotates the complex circle of <span class="math inline">\(\mathbf{u}\)</span> — the circle through <span class="math inline">\(1\)</span>, <span class="math inline">\(\mathbf{u}\)</span>, <span class="math inline">\(-1\)</span>, seen by us as a line through the origin — by the angle <span class="math inline">\(\theta\)</span>, carrying <span class="math inline">\(1\)</span> to <span class="math inline">\(q\)</span>. <em>Simultaneously</em>, it rotates the great circle perpendicular to it, lying on the honest sphere, by the <strong>same</strong> angle <span class="math inline">\(\theta\)</span>.</p>
+</blockquote>
+<p>Two completely perpendicular circles — same center, same radius, no common point, a configuration that sounds impossible until you grant them four dimensions to dodge each other in — turning in lockstep. Rotations with this equal-angle property are called <em>isoclinic</em>, and they exist only in four dimensions and above. In 3D every rotation has an axis, a line of points left alone; this motion fixes nothing whatsoever. (I first learned to actually <em>see</em> this picture, with the projected hypersphere and the hand gestures below, from Grant Sanderson’s video on the subject <span class="citation" data-cites="sanderson2018quaternions"><a href="#ref-sanderson2018quaternions" role="doc-biblioref">[3]</a></span> — the debt for the visual language of this section is his.)</p>
+<p>Make it concrete with <span class="math inline">\(q = i\)</span>, so <span class="math inline">\(\mathbf{u} = i\)</span> and <span class="math inline">\(\theta = 90^\circ\)</span>. The circle through <span class="math inline">\(1\)</span> and <span class="math inline">\(i\)</span> appears as a line through the origin, and along it runs the lurch you have now rehearsed twice: <span class="math inline">\(1 \to i\)</span>, <span class="math inline">\(i \to -1\)</span> (off to infinity), <span class="math inline">\(-1 \to -i\)</span> (back in from beyond), <span class="math inline">\(-i \to 1\)</span>. Meanwhile the perpendicular great circle through <span class="math inline">\(j\)</span> and <span class="math inline">\(k\)</span>, sitting on the honest sphere, turns <span class="math inline">\(90^\circ\)</span> in the direction given by a right-hand rule: point your right thumb from <span class="math inline">\(1\)</span> toward <span class="math inline">\(i\)</span> along the visible line, and your fingers curl the way the <span class="math inline">\(jk\)</span>-circle rolls. Read the products straight off the motion:</p>
+<p><span class="math display">\[
+i \cdot 1 = i, \qquad i \cdot i = -1, \qquad i \cdot j = k, \qquad i \cdot k = -j.
+\]</span></p>
+<p>My honest hope is that this is no longer a table but a film: the line flowing, the circle rolling with your curled fingers, four frames returning everything home because <span class="math inline">\(i^4 = 1\)</span>. And since multiplication distributes, knowing the motion on the basis <span class="math inline">\(1, i, j, k\)</span> pins it down on every quaternion — see the action on four points, know it on the whole 4D space. For a general <span class="math inline">\(q\)</span> the recipe never changes: draw the circle through <span class="math inline">\(1\)</span>, <span class="math inline">\(q\)</span>, <span class="math inline">\(-1\)</span>; turn it until <span class="math inline">\(1\)</span> reaches <span class="math inline">\(q\)</span>; turn the perpendicular circle on the honest sphere by the same angle, right-handedly. One point of the hypersphere chosen, one rigid motion determined. The two computations <span class="math inline">\(ij = k\)</span> and <span class="math inline">\(ji = -k\)</span> are now two genuinely different films — thumb toward <span class="math inline">\(i\)</span> curling <span class="math inline">\(j\)</span> up to <span class="math inline">\(k\)</span>, versus thumb toward <span class="math inline">\(j\)</span> curling <span class="math inline">\(i\)</span> down to <span class="math inline">\(-k\)</span> — and non-commutativity is something your hands knew before your algebra did. It is the same lesson the cross product whispered earlier, now playing on the big screen.</p>
+</section>
+<section id="two-hands-all-of-rotation" class="level2">
+<h2 class="anchored" data-anchor-id="two-hands-all-of-rotation">Two hands, all of rotation</h2>
+<p>One refinement opens the door to everything quaternions are used for. You can also multiply by <span class="math inline">\(q\)</span> on the <em>right</em>, and the motion is the mirror twin: the same circle through <span class="math inline">\(1, q, -1\)</span> turns the same way, but the perpendicular circle now obeys a <em>left</em>-hand rule. Left multiplications and right multiplications are two distinct families of isoclinic rotations — and here is the theorem that I find quietly astonishing: composing them, <span class="math inline">\(x \mapsto p\,x\,q\)</span>, produces <em>every</em> rotation of four-dimensional space, and essentially uniquely <span class="citation" data-cites="conway2003"><a href="#ref-conway2003" role="doc-biblioref">[2]</a></span>. The entire rotation group of 4D, an object you might expect to be hopelessly opaque, factors into a left hand and a right hand, each one a copy of our hypersphere.</p>
+<p>And now you can feel the next chapter coming. A single multiplication tilts the honest sphere of vectors off through the fourth dimension — beautiful, but not yet a rotation of <em>space</em>. The fix is to let the two hands collaborate against each other: the sandwich <span class="math inline">\(\mathbf{v} \mapsto q\,\mathbf{v}\,q^{-1}\)</span>, one left action and one right action whose off-sphere tilts cancel exactly, leaving the honest sphere turning rigidly in place. That sandwich is how your phone, your game engine, and your favorite spacecraft actually compute rotations, and it hides one more elegant secret — <span class="math inline">\(q\)</span> and <span class="math inline">\(-q\)</span> perform the <em>same</em> rotation, a two-to-one disguise called the double cover, which is precisely the mathematics of electron spin. Unpacking it properly deserves its own post, and it will get one.</p>
+<p>Until then, sit with what the innocent question bought us: lengths multiply, so <span class="math inline">\(15\)</span> forbids three dimensions, so Euler’s identity forces four; the product, once forced, births the dot and cross products and pays for non-commutativity with honest geometry; the unit quaternions close into one of the only spheres in mathematics that is also a group; and its multiplication, seen through a projection we borrowed by climbing down two dimensions and back up, is a pair of perpendicular circles turning as one. If you want to hold the hypersphere in your own hands, Sanderson and Eater built an explorable version of these pictures that you can drag around yourself <span class="citation" data-cites="eater2018quaternions"><a href="#ref-eater2018quaternions" role="doc-biblioref">[4]</a></span> — go play. The “unmixed evil” was geometry all along, waiting a century and a half for someone to draw it.</p>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-hamilton1844" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">W. R. Hamilton, <span>“On quaternions; or on a new system of imaginaries in algebra,”</span> <em>The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science</em>, vol. 25, no. 163, pp. 10–13, 1844.</div>
+</div>
+<div id="ref-conway2003" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">J. H. Conway and D. A. Smith, <em>On quaternions and octonions: Their geometry, arithmetic, and symmetry</em>. A K Peters, 2003.</div>
+</div>
+<div id="ref-sanderson2018quaternions" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">G. Sanderson, <span>“Visualizing quaternions (4d numbers) with stereographic projection.”</span> 3Blue1Brown, YouTube video, 2018. Available: <a href="https://www.youtube.com/watch?v=d4EgbgTm0Bg">https://www.youtube.com/watch?v=d4EgbgTm0Bg</a></div>
+</div>
+<div id="ref-eater2018quaternions" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">B. Eater and G. Sanderson, <span>“Visualizing quaternions: An explorable video series.”</span> Interactive website, 2018. Available: <a href="https://eater.net/quaternions">https://eater.net/quaternions</a></div>
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/terryfxh\.github\.io\/math-notes");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Quaternions: Seeing Four Dimensions with Three-Dimensional Eyes"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "Why a number system for space is forced to have four dimensions, how Hamilton's product secretly contains the dot and cross products, and how to watch quaternion multiplication — a double rotation of a four-dimensional sphere — with ordinary eyes."</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-06-11</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [pure, algebra, geometry]</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> ../../references.bib</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">draft:</span><span class="co"> false</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>::: {.epigraph}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>*"Here as he walked by on the 16th of October 1843, Sir William Rowan Hamilton, in a flash of genius, discovered the fundamental formula for quaternion multiplication $i^2 = j^2 = k^2 = ijk = -1$ &amp; cut it on a stone of this bridge."*</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">— plaque on Broom Bridge, Dublin</span><span class="co">]</span>{.attribution}</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Quaternions have a public relations problem that is almost two centuries old. They are four-dimensional numbers, which already sounds like a provocation; their multiplication refuses to commute, which feels like a betrayal; and the standard introduction — here is a table, $ij = k$, $ji = -k$, memorize it — manages to make one of the most geometric objects in mathematics feel like an arbitrary list of rules. If you have met quaternions before and bounced off, the problem was almost certainly not you.</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>This post makes two promises. The first is about *logic*: I want to show you that almost nothing about the quaternions is arbitrary — not the strange dimension count, not the multiplication rules, not even the failure of commutativity. Each is forced, step by inevitable step, the moment you ask one innocent question about multiplying points in space. The second is about *sight*: by the end, I want you to be able to read a product like $i \cdot j = k$ and watch a specific, rigid motion of a four-dimensional sphere, using nothing but your three-dimensional imagination.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## A flash of genius on a Dublin bridge</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>By the 1830s, mathematicians had made peace with complex numbers, and more than peace — they had fallen in love. A number $a + bi$ is a point in the plane, and multiplication by it *rotates and stretches* that plane. Algebra and plane geometry turned out to be two languages for one thing. The Irish mathematician William Rowan Hamilton was gripped by the obvious next question: we live in three dimensions, so where is the number system for *space*?</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>He searched for over a decade. The story goes that his sons would ask at breakfast, "Papa, can you multiply triplets?" and he would shake his head: "No, I can only add and subtract them." Then, on October 16th, 1843, walking along the Royal Canal, he saw it in a flash: the answer was not to add one imaginary axis to the complex numbers but *two* — three imaginary units $i$, $j$, $k$ for space, bound to a real axis standing perpendicular to all of them. He scratched the governing law into the stone of Broom Bridge,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>i^2 = j^2 = k^2 = ijk = -1,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>$$ {#eq-hamilton}</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>and announced the discovery to the world within weeks <span class="co">[</span><span class="ot">@hamilton1844</span><span class="co">]</span>. He called the new numbers *quaternions*, and what followed is one of the great turf wars in the history of mathematics. Hamilton — and after him an actual official society — pushed quaternions as *the* language of three-dimensional science. The opposition produced some genuinely magnificent trash talk: Lord Kelvin wrote that quaternions, "though beautifully ingenious, have been an unmixed evil to those who have touched them in any way." There is even a theory, taken half-seriously by historians, that the Mad Hatter's endless rotation around the tea table — written, remember, by an Oxford mathematician — is a satire of their order-sensitive multiplication.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>The vector calculus of Gibbs and Heaviside won the textbooks, and we will see in a moment that it won them by *strip-mining Hamilton's formula*. But the twentieth century staged two rescues: computer graphics and robotics rediscovered that quaternions encode 3D rotations more compactly and stably than anything else — your phone and every spacecraft attitude controller multiply them constantly — and quantum mechanics found that the algebra of a spinning electron is Hamilton's algebra in a lab coat. Numbers this inevitable do not stay buried.</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>So let's do what Hamilton could not do on the bridge, with no flash of genius required: walk the logic slowly enough that four dimensions become the *obvious* answer.</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## The innocent question</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>What should "multiplying points" even mean? Let's write down our demands honestly, because everything follows from them. We have points in some $n$-dimensional space, we can already add them and scale them, and we want a multiplication such that, first, it distributes over addition the way any self-respecting product does; second, we can *divide* — every nonzero point has a reciprocal; and third, it respects geometry. That last demand has a precise, modest form. Every point $q$ has a size $|q|$, its distance from the origin, and we ask that</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>q_1 q_2<span class="pp">|</span> \;=\; <span class="pp">|</span>q_1<span class="pp">|</span>\,<span class="pp">|</span>q_2<span class="pp">|</span>.</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>$$ {#eq-norm}</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>Lengths multiply. That is all. It looks like a throwaway technicality, and it is in fact the steel beam holding up everything in this post.</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>Watch what @eq-norm already does in two dimensions. Write the squared length of $(a,b)$ as $a^2 + b^2$. If a length-respecting multiplication exists, then the product of two sums of two squares must again *be* a sum of two squares — and it is, by an identity that was known to Diophantus seventeen centuries before complex numbers existed:</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>(a^2 + b^2)(c^2 + d^2) \;=\; (ac - bd)^2 + (ad + bc)^2.</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>$$ {#eq-twosquare}</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>Now look closely at the right-hand side. The expressions $ac - bd$ and $ad + bc$ are precisely the real and imaginary parts of the product $(a + bi)(c + di)$. The multiplication rule of complex numbers is not a convention someone chose; it is the *unique way to factor the two-square identity*. The algebra was hiding inside an arithmetic fact all along. Take a moment with that — it is the cleanest example I know of a number system being discovered rather than invented.</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why three dimensions refuse</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>So Hamilton's program needs a *three*-square identity: the product of two sums of three squares should be a sum of three squares. And here the universe says no, and it says it with a concrete counterexample rather than abstract hand-wringing. Both $3 = 1^2 + 1^2 + 1^2$ and $5 = 0^2 + 1^2 + 2^2$ are sums of three squares. Their product is $15$ — and $15$ simply is not. Try it: $9 + 4 + 1$ overshoots at $14$, every other combination misses too. (Number theorists know the full story: integers of the form $8b + 7$ refuse to be three squares, and $15$ is the smallest product to weaponize this.)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>Sit with what just happened. A fact about the integer $15$ reaches up and forbids an entire algebra. No bilinear, length-respecting multiplication of 3D points can exist, no matter how clever you are, because if it did, @eq-norm would manufacture a three-square identity and $15$ stands in the way. Hamilton's decade of frustration was not a failure of imagination — he was pushing against a theorem.</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>But Euler, a century before Hamilton, had found that *four* squares work <span class="co">[</span><span class="ot">@conway2003</span><span class="co">]</span>:</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>(a^2+b^2+c^2+d^2)(e^2+f^2+g^2+h^2) = (ae-bf-cg-dh)^2 + (af+be+ch-dg)^2 + (ag-bh+ce+df)^2 + (ah+bg-cf+de)^2.</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>$$ {#eq-foursquare}</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>At first glance this looks like a wall of symbols, but you have already seen its little sibling @eq-twosquare and you know how to read it: *those four expressions on the right are a multiplication rule trying to be born.* Factor the four-square identity the way the two-square identity factors, and the structure constants of @eq-hamilton fall out — not chosen, *forced*. The quaternions had been waiting inside Euler's identity since 1748, ninety-five years before Hamilton heard them knocking. And the pattern stops where it stops for a reason: Hurwitz proved in 1898 that such identities exist only for $n = 1, 2, 4, 8$ — reals, complexes, quaternions, and (by the way, with division but at the price of associativity) the eight-dimensional octonions, after which the door closes forever <span class="co">[</span><span class="ot">@conway2003</span><span class="co">]</span>. The dimension four was never strange. It was one of the only four options the integers ever put on the table.</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="fu">## The product that contains a geometry course</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>Now let's actually hold the multiplication in our hands, because it has more inside it than its definition suggests. Split a quaternion into Hamilton's two parts: a real number plus a 3D point, $q = a + \mathbf{v}$. Hamilton needed a name for that pure spatial part, the piece spanned by $i, j, k$, and the word he coined was *vector* — the everyday word is a fossil of this exact construction. Multiply two quaternions $(a + \mathbf{v})(b + \mathbf{w})$ by brute distribution using @eq-hamilton, collect terms, and the result organizes itself into something startling:</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>(a + \mathbf{v})(b + \mathbf{w}) \;=\; \underbrace{ab - \mathbf{v}\cdot\mathbf{w}}_{\text{real part}} \;+\; \underbrace{a\,\mathbf{w} + b\,\mathbf{v} + \mathbf{v}\times\mathbf{w}}_{\text{vector part}}.</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>$$ {#eq-product}</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>Look at what surfaced: the dot product and the cross product, both of them, with their signs and their geometry, born as the real and vector shrapnel of a single quaternion product. This is not an analogy — it is ancestry. Gibbs and Heaviside built vector analysis by taking @eq-product apart and keeping the pieces; the dot and cross products you learned as separate gadgets are the two halves of one multiplication that predates them both. Doesn't that just feel beautiful? Every identity that mixes dot and cross products is secretly a statement about associativity in Hamilton's algebra.</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>And the famous rules are now corollaries you can see. For pure vectors the real parts vanish, so $\mathbf{v}\mathbf{w} = -\mathbf{v}\cdot\mathbf{w} + \mathbf{v}\times\mathbf{w}$. Take $\mathbf{v} = i$, $\mathbf{w} = j$: perpendicular, so the dot part is zero, and $i \times j = k$. Hence $ij = k$. Swap the order and the cross product flips sign: $ji = -k$. The notorious non-commutativity of quaternions is nothing but the antisymmetry of the cross product — which is itself the honest geometric fact that orientation matters in space. A number system that *truly* speaks for 3D geometry had no choice but to give up commutativity; a commutative one would have been lying about space. Even $\mathbf{v}^2 = -|\mathbf{v}|^2$, the rule that every unit vector is a square root of $-1$, falls out of @eq-product in one line.</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>That last sentence deserves its own paragraph, because it quietly hands us the entire shape of what comes next. *Every* unit vector $\mathbf{u}$ — not just $i$ — satisfies $\mathbf{u}^2 = -1$. So inside the quaternions, the plane spanned by $1$ and $\mathbf{u}$ is a perfect copy of the complex numbers, and every unit quaternion can be written as</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>q \;=\; \cos\theta + \mathbf{u}\sin\theta,</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>$$ {#eq-polar}</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>an "$e^{i\theta}$" with a *choice of which $i$*. The unit quaternions are a book whose pages are complex unit circles, all bound together along the spine $<span class="sc">\{</span>1, -1<span class="sc">\}</span>$, one page for every direction $\mathbf{u}$ in space.</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## The shape of the unit quaternions</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>Where do those unit quaternions live? In four coordinates $(a,b,c,d)$ with $a^2+b^2+c^2+d^2 = 1$: the unit *hypersphere* $S^3$, a three-dimensional surface curving through four-dimensional space. And @eq-norm gives this sphere a property that ordinary spheres can only envy: the product of two unit quaternions is again a unit quaternion. The hypersphere is *closed under multiplication* — it is a group, a space whose every point is also a motion of that space. Among all spheres of all dimensions, essentially only the circle $S^1$ and this hypersphere $S^3$ carry such a structure. The circle's multiplication runs the theory of angles and Fourier series; its big sibling's multiplication runs the theory of spatial rotation. We have walked into very select company.</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>So the object of study is fixed: a 4D sphere we cannot see, on which multiplication acts by — what, exactly? By @eq-norm, multiplying by a unit quaternion preserves all lengths: it is a *rigid rotation of four-dimensional space*. The two promises of this post have become one task. See the hypersphere; watch it turn.</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="fu">## Borrowing eyes</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>Here is the move, and it is a move worth owning for life: when a space has one dimension too many for your eyes, ask how you would show *your* world to a creature with one dimension too few — then accept the same charity from above. Mathematicians have a precise instrument for this, **stereographic projection**, and we will rehearse it twice before using it in earnest.</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>Rehearsal one: show a circle to a creature who knows only a line. The unit complex numbers form a circle; rotation is its native motion; and a rotation has just *one* degree of freedom, so a line ought to suffice to display it. Project from the point $-1$: for each other point of the circle, draw the straight line from $-1$ through it and mark where it crosses the tangent line at the opposite pole. The point $1$ lands at the center; $i$ and $-i$ stay put; arcs near $-1$ fly off toward the two infinite ends, and $-1$ itself becomes the *point at infinity*. Now multiply the circle by $i$ — a crisp quarter turn — and watch its shadow: the center point slides to $i$, the point at $i$ flees off the end of the line, infinity wraps around and re-enters at $-i$, and four repetitions bring every point home: $i^4 = 1$, visible. The motion looks stretchy and strange, but that is the lens, not the motion. Holding those two truths at once — *the shadow distorts, the object is rigid* — is the entire skill.</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>Rehearsal two: show a rotating sphere to a creature who knows only a plane, and — this is the version we need — build the sphere out of number axes: real axis vertical, two imaginary axes $i, j$ spanning the floor. Project the unit sphere from its south pole $-1$ onto the floor. The north pole $1$ lands at the origin. The equator through $\pm i, \pm j$ *is already in the floor* and does not move: one honest, undistorted circle amid the shadows. The northern hemisphere (positive real part) lands inside it, the southern outside, and $-1$ is again the point at infinity. One dictionary entry pays for the whole rehearsal: every straight line the flat creature sees is the shadow of a circle through $-1$. *A line is a circle through infinity.* Once that clicks, a rotation that appears to deform a circle into a line stops being alarming — upstairs it is just a circle turning rigidly through the south pole. Spin the sphere a quarter turn about the $j$-axis ($1 \to i \to -1 \to -i$) and the flat creature sees, embedded along one line of their floor, exactly the lurching motion of rehearsal one, while the honest circle swings up into a vertical line. Nothing stretched. It never does.</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>Now the real thing, with practiced eyes. Project the hypersphere of unit quaternions from $-1$ into our 3D space. The number $1$ lands at the center of the room. The "equator" — all unit quaternions with zero real part, which is exactly the sphere of unit *vectors* through $i, j, k$ — lies in our space already and projects to itself: an honest unit sphere around the origin, the one fully trustworthy object in view. Unit quaternions with positive real part fill the inside of that sphere; negative real parts land outside; $-1$ is the point at infinity, in every direction at once. And the dictionary carries up a dimension: every plane through the origin is secretly a great sphere through $-1$; every line through the origin is secretly a great circle through $-1$. The line you see through $1$, $i$, $-i$ *is* the unit circle of the complex numbers — one page of the book from @eq-polar, lying open in the room. Pause here until the sentence "everything I see is at distance exactly $1$ from a number zero that is nowhere in the picture" stops hurting. It does stop.</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## Watching the multiplication</span></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>What does left-multiplication by a unit quaternion do to this picture? Here is the answer, and every clause of it is now checkable with your own eyes:</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Multiplying on the left by $q = \cos\theta + \mathbf{u}\sin\theta$ rotates the complex circle of $\mathbf{u}$ — the circle through $1$, $\mathbf{u}$, $-1$, seen by us as a line through the origin — by the angle $\theta$, carrying $1$ to $q$. *Simultaneously*, it rotates the great circle perpendicular to it, lying on the honest sphere, by the **same** angle $\theta$.</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>Two completely perpendicular circles — same center, same radius, no common point, a configuration that sounds impossible until you grant them four dimensions to dodge each other in — turning in lockstep. Rotations with this equal-angle property are called *isoclinic*, and they exist only in four dimensions and above. In 3D every rotation has an axis, a line of points left alone; this motion fixes nothing whatsoever. (I first learned to actually *see* this picture, with the projected hypersphere and the hand gestures below, from Grant Sanderson's video on the subject <span class="co">[</span><span class="ot">@sanderson2018quaternions</span><span class="co">]</span> — the debt for the visual language of this section is his.)</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>Make it concrete with $q = i$, so $\mathbf{u} = i$ and $\theta = 90^\circ$. The circle through $1$ and $i$ appears as a line through the origin, and along it runs the lurch you have now rehearsed twice: $1 \to i$, $i \to -1$ (off to infinity), $-1 \to -i$ (back in from beyond), $-i \to 1$. Meanwhile the perpendicular great circle through $j$ and $k$, sitting on the honest sphere, turns $90^\circ$ in the direction given by a right-hand rule: point your right thumb from $1$ toward $i$ along the visible line, and your fingers curl the way the $jk$-circle rolls. Read the products straight off the motion:</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>i \cdot 1 = i, \qquad i \cdot i = -1, \qquad i \cdot j = k, \qquad i \cdot k = -j.</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>My honest hope is that this is no longer a table but a film: the line flowing, the circle rolling with your curled fingers, four frames returning everything home because $i^4 = 1$. And since multiplication distributes, knowing the motion on the basis $1, i, j, k$ pins it down on every quaternion — see the action on four points, know it on the whole 4D space. For a general $q$ the recipe never changes: draw the circle through $1$, $q$, $-1$; turn it until $1$ reaches $q$; turn the perpendicular circle on the honest sphere by the same angle, right-handedly. One point of the hypersphere chosen, one rigid motion determined. The two computations $ij = k$ and $ji = -k$ are now two genuinely different films — thumb toward $i$ curling $j$ up to $k$, versus thumb toward $j$ curling $i$ down to $-k$ — and non-commutativity is something your hands knew before your algebra did. It is the same lesson the cross product whispered earlier, now playing on the big screen.</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="fu">## Two hands, all of rotation</span></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>One refinement opens the door to everything quaternions are used for. You can also multiply by $q$ on the *right*, and the motion is the mirror twin: the same circle through $1, q, -1$ turns the same way, but the perpendicular circle now obeys a *left*-hand rule. Left multiplications and right multiplications are two distinct families of isoclinic rotations — and here is the theorem that I find quietly astonishing: composing them, $x \mapsto p\,x\,q$, produces *every* rotation of four-dimensional space, and essentially uniquely <span class="co">[</span><span class="ot">@conway2003</span><span class="co">]</span>. The entire rotation group of 4D, an object you might expect to be hopelessly opaque, factors into a left hand and a right hand, each one a copy of our hypersphere.</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>And now you can feel the next chapter coming. A single multiplication tilts the honest sphere of vectors off through the fourth dimension — beautiful, but not yet a rotation of *space*. The fix is to let the two hands collaborate against each other: the sandwich $\mathbf{v} \mapsto q\,\mathbf{v}\,q^{-1}$, one left action and one right action whose off-sphere tilts cancel exactly, leaving the honest sphere turning rigidly in place. That sandwich is how your phone, your game engine, and your favorite spacecraft actually compute rotations, and it hides one more elegant secret — $q$ and $-q$ perform the *same* rotation, a two-to-one disguise called the double cover, which is precisely the mathematics of electron spin. Unpacking it properly deserves its own post, and it will get one.</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>Until then, sit with what the innocent question bought us: lengths multiply, so $15$ forbids three dimensions, so Euler's identity forces four; the product, once forced, births the dot and cross products and pays for non-commutativity with honest geometry; the unit quaternions close into one of the only spheres in mathematics that is also a group; and its multiplication, seen through a projection we borrowed by climbing down two dimensions and back up, is a pair of perpendicular circles turning as one. If you want to hold the hypersphere in your own hands, Sanderson and Eater built an explorable version of these pictures that you can drag around yourself <span class="co">[</span><span class="ot">@eater2018quaternions</span><span class="co">]</span> — go play. The "unmixed evil" was geometry all along, waiting a century and a half for someone to draw it.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Terry Fang · All rights reserved · Reproduction or republication in any form requires attribution and the author’s prior permission.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
