@@ -99,7 +99,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-f32019f3c99af8076ea5391d972fcba4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-d652a8b432bb3d0f423f3afe24e628cf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -288,7 +288,7 @@ I(X) = \{\, f \in k[x_1,\dots,x_n] : f(p) = 0 \text{ for every } p \in X \,\}.
 <section id="the-crack-v-throws-information-away" class="level2">
 <h2 class="anchored" data-anchor-id="the-crack-v-throws-information-away">The crack: <span class="math inline">\(V\)</span> throws information away</h2>
 <p>Bring it down to one dimension, where we can see everything. On the line, what is the variety of <span class="math inline">\(x\)</span>? The single point <span class="math inline">\(0\)</span>. What is the variety of <span class="math inline">\(x^2\)</span>? Also just <span class="math inline">\(0\)</span> — squaring does not move where a polynomial is zero, only how flatly it sits there. And <span class="math inline">\(x^3\)</span>, and <span class="math inline">\(x^{100}\)</span>, all of them vanish at <span class="math inline">\(0\)</span> and nowhere else.</p>
-<div id="e8d148a1" class="cell" data-execution_count="1">
+<div id="ca73d124" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> symbols, solveset, S</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> symbols(<span class="st">'x'</span>)</span>
@@ -320,7 +320,7 @@ I\bigl(V(J)\bigr) = \sqrt{J}.
 <section id="why-the-field-has-to-be-closed" class="level2">
 <h2 class="anchored" data-anchor-id="why-the-field-has-to-be-closed">Why the field has to be closed</h2>
 <p>Try the dictionary over the real numbers and watch it break. Consider the single equation <span class="math inline">\(x^2 + 1 = 0\)</span>. Over <span class="math inline">\(\mathbb{R}\)</span> it has no solutions — the parabola <span class="math inline">\(y = x^2 + 1\)</span> floats above the axis and never touches it. So <span class="math inline">\(V(x^2+1) = \varnothing\)</span>, the empty shape.</p>
-<div id="a620e5d9" class="cell" data-execution_count="2">
+<div id="f51687b4" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> symbols, groebner, solveset, S</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> symbols(<span class="st">'x'</span>)</span>
@@ -348,7 +348,7 @@ complex zeros: {-I, I}</code></pre>
 \text{does the enlarged system} \quad g_1 = \dots = g_m = 0, \quad t \cdot f = 1 \quad \text{have any solution?}
 \]</span> Look at what we have demanded. The equation <span class="math inline">\(t f = 1\)</span> forces <span class="math inline">\(f \neq 0\)</span>. But <span class="math inline">\(g_1 = \dots = g_m = 0\)</span> forces us onto <span class="math inline">\(V(g_1,\dots,g_m)\)</span>, and that is exactly where <span class="math inline">\(f\)</span> <em>does</em> vanish, by assumption. We have asked <span class="math inline">\(f\)</span> to be both zero and nonzero at once. So the enlarged system has no solution at all — and now the <em>weak</em> theorem fires, telling us <span class="math inline">\(1\)</span> lies in the enlarged ideal <span class="math inline">\((g_1, \dots, g_m,\, 1 - t f)\)</span>. Substitute <span class="math inline">\(t = 1/f\)</span> back in, clear the denominators, and the powers of <span class="math inline">\(f\)</span> that appear are precisely the statement <span class="math inline">\(f^N \in (g_1, \dots, g_m)\)</span>, i.e.&nbsp;<span class="math inline">\(f \in \sqrt{(g_1,\dots,g_m)}\)</span>. The radical was the answer, the new variable was the key, and the deep theorem was the shallow one wearing a coat.</p>
 <p>That argument is not just elegant; it is <em>executable</em>. Testing whether <span class="math inline">\(f\)</span> vanishes on a variety becomes testing whether <span class="math inline">\(1\)</span> belongs to one explicit enlarged ideal, and a Gröbner basis decides ideal membership mechanically <span class="citation" data-cites="cox2015ideals"><a href="#ref-cox2015ideals" role="doc-biblioref">[2]</a></span>. If the basis collapses to <span class="math inline">\(\{1\}\)</span>, the answer is yes.</p>
-<div id="a8d76485" class="cell" data-execution_count="3">
+<div id="7e349f62" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> symbols, groebner</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>x, y, t <span class="op">=</span> symbols(<span class="st">'x y t'</span>)</span>
