@@ -183,3 +183,10 @@ each has a strong visual or computational hook (a lattice-point picture, a gadge
 a chord-and-tangent construction) before any formal machinery. Number theory and
 combinatorics give you the most runnable, immediately shareable posts; algebraic geometry
 gives you the long, beautiful, conceptual pieces for when you want depth over reach.
+
+## 7. Reflections series — see `reflections-plan.md`
+
+The Learning & Philosophical Reflections section has its own plan tree (12 candidate
+essays in four branches, each anchored to a thread the published essays planted, with
+explicit non-overlap rules and sequencing). Interleave roughly one reflection per 3–4
+math posts.
