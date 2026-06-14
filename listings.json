@@ -2,6 +2,7 @@
   {
     "listing": "/notes.html",
     "items": [
+      "/posts/why-laplace-transforms-are-so-useful/index.html",
       "/posts/quaternions/index.html",
       "/posts/prime-spirals/index.html",
       "/posts/the-inscribed-rectangle-problem/index.html",

@@ -290,7 +290,7 @@ window.Quarto = {
 g^{\,x} \equiv h \pmod{p}.
 \]</span> That exponent is called the <strong>discrete logarithm</strong> of <span class="math inline">\(h\)</span> to the base <span class="math inline">\(g\)</span>, written <span class="math inline">\(x = \log_g h\)</span>, and the name is honest: just as an ordinary logarithm asks “to what power must I raise the base,” this one asks the same question, only now inside the finite world of the clock.</p>
 <p>Going forward is genuinely easy. To compute <span class="math inline">\(g^x \bmod p\)</span> you never multiply <span class="math inline">\(x\)</span> times. You square and climb: from <span class="math inline">\(g\)</span> you get <span class="math inline">\(g^2\)</span>, square that for <span class="math inline">\(g^4\)</span>, then <span class="math inline">\(g^8\)</span>, and so on, picking out the powers you need according to the binary digits of <span class="math inline">\(x\)</span>. A number <span class="math inline">\(x\)</span> with a few hundred binary digits takes only a few hundred squarings. Forward is a short stroll, no matter how astronomically large <span class="math inline">\(x\)</span> is.</p>
-<div id="9170617b" class="cell" data-execution_count="1">
+<div id="5f51cc22" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="dv">1_000_000_007</span>          <span class="co"># a prime modulus</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="dv">5</span>                      <span class="co"># a primitive root mod p (it sweeps out the whole clock)</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">123_456_789</span>            <span class="co"># the number of steps -- our secret</span></span>
@@ -314,7 +314,7 @@ g^{\,im + j} = h
 g^{\,j} = h \cdot \left(g^{-m}\right)^{i}.
 \]</span> Stare at that rearrangement, because it is the trick in one line. The left side depends only on the baby part <span class="math inline">\(j\)</span>; the right side depends only on the giant part <span class="math inline">\(i\)</span>. We have separated the two unknowns onto opposite banks of the equation.</p>
 <p>So we work each side independently and let them meet. First take all the <strong>baby steps</strong>: compute <span class="math inline">\(g^0, g^1, \dots, g^{m-1}\)</span> and drop them into a lookup table, each value remembering its exponent <span class="math inline">\(j\)</span>. That is about <span class="math inline">\(\sqrt{p}\)</span> multiplications and <span class="math inline">\(\sqrt{p}\)</span> memory. Then take <strong>giant steps</strong>: starting from <span class="math inline">\(h\)</span>, repeatedly multiply by <span class="math inline">\(g^{-m}\)</span>, producing <span class="math inline">\(h, h g^{-m}, h g^{-2m}, \dots\)</span>. After the <span class="math inline">\(i\)</span>-th giant step you are holding the right-hand side <span class="math inline">\(h \cdot (g^{-m})^i\)</span>. The moment that value appears in your baby-step table, you have found a match: the table hands you <span class="math inline">\(j\)</span>, you already know <span class="math inline">\(i\)</span>, and <span class="math inline">\(x = im + j\)</span> falls out. This is Shanks’s baby-step giant-step algorithm <span class="citation" data-cites="shanks1971"><a href="#ref-shanks1971" role="doc-biblioref">[2]</a></span>.</p>
-<div id="fe1e877c" class="cell" data-execution_count="2">
+<div id="2886a8f8" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> isqrt</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> discrete_log_bsgs(g, h, p):</span>
@@ -346,7 +346,7 @@ check: g^x mod p reproduces h? True</code></pre>
 </div>
 </div>
 <p>The same problem that needed a billion brute-force steps is now solved in a few tens of thousands. The reason is the trade we made: instead of one list of length <span class="math inline">\(p\)</span>, we used two lists of length <span class="math inline">\(\sqrt{p}\)</span> and let them collide. You might have already guessed where this leaves us. The discrete logarithm is <em>not</em> impossibly hard. It is <span class="math inline">\(\sqrt{p}\)</span> hard, and there are deeper methods (index calculus, Pollard’s rho) that do better still on the storage. The art of choosing safe parameters is the art of making <span class="math inline">\(\sqrt{p}\)</span>, even after every such improvement, larger than any computation anyone could ever run.</p>
-<div id="ecb65370" class="cell" data-execution_count="3">
+<div id="9b8b9001" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Why size is everything: the meet-in-the-middle work grows like the square root.</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bits <span class="kw">in</span> [<span class="dv">30</span>, <span class="dv">256</span>, <span class="dv">2048</span>]:</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    half <span class="op">=</span> bits <span class="op">//</span> <span class="dv">2</span>                  <span class="co"># log2 of the work, since work ~ sqrt(p) = 2^(bits/2)</span></span>
@@ -371,7 +371,7 @@ check: g^x mod p reproduces h? True</code></pre>
 <li>Bob does the mirror image: <span class="math inline">\(A^{b} = (g^{a})^{b} = g^{ab}\)</span>.</li>
 </ul>
 <p>They have landed on the <em>same</em> number, <span class="math inline">\(g^{ab} \bmod p\)</span>, without ever sending it. That shared value becomes the key to a private conversation.</p>
-<div id="97a2fcd4" class="cell" data-execution_count="4">
+<div id="d43f101c" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> secrets</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Public, shouted across the room:</span></span>
@@ -391,7 +391,7 @@ check: g^x mod p reproduces h? True</code></pre>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"first 16 hex digits of the shared key:"</span>, <span class="bu">format</span>(alice_key, <span class="st">'x'</span>)[:<span class="dv">16</span>], <span class="st">"..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Alice and Bob agree on a shared secret: True
-first 16 hex digits of the shared key: 529fd7ca02554a36 ...</code></pre>
+first 16 hex digits of the shared key: da7bec3c0be19c84 ...</code></pre>
 </div>
 </div>
 <p>An eavesdropper, call her Eve, has been listening the whole time. She knows <span class="math inline">\(p\)</span>, <span class="math inline">\(g\)</span>, <span class="math inline">\(A\)</span>, and <span class="math inline">\(B\)</span>. What she wants is <span class="math inline">\(g^{ab}\)</span>, and the only obvious route there is to extract <span class="math inline">\(a\)</span> from <span class="math inline">\(A = g^a\)</span> or <span class="math inline">\(b\)</span> from <span class="math inline">\(B = g^b\)</span>, and that is exactly a discrete logarithm on a <span class="math inline">\(2048\)</span>-bit clock, the bolted door from the last section. Everything Alice and Bob said was public. The secret was never in the words; it was in the <em>return trip Eve cannot afford to take</em>. Doesn’t that just feel beautiful? The privacy comes not from hiding the messages but from an asymmetry in arithmetic.</p>

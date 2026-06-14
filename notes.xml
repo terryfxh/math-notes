@@ -10,7 +10,899 @@
 <atom:link href="https://terryfxh.github.io/math-notes/notes.xml" rel="self" type="application/rss+xml"/>
 <description>Self-contained notes in pure and applied mathematics, derived from first principles with runnable code where it helps.</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Thu, 11 Jun 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 14 Jun 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Why Laplace Transforms Are So Useful</title>
+  <link>https://terryfxh.github.io/math-notes/posts/why-laplace-transforms-are-so-useful/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p><em>“Why should I refuse a good dinner simply because I don’t understand the digestive processes involved?”</em></p>
+<p><span class="attribution">— Oliver Heaviside, who used these transforms long before anyone could justify them</span></p>
+</div>
+<p>I want to start not with a definition but with something you can watch. Picture a mass hanging on a spring, and now imagine I start shoving it back and forth with an external force — a wind that gusts left, then right, at some steady rhythm of its own. Crucially, the rhythm of my shoving has nothing to do with the rhythm the spring <em>wants</em> to bounce at if I just pulled it and let go.</p>
+<p>Here is the thing I want you to notice. At the very beginning, the motion looks confused. It swells, then weakens, then swells again, lurching around as if it can’t decide what it’s doing. And then, after a while, it settles. The confusion drains away and the mass falls into a clean, steady oscillation, marching in lockstep with my shoving.</p>
+<p>That little drama raises three honest questions, and I think they’re worth holding in your hand for the whole post:</p>
+<ul>
+<li>What <em>is</em> that weird, wibbly startup — can we write it down?</li>
+<li>How long until the system stops flailing and hits its stride?</li>
+<li>Once it does, how big are the swings?</li>
+</ul>
+<p>The astonishing claim of this post is that a single tool answers all three at once, and — this is the part that feels like magic the first time — it answers them <em>before</em> you ever compute the explicit motion. The structure of the whole story is sitting right there in a handful of points on a plane. That tool is the Laplace transform, and our job today is to take it for a test drive on exactly this system, popping the hood as we go.</p>
+<section id="what-we-already-have-in-our-hands" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-already-have-in-our-hands">What we already have in our hands</h2>
+<p>We built the machinery in the previous two chapters, so let me just re-arm us with the three facts we’re actually going to spend. If they feel shaky, the earlier chapters are where to repair them; here I’ll be brief.</p>
+<p>First, the <strong><img src="https://latex.codecogs.com/png.latex?s">-plane</strong>. Every complex number <img src="https://latex.codecogs.com/png.latex?s"> is a secret nickname for an entire function, <img src="https://latex.codecogs.com/png.latex?e%5E%7Bst%7D">, where <img src="https://latex.codecogs.com/png.latex?t"> is time. The dictionary is worth saying out loud: the <em>imaginary</em> part of <img src="https://latex.codecogs.com/png.latex?s"> controls how fast that function oscillates, and the <em>real</em> part controls whether it decays (negative) or grows (positive). One point, one exponential. Hold that picture — almost everything below is really about <em>where points sit</em> on this plane.</p>
+<p>Second, what the transform actually does. It eats a function of time, <img src="https://latex.codecogs.com/png.latex?f(t)">, and hands back a new function <img src="https://latex.codecogs.com/png.latex?F(s)"> whose input is one of those complex numbers. And the headline result from last time was this: if <img src="https://latex.codecogs.com/png.latex?f"> is secretly built out of exponential pieces, then the transformed <img src="https://latex.codecogs.com/png.latex?F(s)"> has sharp spikes — <strong>poles</strong> — sitting exactly above the <img src="https://latex.codecogs.com/png.latex?s">-values of those pieces. The transform is a machine for <em>exposing the exponential DNA</em> of a function.</p>
+<p>Third, the two properties that make it usable, which I’ll ask you to keep on the tip of your tongue:</p>
+<ul>
+<li><strong>(P1) An exponential becomes a simple pole.</strong> <img src="https://latex.codecogs.com/png.latex?%5Cmathcal%7BL%7D%5C%7Be%5E%7Bat%7D%5C%7D%20=%20%5Cdfrac%7B1%7D%7Bs-a%7D">, a single pole above <img src="https://latex.codecogs.com/png.latex?s=a">.</li>
+<li><strong>(P2) The transform is linear.</strong> A scaled sum goes to the same scaled sum of transforms. So a function made of several exponentials becomes a sum of simple poles — <em>one pole per hidden exponential.</em></li>
+</ul>
+<p>That’s the whole inheritance. Now is a good moment to pause and make sure those two feel like reflexes, because the entire test drive ahead is, almost embarrassingly, just bookkeeping built on top of them — plus one new idea.</p>
+</section>
+<section id="the-one-new-idea-differentiation-becomes-multiplication" class="level2">
+<h2 class="anchored" data-anchor-id="the-one-new-idea-differentiation-becomes-multiplication">The one new idea: differentiation becomes multiplication</h2>
+<p>If the transform only repackaged functions, it would be a curiosity. What makes it a <em>power tool</em> for differential equations is a third property, and it’s the load-bearing beam of everything that follows. Let me state it before I justify it.</p>
+<div id="prp-deriv" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (The derivative rule)</strong></span> If <img src="https://latex.codecogs.com/png.latex?F(s)%20=%20%5Cmathcal%7BL%7D%5C%7Bf(t)%5C%7D">, then <span id="eq-deriv"><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathcal%7BL%7D%5C%7Bf'(t)%5C%7D%20=%20s%5C,F(s)%20-%20f(0).%0A%5Ctag%7B1%7D"></span></p>
+</div>
+<p>Read Equation&nbsp;1 slowly, because it’s doing something almost too good. On the left, the most analytically painful operation we know — differentiation. On the right, the friendliest operation there is — multiplying by a number. The transform reaches into the time world, where derivatives live, and translates them into simple multiplication by <img src="https://latex.codecogs.com/png.latex?s"> in the <img src="https://latex.codecogs.com/png.latex?s">-world. <em>That</em> is the trick that turns calculus into algebra.</p>
+<p>There’s a wrinkle: the extra <img src="https://latex.codecogs.com/png.latex?-f(0)"> term. At first glance it looks like a blemish on an otherwise perfect equation, and a student meeting it for the first time is right to be a little annoyed. But I’d ask you to flip your read on it. That term is not a tax; it’s a gift. It means the transform has a built-in slot for the <em>initial condition</em> of your system — the starting position, the starting velocity — baked in from the first step rather than bolted on at the end. Keep that in your peripheral vision; we’ll watch it earn its keep.</p>
+<p>Before we lean on it, we’ll need the second derivative too. Rather than memorize it, just apply the rule twice. Pause here and try it yourself — it’s genuinely a good thirty-second exercise. The move is to treat <img src="https://latex.codecogs.com/png.latex?f'"> as the function and feed it back through Equation&nbsp;1: <span id="eq-deriv2"><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathcal%7BL%7D%5C%7Bf''(t)%5C%7D%20=%20s%5C,%5Cmathcal%7BL%7D%5C%7Bf'(t)%5C%7D%20-%20f'(0)%20=%20s%5Cbig(sF%20-%20f(0)%5Cbig)%20-%20f'(0)%20=%20s%5E2%20F(s)%20-%20s%5C,f(0)%20-%20f'(0).%0A%5Ctag%7B2%7D"></span></p>
+<p>Notice the pattern in Equation&nbsp;2: each order of differentiation in time costs you one power of <img src="https://latex.codecogs.com/png.latex?s">, and drags along one piece of initial data. That regularity is the seed of everything.</p>
+<section id="why-is-the-derivative-rule-true-three-answers-deepest-last" class="level3">
+<h3 class="anchored" data-anchor-id="why-is-the-derivative-rule-true-three-answers-deepest-last">Why is the derivative rule true? Three answers, deepest last</h3>
+<p>I don’t want to just assert Equation&nbsp;1 and march on, because <em>where it comes from</em> is the difference between using the tool and understanding it. I can give you three explanations, and they’re worth keeping all three — each buys something different.</p>
+<p><strong>The first is by example, and it’s not a complete proof — but it’s the one that builds intuition.</strong> Reach for the example we know best: <img src="https://latex.codecogs.com/png.latex?f%20=%20e%5E%7Bat%7D">, whose transform is <img src="https://latex.codecogs.com/png.latex?F%20=%201/(s-a)"> by (P1). Differentiating in time is delightfully easy here, <img src="https://latex.codecogs.com/png.latex?f'%20=%20a%5C,e%5E%7Bat%7D">, so by linearity its transform is just <img src="https://latex.codecogs.com/png.latex?a/(s-a)">. Now stare at that for a second, because it looks <em>wrong</em>: we wanted multiplication by <img src="https://latex.codecogs.com/png.latex?s">, and instead we’re multiplying by this random constant <img src="https://latex.codecogs.com/png.latex?a"> that names which exponential we threw in. The resolution is a little algebraic massage. Watch: <img src="https://latex.codecogs.com/png.latex?%0A%5Cfrac%7Ba%7D%7Bs-a%7D%20=%20%5Cfrac%7Bs%20-%20(s-a)%7D%7Bs-a%7D%20=%20%5Cfrac%7Bs%7D%7Bs-a%7D%20-%201%20=%20s%5C,F(s)%20-%20f(0),%0A"> since <img src="https://latex.codecogs.com/png.latex?f(0)%20=%20e%5E0%20=%201">. It <em>is</em> the rule after all. And here’s the lovely part: by (P2), linearity, this immediately extends to <em>any</em> combination of exponentials. The catch — and I want to be honest that it’s a real catch — is that this only covers functions already built from exponentials. It’s not yet general. But hold onto the next thought, because it does a lot of quiet work in this series: with the right point of view, an astonishing number of functions <em>are</em> secretly combinations of exponentials.</p>
+<p><strong>The second is the textbook proof, and it’s general — just a touch opaque.</strong> Pull up the actual definition of the transform and integrate by parts: <img src="https://latex.codecogs.com/png.latex?%0A%5Cmathcal%7BL%7D%5C%7Bf'%5C%7D%20=%20%5Cint_0%5E%5Cinfty%20e%5E%7B-st%7D%20f'(t)%5C,dt%20=%20%5CBig%5Be%5E%7B-st%7D%20f(t)%5CBig%5D_0%5E%5Cinfty%20+%20s%5Cint_0%5E%5Cinfty%20e%5E%7B-st%7D%20f(t)%5C,dt%20=%20-f(0)%20+%20sF(s),%0A"> where the boundary term at infinity vanishes provided <img src="https://latex.codecogs.com/png.latex?e%5E%7B-st%7Df(t)%20%5Cto%200"> — which is exactly the condition that put us in the transform’s region of convergence in the first place. It’s correct, it’s three lines, and it’s tidy. But notice how the <img src="https://latex.codecogs.com/png.latex?%5Ctimes%20s"> and the <img src="https://latex.codecogs.com/png.latex?-f(0)"> kind of <em>fall out</em> of the parts formula. Whenever I see a result appear by integration by parts, I can feel the intuition draining from the room: we know it’s true, but we don’t quite know <em>why</em> in our bones. Where did that <img src="https://latex.codecogs.com/png.latex?-f(0)"> really come from?</p>
+<p><strong>The third explanation is my favorite, and it’s the one that says the rule was inevitable</strong> — but it needs a piece we haven’t built yet, the <em>inverse</em> transform, so I’ll only sketch it. The deep reason differentiation becomes multiplication by <img src="https://latex.codecogs.com/png.latex?s"> is that the inverse transform writes <img src="https://latex.codecogs.com/png.latex?f(t)"> as a superposition of the basic pieces <img src="https://latex.codecogs.com/png.latex?e%5E%7Bst%7D">. Differentiating each piece multiplies it by its own <img src="https://latex.codecogs.com/png.latex?s">; that’s the whole content of why <img src="https://latex.codecogs.com/png.latex?e%5E%7Bst%7D"> is the natural language here. And that <img src="https://latex.codecogs.com/png.latex?-f(0)">? It’s the fingerprint of the lower limit <img src="https://latex.codecogs.com/png.latex?t=0"> — the fact that our integral starts the clock at zero rather than at <img src="https://latex.codecogs.com/png.latex?-%5Cinfty">. That one-sidedness is not a technicality. It’s precisely what makes the Laplace transform the right tool for <em>initial-value problems</em>: causal systems that switch on at <img src="https://latex.codecogs.com/png.latex?t=0"> and evolve forward. (Its two-sided cousin, the Fourier transform, integrates from <img src="https://latex.codecogs.com/png.latex?-%5Cinfty"> and so has no room for an initial condition — which is exactly why Fourier is the tool for steady states and Laplace for startups. We’ll make that relationship precise in the next chapter.)</p>
+<p>Take a moment to chew on that, because it reframes the whole property. The <img src="https://latex.codecogs.com/png.latex?-f(0)"> isn’t a quirk grafted onto an elegant rule. The elegance and the initial condition are the <em>same fact</em>, seen from two sides.</p>
+</section>
+</section>
+<section id="the-test-drive-a-mass-on-a-spring-shoved-by-the-wind" class="level2">
+<h2 class="anchored" data-anchor-id="the-test-drive-a-mass-on-a-spring-shoved-by-the-wind">The test drive: a mass on a spring, shoved by the wind</h2>
+<p>Now let’s actually solve the system from the opening. We’ll move in a straight line: build the equation, transform every piece, do some algebra, and then — the payoff — read the answer off the poles before we even bother inverting.</p>
+<section id="building-the-equation" class="level3">
+<h3 class="anchored" data-anchor-id="building-the-equation">Building the equation</h3>
+<p>Let me build the forces one at a time, smallest first; that’s always the way to get a foothold. The spring pulls the mass back toward the middle with a strength proportional to how far it’s been displaced: a force <img src="https://latex.codecogs.com/png.latex?-kx">. Real springs also lose energy, so there’s a damping force that fights the motion in proportion to velocity: <img src="https://latex.codecogs.com/png.latex?-%5Cmu%20x'">. And then there’s my shoving, an external drive that I’ll take to oscillate as <img src="https://latex.codecogs.com/png.latex?%5Ccos(%5Comega%20t)"> — and I want to emphasize, the drive’s frequency <img src="https://latex.codecogs.com/png.latex?%5Comega"> is its own thing, generally unrelated to the spring’s natural rhythm. Newton’s law, with everything swept to one side, reads <span id="eq-ode"><img src="https://latex.codecogs.com/png.latex?%0Am%5C,x''(t)%20+%20%5Cmu%5C,x'(t)%20+%20k%5C,x(t)%20=%20%5Ccos(%5Comega%20t).%0A%5Ctag%7B3%7D"></span></p>
+<p>By the way, this is not a toy. The very same equation governs a charge inside a material being driven by an incoming light wave — it’s the heart of why light slows down in glass. Linear, constant-coefficient, externally driven oscillators are everywhere, which is exactly why it’s worth learning to solve this one cleanly.</p>
+</section>
+<section id="transforming-every-term" class="level3">
+<h3 class="anchored" data-anchor-id="transforming-every-term">Transforming every term</h3>
+<p>Write <img src="https://latex.codecogs.com/png.latex?X(s)%20=%20%5Cmathcal%7BL%7D%5C%7Bx(t)%5C%7D"> for the transform of the unknown. Now apply Equation&nbsp;1 and Equation&nbsp;2, and here’s where the initial conditions walk in the door on their own: <img src="https://latex.codecogs.com/png.latex?%0A%5Cmathcal%7BL%7D%5C%7Bx'%5C%7D%20=%20sX%20-%20x_0,%20%5Cqquad%20%5Cmathcal%7BL%7D%5C%7Bx''%5C%7D%20=%20s%5E2%20X%20-%20s%5C,x_0%20-%20v_0,%0A"> where <img src="https://latex.codecogs.com/png.latex?x_0%20=%20x(0)"> is the starting position and <img src="https://latex.codecogs.com/png.latex?v_0%20=%20x'(0)"> the starting velocity. The drive transforms by a fact from last chapter — and it’s worth pausing to recover it, because it’s a perfect rehearsal: <img src="https://latex.codecogs.com/png.latex?%5Ccos(%5Comega%20t)%20=%20%5Ctfrac12%20e%5E%7Bi%5Comega%20t%7D%20+%20%5Ctfrac12%20e%5E%7B-i%5Comega%20t%7D">, so by (P1) and (P2) it becomes <img src="https://latex.codecogs.com/png.latex?%5Ctfrac12%5Cfrac%7B1%7D%7Bs-i%5Comega%7D%20+%20%5Ctfrac12%5Cfrac%7B1%7D%7Bs+i%5Comega%7D">, which combines to <span id="eq-coslap"><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathcal%7BL%7D%5C%7B%5Ccos(%5Comega%20t)%5C%7D%20=%20%5Cfrac%7Bs%7D%7Bs%5E2%20+%20%5Comega%5E2%7D.%0A%5Ctag%7B4%7D"></span> Read that denominator with the <img src="https://latex.codecogs.com/png.latex?s">-plane in mind: zeros at <img src="https://latex.codecogs.com/png.latex?s%20=%20%5Cpm%20i%5Comega">, i.e.&nbsp;poles sitting on the imaginary axis at height <img src="https://latex.codecogs.com/png.latex?%5Cpm%5Comega">. In your bones that should <em>say</em> “pure oscillation at frequency <img src="https://latex.codecogs.com/png.latex?%5Comega">” — no decay, no growth.</p>
+</section>
+<section id="the-algebra-and-a-pattern-worth-naming" class="level3">
+<h3 class="anchored" data-anchor-id="the-algebra-and-a-pattern-worth-naming">The algebra, and a pattern worth naming</h3>
+<p>Substitute everything into Equation&nbsp;3: <img src="https://latex.codecogs.com/png.latex?%0Am%5Cbig(s%5E2%20X%20-%20s%20x_0%20-%20v_0%5Cbig)%20+%20%5Cmu%5Cbig(sX%20-%20x_0%5Cbig)%20+%20k%20X%20=%20%5Cfrac%7Bs%7D%7Bs%5E2+%5Comega%5E2%7D.%0A"> Gather the terms carrying <img src="https://latex.codecogs.com/png.latex?X"> and factor it out: <span id="eq-assembled"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbig(m%20s%5E2%20+%20%5Cmu%20s%20+%20k%5Cbig)%5C,X(s)%20%5C;-%5C;%20%5Cbig(m%20s%5C,x_0%20+%20m%20v_0%20+%20%5Cmu%20x_0%5Cbig)%20%5C;=%5C;%20%5Cfrac%7Bs%7D%7Bs%5E2+%5Comega%5E2%7D.%0A%5Ctag%7B5%7D"></span></p>
+<p>Stop and look at what just happened, because it’s the entire reason the tool works. The differential operator on the left of Equation&nbsp;3 — that intimidating <img src="https://latex.codecogs.com/png.latex?m%5Cfrac%7Bd%5E2%7D%7Bdt%5E2%7D%20+%20%5Cmu%5Cfrac%7Bd%7D%7Bdt%7D%20+%20k"> — turned into an ordinary <em>polynomial</em>, <img src="https://latex.codecogs.com/png.latex?ms%5E2%20+%20%5Cmu%20s%20+%20k">. Each derivative order became a power of <img src="https://latex.codecogs.com/png.latex?s">. Differentiation, the hard thing, has been transmuted into a polynomial, the easy thing, and polynomials are objects we can push around with grade-school algebra.</p>
+<p>And here’s a connection I don’t want to let slip by, because it retroactively explains an old mystery. Back when we first solved equations like this, the standard move was to <em>guess</em> <img src="https://latex.codecogs.com/png.latex?x%20=%20e%5E%7Bst%7D"> and see what <img src="https://latex.codecogs.com/png.latex?s"> must be — a guess that, depending on your mood, felt either unmotivated or like a magic spell handed down by tradition. Look at what the polynomial <img src="https://latex.codecogs.com/png.latex?ms%5E2%20+%20%5Cmu%20s%20+%20k"> is: it’s exactly the characteristic equation that guess produces. The Laplace transform isn’t doing something new and strange here. It’s the rigorous, initial-condition-aware version of that guess — it <em>explains why the guess was always going to work</em>, because <img src="https://latex.codecogs.com/png.latex?e%5E%7Bst%7D"> is the one function differentiation can’t do anything to except scale.</p>
+<p>For a clean first pass, let’s set <img src="https://latex.codecogs.com/png.latex?x_0%20=%20v_0%20=%200"> — the mass starts at rest at the origin — so those middle terms vanish. (For a general solution you’d keep them, and notice they’d only ever add more of the same kind of structure; the initial conditions never change <em>where</em> the poles are, only how much of each piece you get.) Solving Equation&nbsp;5 for <img src="https://latex.codecogs.com/png.latex?X">: <span id="eq-X"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7B%5C,X(s)%20=%20%5Cfrac%7Bs%7D%7B%5Cbig(m%20s%5E2%20+%20%5Cmu%20s%20+%20k%5Cbig)%5C,%5Cbig(s%5E2%20+%20%5Comega%5E2%5Cbig)%7D%5C,%7D%0A%5Ctag%7B6%7D"></span></p>
+<p>We now have the transform of the solution. Not the solution — its transform. And the surprising thesis of this whole post is that this is <em>already</em> enough to understand the system.</p>
+</section>
+</section>
+<section id="reading-the-answer-before-solving-it" class="level2">
+<h2 class="anchored" data-anchor-id="reading-the-answer-before-solving-it">Reading the answer before solving it</h2>
+<p>The key question in the <img src="https://latex.codecogs.com/png.latex?s">-world is always the same: <em>where are the poles?</em> For Equation&nbsp;6 they sit wherever the denominator vanishes, and there are four of them, falling into two families with completely different personalities. This distinction is, I think, the single most clarifying idea in the subject, and it’s worth drawing sharply.</p>
+<p><strong>The first family comes from the system itself</strong> — the roots of <img src="https://latex.codecogs.com/png.latex?ms%5E2%20+%20%5Cmu%20s%20+%20k%20=%200">, the part of the denominator that came from the spring and the damping. The quadratic formula gives <img src="https://latex.codecogs.com/png.latex?%0As%20=%20%5Cfrac%7B-%5Cmu%20%5Cpm%20%5Csqrt%7B%5Cmu%5E2%20-%204mk%7D%7D%7B2m%7D.%0A"> For light damping, <img src="https://latex.codecogs.com/png.latex?%5Cmu%5E2%20%3C%204mk">, the thing under the root is negative, so these are a complex-conjugate pair: real part <img src="https://latex.codecogs.com/png.latex?-%5Cmu/(2m)">, imaginary part <img src="https://latex.codecogs.com/png.latex?%5Cpm%5Csqrt%7B4mk%20-%20%5Cmu%5E2%7D/(2m)">. Picture them: two points in the <em>left</em> half-plane (negative real part) sitting at some nonzero height. The <img src="https://latex.codecogs.com/png.latex?s">-plane dictionary reads them instantly as <strong>oscillation that decays</strong> — the spring’s own natural ringing, the thing it would do if you just plucked it and walked away. Notice what this means: even though we <em>added</em> an external force, the unforced oscillator is still hiding inside the answer. It never left.</p>
+<p><strong>The second family comes from the drive</strong> — the roots <img src="https://latex.codecogs.com/png.latex?s%20=%20%5Cpm%20i%5Comega"> of the <img src="https://latex.codecogs.com/png.latex?s%5E2%20+%20%5Comega%5E2"> factor, which we can trace straight back to Equation&nbsp;4. These sit <em>on</em> the imaginary axis: pure oscillation, no decay, locked to <em>my</em> shoving frequency <img src="https://latex.codecogs.com/png.latex?%5Comega">, not the spring’s.</p>
+<p>That split — system poles versus input poles — is the conceptual gold. The system poles are a property of the spring; tug the damping <img src="https://latex.codecogs.com/png.latex?%5Cmu"> up or down and they slide around, but for any real, dissipative spring they stay stubbornly in the left half-plane. The input poles are a property of <em>what I’m doing to it</em>, and they sit wherever my forcing lives. Two physical causes, two algebraic fingerprints, cleanly separated in the plane. Let’s just plot them and look:</p>
+<div id="cell-fig-poles" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb1-3"></span>
+<span id="cb1-4">m, mu, k <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.3</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># mass, damping, stiffness  -&gt;  natural freq w_n = 1</span></span>
+<span id="cb1-5">w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>                        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># drive frequency, deliberately off the natural one</span></span>
+<span id="cb1-6"></span>
+<span id="cb1-7">system_poles <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.roots([m, mu, k])        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># roots of m s^2 + mu s + k</span></span>
+<span id="cb1-8">input_poles  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([<span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">1j</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> w, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">1j</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> w]) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># from the cos(wt) drive</span></span>
+<span id="cb1-9"></span>
+<span id="cb1-10">fig, ax <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> plt.subplots(figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.6</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.6</span>))</span>
+<span id="cb1-11">ax.axhline(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.7"</span>, lw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>)</span>
+<span id="cb1-12">ax.axvline(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.7"</span>, lw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>)</span>
+<span id="cb1-13">ax.scatter(system_poles.real, system_poles.imag, marker<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"x"</span>, s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">110</span>,</span>
+<span id="cb1-14">           label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"system poles (decay + ring)"</span>)</span>
+<span id="cb1-15">ax.scatter(input_poles.real, input_poles.imag, marker<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"x"</span>, s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">110</span>,</span>
+<span id="cb1-16">           label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"input poles (pure drive)"</span>)</span>
+<span id="cb1-17">ax.set_xlim(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>)</span>
+<span id="cb1-18">ax.set_ylim(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.4</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.4</span>)</span>
+<span id="cb1-19">ax.set_aspect(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"equal"</span>)</span>
+<span id="cb1-20">ax.set_xlabel(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$\m</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">athrm{Re}</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\,</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">s</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb1-21">ax.set_ylabel(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$\m</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">athrm{Im}</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\,</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">s</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb1-22">ax.set_title(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"Poles of </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">X</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">s</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> in the </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">s</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">-plane"</span>)</span>
+<span id="cb1-23">ax.legend(loc<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"upper left"</span>, fontsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>)</span>
+<span id="cb1-24">plt.tight_layout()</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div id="fig-poles" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-poles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://terryfxh.github.io/math-notes/posts/why-laplace-transforms-are-so-useful/index_files/figure-html/fig-poles-output-1.png" width="272" height="431" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-poles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The four poles of <img src="https://latex.codecogs.com/png.latex?X(s)"> for <img src="https://latex.codecogs.com/png.latex?m=1,%5C%20%5Cmu=0.3,%5C%20k=1,%5C%20%5Comega=0.7">. The conjugate pair in the left half-plane is the system’s own decaying ring; the pair on the imaginary axis is the undamped drive.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>While we’re being careful, here’s a subtlety the quick story glides over, and it’s worth a beat because it’s the kind of thing that quietly bothers a thoughtful reader. We’ve been blithely talking about “poles on the imaginary axis,” but recall from last chapter that the Laplace <em>integral</em> for a non-decaying piece like <img src="https://latex.codecogs.com/png.latex?%5Ccos(%5Comega%20t)"> doesn’t actually converge on that axis. So in what sense are those poles even there? The answer is the same one that rescued us before: <img src="https://latex.codecogs.com/png.latex?X(s)"> as written in Equation&nbsp;6 is the <em>analytic continuation</em> of the integral — the unique nice extension of it beyond the region where the integral literally converges. The poles live in that continuation. Far from being a loophole, this is the whole point: the continuation is <em>richer</em> than the raw integral, and it’s precisely the poles it exposes — the ones the integral itself was too timid to show — that carry the dynamics. We are reading the system’s behavior off of values of <img src="https://latex.codecogs.com/png.latex?s"> where the defining integral has, strictly speaking, given up. That should feel slightly outrageous, and it should also feel powerful.</p>
+</section>
+<section id="the-wibble-explained" class="level2">
+<h2 class="anchored" data-anchor-id="the-wibble-explained">The wibble, explained</h2>
+<p>Now we can answer the opening questions, and we can do it just by pointing at those four poles.</p>
+<p>The inverse transform, which we’ll build properly next chapter, will turn each simple pole <img src="https://latex.codecogs.com/png.latex?p_j"> back into an exponential <img src="https://latex.codecogs.com/png.latex?e%5E%7Bp_j%20t%7D"> — that’s just (P1) run backwards. So the solution is going to be a sum <img src="https://latex.codecogs.com/png.latex?%0Ax(t)%20=%20%5Csum_j%20A_j%5C,%20e%5E%7Bp_j%20t%7D,%0A"> and this is the precise reason we’re allowed to read dynamics off pole locations at all: the real part of each <img src="https://latex.codecogs.com/png.latex?p_j"> <em>literally is</em> the growth-or-decay rate of one term, and the imaginary part <em>is</em> its oscillation frequency. Reading the poles isn’t a heuristic. It’s reading the exponents of the answer directly.</p>
+<p>So split the motion into its two families. The system poles, off in the left half-plane, contribute a <em>decaying</em> oscillation at the spring’s natural frequency — call it the <strong>transient</strong>. The input poles, parked on the imaginary axis, contribute an <em>undying</em> cosine at the drive frequency <img src="https://latex.codecogs.com/png.latex?%5Comega"> — the <strong>steady state</strong>.</p>
+<p>Now re-watch the opening simulation with these two characters in mind. That confused, swelling-and-fading startup is the era when <em>both</em> are present and audible at once — two different frequencies beating against each other, neither yet dominant. But the transient is decaying, by the grace of that negative real part, while the steady state is not. So as time runs on, the transient quietly dies, and what’s left is the pure, patient cosine marching at the drive frequency. The “wibble” <em>is</em> the transient’s brief life. The time to “hit its stride” is essentially how long the transient takes to decay — set by <img src="https://latex.codecogs.com/png.latex?-%5Cmu/(2m)">, the real part of the system poles. Smaller damping, longer wibble. The answer to two of our three questions was sitting in the real part of two points the entire time.</p>
+<p>We don’t have to take that on faith — let’s just integrate Equation&nbsp;3 straight from rest and watch it happen:</p>
+<div id="cell-fig-trace" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb2-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb2-3"></span>
+<span id="cb2-4">m, mu, k <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.3</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span></span>
+<span id="cb2-5">w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span></span>
+<span id="cb2-6"></span>
+<span id="cb2-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> accel(x, v, t):</span>
+<span id="cb2-8">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> (np.cos(w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> t) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> mu <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> k <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> x) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> m</span>
+<span id="cb2-9"></span>
+<span id="cb2-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Plain RK4, no SciPy needed: x(0) = 0, v(0) = 0.</span></span>
+<span id="cb2-11">dt, T <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80.0</span></span>
+<span id="cb2-12">n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(T <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> dt)</span>
+<span id="cb2-13">ts <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linspace(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, T, n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb2-14">xs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.empty(n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb2-15">x, v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb2-16"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i, t <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(ts):</span>
+<span id="cb2-17">    xs[i] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> x</span>
+<span id="cb2-18">    k1x, k1v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v, accel(x, v, t)</span>
+<span id="cb2-19">    k2x, k2v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k1v, accel(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k1x, v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k1v, t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dt)</span>
+<span id="cb2-20">    k3x, k3v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k2v, accel(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k2x, v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k2v, t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dt)</span>
+<span id="cb2-21">    k4x, k4v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k3v, accel(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k3x, v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k3v, t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> dt)</span>
+<span id="cb2-22">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (k1x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k2x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k3x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> k4x) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6.0</span></span>
+<span id="cb2-23">    v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (k1v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k2v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> k3v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> k4v) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6.0</span></span>
+<span id="cb2-24"></span>
+<span id="cb2-25">fig, ax <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> plt.subplots(figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3.2</span>))</span>
+<span id="cb2-26">ax.plot(ts, xs, lw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.3</span>)</span>
+<span id="cb2-27">ax.axhline(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.7"</span>, lw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>)</span>
+<span id="cb2-28">ax.set_xlabel(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"time </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">t</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb2-29">ax.set_ylabel(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"position </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">x</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">t</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb2-30">ax.set_title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Transient beats against the steady drive, then settles"</span>)</span>
+<span id="cb2-31">plt.tight_layout()</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div id="fig-trace" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-trace-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://terryfxh.github.io/math-notes/posts/why-laplace-transforms-are-so-useful/index_files/figure-html/fig-trace-output-1.png" width="663" height="297" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-trace-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: The driven, damped oscillator started from rest (<img src="https://latex.codecogs.com/png.latex?x_0=v_0=0">). Early on the transient — the spring’s own decaying ring near <img src="https://latex.codecogs.com/png.latex?%5Comega_n=1"> — beats against the steady drive at <img src="https://latex.codecogs.com/png.latex?%5Comega=0.7">; once it fades, only the clean driven cosine survives.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If you want the homey version: push a child on a swing at a frequency that isn’t the swing’s natural one, and after some initial awkwardness they end up moving at <em>your</em> rhythm, not the swing’s. You just watched the transient die.</p>
+</section>
+<section id="if-you-really-do-need-the-formula" class="level2">
+<h2 class="anchored" data-anchor-id="if-you-really-do-need-the-formula">If you really do need the formula</h2>
+<p>I can hear the exam-tomorrow contingent asking for something to circle at the bottom of the page. Fair. The route from Equation&nbsp;6 to <img src="https://latex.codecogs.com/png.latex?x(t)"> is <strong>partial fraction decomposition</strong>: since we know the four roots <img src="https://latex.codecogs.com/png.latex?p_j"> of the denominator, we split <img src="https://latex.codecogs.com/png.latex?%0AX(s)%20=%20%5Csum_%7Bj=1%7D%5E%7B4%7D%20%5Cfrac%7BA_j%7D%7Bs%20-%20p_j%7D,%0A"> solve for the constants <img src="https://latex.codecogs.com/png.latex?A_j"> (that’s the grindy part, and I’ll spare us the details), and then invert term by term using (P1) backwards: each <img src="https://latex.codecogs.com/png.latex?A_j/(s-p_j)"> becomes <img src="https://latex.codecogs.com/png.latex?A_j%20e%5E%7Bp_j%20t%7D">. The pole <em>locations</em> become the exponents — the frequencies and decay rates — and the residues <img src="https://latex.codecogs.com/png.latex?A_j"> become the <em>amplitudes and phases</em>. Every number in the final motion has a home in the picture.</p>
+<p>I’ll flag one assumption we just used, because it’s about to matter enormously: this clean split assumes the four poles are <em>distinct</em>. Tuck that away. It’s not a footnote — it’s where the most beautiful part of the story is hiding.</p>
+<p>And notice the logic can run in reverse, which is how the tool actually feels in practice. You don’t need to know in advance that the answer is a sum of exponentials. You compute <img src="https://latex.codecogs.com/png.latex?X(s)">, you decompose it, and the exponential pieces <em>reveal themselves</em>. The transform does the dissection for you.</p>
+</section>
+<section id="resonance-the-climax-and-where-the-idealization-lies" class="level2">
+<h2 class="anchored" data-anchor-id="resonance-the-climax-and-where-the-idealization-lies">Resonance: the climax, and where the idealization lies</h2>
+<p>We have one question left: once the system settles, <em>how big are the swings?</em> This is where the payoff turns genuinely beautiful, and also where I want to push harder than the standard story does.</p>
+<p>The steady-state size is governed by the residues at the input poles <img src="https://latex.codecogs.com/png.latex?s%20=%20%5Cpm%20i%5Comega">. Compute the one at <img src="https://latex.codecogs.com/png.latex?s%20=%20i%5Comega"> from Equation&nbsp;6 — set the factor <img src="https://latex.codecogs.com/png.latex?s%20-%20i%5Comega"> aside and evaluate the rest: <span id="eq-res"><img src="https://latex.codecogs.com/png.latex?%0A%5Coperatorname*%7BRes%7D_%7Bs=i%5Comega%7D%20X(s)%20=%20%5Cfrac%7Bi%5Comega%7D%7B%5Cbig(m(i%5Comega)%5E2%20+%20%5Cmu(i%5Comega)%20+%20k%5Cbig)%5C,(2i%5Comega)%7D%20=%20%5Cfrac%7B1%7D%7B2%5Cbig(k%20-%20m%5Comega%5E2%20+%20i%5C,%5Cmu%5Comega%5Cbig)%7D.%0A%5Ctag%7B7%7D"></span> Pairing this with its conjugate at <img src="https://latex.codecogs.com/png.latex?-i%5Comega"> assembles the steady cosine, and its amplitude comes out proportional to the magnitude of Equation&nbsp;7: <span id="eq-amp"><img src="https://latex.codecogs.com/png.latex?%0AA_%7B%5Ctext%7Bsteady%7D%7D(%5Comega)%20%5C;%5Cpropto%5C;%20%5Cfrac%7B1%7D%7B%5Cbig%7Ck%20-%20m%5Comega%5E2%20+%20i%5Cmu%5Comega%5Cbig%7C%7D%20%5C;=%5C;%20%5Cfrac%7B1%7D%7B%5Csqrt%7B(k%20-%20m%5Comega%5E2)%5E2%20+%20%5Cmu%5E2%5Comega%5E2%7D%7D.%0A%5Ctag%7B8%7D"></span></p>
+<p>Here is the famous punchline, and then here is the correction the famous punchline usually skips.</p>
+<p>The punchline: in the lightly-damped idealization, let <img src="https://latex.codecogs.com/png.latex?%5Cmu%20%5Cto%200">, and Equation&nbsp;8 collapses to <img src="https://latex.codecogs.com/png.latex?1/%7Ck%20-%20m%5Comega%5E2%7C%20=%201/%5Cbig(m%5C,%7C%5Comega_n%5E2%20-%20%5Comega%5E2%7C%5Cbig)">, where <img src="https://latex.codecogs.com/png.latex?%5Comega_n%5E2%20=%20k/m"> is the spring’s natural frequency. As your driving <img src="https://latex.codecogs.com/png.latex?%5Comega"> approaches the natural <img src="https://latex.codecogs.com/png.latex?%5Comega_n">, that denominator marches to zero and the amplitude <em>blows up</em>. Drive a system at its own frequency and the response runs away. That’s <strong>resonance</strong>, and it’s why a platoon breaks step crossing a bridge and why a wine glass shatters at the right note.</p>
+<p>Now the correction, because I think the blow-up is told too casually and it hides something. With <em>any</em> real damping <img src="https://latex.codecogs.com/png.latex?%5Cmu%20%3E%200">, look back at the honest formula Equation&nbsp;8: the denominator can never actually reach zero, because the <img src="https://latex.codecogs.com/png.latex?%5Cmu%5E2%5Comega%5E2"> term holds it up. The amplitude doesn’t explode; it peaks and comes back down. And if you ask <em>where</em> it peaks — minimize that denominator over <img src="https://latex.codecogs.com/png.latex?%5Comega"> — you don’t get <img src="https://latex.codecogs.com/png.latex?%5Comega%20=%20%5Comega_n"> exactly. A short calculation gives the peak at <span id="eq-peak"><img src="https://latex.codecogs.com/png.latex?%0A%5Comega_%7B%5Ctext%7Bpeak%7D%7D%5E2%20=%20%5Comega_n%5E2%20-%20%5Cfrac%7B%5Cmu%5E2%7D%7B2m%5E2%7D,%0A%5Ctag%7B9%7D"></span> <em>just below</em> the natural frequency, dropping further as damping grows. The clean “resonance happens at <img src="https://latex.codecogs.com/png.latex?%5Comega_n">” is the <img src="https://latex.codecogs.com/png.latex?%5Cmu%20%5Cto%200"> limit of Equation&nbsp;9, true in the idealization and slightly false in the world. Let’s draw the whole family of response curves and mark those peaks:</p>
+<div id="cell-fig-resonance" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb3-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb3-3"></span>
+<span id="cb3-4">m, k <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span></span>
+<span id="cb3-5">wn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.sqrt(k <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> m)</span>
+<span id="cb3-6">ws <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linspace(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">600</span>)</span>
+<span id="cb3-7"></span>
+<span id="cb3-8">fig, ax <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> plt.subplots(figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3.4</span>))</span>
+<span id="cb3-9"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> mu <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> (<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.15</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.3</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>):</span>
+<span id="cb3-10">    amp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> np.sqrt((k <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> ws<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (mu <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> ws)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb3-11">    ax.plot(ws, amp, label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fr"</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$\m</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">u=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>mu<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb3-12">    peak_sq <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> wn<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> mu<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> m<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># eq-peak</span></span>
+<span id="cb3-13">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> peak_sq <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb3-14">        wp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.sqrt(peak_sq)</span>
+<span id="cb3-15">        ap <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> np.sqrt((k <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> wp<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (mu <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> wp)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb3-16">        ax.scatter([wp], [ap], color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"k"</span>, zorder<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>)</span>
+<span id="cb3-17"></span>
+<span id="cb3-18">ax.axvline(wn, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.7"</span>, ls<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--"</span>, lw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>, label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">omega_n</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb3-19">ax.set_xlabel(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"drive frequency </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">omega</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb3-20">ax.set_ylabel(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"steady-state amplitude"</span>)</span>
+<span id="cb3-21">ax.set_title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Resonance peaks just below the natural frequency"</span>)</span>
+<span id="cb3-22">ax.legend(fontsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>)</span>
+<span id="cb3-23">plt.tight_layout()</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div id="fig-resonance" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-resonance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://terryfxh.github.io/math-notes/posts/why-laplace-transforms-are-so-useful/index_files/figure-html/fig-resonance-output-1.png" width="662" height="316" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-resonance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Steady-state amplitude Equation&nbsp;8 versus drive frequency, for three damping values. Lighter damping gives a taller, sharper peak; the black dots mark Equation&nbsp;9, sitting just below the natural frequency <img src="https://latex.codecogs.com/png.latex?%5Comega_n=1"> (dashed).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>I find that more satisfying than the cartoon, not less: damping doesn’t just tame the infinity, it nudges the whole resonance to a new place.</p>
+<p>But the deepest way to see resonance is not through Equation&nbsp;8 at all — it’s through the poles, and it’s the reason I told you to remember the distinct-poles assumption. Set <img src="https://latex.codecogs.com/png.latex?%5Cmu%20=%200"> for the ideal spring, so the system poles sit <em>on</em> the imaginary axis at <img src="https://latex.codecogs.com/png.latex?%5Cpm%20i%5Comega_n">, and the input poles at <img src="https://latex.codecogs.com/png.latex?%5Cpm%20i%5Comega">. Now ask: what happens as I tune my driving frequency <img src="https://latex.codecogs.com/png.latex?%5Comega"> toward the natural <img src="https://latex.codecogs.com/png.latex?%5Comega_n">? The input poles <em>slide toward the system poles and collide.</em> When <img src="https://latex.codecogs.com/png.latex?%5Comega%20=%20%5Comega_n"> exactly, two simple poles merge into a single <strong>double pole</strong>, and our partial-fraction story breaks — exactly the assumption we flagged. And what does a double pole invert to? Not a plain exponential. The transform of <img src="https://latex.codecogs.com/png.latex?t%5Csin(%5Comega_n%20t)"> is <img src="https://latex.codecogs.com/png.latex?%5Cdfrac%7B2%5Comega_n%20s%7D%7B(s%5E2+%5Comega_n%5E2)%5E2%7D">, so a double pole on the axis comes back as a term carrying a factor of <img src="https://latex.codecogs.com/png.latex?t">: <span id="eq-secular"><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathcal%7BL%7D%5E%7B-1%7D%5Cleft%5C%7B%5Cfrac%7Bs%7D%7B(s%5E2+%5Comega_n%5E2)%5E2%7D%5Cright%5C%7D%20=%20%5Cfrac%7Bt%5C,%5Csin(%5Comega_n%20t)%7D%7B2%5Comega_n%7D.%0A%5Ctag%7B10%7D"></span></p>
+<p>Look at what Equation&nbsp;10 is telling you. That factor of <img src="https://latex.codecogs.com/png.latex?t"> out front means the oscillation grows <em>without bound, linearly in time</em>. Undamped resonance isn’t a big steady swing — it’s an amplitude that climbs forever. And in the language of the <img src="https://latex.codecogs.com/png.latex?s">-plane, this catastrophe has a one-word cause: <strong>a collision of poles.</strong> Resonance is what it looks like when the frequency you’re driving at lines up with a frequency the system already owns, and two poles fuse into one. Doesn’t that just feel beautiful? The infinity in the amplitude formula, the runaway in the simulation, and the merging of two dots on a plane are all the same event, wearing three costumes.</p>
+<p>This is the honest answer to “how big are the swings”: usually finite, governed by Equation&nbsp;8 and peaking near (but just under) <img src="https://latex.codecogs.com/png.latex?%5Comega_n">; but in the frictionless ideal where input and system poles collide, unbounded and growing like <img src="https://latex.codecogs.com/png.latex?t">. Anyone who has watched footage of a bridge tearing itself apart in the wind has seen a pole collision in the wild.</p>
+</section>
+<section id="the-boundary-of-the-magic" class="level2">
+<h2 class="anchored" data-anchor-id="the-boundary-of-the-magic">The boundary of the magic</h2>
+<p>Let me be candid about where this stops working, because a tool’s limits are part of understanding it. Everything above leaned on two things: linearity (P2) and the derivative rule. The differential operator became a clean polynomial in <img src="https://latex.codecogs.com/png.latex?s"> <em>only because</em> Equation&nbsp;3 is linear with constant coefficients. The moment the physics turns nonlinear — a force that goes like <img src="https://latex.codecogs.com/png.latex?x%5E2">, a spring constant that drifts with time — that miracle evaporates. You can no longer factor <img src="https://latex.codecogs.com/png.latex?X(s)"> out of the transformed equation, the “mirror-image polynomial” doesn’t form, and the whole pole-reading enterprise loses its footing. The Laplace transform is a master key for the linear, constant-coefficient world, and that world is vast — but it has a fence around it, and it’s worth knowing where the fence is.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>Stand back from the trees. We took a differential equation describing a driven, damped oscillator and, without solving it, learned its entire life story: a transient ringing at the spring’s own frequency, fading at a rate set by the damping; a steady oscillation locked to the drive; and a resonance that, pushed to its ideal limit, is a literal collision of poles producing runaway growth. All of it was legible in four points on a plane.</p>
+<p>And the engine under all of it was the one new idea: differentiation in time becomes multiplication by <img src="https://latex.codecogs.com/png.latex?s">, the derivative rule Equation&nbsp;1, itself just a consequence of <img src="https://latex.codecogs.com/png.latex?e%5E%7Bst%7D"> being the one function differentiation merely scales. That single translation is what turns calculus into algebra, and the <img src="https://latex.codecogs.com/png.latex?-f(0)"> riding along with it is what lets initial conditions come for free.</p>
+<p>There’s an honest gap I left open, and it’s the seam where the next chapter begins. The clean ending in the partial-fraction section assumed we could always break <img src="https://latex.codecogs.com/png.latex?X(s)"> into tidy pieces and invert them one by one. But what if the answer <em>isn’t</em> a discrete sum of exponentials — what does inverting even mean then? That question is the <strong>inverse Laplace transform</strong>, and it’s a big enough idea to deserve its own chapter, complete with a genuinely new gadget for us, the contour integral. It’s also where that third, deepest explanation of the derivative rule finally gets its proof.</p>
+<p>The way I want to tell it is as a single thread you can pull: start from nothing but the wish — “I want a transform where differentiating becomes multiplying” — and watch that one desire force the Laplace transform <em>and</em> its inversion formula into existence as a matched pair, with the Fourier transform turning out to be the same idea viewed along the imaginary axis. If today was learning to drive the car, and the last chapter was popping the hood, that next one is building the engine yourself. The exercise I’d most like to leave you with first: stare at Equation&nbsp;9 and ask what it says about designing something you <em>don’t</em> want to resonate. Where would you want the system poles to sit, and how far from the imaginary axis, to be safe from whatever frequencies the world might shove at you? That question is the doorway to control theory — and I’ll see you in the next chapter.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Why Laplace Transforms Are So Useful</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/why-laplace-transforms-are-so-useful/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+</section>
+
+ ]]></description>
+  <category>applied</category>
+  <category>pure</category>
+  <category>differential-equations</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/why-laplace-transforms-are-so-useful/</guid>
+  <pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Quaternions: Seeing Four Dimensions with Three-Dimensional Eyes</title>
   <link>https://terryfxh.github.io/math-notes/posts/quaternions/</link>
@@ -399,7 +1291,7 @@ font-style: inherit;">;</span> plt.show()</span></code></pre></div></div>
 <div id="fig-integers-vs-primes" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-integers-vs-primes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://terryfxh.github.io/math-notes/posts/prime-spirals/index_files/figure-html/fig-integers-vs-primes-output-1.png" width="746" height="387" class="figure-img">
+<img src="https://terryfxh.github.io/math-notes/posts/prime-spirals/index_files/figure-html/fig-integers-vs-primes-output-1.png" width="745" height="386" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-integers-vs-primes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: The same window, with all integers (left) and primes only (right). The spirals belong to the integers; the primes merely inherit them — minus some arms.
@@ -560,7 +1452,7 @@ font-style: inherit;">;</span> plt.show()</span></code></pre></div></div>
 <div id="fig-last-digits" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-last-digits-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://terryfxh.github.io/math-notes/posts/prime-spirals/index_files/figure-html/fig-last-digits-output-1.png" width="660" height="370" class="figure-img">
+<img src="https://terryfxh.github.io/math-notes/posts/prime-spirals/index_files/figure-html/fig-last-digits-output-1.png" width="664" height="373" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-last-digits-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: Among all primes up to <img src="https://latex.codecogs.com/png.latex?x">, the share ending in each of the four allowed digits. The four curves squeeze toward exactly 25% each.
@@ -1126,7 +2018,7 @@ Figure&nbsp;1: A numerically found inscribed rectangle (gold) on a lumpy closed 
 <section id="first-betrayal-continuity-does-not-survive" class="level3">
 <h3 class="anchored" data-anchor-id="first-betrayal-continuity-does-not-survive">First betrayal: continuity does not survive</h3>
 <p>Take the simplest interesting sequence on <img src="https://latex.codecogs.com/png.latex?%5B0,1%5D">: <img src="https://latex.codecogs.com/png.latex?%0Af_n(x)%20=%20x%5En%20.%0A"> Each <img src="https://latex.codecogs.com/png.latex?f_n"> is a polynomial — as continuous as a function can be. For <img src="https://latex.codecogs.com/png.latex?0%20%5Cle%20x%20%3C%201"> the powers collapse to <img src="https://latex.codecogs.com/png.latex?0">; at <img src="https://latex.codecogs.com/png.latex?x=1"> they sit at <img src="https://latex.codecogs.com/png.latex?1"> forever. The pointwise limit is therefore <img src="https://latex.codecogs.com/png.latex?%0Af(x)%20=%0A%5Cbegin%7Bcases%7D%0A0,%20&amp;%200%20%5Cle%20x%20%3C%201,%5C%5C%5B2pt%5D%0A1,%20&amp;%20x%20=%201,%0A%5Cend%7Bcases%7D%0A"> which has a jump. A sequence of unbreakably smooth curves converges, point by point, to a broken one.</p>
-<div id="278fb355" class="cell" data-execution_count="1">
+<div id="31e616d5" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> math</span>
@@ -1271,7 +2163,7 @@ at x = 0.999: need n &gt;= 4603</code></pre>
 <section id="second-betrayal-the-spike" class="level3">
 <h3 class="anchored" data-anchor-id="second-betrayal-the-spike">Second betrayal: the spike</h3>
 <p>The sliding spike from Lesson One is the same disease in integral form. Let <img src="https://latex.codecogs.com/png.latex?f_n"> equal <img src="https://latex.codecogs.com/png.latex?n"> on <img src="https://latex.codecogs.com/png.latex?(0,%5Ctfrac1n%5D"> and <img src="https://latex.codecogs.com/png.latex?0"> elsewhere.</p>
-<div id="d6162091" class="cell" data-execution_count="2">
+<div id="3ec6891c" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># The sliding spike: pointwise limit 0, yet the area never budges.</span></span>
@@ -1397,7 +2289,7 @@ values at x = 0.001: [10, 100, 1000, 0]</code></pre>
 <section id="third-betrayal-derivatives" class="level3">
 <h3 class="anchored" data-anchor-id="third-betrayal-derivatives">Third betrayal: derivatives</h3>
 <p>One more, because it fails in the opposite direction and will matter later. Let <img src="https://latex.codecogs.com/png.latex?%0Af_n(x)%20=%20%5Cfrac%7B%5Csin(n%5E2%20x)%7D%7Bn%7D%20.%0A"> Since <img src="https://latex.codecogs.com/png.latex?%7C%5Csin%7C%20%5Cle%201">, the worst-case gap <img src="https://latex.codecogs.com/png.latex?%5Csup_x%20%7Cf_n(x)%20-%200%7C"> is <img src="https://latex.codecogs.com/png.latex?%5Ctfrac1n"> — these functions converge to zero in the strongest sense imaginable, uniformly in <img src="https://latex.codecogs.com/png.latex?x"> (we are about to make that official). Yet their derivatives <img src="https://latex.codecogs.com/png.latex?f_n'(x)%20=%20n%5Ccos(n%5E2%20x)"> oscillate with amplitude <img src="https://latex.codecogs.com/png.latex?n">.</p>
-<div id="038c2083" class="cell" data-execution_count="3">
+<div id="d07af946" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
@@ -1510,7 +2402,7 @@ n = 1000:  sup|f_n| = 0.0010   sup|f_n'| = 1000</code></pre>
 <p>There is an equivalent formulation that turns the picture into a single sequence of numbers. Uniform convergence on <img src="https://latex.codecogs.com/png.latex?A"> holds exactly when <img src="https://latex.codecogs.com/png.latex?%0A%5Csup_%7Bx%20%5Cin%20A%7D%20%7Cf_n(x)%20-%20f(x)%7C%20%5Clongrightarrow%200%20,%0A"> that is, when the worst-case error — the quantity we computed in the spike experiment — tends to zero. One number per <img src="https://latex.codecogs.com/png.latex?n">, and the whole question reduces to Lesson One. This is the form to use in computations, and it instantly classifies our examples: for the spike the sup is <img src="https://latex.codecogs.com/png.latex?n">; for <img src="https://latex.codecogs.com/png.latex?x%5En"> on <img src="https://latex.codecogs.com/png.latex?%5B0,1%5D"> the sup is <img src="https://latex.codecogs.com/png.latex?1"> for every <img src="https://latex.codecogs.com/png.latex?n"> (points near <img src="https://latex.codecogs.com/png.latex?1"> always lag); for <img src="https://latex.codecogs.com/png.latex?%5Csin(n%5E2x)/n"> the sup is <img src="https://latex.codecogs.com/png.latex?%5Ctfrac1n%20%5Cto%200">. The third sequence converges uniformly; the first two do not.</p>
 <p>Before trusting the new definition, interrogate it the way an analyst would. What if we shrank the domain? On <img src="https://latex.codecogs.com/png.latex?%5B0,%200.9%5D"> the sup of <img src="https://latex.codecogs.com/png.latex?x%5En"> is <img src="https://latex.codecogs.com/png.latex?(0.9)%5En%20%5Cto%200">, so <img src="https://latex.codecogs.com/png.latex?x%5En%20%5Cto%200"> uniformly there — and indeed the limit is continuous there. The pathology of <img src="https://latex.codecogs.com/png.latex?x%5En"> lives entirely in the shrinking gap between <img src="https://latex.codecogs.com/png.latex?0.9"> and the point <img src="https://latex.codecogs.com/png.latex?1">; uniform convergence is sensitive to the domain in a way pointwise convergence cannot see. A sequence can converge uniformly on every closed interval <img src="https://latex.codecogs.com/png.latex?%5B0,b%5D"> with <img src="https://latex.codecogs.com/png.latex?b%3C1"> and still fail on <img src="https://latex.codecogs.com/png.latex?%5B0,1)">. Keep this in mind; it returns as the standard compromise for power series.</p>
 <p>To see a uniform limit doing honest work, here is a sequence of perfectly smooth functions closing in on the absolute value: <img src="https://latex.codecogs.com/png.latex?%0Af_n(x)%20=%20%5Csqrt%7Bx%5E2%20+%20%5Ctfrac%7B1%7D%7Bn%5E2%7D%7D%20%5Clongrightarrow%20%7Cx%7C%20.%0A"></p>
-<div id="fd2dcbd6" class="cell" data-execution_count="4">
+<div id="81f5396e" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
@@ -1693,7 +2585,7 @@ n = 1000:  sup error = 1.00e-03 (&lt;= 1/n = 1.00e-03)   |∫f_n - ∫|x|| = 8.1
 <p><span class="proof-title"><em>Proof</em>. </span>For <img src="https://latex.codecogs.com/png.latex?m%20%3E%20n">, the partial sums <img src="https://latex.codecogs.com/png.latex?s_n%20=%20%5Csum_%7Bk%5Cle%20n%7D%20f_k"> satisfy <img src="https://latex.codecogs.com/png.latex?%0A%7Cs_m(x)%20-%20s_n(x)%7C%20%5C;=%5C;%20%5CBigl%7C%5Csum_%7Bk=n+1%7D%5E%7Bm%7D%20f_k(x)%5CBigr%7C%20%5C;%5Cle%5C;%20%5Csum_%7Bk=n+1%7D%5E%7Bm%7D%20M_k%0A"> for every <img src="https://latex.codecogs.com/png.latex?x"> at once — the bound on the right <em>never mentions <img src="https://latex.codecogs.com/png.latex?x"></em>. Since <img src="https://latex.codecogs.com/png.latex?%5Csum%20M_k"> converges, its tails are eventually below any <img src="https://latex.codecogs.com/png.latex?%5Cepsilon">, so the partial sums are uniformly Cauchy, and Theorem&nbsp;4 finishes the proof. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
 </div>
 <p>The trade is almost embarrassing in its generosity: dominate each function by a single number, check one convergent series of numbers, and receive uniform convergence — with all of its consequences, continuity of the sum included — for free. This is the license under which the familiar manipulations of power series operate. Inside its radius of convergence <img src="https://latex.codecogs.com/png.latex?R">, a power series <img src="https://latex.codecogs.com/png.latex?%5Csum%20a_k%20x%5Ek"> converges uniformly on every closed interval <img src="https://latex.codecogs.com/png.latex?%5B-c,%20c%5D"> with <img src="https://latex.codecogs.com/png.latex?c%20%3C%20R"> (compare <img src="https://latex.codecogs.com/png.latex?%7Ca_k%20x%5Ek%7C%20%5Cle%20%7Ca_k%7C%20c%5Ek">, a convergent geometric-style series), which is exactly the “uniform on every compact subinterval” compromise we met with <img src="https://latex.codecogs.com/png.latex?x%5En">. Continuity of the sum, term-by-term integration, and — via Theorem&nbsp;3 applied to the differentiated series — term-by-term differentiation all follow. Every time a Taylor series is differentiated term by term, this lesson’s theorems are silently countersigning the step.</p>
-<div id="f6402773" class="cell" data-execution_count="5">
+<div id="916892c1" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
@@ -1851,7 +2743,7 @@ after 15 terms: worst future movement 3.052e-05  &lt;=  M-tail 3.052e-05</code><
 <p>The series in the experiment was not chosen at random. It is <img src="https://latex.codecogs.com/png.latex?%0AW(x)%20%5C;=%5C;%20%5Csum_%7Bk=0%7D%5E%7B%5Cinfty%7D%20%5Cfrac%7B1%7D%7B2%5Ek%7D%5Ccos%5C!%5Cbigl(13%5Ek%20%5Cpi%20x%5Cbigr),%0A"> an instance of the function Weierstrass presented to the Berlin Academy in 1872. The M-test has already certified that <img src="https://latex.codecogs.com/png.latex?W"> is continuous everywhere. Weierstrass proved that it is differentiable <em>nowhere</em>: at no single point does the graph admit a tangent line.</p>
 <p>It is hard to overstate how violently this collides with the picture of continuity most of us carry. A continuous curve, the intuition says, is a curve drawn without lifting the pen, and a pen stroke surely has a direction at most points — perhaps with finitely many corners, like <img src="https://latex.codecogs.com/png.latex?%7Cx%7C">. The nineteenth century largely believed exactly that; the result scandalized analysts, and Hermite famously recoiled from “this lamentable plague of functions without derivatives.” Yet the mechanism is in plain sight once you know where to look. Each term adds wiggles that are <img src="https://latex.codecogs.com/png.latex?2"> times smaller in height but <img src="https://latex.codecogs.com/png.latex?13"> times faster in oscillation. Heights shrink fast enough for the M-test to keep the sum continuous; but slopes pick up a factor of <img src="https://latex.codecogs.com/png.latex?%5Ctfrac%7B13%7D%7B2%7D"> per term, so the local steepness <em>diverges</em>. It is the third betrayal — small functions with huge derivatives — stacked into a single function, with the geometric decay <img src="https://latex.codecogs.com/png.latex?%5Ctfrac1%7B2%5Ek%7D"> calibrated to keep continuity alive while killing differentiability at every point. (The classical sufficient condition for <img src="https://latex.codecogs.com/png.latex?%5Csum%20a%5Ek%5Ccos(b%5Ek%5Cpi%20x)"> is <img src="https://latex.codecogs.com/png.latex?ab%20%3E%201%20+%20%5Ctfrac%7B3%5Cpi%7D%7B2%7D">; here <img src="https://latex.codecogs.com/png.latex?ab%20=%206.5">.)</p>
 <p>A full proof is beyond one blog post, but the failure is observable. Differentiability at <img src="https://latex.codecogs.com/png.latex?x_0"> means the difference quotients <img src="https://latex.codecogs.com/png.latex?%5Cbigl(W(x_0+h)-W(x_0)%5Cbigr)/h"> settle toward a single slope as <img src="https://latex.codecogs.com/png.latex?h%20%5Cto%200">. Watch them instead refuse:</p>
-<div id="c7c9de60" class="cell" data-execution_count="6">
+<div id="9457a09c" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
@@ -2049,7 +2941,7 @@ Note
 <section id="the-crack-v-throws-information-away" class="level2">
 <h2 class="anchored" data-anchor-id="the-crack-v-throws-information-away">The crack: <img src="https://latex.codecogs.com/png.latex?V"> throws information away</h2>
 <p>Bring it down to one dimension, where we can see everything. On the line, what is the variety of <img src="https://latex.codecogs.com/png.latex?x">? The single point <img src="https://latex.codecogs.com/png.latex?0">. What is the variety of <img src="https://latex.codecogs.com/png.latex?x%5E2">? Also just <img src="https://latex.codecogs.com/png.latex?0"> — squaring does not move where a polynomial is zero, only how flatly it sits there. And <img src="https://latex.codecogs.com/png.latex?x%5E3">, and <img src="https://latex.codecogs.com/png.latex?x%5E%7B100%7D">, all of them vanish at <img src="https://latex.codecogs.com/png.latex?0"> and nowhere else.</p>
-<div id="d11ef212" class="cell" data-execution_count="1">
+<div id="a79dfdef" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sympy <span class="im" style="color: #00769E;
@@ -2117,7 +3009,7 @@ zeros of x**3: {0}</code></pre>
 <section id="why-the-field-has-to-be-closed" class="level2">
 <h2 class="anchored" data-anchor-id="why-the-field-has-to-be-closed">Why the field has to be closed</h2>
 <p>Try the dictionary over the real numbers and watch it break. Consider the single equation <img src="https://latex.codecogs.com/png.latex?x%5E2%20+%201%20=%200">. Over <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D"> it has no solutions — the parabola <img src="https://latex.codecogs.com/png.latex?y%20=%20x%5E2%20+%201"> floats above the axis and never touches it. So <img src="https://latex.codecogs.com/png.latex?V(x%5E2+1)%20=%20%5Cvarnothing">, the empty shape.</p>
-<div id="13fef8fb" class="cell" data-execution_count="2">
+<div id="48b4aba1" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sympy <span class="im" style="color: #00769E;
@@ -2201,7 +3093,7 @@ complex zeros: {-I, I}</code></pre>
 <p>Here is my favorite part, because it is a pure example of the move this blog keeps coming back to: when a problem is stuck, add a new construct and reframe. The strong Nullstellensatz looks like a genuinely deeper statement than the weak one. It is not. It is the weak one, viewed from one dimension up. The trick is due to Rabinowitsch, and it is barely a page.</p>
 <p>Suppose <img src="https://latex.codecogs.com/png.latex?f"> vanishes on the whole variety <img src="https://latex.codecogs.com/png.latex?V(g_1,%20%5Cdots,%20g_m)">, and we want to prove some power of <img src="https://latex.codecogs.com/png.latex?f"> lands in the ideal. The obstacle is that “<img src="https://latex.codecogs.com/png.latex?f"> vanishes wherever the <img src="https://latex.codecogs.com/png.latex?g_i"> vanish” is a statement about an infinite shape, hard to grab. So introduce a brand new variable <img src="https://latex.codecogs.com/png.latex?t"> — a new axis the problem never had — and pose a question about <em>solvability</em> instead: <img src="https://latex.codecogs.com/png.latex?%0A%5Ctext%7Bdoes%20the%20enlarged%20system%7D%20%5Cquad%20g_1%20=%20%5Cdots%20=%20g_m%20=%200,%20%5Cquad%20t%20%5Ccdot%20f%20=%201%20%5Cquad%20%5Ctext%7Bhave%20any%20solution?%7D%0A"> Look at what we have demanded. The equation <img src="https://latex.codecogs.com/png.latex?t%20f%20=%201"> forces <img src="https://latex.codecogs.com/png.latex?f%20%5Cneq%200">. But <img src="https://latex.codecogs.com/png.latex?g_1%20=%20%5Cdots%20=%20g_m%20=%200"> forces us onto <img src="https://latex.codecogs.com/png.latex?V(g_1,%5Cdots,g_m)">, and that is exactly where <img src="https://latex.codecogs.com/png.latex?f"> <em>does</em> vanish, by assumption. We have asked <img src="https://latex.codecogs.com/png.latex?f"> to be both zero and nonzero at once. So the enlarged system has no solution at all — and now the <em>weak</em> theorem fires, telling us <img src="https://latex.codecogs.com/png.latex?1"> lies in the enlarged ideal <img src="https://latex.codecogs.com/png.latex?(g_1,%20%5Cdots,%20g_m,%5C,%201%20-%20t%20f)">. Substitute <img src="https://latex.codecogs.com/png.latex?t%20=%201/f"> back in, clear the denominators, and the powers of <img src="https://latex.codecogs.com/png.latex?f"> that appear are precisely the statement <img src="https://latex.codecogs.com/png.latex?f%5EN%20%5Cin%20(g_1,%20%5Cdots,%20g_m)">, i.e.&nbsp;<img src="https://latex.codecogs.com/png.latex?f%20%5Cin%20%5Csqrt%7B(g_1,%5Cdots,g_m)%7D">. The radical was the answer, the new variable was the key, and the deep theorem was the shallow one wearing a coat.</p>
 <p>That argument is not just elegant; it is <em>executable</em>. Testing whether <img src="https://latex.codecogs.com/png.latex?f"> vanishes on a variety becomes testing whether <img src="https://latex.codecogs.com/png.latex?1"> belongs to one explicit enlarged ideal, and a Gröbner basis decides ideal membership mechanically <span class="citation" data-cites="cox2015ideals">[2]</span>. If the basis collapses to <img src="https://latex.codecogs.com/png.latex?%5C%7B1%5C%7D">, the answer is yes.</p>
-<div id="46f75c4b" class="cell" data-execution_count="3">
+<div id="bbfe542f" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sympy <span class="im" style="color: #00769E;
@@ -2409,7 +3301,7 @@ y  vanishes on V(x^2, xy)? False</code></pre>
 <h2 class="anchored" data-anchor-id="why-analysis-begins-with-distrust">Why analysis begins with distrust</h2>
 <p>Analysis begins with distrust because finite algebra, applied without justification to infinite processes, can produce nonsense while every individual step still looks familiar.</p>
 <p>Take the simplest infinite sum that misbehaves, the alternating ones and minus-ones, <img src="https://latex.codecogs.com/png.latex?%0AS%20=%201%20-%201%20+%201%20-%201%20+%201%20-%201%20+%20%5Ccdots%20.%0A"> Grouping the terms as <img src="https://latex.codecogs.com/png.latex?(1-1)%20+%20(1-1)%20+%20%5Ccdots"> suggests <img src="https://latex.codecogs.com/png.latex?S=0">. Grouping them as <img src="https://latex.codecogs.com/png.latex?1%20+%20(-1+1)%20+%20(-1+1)%20+%20%5Ccdots"> suggests <img src="https://latex.codecogs.com/png.latex?S=1">. The formal manipulation <img src="https://latex.codecogs.com/png.latex?S=1-S"> suggests <img src="https://latex.codecogs.com/png.latex?S=%5Ctfrac12">. Three familiar algebraic moves produce three incompatible answers.</p>
-<div id="1e176dfe" class="cell" data-execution_count="1">
+<div id="9a3fefff" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># The partial sums of 1 - 1 + 1 - 1 + ... never settle on anything.</span></span>
@@ -2569,7 +3461,7 @@ running averages: [1, 0.5, 0.667, 0.5, 0.6, 0.5, 0.571, 0.5, 0.556, 0.5]</code><
 <h3 class="anchored" data-anchor-id="the-hole-in-the-number-line">The hole in the number line</h3>
 <p>There is a second, deeper crack, and it is not about infinity at all. It is about the numbers themselves.</p>
 <p>A right triangle with two unit legs has a hypotenuse of length <img src="https://latex.codecogs.com/png.latex?%5Csqrt2">. Geometrically the segment is unambiguous, but no rational number represents its length: no fraction <img src="https://latex.codecogs.com/png.latex?%5Ctfrac%20pq"> has square equal to <img src="https://latex.codecogs.com/png.latex?2">.</p>
-<div id="735527c0" class="cell" data-execution_count="2">
+<div id="113353fc" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> fractions <span class="im" style="color: #00769E;
@@ -2699,7 +3591,7 @@ does any of these rationals square to exactly 2?  False</code></pre>
 <section id="watching-completeness-build-a-number" class="level3">
 <h3 class="anchored" data-anchor-id="watching-completeness-build-a-number">Watching completeness build a number</h3>
 <p>Bisection now acquires a different meaning. The same shrinking rational brackets no longer merely approximate an imagined point; completeness guarantees that the nested constraints determine a real point.</p>
-<div id="79ff4bd0" class="cell" data-execution_count="3">
+<div id="e783609a" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Nested halving traps a single real point: the least upper bound of</span></span>
@@ -2818,7 +3710,7 @@ its square                       : 1.9999999999999996</code></pre>
 <p><span class="theorem-title"><strong>Theorem 2 (Monotone Convergence Theorem)</strong></span> A sequence that is monotone (always increasing or always decreasing) and bounded converges to a real limit.</p>
 </div>
 <p>For an increasing sequence, let <img src="https://latex.codecogs.com/png.latex?L=%5Csup%5C%7Bx_n:n%5Cin%5Cmathbb%7BN%7D%5C%7D">. Given <img src="https://latex.codecogs.com/png.latex?%5Cepsilon%3E0">, the number <img src="https://latex.codecogs.com/png.latex?L-%5Cepsilon"> cannot be an upper bound, so some term satisfies <img src="https://latex.codecogs.com/png.latex?x_N%3EL-%5Cepsilon">. Monotonicity then gives <img src="https://latex.codecogs.com/png.latex?%0AL-%5Cepsilon%3Cx_N%5Cle%20x_n%5Cle%20L%0A%5Cqquad(n%5Cge%20N),%0A"> and therefore <img src="https://latex.codecogs.com/png.latex?%7Cx_n-L%7C%3C%5Cepsilon">. The visual staircase and the formal proof meet at the same point: the lowest ceiling is the limit.</p>
-<div id="b2297fd6" class="cell" data-execution_count="4">
+<div id="5de70028" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> math</span>
@@ -2920,7 +3812,7 @@ gap to sqrt(2): -2.220446049250313e-16</code></pre>
 <p><span class="theorem-title"><strong>Theorem 3 (Bolzano–Weierstrass Theorem)</strong></span> Every bounded sequence of real numbers has a convergent subsequence.</p>
 </div>
 <p>Bisect the containing interval. At least one half contains infinitely many terms; otherwise the original interval would contain only finitely many. Retain that half and repeat. This produces nested closed intervals whose lengths tend to zero, each containing infinitely many terms. The Nested Interval Property supplies a common point <img src="https://latex.codecogs.com/png.latex?x">. Choosing, in increasing index order, one term from each interval produces a subsequence converging to <img src="https://latex.codecogs.com/png.latex?x">. The sequence may remain globally irregular, but repeated magnification exposes a locally convergent thread.</p>
-<div id="ba4e68b8" class="cell" data-execution_count="5">
+<div id="f794f910" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> math</span>
@@ -3103,7 +3995,7 @@ the subsequence is closing in on about -0.99997</code></pre>
 <p><span class="proof-title"><em>Proof</em>. </span>If <img src="https://latex.codecogs.com/png.latex?x_n%5Cto%20L">, choose <img src="https://latex.codecogs.com/png.latex?N"> so that <img src="https://latex.codecogs.com/png.latex?%7Cx_n-L%7C%3C%5Cepsilon/2"> whenever <img src="https://latex.codecogs.com/png.latex?n%5Cge%20N">. Then for <img src="https://latex.codecogs.com/png.latex?m,n%5Cge%20N">, <img src="https://latex.codecogs.com/png.latex?%0A%7Cx_m-x_n%7C%5Cle%20%7Cx_m-L%7C+%7Cx_n-L%7C%3C%5Cepsilon,%0A"> so every convergent sequence is Cauchy. Conversely, every Cauchy sequence is bounded: its tail lies in a fixed neighborhood of one term, and the finitely many earlier terms are also bounded. Bolzano–Weierstrass then gives a subsequence <img src="https://latex.codecogs.com/png.latex?x_%7Bn_k%7D%5Cto%20L">. Given <img src="https://latex.codecogs.com/png.latex?%5Cepsilon%3E0">, choose <img src="https://latex.codecogs.com/png.latex?k"> large enough that <img src="https://latex.codecogs.com/png.latex?%7Cx_%7Bn_k%7D-L%7C%3C%5Cepsilon/2"> and <img src="https://latex.codecogs.com/png.latex?n_k"> lies beyond a Cauchy threshold for <img src="https://latex.codecogs.com/png.latex?%5Cepsilon/2">. For every sufficiently large <img src="https://latex.codecogs.com/png.latex?n">, <img src="https://latex.codecogs.com/png.latex?%0A%7Cx_n-L%7C%5Cle%20%7Cx_n-x_%7Bn_k%7D%7C+%7Cx_%7Bn_k%7D-L%7C%3C%5Cepsilon.%0A"> Thus <img src="https://latex.codecogs.com/png.latex?x_n%5Cto%20L">. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
 </div>
 <p>The criterion certifies convergence without first naming the limit. This becomes especially useful for an infinite series, where convergence concerns the sequence of finite partial sums rather than a literal act of infinite addition.</p>
-<div id="3b412e7d" class="cell" data-execution_count="6">
+<div id="ca1a4da1" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Partial sums of 1 + 1/4 + 1/9 + ... . We judge convergence by the</span></span>
@@ -3241,7 +4133,7 @@ the gaps vanish, so it is Cauchy -- and completeness hands us a limit.</code></p
 <p><span class="theorem-title"><strong>Definition 3 (The Riemann integral)</strong></span> A bounded function is <strong>integrable</strong> on <img src="https://latex.codecogs.com/png.latex?%5Ba,b%5D"> if, by taking the partition fine enough, the lower sums and the upper sums can be brought arbitrarily close together. Their common squeezed value is the integral <img src="https://latex.codecogs.com/png.latex?%5Cint_a%5Eb%20f">.</p>
 </div>
 <p>This squeezing definition remains meaningful when the graph has jumps and the informal area picture becomes unreliable.</p>
-<div id="1ee7a4f5" class="cell" data-execution_count="7">
+<div id="4c8da179" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
@@ -3537,7 +4429,7 @@ Note
 <p>Take the board just <img src="https://latex.codecogs.com/png.latex?2"> tall and look at its leftmost column. A domino has to cover those two squares somehow, and there are only two ways it can happen. Either one vertical domino stands up and fills the whole column by itself, or two horizontal dominoes lie down, each poking one square into the <em>next</em> column.</p>
 <p>Stare at those two options, because the whole recurrence is hiding in them. If you drop in a vertical domino, you have sealed off the first column cleanly and what remains is a <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%20(n-1)"> board, untouched. If instead you lay the two horizontals, they consume the first column <em>and</em> the matching two squares of the second column, and what remains is a <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%20(n-2)"> board. Every tiling begins with exactly one of these two moves, and the two moves lead to two smaller boards of the very same kind.</p>
 <p>Let <img src="https://latex.codecogs.com/png.latex?f(n)"> be the number of tilings of the <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%20n"> board. The reasoning above says, in one line, <img src="https://latex.codecogs.com/png.latex?%0Af(n)%20=%20f(n-1)%20+%20f(n-2),%0A"> with the base cases <img src="https://latex.codecogs.com/png.latex?f(0)%20=%201"> (the empty board has one tiling, the empty one) and <img src="https://latex.codecogs.com/png.latex?f(1)%20=%201"> (a single standing domino). You might have already guessed what is coming. That is the Fibonacci recurrence, and our tiling counts are Fibonacci numbers marching by.</p>
-<div id="9b7601cb" class="cell" data-execution_count="1">
+<div id="ad99b810" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -3598,7 +4490,7 @@ font-style: inherit;"># 1, 1, 2, 3, 5, 8, 13, ...</span></span></code></pre></di
 <section id="the-reframe-one-step-of-dp-is-one-multiply-by-a-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="the-reframe-one-step-of-dp-is-one-multiply-by-a-matrix">The reframe: one step of DP is one multiply by a matrix</h2>
 <p>Watch what the loop actually does each turn. It holds a little pair of numbers, the two most recent counts, and it slides that pair forward: the new pair is <img src="https://latex.codecogs.com/png.latex?(b,%5C%20a+b)"> built from the old pair <img src="https://latex.codecogs.com/png.latex?(a,%20b)">. A rule that turns one vector into another vector by a fixed linear recipe is exactly what a matrix <em>is</em>. Bundle the state into a column vector <img src="https://latex.codecogs.com/png.latex?%5Cleft(%5Cbegin%7Bsmallmatrix%7D%20f(k)%20%5C%5C%20f(k-1)%20%5Cend%7Bsmallmatrix%7D%5Cright)"> and the update becomes <img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bpmatrix%7D%20f(k+1)%20%5C%5C%20f(k)%20%5Cend%7Bpmatrix%7D%0A=%0A%5Cbegin%7Bpmatrix%7D%201%20&amp;%201%20%5C%5C%201%20&amp;%200%20%5Cend%7Bpmatrix%7D%0A%5Cbegin%7Bpmatrix%7D%20f(k)%20%5C%5C%20f(k-1)%20%5Cend%7Bpmatrix%7D.%0A"> Call that matrix <img src="https://latex.codecogs.com/png.latex?M">. One turn of the loop is one multiplication by <img src="https://latex.codecogs.com/png.latex?M">. So running the loop <img src="https://latex.codecogs.com/png.latex?n"> times is multiplying by <img src="https://latex.codecogs.com/png.latex?M"> a total of <img src="https://latex.codecogs.com/png.latex?n"> times, which is to say <img src="https://latex.codecogs.com/png.latex?f(n)"> lives inside <img src="https://latex.codecogs.com/png.latex?M%5E%7Bn%7D">. The dynamic program was matrix exponentiation in disguise the whole time.</p>
-<div id="ca05346e" class="cell" data-execution_count="2">
+<div id="82bff970" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
@@ -3712,7 +4604,7 @@ font-style: inherit;"> tilings"</span>)</span></code></pre></div></div>
 <section id="what-the-matrix-knows-a-closed-form-falls-out" class="level2">
 <h2 class="anchored" data-anchor-id="what-the-matrix-knows-a-closed-form-falls-out">What the matrix knows: a closed form falls out</h2>
 <p>Once a recurrence is a matrix, its long-run behavior is governed by the matrix’s eigenvalues, the special numbers <img src="https://latex.codecogs.com/png.latex?%5Clambda"> for which <img src="https://latex.codecogs.com/png.latex?M"> merely <em>stretches</em> some direction by a factor of <img src="https://latex.codecogs.com/png.latex?%5Clambda"> instead of rotating it. For our <img src="https://latex.codecogs.com/png.latex?M"> they are the roots of <img src="https://latex.codecogs.com/png.latex?%5Clambda%5E2%20=%20%5Clambda%20+%201">, namely <img src="https://latex.codecogs.com/png.latex?%0A%5Cvarphi%20=%20%5Cfrac%7B1%20+%20%5Csqrt%7B5%7D%7D%7B2%7D%20%5Capprox%201.618,%20%5Cqquad%20%5Cpsi%20=%20%5Cfrac%7B1%20-%20%5Csqrt%7B5%7D%7D%7B2%7D%20%5Capprox%20-0.618.%0A"> The first is the golden ratio. Because <img src="https://latex.codecogs.com/png.latex?M"> stretches by <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> along one eigen-direction and by <img src="https://latex.codecogs.com/png.latex?%5Cpsi"> (a small number) along the other, after many steps the <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> direction completely dominates, and the counts grow like <img src="https://latex.codecogs.com/png.latex?%5Cvarphi%5E%7B%5C,n%7D">. Diagonalizing <img src="https://latex.codecogs.com/png.latex?M"> turns the recurrence into pure powers and hands back the exact formula, <img src="https://latex.codecogs.com/png.latex?%0Af(n)%20=%20%5Cfrac%7B%5Cvarphi%5E%7B%5C,n+1%7D%20-%20%5Cpsi%5E%7B%5C,n+1%7D%7D%7B%5Csqrt%7B5%7D%7D,%0A"> the Binet formula for Fibonacci. A problem about laying down little wooden tiles has produced the golden ratio with no prompting. Doesn’t that just feel beautiful?</p>
-<div id="d1e3edc8" class="cell" data-execution_count="3">
+<div id="6bdabd87" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">phi <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> (<span class="dv" style="color: #AD0000;
@@ -3813,7 +4705,7 @@ each extra column multiplies the count by about phi = 1.618034</code></pre>
 <p><span class="theorem-title"><strong>Theorem 1 (Tilings as a matrix power)</strong></span> Let <img src="https://latex.codecogs.com/png.latex?T"> be the transfer matrix for boards <img src="https://latex.codecogs.com/png.latex?m"> rows tall, and let <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7B0%7D"> be the empty boundary state. Then the number of domino tilings of the <img src="https://latex.codecogs.com/png.latex?m%20%5Ctimes%20n"> board is <img src="https://latex.codecogs.com/png.latex?%0A%5Cbigl(T%5E%7B%5C,n%7D%5Cbigr)_%7B%5Cmathbf%7B0%7D,%5C,%5Cmathbf%7B0%7D%7D.%0A"></p>
 </div>
 <p>The reasoning is the same one twice over. Multiplying by <img src="https://latex.codecogs.com/png.latex?T"> once advances the boundary across one column and sums over every legal way to do it, exactly as a step of dynamic programming sums over every choice. Multiplying <img src="https://latex.codecogs.com/png.latex?n"> times threads the boundary across all <img src="https://latex.codecogs.com/png.latex?n"> columns. We start from the empty boundary, nothing poking into column one, and we demand the empty boundary at the end, nothing poking past column <img src="https://latex.codecogs.com/png.latex?n">, which is just the statement that the finished tiling stays inside the board. Reading <img src="https://latex.codecogs.com/png.latex?(T%5En)_%7B%5Cmathbf%200,%5Cmathbf%200%7D"> off the matrix power is reading the answer. This is the transfer-matrix method, and a careful treatment lives in <span class="citation" data-cites="stanley2012">[1]</span>.</p>
-<div id="40083bff" class="cell" data-execution_count="4">
+<div id="adfe1f6a" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -4029,7 +4921,7 @@ font-style: inherit;">"  (the classic chessboard count)"</span>)</span></code></
 <section id="the-growth-rate-hiding-in-the-largest-eigenvalue" class="level2">
 <h2 class="anchored" data-anchor-id="the-growth-rate-hiding-in-the-largest-eigenvalue">The growth rate hiding in the largest eigenvalue</h2>
 <p>The eigenvalue story scales up too, and it ends somewhere lovely. Just as <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> governed the <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%20n"> growth, the largest eigenvalue <img src="https://latex.codecogs.com/png.latex?%5Clambda_%7B%5Cmax%7D"> of the transfer matrix sets the growth rate of the count as the board gets longer: adding one more column multiplies the number of tilings by roughly <img src="https://latex.codecogs.com/png.latex?%5Clambda_%7B%5Cmax%7D">. So <img src="https://latex.codecogs.com/png.latex?%5Clambda_%7B%5Cmax%7D"> is a kind of entropy per column, a measure of how many genuine new choices each column opens up.</p>
-<div id="e44337e1" class="cell" data-execution_count="5">
+<div id="bba4e5a4" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -4156,7 +5048,7 @@ m = 8:  per-column growth 9.0071,   per-cell growth 1.3162</code></pre>
 <p>Here is the question that makes everything else go. Suppose I tell you the clock (<img src="https://latex.codecogs.com/png.latex?p">), the engine (<img src="https://latex.codecogs.com/png.latex?g">), and where I ended up after some number of steps (<img src="https://latex.codecogs.com/png.latex?h">). Can you tell me <em>how many steps</em> I took?</p>
 <p>In symbols, you know <img src="https://latex.codecogs.com/png.latex?g"> and <img src="https://latex.codecogs.com/png.latex?h"> and the prime <img src="https://latex.codecogs.com/png.latex?p">, and you want the exponent <img src="https://latex.codecogs.com/png.latex?x"> with <img src="https://latex.codecogs.com/png.latex?%0Ag%5E%7B%5C,x%7D%20%5Cequiv%20h%20%5Cpmod%7Bp%7D.%0A"> That exponent is called the <strong>discrete logarithm</strong> of <img src="https://latex.codecogs.com/png.latex?h"> to the base <img src="https://latex.codecogs.com/png.latex?g">, written <img src="https://latex.codecogs.com/png.latex?x%20=%20%5Clog_g%20h">, and the name is honest: just as an ordinary logarithm asks “to what power must I raise the base,” this one asks the same question, only now inside the finite world of the clock.</p>
 <p>Going forward is genuinely easy. To compute <img src="https://latex.codecogs.com/png.latex?g%5Ex%20%5Cbmod%20p"> you never multiply <img src="https://latex.codecogs.com/png.latex?x"> times. You square and climb: from <img src="https://latex.codecogs.com/png.latex?g"> you get <img src="https://latex.codecogs.com/png.latex?g%5E2">, square that for <img src="https://latex.codecogs.com/png.latex?g%5E4">, then <img src="https://latex.codecogs.com/png.latex?g%5E8">, and so on, picking out the powers you need according to the binary digits of <img src="https://latex.codecogs.com/png.latex?x">. A number <img src="https://latex.codecogs.com/png.latex?x"> with a few hundred binary digits takes only a few hundred squarings. Forward is a short stroll, no matter how astronomically large <img src="https://latex.codecogs.com/png.latex?x"> is.</p>
-<div id="9170617b" class="cell" data-execution_count="1">
+<div id="5f51cc22" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">p <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
@@ -4220,7 +5112,7 @@ font-style: inherit;">"</span>)</span></code></pre></div></div>
 <p>There is something smarter, and it is a beautiful, almost physical idea. At first glance the search looks like a billion-step slog, but let us break down what we are actually doing and reorganize it.</p>
 <p>We want <img src="https://latex.codecogs.com/png.latex?g%5Ex%20=%20h">. Split the unknown exponent into a <em>giant</em> part and a <em>baby</em> part. Choose a stride length <img src="https://latex.codecogs.com/png.latex?m%20%5Capprox%20%5Csqrt%7Bp%7D"> and write <img src="https://latex.codecogs.com/png.latex?%0Ax%20=%20i%5C,m%20+%20j,%20%5Cqquad%200%20%5Cle%20j%20%3C%20m,%5C%20%5C%200%20%5Cle%20i%20%3C%20m.%0A"> Every exponent up to <img src="https://latex.codecogs.com/png.latex?p-1"> can be written this way: <img src="https://latex.codecogs.com/png.latex?i"> counts how many giant strides of length <img src="https://latex.codecogs.com/png.latex?m"> you take, and <img src="https://latex.codecogs.com/png.latex?j"> is the small leftover. Substitute and rearrange: <img src="https://latex.codecogs.com/png.latex?%0Ag%5E%7B%5C,im%20+%20j%7D%20=%20h%0A%5Cquad%5CLongleftrightarrow%5Cquad%0Ag%5E%7B%5C,j%7D%20=%20h%20%5Ccdot%20%5Cleft(g%5E%7B-m%7D%5Cright)%5E%7Bi%7D.%0A"> Stare at that rearrangement, because it is the trick in one line. The left side depends only on the baby part <img src="https://latex.codecogs.com/png.latex?j">; the right side depends only on the giant part <img src="https://latex.codecogs.com/png.latex?i">. We have separated the two unknowns onto opposite banks of the equation.</p>
 <p>So we work each side independently and let them meet. First take all the <strong>baby steps</strong>: compute <img src="https://latex.codecogs.com/png.latex?g%5E0,%20g%5E1,%20%5Cdots,%20g%5E%7Bm-1%7D"> and drop them into a lookup table, each value remembering its exponent <img src="https://latex.codecogs.com/png.latex?j">. That is about <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Bp%7D"> multiplications and <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Bp%7D"> memory. Then take <strong>giant steps</strong>: starting from <img src="https://latex.codecogs.com/png.latex?h">, repeatedly multiply by <img src="https://latex.codecogs.com/png.latex?g%5E%7B-m%7D">, producing <img src="https://latex.codecogs.com/png.latex?h,%20h%20g%5E%7B-m%7D,%20h%20g%5E%7B-2m%7D,%20%5Cdots">. After the <img src="https://latex.codecogs.com/png.latex?i">-th giant step you are holding the right-hand side <img src="https://latex.codecogs.com/png.latex?h%20%5Ccdot%20(g%5E%7B-m%7D)%5Ei">. The moment that value appears in your baby-step table, you have found a match: the table hands you <img src="https://latex.codecogs.com/png.latex?j">, you already know <img src="https://latex.codecogs.com/png.latex?i">, and <img src="https://latex.codecogs.com/png.latex?x%20=%20im%20+%20j"> falls out. This is Shanks’s baby-step giant-step algorithm <span class="citation" data-cites="shanks1971">[2]</span>.</p>
-<div id="fe1e877c" class="cell" data-execution_count="2">
+<div id="2886a8f8" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> math <span class="im" style="color: #00769E;
@@ -4369,7 +5261,7 @@ check: g^x mod p reproduces h? True</code></pre>
 </div>
 </div>
 <p>The same problem that needed a billion brute-force steps is now solved in a few tens of thousands. The reason is the trade we made: instead of one list of length <img src="https://latex.codecogs.com/png.latex?p">, we used two lists of length <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Bp%7D"> and let them collide. You might have already guessed where this leaves us. The discrete logarithm is <em>not</em> impossibly hard. It is <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Bp%7D"> hard, and there are deeper methods (index calculus, Pollard’s rho) that do better still on the storage. The art of choosing safe parameters is the art of making <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Bp%7D">, even after every such improvement, larger than any computation anyone could ever run.</p>
-<div id="ecb65370" class="cell" data-execution_count="3">
+<div id="9b8b9001" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Why size is everything: the meet-in-the-middle work grows like the square root.</span></span>
@@ -4450,7 +5342,7 @@ font-style: inherit;"> decimal digits"</span>)</span></code></pre></div></div>
 <li>Bob does the mirror image: <img src="https://latex.codecogs.com/png.latex?A%5E%7Bb%7D%20=%20(g%5E%7Ba%7D)%5E%7Bb%7D%20=%20g%5E%7Bab%7D">.</li>
 </ul>
 <p>They have landed on the <em>same</em> number, <img src="https://latex.codecogs.com/png.latex?g%5E%7Bab%7D%20%5Cbmod%20p">, without ever sending it. That shared value becomes the key to a private conversation.</p>
-<div id="97a2fcd4" class="cell" data-execution_count="4">
+<div id="d43f101c" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> secrets</span>
@@ -4550,7 +5442,7 @@ background-color: null;
 font-style: inherit;">"..."</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Alice and Bob agree on a shared secret: True
-first 16 hex digits of the shared key: 529fd7ca02554a36 ...</code></pre>
+first 16 hex digits of the shared key: da7bec3c0be19c84 ...</code></pre>
 </div>
 </div>
 <p>An eavesdropper, call her Eve, has been listening the whole time. She knows <img src="https://latex.codecogs.com/png.latex?p">, <img src="https://latex.codecogs.com/png.latex?g">, <img src="https://latex.codecogs.com/png.latex?A">, and <img src="https://latex.codecogs.com/png.latex?B">. What she wants is <img src="https://latex.codecogs.com/png.latex?g%5E%7Bab%7D">, and the only obvious route there is to extract <img src="https://latex.codecogs.com/png.latex?a"> from <img src="https://latex.codecogs.com/png.latex?A%20=%20g%5Ea"> or <img src="https://latex.codecogs.com/png.latex?b"> from <img src="https://latex.codecogs.com/png.latex?B%20=%20g%5Eb">, and that is exactly a discrete logarithm on a <img src="https://latex.codecogs.com/png.latex?2048">-bit clock, the bolted door from the last section. Everything Alice and Bob said was public. The secret was never in the words; it was in the <em>return trip Eve cannot afford to take</em>. Doesn’t that just feel beautiful? The privacy comes not from hiding the messages but from an asymmetry in arithmetic.</p>
@@ -4735,7 +5627,7 @@ first 16 hex digits of the shared key: 529fd7ca02554a36 ...</code></pre>
 <p>For each <img src="https://latex.codecogs.com/png.latex?i">, let <img src="https://latex.codecogs.com/png.latex?M_i%20=%20M%20/%20m_i">, the product of every modulus except <img src="https://latex.codecogs.com/png.latex?m_i">. By construction <img src="https://latex.codecogs.com/png.latex?m_j%20%5Cmid%20M_i"> for every <img src="https://latex.codecogs.com/png.latex?j%20%5Cneq%20i">, so <img src="https://latex.codecogs.com/png.latex?M_i"> already vanishes modulo all the other moduli. Modulo <img src="https://latex.codecogs.com/png.latex?m_i"> itself, <img src="https://latex.codecogs.com/png.latex?M_i"> is coprime to <img src="https://latex.codecogs.com/png.latex?m_i"> and so has an inverse <img src="https://latex.codecogs.com/png.latex?y_i">, meaning <img src="https://latex.codecogs.com/png.latex?M_i%20y_i%20%5Cequiv%201%20%5Cpmod%7Bm_i%7D">. Now set</p>
 <p><span id="eq-crt-formula"><img src="https://latex.codecogs.com/png.latex?%0An%20=%20%5Csum_%7Bi=1%7D%5E%7Bk%7D%20a_i%5C,%20M_i%5C,%20y_i%20%5Cpmod%7BM%7D.%0A%5Ctag%7B1%7D"></span></p>
 <p>Check it against any single modulus <img src="https://latex.codecogs.com/png.latex?m_j">. Every term with <img src="https://latex.codecogs.com/png.latex?i%20%5Cneq%20j"> carries the factor <img src="https://latex.codecogs.com/png.latex?M_i">, which is divisible by <img src="https://latex.codecogs.com/png.latex?m_j">, so it contributes nothing. The surviving term is <img src="https://latex.codecogs.com/png.latex?a_j%20M_j%20y_j%20%5Cequiv%20a_j%20%5Ccdot%201%20=%20a_j%20%5Cpmod%7Bm_j%7D">. The construction hits the target in every coordinate at once. Equation&nbsp;1 is the whole algorithm, and the code below is nothing more than this sum.</p>
-<div id="1dca6224" class="cell" data-execution_count="1">
+<div id="840eee9d" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> math <span class="im" style="color: #00769E;
@@ -4856,7 +5748,7 @@ solutions repeat every M = 105</code></pre>
 <h2 class="anchored" data-anchor-id="why-a-computer-cares">Why a computer cares</h2>
 <p>So far this is elegant number theory. The reason it became infrastructure is that the isomorphism in Theorem&nbsp;1 does something a computer scientist dreams about: it turns one hard arithmetic problem into several small, independent ones.</p>
 <p>Because <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> respects <img src="https://latex.codecogs.com/png.latex?+"> and <img src="https://latex.codecogs.com/png.latex?%5Ctimes">, to add or multiply two numbers modulo <img src="https://latex.codecogs.com/png.latex?M"> you may add or multiply their coordinates <em>separately</em>, each in its own little world modulo <img src="https://latex.codecogs.com/png.latex?m_i">, and then read the answer back. The coordinates never talk to each other. There is no carrying between them. This is the idea behind a <strong>residue number system</strong>: store a huge integer as its remainders against a set of coprime moduli, and every multiplication becomes a handful of small multiplications that a machine can run side by side.</p>
-<div id="a10933a6" class="cell" data-execution_count="2">
+<div id="1a2dac0a" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> random</span>
@@ -4942,7 +5834,7 @@ font-style: inherit;">%</span> M)</span></code></pre></div></div>
 </div>
 </div>
 <p>The most familiar place this shows up is RSA. Decrypting a message means computing <img src="https://latex.codecogs.com/png.latex?c%5E%7Bd%7D%20%5Cbmod%20N"> where <img src="https://latex.codecogs.com/png.latex?N%20=%20pq"> is a product of two large primes. That exponentiation is the expensive heartbeat of the whole scheme, and its cost grows faster than linearly in the size of the modulus. The Chinese Remainder Theorem offers a shortcut: instead of working modulo the giant <img src="https://latex.codecogs.com/png.latex?N">, work modulo <img src="https://latex.codecogs.com/png.latex?p"> and modulo <img src="https://latex.codecogs.com/png.latex?q"> separately, where every number is half the size, then glue the two results back together with Equation&nbsp;1. Two small exponentiations plus a recombination beat one large exponentiation, and in practice the speedup is roughly threefold. Every serious RSA implementation does exactly this <span class="citation" data-cites="rivest1978rsa">[1]</span>.</p>
-<div id="72f2aaee" class="cell" data-execution_count="3">
+<div id="aaa219c4" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> time</span>
@@ -5379,9 +6271,9 @@ font-style: inherit;">}</span><span class="ss" style="color: #20794D;
 background-color: null;
 font-style: inherit;">)"</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>direct : 3.73 ms
-CRT    : 1.30 ms
-speedup: 2.9x   (results agree: True)</code></pre>
+<pre><code>direct : 2.03 ms
+CRT    : 0.72 ms
+speedup: 2.8x   (results agree: True)</code></pre>
 </div>
 </div>
 <p>The exact ratio depends on the machine, but the shape is always the same: splitting the modulus pays off, and it pays off for the reason the picture promised, because the two coordinates can be handled independently. The same decomposition powers fast big-integer multiplication through number-theoretic transforms over several primes, and it underlies threshold secret-sharing schemes where a secret is hidden in its residues and only enough of them together can reveal it. A fuller account of residue arithmetic lives in <span class="citation" data-cites="knuth1997seminumerical">[2]</span>.</p>
@@ -5470,7 +6362,7 @@ speedup: 2.9x   (results agree: True)</code></pre>
 <p>Here the story takes a turn that pure mathematics alone would never warn you about. On paper, Equation&nbsp;1 is flawless. On a computer, the order in which you subtract the shadows turns out to matter enormously.</p>
 <p>There are two ways to organize the subtraction. <em>Classical</em> Gram–Schmidt computes every projection against the <strong>original</strong> vector <img src="https://latex.codecogs.com/png.latex?v_k"> and removes them together. <em>Modified</em> Gram–Schmidt removes each shadow one at a time, always projecting the <strong>running remainder</strong> that is left so far. Algebraically the two are identical. In floating-point arithmetic they are not, because the modified version always works with the most up-to-date, mostly-perpendicular remainder, and so it never lets rounding errors pile up unexamined.</p>
 <p>To see the gap, feed both versions a deliberately nasty matrix: the <img src="https://latex.codecogs.com/png.latex?8%20%5Ctimes%208"> Hilbert matrix, whose columns are so nearly parallel that its condition number runs into the billions.</p>
-<div id="c5d2c66f" class="cell" data-execution_count="1">
+<div id="1b695e0a" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
@@ -5688,9 +6580,9 @@ font-style: inherit;">"</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>condition number of H: 1.53e+10
 
-classical:  |Q^T Q - I| = 1.42e+00    |H - QR| = 1.02e-16
-modified :  |Q^T Q - I| = 3.62e-07    |H - QR| = 1.04e-16
-numpy.qr :  |Q^T Q - I| = 1.11e-15</code></pre>
+classical:  |Q^T Q - I| = 1.42e+00    |H - QR| = 9.71e-17
+modified :  |Q^T Q - I| = 3.62e-07    |H - QR| = 1.07e-16
+numpy.qr :  |Q^T Q - I| = 1.46e-15</code></pre>
 </div>
 </div>
 <p>Both methods rebuild <img src="https://latex.codecogs.com/png.latex?H"> from <img src="https://latex.codecogs.com/png.latex?Q"> and <img src="https://latex.codecogs.com/png.latex?R"> essentially perfectly, with <img src="https://latex.codecogs.com/png.latex?%5ClVert%20H%20-%20QR%5CrVert"> down at roundoff. That is not where the danger lives. Look instead at <img src="https://latex.codecogs.com/png.latex?%5ClVert%20Q%5E%5Ctop%20Q%20-%20I%5CrVert">, the honest test of whether the columns of <img src="https://latex.codecogs.com/png.latex?Q"> really are orthonormal. Classical Gram–Schmidt scores around <img src="https://latex.codecogs.com/png.latex?1">, meaning its “orthonormal” axes are nothing of the sort, they have collapsed back toward each other. The modified version holds the error near <img src="https://latex.codecogs.com/png.latex?10%5E%7B-7%7D">, and the Householder-based routine in NumPy reaches full machine precision around <img src="https://latex.codecogs.com/png.latex?10%5E%7B-15%7D">.</p>
@@ -5821,7 +6713,7 @@ numpy.qr :  |Q^T Q - I| = 1.11e-15</code></pre>
 <p>Walk backward from that final <img src="https://latex.codecogs.com/png.latex?1">. Each step back takes a square root, and in the field <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BZ%7D/n%5Cmathbb%7BZ%7D"> the only square roots of <img src="https://latex.codecogs.com/png.latex?1"> are <img src="https://latex.codecogs.com/png.latex?%5Cpm%201">, because <img src="https://latex.codecogs.com/png.latex?x%5E2%20-%201%20=%20(x-1)(x+1)"> and a field has no zero divisors. So every time we step back from a <img src="https://latex.codecogs.com/png.latex?1">, we land on either <img src="https://latex.codecogs.com/png.latex?1"> or <img src="https://latex.codecogs.com/png.latex?-1">. Two things can happen. Either the whole chain is <img src="https://latex.codecogs.com/png.latex?1"> all the way down, in which case <img src="https://latex.codecogs.com/png.latex?a%5E%7Bd%7D%20%5Cequiv%201"> and we are in the first case. Or somewhere a value fails to be <img src="https://latex.codecogs.com/png.latex?1">; take the last such spot. The term just after it equals <img src="https://latex.codecogs.com/png.latex?1"> and is its square, so that term is a square root of <img src="https://latex.codecogs.com/png.latex?1"> other than <img src="https://latex.codecogs.com/png.latex?1">, hence <img src="https://latex.codecogs.com/png.latex?-1">. That is exactly <img src="https://latex.codecogs.com/png.latex?a%5E%7B2%5E%7Br%7D%20d%7D%20%5Cequiv%20-1"> for some <img src="https://latex.codecogs.com/png.latex?r">, the second case. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
 </div>
 <p>This gives the test its real shape. To examine an odd <img src="https://latex.codecogs.com/png.latex?n">, pick a base <img src="https://latex.codecogs.com/png.latex?a">, compute <img src="https://latex.codecogs.com/png.latex?a%5Ed%20%5Cbmod%20n">, and then square it up to <img src="https://latex.codecogs.com/png.latex?s"> times. If we never see <img src="https://latex.codecogs.com/png.latex?a%5Ed%20%5Cequiv%201"> and never see a <img src="https://latex.codecogs.com/png.latex?-1"> along the way, then Theorem&nbsp;1 has been violated, and <img src="https://latex.codecogs.com/png.latex?n"> is <strong>certainly</strong> composite. The base <img src="https://latex.codecogs.com/png.latex?a"> is again a witness, only now it is a far more demanding test than Fermat’s, and Carmichael numbers no longer escape it.</p>
-<div id="7a5fc4aa" class="cell" data-execution_count="1">
+<div id="6f6c7d16" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -6059,7 +6951,7 @@ font-style: inherit;">"</span>)</span></code></pre></div></div>
 <p><span class="theorem-title"><strong>Theorem 2 (Soundness (Rabin))</strong></span> If <img src="https://latex.codecogs.com/png.latex?n"> is an odd composite, then at most <img src="https://latex.codecogs.com/png.latex?%5Ctfrac%7B1%7D%7B4%7D(n-1)"> of the bases <img src="https://latex.codecogs.com/png.latex?a%20%5Cin%20%5C%7B1,%20%5Cdots,%20n-1%5C%7D"> are strong liars. Equivalently, at least three quarters of all bases are witnesses.</p>
 </div>
 <p>The proof is a careful count inside the group of units; see <span class="citation" data-cites="rabin1980">[1]</span>. The consequence is what makes the test practical. Choose <img src="https://latex.codecogs.com/png.latex?k"> bases independently at random. A composite survives one random base with probability at most <img src="https://latex.codecogs.com/png.latex?%5Ctfrac14">, so it survives all <img src="https://latex.codecogs.com/png.latex?k"> with probability at most <img src="https://latex.codecogs.com/png.latex?4%5E%7B-k%7D">. Twenty random bases push the chance of being fooled below <img src="https://latex.codecogs.com/png.latex?10%5E%7B-12%7D">, smaller than the chance of a hardware error during the computation. We never reach certainty about primality this way, but we reach a confidence we are happy to act on, and we reach it cheaply.</p>
-<div id="8d873460" class="cell" data-execution_count="2">
+<div id="227b0bd0" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -6153,7 +7045,7 @@ n =  25326001:  strong liars 2531250 / 25326000  =  0.100   (bound 0.250)</code>
 <section id="from-confidence-to-certainty" class="level2">
 <h2 class="anchored" data-anchor-id="from-confidence-to-certainty">From confidence to certainty</h2>
 <p>For numbers below a known bound, the randomness can be removed entirely. Because the strong liars are so sparse, a small fixed set of prime bases suffices to decide primality with no error at all. The twelve bases <img src="https://latex.codecogs.com/png.latex?2,%203,%205,%20%5Cdots,%2037"> are enough to classify <em>every</em> integer below <img src="https://latex.codecogs.com/png.latex?3%7B,%7D317%7B,%7D044%7B,%7D064%7B,%7D679%7B,%7D887%7B,%7D385%7B,%7D961%7B,%7D981">, a little over <img src="https://latex.codecogs.com/png.latex?3.3%20%5Ctimes%2010%5E%7B24%7D">, correctly <span class="citation" data-cites="sorenson2017">[2]</span>. That comfortably covers <img src="https://latex.codecogs.com/png.latex?64">-bit integers and far beyond, so a deterministic, always-correct primality test fits in a few lines.</p>
-<div id="938232f8" class="cell" data-execution_count="3">
+<div id="13b65c68" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -6438,7 +7330,7 @@ font-style: inherit;">"</span>)</span></code></pre></div></div>
 <section id="a-numerical-check" class="level2">
 <h2 class="anchored" data-anchor-id="a-numerical-check">A numerical check</h2>
 <p>A proof tells you a decomposition must exist; it is a different kind of satisfying to watch it appear. Let us build a random symmetric matrix, ask the computer for its eigenvalues and eigenvectors, and confirm that Equation&nbsp;2 holds right down to floating-point roundoff.</p>
-<div id="d7793c75" class="cell" data-execution_count="1">
+<div id="cf6d7cc3" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
@@ -6537,8 +7429,8 @@ background-color: null;
 font-style: inherit;">"</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>eigenvalues (all real): [-2.0037 -0.988   0.2761  0.4913  1.5001  1.8151]
-|A - Q L Q^T| = 3.18e-15
-|Q^T Q - I|   = 1.72e-15</code></pre>
+|A - Q L Q^T| = 1.62e-15
+|Q^T Q - I|   = 1.39e-15</code></pre>
 </div>
 </div>
 <p>Both residuals sit around <img src="https://latex.codecogs.com/png.latex?10%5E%7B-15%7D">, which is as close to zero as double-precision arithmetic ever gets. The eigenvalues come back real, the eigenvectors come back orthonormal, and the stretch-and-rotate story holds up.</p>
