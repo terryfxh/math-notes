@@ -24,7 +24,7 @@ A beloved technical/mathematical content creator whose goal is to turn abstract 
 ## Tech Stack & Structure
 
 - Quarto static site (configured in `_quarto.yml`; cosmo theme + `styles.css`, MathJax, IEEE citations, theorem/proof crossref environments).
-- Posts live in `posts/`, with `spectral-theorem` as the formatting template; `references.bib` is the shared bibliography.
+- Published posts live in `posts/`; private writing lives in categorized folders under `drafts/`. `spectral-theorem` is the formatting template, and `references.bib` is the shared bibliography.
 - Tooling in `tools/`: `blog.py` (command hub), `check.py` (pre-publish safety check), `posts_status.py`.
 
 ## Collaboration & Safety Rules
@@ -40,6 +40,8 @@ A beloved technical/mathematical content creator whose goal is to turn abstract 
 
 - `python tools/blog.py status` — quick table of all posts
 - `python tools/blog.py new "Title" --categories "pure, number-theory"` — create a new post
+- `python tools/blog.py draft-preview <slug>` — preview a private draft
+- `python tools/blog.py promote <slug>` — move a finished draft into `posts/`
 - `python tools/blog.py preview` / `render` — local preview / render
 - `python tools/blog.py fast-check` — quick validation (YAML, metadata, links, citations)
 - `python tools/blog.py full-check` — run before publishing when code cells changed (executes code)

@@ -6,6 +6,8 @@ project:
   render:
     - "*.qmd"
     - "posts/"
+    - "!drafts/"
+    - "!publish/"
 
 website:
   title: "(Terry) Xihan Fang — Math Notes"

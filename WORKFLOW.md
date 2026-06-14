@@ -57,13 +57,16 @@ Definition of done: site builds clean, homepage lists posts, About reads as you.
 A consistent pipeline is what makes a blog survive past post #3.
 
 1. **Capture.** Keep a running `ideas.md` of post seeds (a theorem you re-derived, a paper you read, a problem you solved). Never start from a blank page.
-2. **Draft in a branch.** `git checkout -b post/spectral-theorem`. New folder `posts/<slug>/index.qmd`.
-3. **Front matter.** Title, `date`, `categories`, `description`, `draft: true` until ready.
+2. **Draft privately.** Create `drafts/<section>/<slug>/index.qmd` with
+   `python tools/blog.py new`, optionally on a dedicated branch.
+3. **Front matter.** Title, `date`, `categories`, `description`, and `draft: true`
+   remain in the private draft.
 4. **Write math-first.** State the result, then build to it. Use theorem/proof callouts. Define notation once. Add a figure or runnable snippet only where it earns its place.
 5. **Cite.** Add sources to `references.bib`, reference with `[@key]`.
 6. **Self-review checklist** (see Phase 6).
 7. **Render & proof locally.** Check every equation renders, every cross-ref resolves, code runs top-to-bottom in a clean kernel.
-8. **Flip `draft: false`, merge, push.** CI (or `quarto publish`) deploys.
+8. **Promote, merge, push.** `python tools/blog.py promote <slug>` moves the
+   article into `posts/` and sets `draft: false`; CI then deploys it after push.
 
 Target: idea → published in 2–4 focused sessions per post.
 

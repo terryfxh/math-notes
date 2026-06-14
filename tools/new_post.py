@@ -4,9 +4,9 @@ Scaffold a new post so you never copy-paste boilerplate again.
 
 Usage:
     python tools/new_post.py "The Title of My Post"
-    python tools/new_post.py "My Post" --categories "pure, number-theory"
+    python tools/new_post.py "My Post" --section mathematics --categories "pure, number-theory"
 
-It creates posts/<slug>/index.qmd with the front matter, an epigraph block
+It creates drafts/<section>/<slug>/index.qmd with the front matter, an epigraph block
 (ready for a quote from quotes.md), starter sections, and a filled-in
 "How to cite" line, then prints the next steps.
 """
@@ -29,21 +29,37 @@ def slugify(title: str) -> str:
 def main() -> int:
     args = [a for a in sys.argv[1:]]
     categories = "pure"
+    section = "mathematics"
     if "--categories" in args:
         i = args.index("--categories")
         categories = args[i + 1]
         del args[i:i + 2]
+    if "--section" in args:
+        i = args.index("--section")
+        section = args[i + 1].strip().lower()
+        del args[i:i + 2]
     if not args:
-        print('Usage: python tools/new_post.py "The Title" [--categories "a, b"]')
+        print(
+            'Usage: python tools/new_post.py "The Title" '
+            '[--section mathematics|reflections|research-notes] [--categories "a, b"]'
+        )
+        return 1
+    allowed_sections = {"mathematics", "reflections", "research-notes"}
+    if section not in allowed_sections:
+        print(f"Unknown draft section '{section}'. Choose: {', '.join(sorted(allowed_sections))}")
         return 1
 
     title = " ".join(args)
     slug = slugify(title)
     today = datetime.date.today().isoformat()
-    folder = ROOT / "posts" / slug
+    folder = ROOT / "drafts" / section / slug
     target = folder / "index.qmd"
-    if target.exists():
-        print(f"Refusing to overwrite existing {target.relative_to(ROOT)}")
+    existing = [
+        ROOT / "posts" / slug / "index.qmd",
+        *(ROOT / "drafts").glob(f"*/{slug}/index.qmd"),
+    ]
+    if any(path.exists() for path in existing):
+        print(f"Refusing to create duplicate article slug '{slug}'")
         return 1
     folder.mkdir(parents=True, exist_ok=True)
 
@@ -53,7 +69,7 @@ title: "{title}"
 description: "One sentence that says what a reader gets from this post."
 date: {today}
 categories: [{cats}]
-bibliography: ../../references.bib
+bibliography: ../../../references.bib
 draft: true
 ---
 
@@ -90,11 +106,11 @@ The one or two sentences you want the reader to keep.
 > Terry (2026). *{title}*. Retrieved from `{SITE_BASE}/posts/{slug}/`.
 '''
     target.write_text(template, encoding="utf-8")
-    print(f"Created posts/{slug}/index.qmd  (draft)")
+    print(f"Created drafts/{section}/{slug}/index.qmd")
     print("Next:")
     print("  1. Write it; pick an epigraph from quotes.md.")
-    print("  2. python tools/blog.py preview")
-    print("  3. set draft: false when ready")
+    print(f"  2. python tools/blog.py draft-preview {slug}")
+    print(f"  3. python tools/blog.py promote {slug}")
     print("  4. python tools/blog.py fast-check")
     print("     python tools/blog.py full-check   # before publishing code-heavy posts")
     print("  5. git add . && git commit -m \"add post: {0}\" && git push".format(slug))

@@ -1,0 +1,12 @@
+---
+title: "Moved"
+draft: true
+---
+
+This file has moved to its canonical, promotable location:
+
+`drafts/mathematics/why-laplace-transforms-are-so-useful/index.qmd`
+
+(The post now lives in its own slug folder so `tools/check.py` and the freeze
+cache pick it up, and so `python tools/blog.py promote why-laplace-transforms-are-so-useful`
+works. This stub can be deleted whenever convenient.)

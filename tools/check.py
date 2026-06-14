@@ -104,9 +104,13 @@ def strip_nuls(reporter: Reporter) -> None:
 
 
 def load_posts() -> list[Post]:
-    """Read every posts/*/index.qmd exactly once."""
+    """Read every published post and private draft exactly once."""
     posts: list[Post] = []
-    for path in sorted(p for p in (ROOT / "posts").glob("*/index.qmd") if p.is_file()):
+    paths = [
+        *(ROOT / "posts").glob("*/index.qmd"),
+        *(ROOT / "drafts").glob("*/*/index.qmd"),
+    ]
+    for path in sorted(p for p in paths if p.is_file()):
         posts.append(Post(path, path.read_text(encoding="utf-8")))
     return posts
 
@@ -191,6 +195,10 @@ def validate_posts(posts: list[Post], reporter: Reporter) -> None:
             reporter.error(f"{rel(path)}: categories should be a non-empty YAML list")
         if not isinstance(data.get("draft"), bool):
             reporter.error(f"{rel(path)}: draft should be true or false")
+        if "drafts" in path.parts and data.get("draft") is not True:
+            reporter.error(f"{rel(path)}: files under drafts/ must use draft: true")
+        if "posts" in path.parts and data.get("draft") is not False:
+            reporter.error(f"{rel(path)}: files under posts/ must use draft: false")
         if "::: {.epigraph}" not in text and "::: {.epigraph " not in text:
             reporter.warn(f"{rel(path)}: no epigraph block found")
         if "## How to cite" not in text and "## 如何引用" not in text:
@@ -256,6 +264,8 @@ def validate_freeze(posts: list[Post], reporter: Reporter) -> None:
     freeze_root = ROOT / "_freeze" / "posts"
     in_ci = bool(os.environ.get("CI"))
     for path, text in posts:
+        if "drafts" in path.parts:
+            continue
         if not python_cells(text):
             continue
         slug = path.parent.name

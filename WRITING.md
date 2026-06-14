@@ -40,11 +40,11 @@ contains or changes Python code cells.
 
 ```
 python tools/blog.py new "Your Post Title"      # 1. scaffold
-python tools/blog.py preview                    # 2. write, see it live (drafts hidden)
-#    ...set draft: false when ready...
-python tools/blog.py fast-check                 # 3. quick clean + validate
-python tools/blog.py full-check                 # 3b. before publishing code-heavy posts
-git add . && git commit -m "add post: ..." && git push   # 4. publish
+python tools/blog.py draft-preview <slug>        # 2. write and preview privately
+python tools/blog.py promote <slug>              # 3. move the finished article to posts/
+python tools/blog.py fast-check                  # 4. quick clean + validate
+python tools/blog.py full-check                  # 4b. before publishing code-heavy posts
+git add . && git commit -m "add post: ..." && git push   # 5. publish
 ```
 
 That is the whole flow. Step 4 triggers the Action; the live site updates in a
@@ -53,9 +53,10 @@ directory-and-remote dance that used to cause errors.
 
 ### What each step does
 
-- **`new_post.py`** writes `posts/<slug>/index.qmd` with the front matter, an
-  epigraph block, starter sections, and a filled-in "How to cite". It starts as a
-  draft, so it stays off the live listing until you flip `draft: false`.
+- **`new_post.py`** writes `drafts/<section>/<slug>/index.qmd` with the front
+  matter, an epigraph block, starter sections, and a filled-in "How to cite".
+- **`blog.py promote`** moves a finished draft into `posts/` and changes
+  `draft: true` to `draft: false`. It does not commit, push, or deploy.
 - **`quarto preview`** is the only step that still needs Quarto + Python installed
   locally. It is optional but recommended for seeing math and code render.
 - **`blog.py`** is the command hub. It wraps post creation, status, checks,

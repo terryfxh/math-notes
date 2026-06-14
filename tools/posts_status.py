@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Print a compact Markdown table describing all Quarto posts."""
+"""Print compact Markdown tables for published posts and private drafts."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -16,19 +16,30 @@ def fmt(value: Any) -> str:
     return "" if value is None else str(value)
 
 
-def main() -> int:
-    posts = sorted((ROOT / "posts").glob("*/index.qmd"))
-    print("| Post | Date | Draft | Categories | Description |")
-    print("|---|---:|---:|---|---|")
-    for path in posts:
+def print_table(paths: list[Path], heading: str, include_section: bool = False) -> None:
+    print(f"## {heading}")
+    section_header = " | Section" if include_section else ""
+    section_rule = "|---" if include_section else ""
+    print(f"| Post | Date | Draft | Categories | Description{section_header} |")
+    print(f"|---|---:|---:|---|---{section_rule}|")
+    for path in paths:
         meta = load_meta(path)
         title = fmt(meta.get("title")) or path.parent.name
         desc = fmt(meta.get("description"))
         desc_state = "ok" if desc and not desc.startswith("One sentence") else "missing"
+        section = f" | {path.parents[1].name}" if include_section else ""
         print(
             f"| {title} | {fmt(meta.get('date'))} | {fmt(meta.get('draft'))} | "
-            f"{fmt(meta.get('categories'))} | {desc_state} |"
+            f"{fmt(meta.get('categories'))} | {desc_state}{section} |"
         )
+
+
+def main() -> int:
+    posts = sorted((ROOT / "posts").glob("*/index.qmd"))
+    drafts = sorted((ROOT / "drafts").glob("*/*/index.qmd"))
+    print_table(posts, "Published posts")
+    print()
+    print_table(drafts, "Private drafts", include_section=True)
     return 0
 
 

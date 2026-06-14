@@ -19,6 +19,10 @@ growth process, and [`WRITING.md`](WRITING.md) for the daily command loop.
 │   ├── _metadata.yml    # defaults applied to all posts
 │   ├── welcome/index.qmd
 │   └── spectral-theorem/index.qmd   # formatting template (theorems, code, citations)
+├── drafts/
+│   ├── mathematics/     # private math drafts
+│   ├── reflections/     # private reflective essays
+│   └── research-notes/  # source gathering and early-stage notes
 ├── tools/
 │   ├── blog.py          # command hub: new/status/check/render/preview
 │   ├── check.py         # pre-publish safety check
@@ -50,13 +54,15 @@ python tools/blog.py fast-check   # YAML, metadata, links, citations
 python tools/blog.py full-check   # also executes Python code cells
 ```
 
-Posts with `draft: true` are excluded from the published listing. Flip to
-`draft: false` when ready.
+Only finished articles live in `posts/`. Private writing lives under `drafts/`,
+which is outside Quarto's render allowlist.
 
 ## Writing a new post
 
 ```bash
 python tools/blog.py new "My Post Title" --categories "pure, number-theory"
+python tools/blog.py draft-preview my-post-title
+python tools/blog.py promote my-post-title
 python tools/blog.py preview
 python tools/blog.py fast-check
 ```

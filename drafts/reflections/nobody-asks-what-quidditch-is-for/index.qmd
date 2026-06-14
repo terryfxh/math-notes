@@ -3,7 +3,7 @@ title: "Nobody Asks What Quidditch Is For"
 description: "Two TEDx talks — Grant Sanderson on why 'useless' math out-pulls useful math, and Eddie Woo on mathematics as a sense — braided into one reflection on what actually makes people engage with math."
 date: 2026-06-10
 categories: [meta, learning]
-bibliography: ../../references.bib
+bibliography: ../../../references.bib
 draft: true
 ---
 
@@ -65,7 +65,7 @@ So if mathematics is a sense, it must be the sense that includes its own skeptic
 
 ## The braid
 
-Now the strands tie together. Hardy boasted that his number theory would never serve war or commerce; it now underwrites the cryptography securing this very page. The block-collision puzzle turned out to share its mathematics with a famous quantum search algorithm [@brown2019playing]. Playing with primes in polar coordinates, purely for the pleasure of the spirals, walks you straight into Dirichlet's theorem [@sanderson2019spirals] — a path I retraced in [my prime spirals post](../prime-spirals/). Even proofs are built like stories: the Möbius strip hung on the wall in act one of the [inscribed rectangle problem](../the-inscribed-rectangle-problem/) fires, Chekhov-style, in act three [@sanderson2016topology].
+Now the strands tie together. Hardy boasted that his number theory would never serve war or commerce; it now underwrites the cryptography securing this very page. The block-collision puzzle turned out to share its mathematics with a famous quantum search algorithm [@brown2019playing]. Playing with primes in polar coordinates, purely for the pleasure of the spirals, walks you straight into Dirichlet's theorem [@sanderson2019spirals] — a path I retraced in [my prime spirals post](../../../posts/prime-spirals/). Even proofs are built like stories: the Möbius strip hung on the wall in act one of the [inscribed rectangle problem](../../../posts/the-inscribed-rectangle-problem/) fires, Chekhov-style, in act three [@sanderson2016topology].
 
 So the answer is not "make it useful," and not even "make it a story." Story is what captures attention; the sense is what you grow by staying; and usefulness is what keeps arriving afterward, uninvited. Each talk alone is a half-truth — braided, they hold.
 
@@ -76,4 +76,3 @@ So the answer is not "make it useful," and not even "make it a story." Story is 
 ## How to cite
 
 > Terry (2026). *Nobody Asks What Quidditch Is For*. Retrieved from `https://terryfxh.github.io/math-notes/posts/nobody-asks-what-quidditch-is-for/`.
- 
