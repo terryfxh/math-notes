@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-06-18">
+<meta name="description" content="How a sliding overlap counts dice sums, multiplies polynomials, blurs images, describes system memory, and lets Fourier transforms turn a slow calculation into pointwise multiplication.">
+
+<title>Convolution: The Mathematics of Overlap and Echo – (Terry) Xihan Fang — Math Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-d652a8b432bb3d0f423f3afe24e628cf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Convolution: The Mathematics of Overlap and Echo – (Terry) Xihan Fang — Math Notes">
+<meta property="og:description" content="How a sliding overlap counts dice sums, multiplies polynomials, blurs images, describes system memory, and lets Fourier transforms turn a slow calculation into pointwise multiplication.">
+<meta property="og:site_name" content="(Terry) Xihan Fang — Math Notes">
+<meta name="twitter:title" content="Convolution: The Mathematics of Overlap and Echo – (Terry) Xihan Fang — Math Notes">
+<meta name="twitter:description" content="How a sliding overlap counts dice sums, multiplies polynomials, blurs images, describes system memory, and lets Fourier transforms turn a slow calculation into pointwise multiplication.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">(Terry) Xihan Fang — Math Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/terryfxh"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-toy-version-two-dice" id="toc-the-toy-version-two-dice" class="nav-link active" data-scroll-target="#the-toy-version-two-dice">The toy version: two dice</a></li>
+  <li><a href="#why-one-list-gets-flipped" id="toc-why-one-list-gets-flipped" class="nav-link" data-scroll-target="#why-one-list-gets-flipped">Why one list gets flipped</a></li>
+  <li><a href="#loaded-dice-same-stencil" id="toc-loaded-dice-same-stencil" class="nav-link" data-scroll-target="#loaded-dice-same-stencil">Loaded dice, same stencil</a></li>
+  <li><a href="#polynomials-were-doing-it-all-along" id="toc-polynomials-were-doing-it-all-along" class="nav-link" data-scroll-target="#polynomials-were-doing-it-all-along">Polynomials were doing it all along</a></li>
+  <li><a href="#from-lists-to-functions" id="toc-from-lists-to-functions" class="nav-link" data-scroll-target="#from-lists-to-functions">From lists to functions</a></li>
+  <li><a href="#echoes-and-memory" id="toc-echoes-and-memory" class="nav-link" data-scroll-target="#echoes-and-memory">Echoes and memory</a></li>
+  <li><a href="#why-fourier-transforms-love-convolution" id="toc-why-fourier-transforms-love-convolution" class="nav-link" data-scroll-target="#why-fourier-transforms-love-convolution">Why Fourier transforms love convolution</a></li>
+  <li><a href="#a-checksum-for-the-shortcut" id="toc-a-checksum-for-the-shortcut" class="nav-link" data-scroll-target="#a-checksum-for-the-shortcut">A checksum for the shortcut</a></li>
+  <li><a href="#what-to-remember" id="toc-what-to-remember" class="nav-link" data-scroll-target="#what-to-remember">What to remember</a></li>
+  <li><a href="#how-to-cite" id="toc-how-to-cite" class="nav-link" data-scroll-target="#how-to-cite">How to cite</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Convolution: The Mathematics of Overlap and Echo</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">pure</div>
+    <div class="quarto-category">applied</div>
+    <div class="quarto-category">probability</div>
+    <div class="quarto-category">computer-science</div>
+    <div class="quarto-category">algorithms</div>
+    <div class="quarto-category">analysis</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    How a sliding overlap counts dice sums, multiplies polynomials, blurs images, describes system memory, and lets Fourier transforms turn a slow calculation into pointwise multiplication.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 18, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="epigraph">
+<p><em>“Mathematics is the art of giving the same name to different things.”</em></p>
+<p><span class="attribution">– Henri Poincare, traditionally attributed</span></p>
+</div>
+<p>Convolution has a public-relations problem. It is the operation behind dice sums, image blur, audio filters, polynomial multiplication, differential equations, and the fast Fourier transform, but the first time many people meet it, it looks like a cryptic sum with one index running backward.</p>
+<p>So let us postpone the symbols for a moment.</p>
+<p>Here is the picture I want you to carry instead.</p>
+<p>Imagine two transparent strips laid over the same number line. One strip has dark ink printed on it: a heavy patch means “this position matters a lot,” a light patch means “this position barely matters.” Now flip the second strip around, slide it across the first, and at each position ask:</p>
+<blockquote class="blockquote">
+<p>How much ink is overlapping ink?</p>
+</blockquote>
+<p>Where the dark parts meet, the answer is large. Where a dark part meets a blank part, the answer is small. As you slide, the overlap swells, peaks, and fades. That sliding score is convolution. The formula, when it finally appears, is only the receipt for this sliding overlap.</p>
+<p>I first learned to <em>see</em> this operation from Grant Sanderson’s 3Blue1Brown video on the subject <span class="citation" data-cites="sanderson2022convolutions"><a href="#ref-sanderson2022convolutions" role="doc-biblioref">[1]</a></span>. What follows is an attempt to rebuild the picture from scratch, slowly enough that the formula stops feeling like a definition and starts feeling like the shadow cast by a moving stencil.</p>
+<section id="the-toy-version-two-dice" class="level2">
+<h2 class="anchored" data-anchor-id="the-toy-version-two-dice">The toy version: two dice</h2>
+<p>Let us begin somewhere almost insultingly concrete. Roll two fair dice. A total of <span class="math inline">\(2\)</span> is rare because there is only one way to get it: <span class="math display">\[
+(1,1).
+\]</span> A total of <span class="math inline">\(7\)</span> is common because six pairs land there: <span class="math display">\[
+(1,6),\ (2,5),\ (3,4),\ (4,3),\ (5,2),\ (6,1).
+\]</span></p>
+<p>The familiar count is <span class="math display">\[
+1,\ 2,\ 3,\ 4,\ 5,\ 6,\ 5,\ 4,\ 3,\ 2,\ 1.
+\]</span></p>
+<p>That pyramid is already a convolution. One die contributes a number. The other die contributes a number. For a target total <span class="math inline">\(k\)</span>, we ask:</p>
+<blockquote class="blockquote">
+<p>Which pairs of contributions land exactly on <span class="math inline">\(k\)</span>?</p>
+</blockquote>
+<p>If the first die gives <span class="math inline">\(i\)</span>, then the second die is forced to give <span class="math inline">\(k-i\)</span>. That is the whole reason the formula contains the backward-looking index. More generally, if <span class="math inline">\(a_i\)</span> is the weight of the first contribution being <span class="math inline">\(i\)</span>, and <span class="math inline">\(b_j\)</span> is the weight of the second contribution being <span class="math inline">\(j\)</span>, then the weight at target <span class="math inline">\(k\)</span> is <span id="eq-conv"><span class="math display">\[
+(a*b)_k = \sum_i a_i b_{k-i}.
+\tag{1}\]</span></span></p>
+<p>Read <a href="#eq-conv" class="quarto-xref">Equation&nbsp;1</a> as a sentence, not as a symbol:</p>
+<blockquote class="blockquote">
+<p>Fix the target <span class="math inline">\(k\)</span>. Try every possible first contribution <span class="math inline">\(i\)</span>. The second contribution is then forced to be <span class="math inline">\(k-i\)</span>. Multiply the two weights. Add all the compatible stories.</p>
+</blockquote>
+<p>That phrase, <strong>all the compatible stories</strong>, is the heart of the operation. Convolution is what happens when many little two-part explanations can lead to the same observed result, and we refuse to forget any of them.</p>
+</section>
+<section id="why-one-list-gets-flipped" class="level2">
+<h2 class="anchored" data-anchor-id="why-one-list-gets-flipped">Why one list gets flipped</h2>
+<p>Now let the stencil picture do some work. Write the first list of weights in place. Write the second list backward. Slide the reversed list past the first. At each position, multiply the overlapping entries and add.</p>
+<p>The reversal is not a convention pasted on afterward. It is the geometry of addition. As <span class="math inline">\(i\)</span> moves right, its complement <span class="math inline">\(k-i\)</span> moves left. One hand walks forward while the other walks backward. The flipped strip is the formula made visible.</p>
+<p>For fair dice, if we only count ways, both strips are <span class="math display">\[
+[1,1,1,1,1,1].
+\]</span> Slide one copy past the other. First only one pair overlaps. Then two pairs. Then three, four, five, six. Then the overlap shrinks again. The pyramid was not a probability miracle. It was the length of the overlap window.</p>
+<p>There is one small indexing detail worth saying out loud. In the code below the list entry at index <span class="math inline">\(0\)</span> stands for die face <span class="math inline">\(1\)</span>, index <span class="math inline">\(1\)</span> stands for face <span class="math inline">\(2\)</span>, and so on. So output index <span class="math inline">\(r\)</span> corresponds to the real-world total <span class="math inline">\(r+2\)</span>. That offset is not mathematics; it is just Python being zero-indexed.</p>
+<div id="bc1b411f" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> convolve(a, b):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> [<span class="dv">0</span>] <span class="op">*</span> (<span class="bu">len</span>(a) <span class="op">+</span> <span class="bu">len</span>(b) <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, ai <span class="kw">in</span> <span class="bu">enumerate</span>(a):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j, bj <span class="kw">in</span> <span class="bu">enumerate</span>(b):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            out[i <span class="op">+</span> j] <span class="op">+=</span> ai <span class="op">*</span> bj</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>die <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> convolve(die, die)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(counts)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(counts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1]
+36</code></pre>
+</div>
+</div>
+<p>The output has total mass <span class="math inline">\(36\)</span>, one count for each ordered pair of die rolls. If we divide by <span class="math inline">\(36\)</span>, those counts become probabilities.</p>
+<div id="9480812b" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>probabilities <span class="op">=</span> [c <span class="op">/</span> <span class="dv">36</span> <span class="cf">for</span> c <span class="kw">in</span> counts]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> total, p <span class="kw">in</span> <span class="bu">zip</span>(<span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">13</span>), probabilities):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>total<span class="sc">:2d}</span><span class="ss">: </span><span class="sc">{</span>p<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 2: 0.028
+ 3: 0.056
+ 4: 0.083
+ 5: 0.111
+ 6: 0.139
+ 7: 0.167
+ 8: 0.139
+ 9: 0.111
+10: 0.083
+11: 0.056
+12: 0.028</code></pre>
+</div>
+</div>
+<p>Nothing in that code knows about dice. It knows only one rule: combine all pairs whose indices add to the same target. The dice merely gave the rule a friendly face.</p>
+</section>
+<section id="loaded-dice-same-stencil" class="level2">
+<h2 class="anchored" data-anchor-id="loaded-dice-same-stencil">Loaded dice, same stencil</h2>
+<p>Let us make the dice unfair, because unfairness reveals what the multiplication in <a href="#eq-conv" class="quarto-xref">Equation&nbsp;1</a> is doing.</p>
+<p>Suppose the first die prefers low numbers and the second prefers high numbers. Then a total can become likely for two different reasons: many pairs may hit it, or a few especially heavy pairs may hit it. Convolution does not care which story wins. It adds the weights of all compatible stories.</p>
+<div id="904fbd6b" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>low_die <span class="op">=</span> [<span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>high_die <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>total_weight <span class="op">=</span> <span class="bu">sum</span>(low_die) <span class="op">*</span> <span class="bu">sum</span>(high_die)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>weighted <span class="op">=</span> convolve(low_die, high_die)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> total, weight <span class="kw">in</span> <span class="bu">zip</span>(<span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">13</span>), weighted):</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>total<span class="sc">:2d}</span><span class="ss">: </span><span class="sc">{</span>weight <span class="op">/</span> total_weight<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 2: 0.014
+ 3: 0.039
+ 4: 0.073
+ 5: 0.113
+ 6: 0.159
+ 7: 0.206
+ 8: 0.159
+ 9: 0.113
+10: 0.073
+11: 0.039
+12: 0.014</code></pre>
+</div>
+</div>
+<p>This is why convolution is the natural operation for adding independent random variables. The word “independent” is exactly what lets the weight of a pair factor as <span class="math display">\[
+P(X=i,\ Y=j)=P(X=i)P(Y=j).
+\]</span> Once that multiplication is legal, summing over all pairs with <span class="math inline">\(i+j=k\)</span> gives the distribution of <span class="math inline">\(X+Y\)</span>.</p>
+<p>So convolution is not an arbitrary new operation. It is what ordinary addition of uncertain quantities looks like when you keep every possible way the target could have happened.</p>
+<p>Take a moment with that. The operation did not begin life as a formula. It began as a demand for honesty: if several hidden pairings can produce the same visible outcome, count them all.</p>
+</section>
+<section id="polynomials-were-doing-it-all-along" class="level2">
+<h2 class="anchored" data-anchor-id="polynomials-were-doing-it-all-along">Polynomials were doing it all along</h2>
+<p>Now put probability aside and multiply two polynomials: <span class="math display">\[
+(a_0+a_1x+a_2x^2)(b_0+b_1x+b_2x^2).
+\]</span></p>
+<p>Where does the coefficient of <span class="math inline">\(x^3\)</span> come from? It comes from every pair of terms whose exponents add to <span class="math inline">\(3\)</span>: <span class="math display">\[
+a_1b_2x^3 + a_2b_1x^3.
+\]</span> More generally, the coefficient of <span class="math inline">\(x^k\)</span> in <span class="math display">\[
+A(x)B(x)
+\]</span> is <span class="math display">\[
+\sum_i a_i b_{k-i}.
+\]</span></p>
+<p>That is the same formula again.</p>
+<p>This is one of those moments where mathematics earns Poincare’s line in the epigraph. Adding random variables and multiplying polynomials look unrelated at the surface. One talks about probability; the other talks about algebra. But underneath, both ask for the same bookkeeping:</p>
+<blockquote class="blockquote">
+<p>Which pairs of indices add to this target?</p>
+</blockquote>
+<p>That is why probability generating functions work for nonnegative integer-valued random variables. If <span class="math display">\[
+A(x)=\sum_i P(X=i)x^i,\qquad B(x)=\sum_j P(Y=j)x^j,
+\]</span> then <span class="math display">\[
+A(x)B(x)
+\]</span> is the generating function for <span class="math inline">\(X+Y\)</span>. Polynomial multiplication is doing the probability convolution for you.</p>
+<div id="eea7f35e" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> poly_mul(a, b):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> convolve(a, b)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># (1 + 2x + 3x^2)(4 + 5x + 6x^2)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly_mul(A, B))  <span class="co"># coefficients of 4 + 13x + 28x^2 + 27x^3 + 18x^4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[4, 13, 28, 27, 18]</code></pre>
+</div>
+</div>
+<p>It is worth pausing here. A single operation has now worn two costumes:</p>
+<ul>
+<li>in probability, it adds independent quantities;</li>
+<li>in algebra, it multiplies polynomials.</li>
+</ul>
+<p>The shared mechanism is not a metaphor. It is the same sum.</p>
+</section>
+<section id="from-lists-to-functions" class="level2">
+<h2 class="anchored" data-anchor-id="from-lists-to-functions">From lists to functions</h2>
+<p>So far our objects have been finite lists, tidy little strips with only a few slots. But the same picture survives when the strips become continuous.</p>
+<p>Imagine two functions <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> on the real line. We want a new function whose value at <span class="math inline">\(t\)</span> gathers every way to split <span class="math inline">\(t\)</span> into two pieces: <span class="math display">\[
+t = \tau + (t-\tau).
+\]</span> The first function pays weight <span class="math inline">\(f(\tau)\)</span> for the first piece. The second, flipped-and-slid function pays weight <span class="math inline">\(g(t-\tau)\)</span> for the complement. Multiply those weights and add over every possible split. Since the splits are continuous, “add” becomes “integrate”: <span id="eq-cont-conv"><span class="math display">\[
+(f*g)(t)=\int_{-\infty}^{\infty} f(\tau)g(t-\tau)\,d\tau.
+\tag{2}\]</span></span></p>
+<p>That is continuous convolution, at least for functions nice enough that the integral actually converges, say integrable functions or the well-behaved signals one usually meets first. The technical hypotheses matter in analysis, but the picture has not changed: slide, multiply overlap, add.</p>
+<p>Again, do not let the integral intimidate you. It says the same thing <a href="#eq-conv" class="quarto-xref">Equation&nbsp;1</a> said:</p>
+<blockquote class="blockquote">
+<p>Fix the target. Try every first contribution. The second contribution is forced. Multiply. Add.</p>
+</blockquote>
+</section>
+<section id="echoes-and-memory" class="level2">
+<h2 class="anchored" data-anchor-id="echoes-and-memory">Echoes and memory</h2>
+<p>If the functions live in time and nothing happens before <span class="math inline">\(t=0\)</span>, the natural version is the causal convolution <span id="eq-causal-conv"><span class="math display">\[
+(f*g)(t)=\int_0^t f(\tau)g(t-\tau)\,d\tau.
+\tag{3}\]</span></span></p>
+<p>This is where convolution stops being only an overlap machine and becomes a memory machine.</p>
+<p>Imagine shouting in a canyon. Your voice does not vanish at the instant you make it; the canyon keeps answering. A sharp clap at time <span class="math inline">\(\tau\)</span> leaves an echo pattern after it, and by time <span class="math inline">\(t\)</span> that pattern has aged by <span class="math inline">\(t-\tau\)</span> seconds. If your whole input is made of many tiny claps, then the output at time <span class="math inline">\(t\)</span> is the sum of all their aged echoes.</p>
+<p>That is exactly <a href="#eq-causal-conv" class="quarto-xref">Equation&nbsp;3</a>. Under the usual regularity assumptions, a linear time-invariant causal system is determined by its <strong>impulse response</strong> <span class="math inline">\(h\)</span>: the echo it gives back to one tiny unit impulse. If <span class="math inline">\(u\)</span> is the input, the output is <span id="eq-lti"><span class="math display">\[
+y(t)=(h*u)(t)=\int_0^t h(t-\tau)u(\tau)\,d\tau.
+\tag{4}\]</span></span></p>
+<p>The words “linear” and “time-invariant” are doing real work here. Linearity says we are allowed to add the echoes from separate impulses. Time-invariance says an impulse delayed to time <span class="math inline">\(\tau\)</span> produces the same echo shape, just delayed. Those two promises are precisely what make the convolution formula inevitable.</p>
+<p>This is where convolution reaches back toward the Laplace-transform story from the previous post. There, the transform exposed the exponential DNA of a function. Here, convolution says that a system with memory is not responding only to the present. It is folding the whole past into the present, one aged echo at a time.</p>
+<p>Convolution is not a decoration on the theory. It is the arithmetic of linear memory.</p>
+</section>
+<section id="why-fourier-transforms-love-convolution" class="level2">
+<h2 class="anchored" data-anchor-id="why-fourier-transforms-love-convolution">Why Fourier transforms love convolution</h2>
+<p>The reason convolution becomes algorithmically powerful is that it is expensive in its native form. For two length-<span class="math inline">\(n\)</span> lists, the direct sliding computation checks about <span class="math inline">\(n^2\)</span> pairs. That is fine for dice and painful for long signals.</p>
+<p>Fourier analysis changes the room in which the calculation happens.</p>
+<p>There is a theorem, usually called the <strong>convolution theorem</strong>, which says: <span id="eq-convolution-theorem"><span class="math display">\[
+\widehat{f*g}=\widehat f \cdot \widehat g.
+\tag{5}\]</span></span></p>
+<p>Depending on the exact Fourier convention, there may be a harmless constant floating around this formula. Do not let that distract from the structural point:</p>
+<blockquote class="blockquote">
+<p>In the Fourier world, convolution becomes pointwise multiplication.</p>
+</blockquote>
+<p>This should rhyme with the Laplace post. There, differentiation became multiplication by <span class="math inline">\(s\)</span>. Here, convolution becomes multiplication frequency by frequency. In both cases, a messy operation in the original world becomes a simple operation after a transform.</p>
+<p>That is the deeper pattern:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Original world</th>
+<th>Transform world</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>differentiate</td>
+<td>multiply by frequency / <span class="math inline">\(s\)</span></td>
+</tr>
+<tr class="even">
+<td>convolve</td>
+<td>multiply pointwise</td>
+</tr>
+</tbody>
+</table>
+<p>Why should convolution turn into multiplication? A good intuition is that Fourier modes are the pure tones of translation. More precisely, a complex exponential <span class="math inline">\(e^{i\omega t}\)</span>, shifted in time, does not become some new species of function; it only picks up a scalar phase factor. Since convolution is built from shifted copies, the Fourier basis is exactly the coordinate system where those shifts become simple scalings. In the right coordinates, the sliding machine diagonalizes.</p>
+<p>That last word is not accidental. If you have read the spectral theorem post, you have seen this move before. A hard linear operation becomes easy when we write it in the directions it naturally stretches. Fourier analysis is the spectral theorem for translation-shaped problems.</p>
+<p>The computational payoff is the fast Fourier transform. Instead of doing the sliding sum directly, one can:</p>
+<ol type="1">
+<li>transform both lists,</li>
+<li>multiply corresponding Fourier coefficients,</li>
+<li>transform back.</li>
+</ol>
+<p>For finite lists there is one more practical wrinkle. The raw discrete Fourier transform naturally computes <strong>circular</strong> convolution, where the right edge wraps back around to the left. To recover the ordinary straight-line convolution from <a href="#eq-conv" class="quarto-xref">Equation&nbsp;1</a>, you zero-pad the lists to length at least <code>len(a) + len(b) - 1</code> before transforming. With that padding in place, the direct convolution costs about <span class="math inline">\(n^2\)</span> operations, while the FFT route costs about <span class="math inline">\(n\log n\)</span> operations <span class="citation" data-cites="oppenheim1999discrete"><a href="#ref-oppenheim1999discrete" role="doc-biblioref">[2]</a></span>.</p>
+<p>That difference is why convolution can be everywhere at industrial scale: audio filters, image blur, large integer multiplication, polynomial arithmetic, probability distributions, and the convolutional layers that gave early deep learning systems their eyes.</p>
+</section>
+<section id="a-checksum-for-the-shortcut" class="level2">
+<h2 class="anchored" data-anchor-id="a-checksum-for-the-shortcut">A checksum for the shortcut</h2>
+<p>It is useful to end with a piece of code that has no philosophy in it. We will compute the same convolution two ways: directly, by the sliding sum, and through the Fourier shortcut with zero-padding.</p>
+<div id="17d44272" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fft_convolve(a, b):</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(a) <span class="op">+</span> <span class="bu">len</span>(b) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    A <span class="op">=</span> np.fft.rfft(a, n)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    B <span class="op">=</span> np.fft.rfft(b, n)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.rint(np.fft.irfft(A <span class="op">*</span> B, n)).astype(<span class="bu">int</span>).tolist()</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> [<span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>]       <span class="co"># 2 - x + 3x^2</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">4</span>]           <span class="co"># 1 + 4x</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(convolve(A, B))</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fft_convolve(A, B))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[2, 7, -1, 12]
+[2, 7, -1, 12]</code></pre>
+</div>
+</div>
+<p>The two answers agree. The first route watched every overlapping pair directly. The second route changed coordinates, multiplied frequency by frequency, and changed back. Same operation, different room. The rounding in <code>fft_convolve</code> is only there because the FFT travels through floating-point arithmetic; for these integer coefficients, any <code>2.9999999997</code> should plainly come home as <code>3</code>.</p>
+<p>For this tiny example the FFT route is silly. For million-point signals, or for the large polynomial multiplications that sit inside serious integer arithmetic, it is a different world.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>Convolution is the mathematics of overlap and echo.</p>
+<p>It takes two sources of contribution and asks, for every target, how many weighted ways the two sources can combine to hit that target. That is why the same formula counts dice sums, multiplies polynomials, adds independent random variables, blurs images, filters signals, and describes the memory of a linear system.</p>
+<p>The sliding picture is not a mnemonic pasted on afterward. It is the formula made visible: one strip reversed because complements run backward, then shifted because the target changes. The echo picture is the same idea in time: every past input leaves a delayed response, and the present is the sum of all those aged responses.</p>
+<p>And the reason convolution keeps returning in serious mathematics is that Fourier and Laplace transforms know how to tame it. In the original world it is a sum over all overlapping histories. In the transformed world it is ordinary multiplication. A complicated memory becomes a simple product, provided you are willing to look at it in the right coordinates.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Convolution: The Mathematics of Overlap and Echo</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/convolution-the-arithmetic-of-overlap/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-sanderson2022convolutions" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">G. Sanderson, <span>“But what is a convolution?”</span> 3Blue1Brown, YouTube video, 2022. Available: <a href="https://www.youtube.com/watch?v=KuXjwB4LzSA">https://www.youtube.com/watch?v=KuXjwB4LzSA</a></div>
+</div>
+<div id="ref-oppenheim1999discrete" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">A. V. Oppenheim, R. W. Schafer, and J. R. Buck, <em>Discrete-time signal processing</em>, 2nd ed. Prentice Hall, 1999.</div>
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/terryfxh\.github\.io\/math-notes");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Convolution: The Mathematics of Overlap and Echo"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "How a sliding overlap counts dice sums, multiplies polynomials, blurs images, describes system memory, and lets Fourier transforms turn a slow calculation into pointwise multiplication."</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-06-18</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [pure, applied, probability, computer-science, algorithms, analysis]</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> ../../references.bib</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="an">draft:</span><span class="co"> false</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>::: {.epigraph}</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>*"Mathematics is the art of giving the same name to different things."*</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">-- Henri Poincare, traditionally attributed</span><span class="co">]</span>{.attribution}</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>Convolution has a public-relations problem. It is the operation behind dice</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>sums, image blur, audio filters, polynomial multiplication, differential</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>equations, and the fast Fourier transform, but the first time many people meet</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>it, it looks like a cryptic sum with one index running backward.</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>So let us postpone the symbols for a moment.</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>Here is the picture I want you to carry instead.</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>Imagine two transparent strips laid over the same number line. One strip has</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>dark ink printed on it: a heavy patch means "this position matters a lot," a</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>light patch means "this position barely matters." Now flip the second strip</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>around, slide it across the first, and at each position ask:</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; How much ink is overlapping ink?</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>Where the dark parts meet, the answer is large. Where a dark part meets a blank</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>part, the answer is small. As you slide, the overlap swells, peaks, and fades.</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>That sliding score is convolution. The formula, when it finally appears, is</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>only the receipt for this sliding overlap.</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>I first learned to *see* this operation from Grant Sanderson's 3Blue1Brown video</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>on the subject <span class="co">[</span><span class="ot">@sanderson2022convolutions</span><span class="co">]</span>. What follows is an attempt to</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>rebuild the picture from scratch, slowly enough that the formula stops feeling</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>like a definition and starts feeling like the shadow cast by a moving stencil.</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="fu">## The toy version: two dice</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>Let us begin somewhere almost insultingly concrete. Roll two fair dice. A total</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>of $2$ is rare because there is only one way to get it:</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>(1,1).</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>A total of $7$ is common because six pairs land there:</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>(1,6),\ (2,5),\ (3,4),\ (4,3),\ (5,2),\ (6,1).</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>The familiar count is</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>1,\ 2,\ 3,\ 4,\ 5,\ 6,\ 5,\ 4,\ 3,\ 2,\ 1.</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>That pyramid is already a convolution. One die contributes a number. The other</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>die contributes a number. For a target total $k$, we ask:</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Which pairs of contributions land exactly on $k$?</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>If the first die gives $i$, then the second die is forced to give $k-i$. That is</span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>the whole reason the formula contains the backward-looking index. More generally,</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>if $a_i$ is the weight of the first contribution being $i$, and $b_j$ is the</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>weight of the second contribution being $j$, then the weight at target $k$ is</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>(a*b)_k = \sum_i a_i b_{k-i}.</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>$$ {#eq-conv}</span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>Read @eq-conv as a sentence, not as a symbol:</span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Fix the target $k$. Try every possible first contribution $i$. The second</span></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; contribution is then forced to be $k-i$. Multiply the two weights. Add all the</span></span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; compatible stories.</span></span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>That phrase, **all the compatible stories**, is the heart of the operation.</span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>Convolution is what happens when many little two-part explanations can lead to</span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>the same observed result, and we refuse to forget any of them.</span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why one list gets flipped</span></span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>Now let the stencil picture do some work. Write the first list of weights in</span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>place. Write the second list backward. Slide the reversed list past the first.</span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>At each position, multiply the overlapping entries and add.</span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>The reversal is not a convention pasted on afterward. It is the geometry of</span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>addition. As $i$ moves right, its complement $k-i$ moves left. One hand walks</span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>forward while the other walks backward. The flipped strip is the formula made</span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>visible.</span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>For fair dice, if we only count ways, both strips are</span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">1,1,1,1,1,1</span><span class="co">]</span>.</span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>Slide one copy past the other. First only one pair overlaps. Then two pairs.</span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a>Then three, four, five, six. Then the overlap shrinks again. The pyramid was not</span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a>a probability miracle. It was the length of the overlap window.</span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>There is one small indexing detail worth saying out loud. In the code below the</span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a>list entry at index $0$ stands for die face $1$, index $1$ stands for face $2$,</span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>and so on. So output index $r$ corresponds to the real-world total $r+2$.</span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>That offset is not mathematics; it is just Python being zero-indexed.</span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> convolve(a, b):</span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> [<span class="dv">0</span>] <span class="op">*</span> (<span class="bu">len</span>(a) <span class="op">+</span> <span class="bu">len</span>(b) <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, ai <span class="kw">in</span> <span class="bu">enumerate</span>(a):</span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j, bj <span class="kw">in</span> <span class="bu">enumerate</span>(b):</span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a>            out[i <span class="op">+</span> j] <span class="op">+=</span> ai <span class="op">*</span> bj</span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a>die <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> convolve(die, die)</span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(counts)</span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(counts))</span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a>The output has total mass $36$, one count for each ordered pair of die rolls. If</span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a>we divide by $36$, those counts become probabilities.</span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a>probabilities <span class="op">=</span> [c <span class="op">/</span> <span class="dv">36</span> <span class="cf">for</span> c <span class="kw">in</span> counts]</span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> total, p <span class="kw">in</span> <span class="bu">zip</span>(<span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">13</span>), probabilities):</span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>total<span class="sc">:2d}</span><span class="ss">: </span><span class="sc">{</span>p<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>Nothing in that code knows about dice. It knows only one rule: combine all pairs</span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a>whose indices add to the same target. The dice merely gave the rule a friendly</span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a>face.</span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a><span class="fu">## Loaded dice, same stencil</span></span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a>Let us make the dice unfair, because unfairness reveals what the multiplication</span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a>in @eq-conv is doing.</span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a>Suppose the first die prefers low numbers and the second prefers high numbers.</span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a>Then a total can become likely for two different reasons: many pairs may hit it,</span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a>or a few especially heavy pairs may hit it. Convolution does not care which</span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a>story wins. It adds the weights of all compatible stories.</span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a>low_die <span class="op">=</span> [<span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>]</span>
+<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a>high_die <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a>total_weight <span class="op">=</span> <span class="bu">sum</span>(low_die) <span class="op">*</span> <span class="bu">sum</span>(high_die)</span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a>weighted <span class="op">=</span> convolve(low_die, high_die)</span>
+<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> total, weight <span class="kw">in</span> <span class="bu">zip</span>(<span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">13</span>), weighted):</span>
+<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>total<span class="sc">:2d}</span><span class="ss">: </span><span class="sc">{</span>weight <span class="op">/</span> total_weight<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a>This is why convolution is the natural operation for adding independent random</span>
+<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a>variables. The word "independent" is exactly what lets the weight of a pair</span>
+<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a>factor as</span>
+<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a>P(X=i,\ Y=j)=P(X=i)P(Y=j).</span>
+<span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a>Once that multiplication is legal, summing over all pairs with $i+j=k$ gives the</span>
+<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a>distribution of $X+Y$.</span>
+<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a>So convolution is not an arbitrary new operation. It is what ordinary addition</span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a>of uncertain quantities looks like when you keep every possible way the target</span>
+<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a>could have happened.</span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a>Take a moment with that. The operation did not begin life as a formula. It began</span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a>as a demand for honesty: if several hidden pairings can produce the same visible</span>
+<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a>outcome, count them all.</span>
+<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a><span class="fu">## Polynomials were doing it all along</span></span>
+<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a>Now put probability aside and multiply two polynomials:</span>
+<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a>(a_0+a_1x+a_2x^2)(b_0+b_1x+b_2x^2).</span>
+<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a>Where does the coefficient of $x^3$ come from? It comes from every pair of terms</span>
+<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a>whose exponents add to $3$:</span>
+<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a>a_1b_2x^3 + a_2b_1x^3.</span>
+<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a>More generally, the coefficient of $x^k$ in</span>
+<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a>A(x)B(x)</span>
+<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a>is</span>
+<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a>\sum_i a_i b_{k-i}.</span>
+<span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a>That is the same formula again.</span>
+<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a>This is one of those moments where mathematics earns Poincare's line in the</span>
+<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a>epigraph. Adding random variables and multiplying polynomials look unrelated at</span>
+<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a>the surface. One talks about probability; the other talks about algebra. But</span>
+<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a>underneath, both ask for the same bookkeeping:</span>
+<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Which pairs of indices add to this target?</span></span>
+<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a>That is why probability generating functions work for nonnegative</span>
+<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a>integer-valued random variables. If</span>
+<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a>A(x)=\sum_i P(X=i)x^i,\qquad B(x)=\sum_j P(Y=j)x^j,</span>
+<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-213"><a href="#cb11-213" aria-hidden="true" tabindex="-1"></a>then</span>
+<span id="cb11-214"><a href="#cb11-214" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a>A(x)B(x)</span>
+<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-217"><a href="#cb11-217" aria-hidden="true" tabindex="-1"></a>is the generating function for $X+Y$. Polynomial multiplication is doing the</span>
+<span id="cb11-218"><a href="#cb11-218" aria-hidden="true" tabindex="-1"></a>probability convolution for you.</span>
+<span id="cb11-219"><a href="#cb11-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-222"><a href="#cb11-222" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb11-223"><a href="#cb11-223" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> poly_mul(a, b):</span>
+<span id="cb11-224"><a href="#cb11-224" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> convolve(a, b)</span>
+<span id="cb11-225"><a href="#cb11-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-226"><a href="#cb11-226" aria-hidden="true" tabindex="-1"></a><span class="co"># (1 + 2x + 3x^2)(4 + 5x + 6x^2)</span></span>
+<span id="cb11-227"><a href="#cb11-227" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb11-228"><a href="#cb11-228" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</span>
+<span id="cb11-229"><a href="#cb11-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-230"><a href="#cb11-230" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(poly_mul(A, B))  <span class="co"># coefficients of 4 + 13x + 28x^2 + 27x^3 + 18x^4</span></span>
+<span id="cb11-231"><a href="#cb11-231" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-232"><a href="#cb11-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-233"><a href="#cb11-233" aria-hidden="true" tabindex="-1"></a>It is worth pausing here. A single operation has now worn two costumes:</span>
+<span id="cb11-234"><a href="#cb11-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-235"><a href="#cb11-235" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>in probability, it adds independent quantities;</span>
+<span id="cb11-236"><a href="#cb11-236" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>in algebra, it multiplies polynomials.</span>
+<span id="cb11-237"><a href="#cb11-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-238"><a href="#cb11-238" aria-hidden="true" tabindex="-1"></a>The shared mechanism is not a metaphor. It is the same sum.</span>
+<span id="cb11-239"><a href="#cb11-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-240"><a href="#cb11-240" aria-hidden="true" tabindex="-1"></a><span class="fu">## From lists to functions</span></span>
+<span id="cb11-241"><a href="#cb11-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-242"><a href="#cb11-242" aria-hidden="true" tabindex="-1"></a>So far our objects have been finite lists, tidy little strips with only a few</span>
+<span id="cb11-243"><a href="#cb11-243" aria-hidden="true" tabindex="-1"></a>slots. But the same picture survives when the strips become continuous.</span>
+<span id="cb11-244"><a href="#cb11-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-245"><a href="#cb11-245" aria-hidden="true" tabindex="-1"></a>Imagine two functions $f$ and $g$ on the real line. We want a new function whose</span>
+<span id="cb11-246"><a href="#cb11-246" aria-hidden="true" tabindex="-1"></a>value at $t$ gathers every way to split $t$ into two pieces:</span>
+<span id="cb11-247"><a href="#cb11-247" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-248"><a href="#cb11-248" aria-hidden="true" tabindex="-1"></a>t = \tau + (t-\tau).</span>
+<span id="cb11-249"><a href="#cb11-249" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-250"><a href="#cb11-250" aria-hidden="true" tabindex="-1"></a>The first function pays weight $f(\tau)$ for the first piece. The second,</span>
+<span id="cb11-251"><a href="#cb11-251" aria-hidden="true" tabindex="-1"></a>flipped-and-slid function pays weight $g(t-\tau)$ for the complement. Multiply</span>
+<span id="cb11-252"><a href="#cb11-252" aria-hidden="true" tabindex="-1"></a>those weights and add over every possible split. Since the splits are</span>
+<span id="cb11-253"><a href="#cb11-253" aria-hidden="true" tabindex="-1"></a>continuous, "add" becomes "integrate":</span>
+<span id="cb11-254"><a href="#cb11-254" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-255"><a href="#cb11-255" aria-hidden="true" tabindex="-1"></a>(f*g)(t)=\int_{-\infty}^{\infty} f(\tau)g(t-\tau)\,d\tau.</span>
+<span id="cb11-256"><a href="#cb11-256" aria-hidden="true" tabindex="-1"></a>$$ {#eq-cont-conv}</span>
+<span id="cb11-257"><a href="#cb11-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-258"><a href="#cb11-258" aria-hidden="true" tabindex="-1"></a>That is continuous convolution, at least for functions nice enough that the</span>
+<span id="cb11-259"><a href="#cb11-259" aria-hidden="true" tabindex="-1"></a>integral actually converges, say integrable functions or the well-behaved</span>
+<span id="cb11-260"><a href="#cb11-260" aria-hidden="true" tabindex="-1"></a>signals one usually meets first. The technical hypotheses matter in analysis,</span>
+<span id="cb11-261"><a href="#cb11-261" aria-hidden="true" tabindex="-1"></a>but the picture has not changed: slide, multiply overlap, add.</span>
+<span id="cb11-262"><a href="#cb11-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-263"><a href="#cb11-263" aria-hidden="true" tabindex="-1"></a>Again, do not let the integral intimidate you. It says the same thing @eq-conv</span>
+<span id="cb11-264"><a href="#cb11-264" aria-hidden="true" tabindex="-1"></a>said:</span>
+<span id="cb11-265"><a href="#cb11-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-266"><a href="#cb11-266" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Fix the target. Try every first contribution. The second contribution is</span></span>
+<span id="cb11-267"><a href="#cb11-267" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; forced. Multiply. Add.</span></span>
+<span id="cb11-268"><a href="#cb11-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-269"><a href="#cb11-269" aria-hidden="true" tabindex="-1"></a><span class="fu">## Echoes and memory</span></span>
+<span id="cb11-270"><a href="#cb11-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-271"><a href="#cb11-271" aria-hidden="true" tabindex="-1"></a>If the functions live in time and nothing happens before $t=0$, the natural</span>
+<span id="cb11-272"><a href="#cb11-272" aria-hidden="true" tabindex="-1"></a>version is the causal convolution</span>
+<span id="cb11-273"><a href="#cb11-273" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-274"><a href="#cb11-274" aria-hidden="true" tabindex="-1"></a>(f*g)(t)=\int_0^t f(\tau)g(t-\tau)\,d\tau.</span>
+<span id="cb11-275"><a href="#cb11-275" aria-hidden="true" tabindex="-1"></a>$$ {#eq-causal-conv}</span>
+<span id="cb11-276"><a href="#cb11-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-277"><a href="#cb11-277" aria-hidden="true" tabindex="-1"></a>This is where convolution stops being only an overlap machine and becomes a</span>
+<span id="cb11-278"><a href="#cb11-278" aria-hidden="true" tabindex="-1"></a>memory machine.</span>
+<span id="cb11-279"><a href="#cb11-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-280"><a href="#cb11-280" aria-hidden="true" tabindex="-1"></a>Imagine shouting in a canyon. Your voice does not vanish at the instant you make</span>
+<span id="cb11-281"><a href="#cb11-281" aria-hidden="true" tabindex="-1"></a>it; the canyon keeps answering. A sharp clap at time $\tau$ leaves an echo</span>
+<span id="cb11-282"><a href="#cb11-282" aria-hidden="true" tabindex="-1"></a>pattern after it, and by time $t$ that pattern has aged by $t-\tau$ seconds. If</span>
+<span id="cb11-283"><a href="#cb11-283" aria-hidden="true" tabindex="-1"></a>your whole input is made of many tiny claps, then the output at time $t$ is the</span>
+<span id="cb11-284"><a href="#cb11-284" aria-hidden="true" tabindex="-1"></a>sum of all their aged echoes.</span>
+<span id="cb11-285"><a href="#cb11-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-286"><a href="#cb11-286" aria-hidden="true" tabindex="-1"></a>That is exactly @eq-causal-conv. Under the usual regularity assumptions, a</span>
+<span id="cb11-287"><a href="#cb11-287" aria-hidden="true" tabindex="-1"></a>linear time-invariant causal system is determined by its **impulse response**</span>
+<span id="cb11-288"><a href="#cb11-288" aria-hidden="true" tabindex="-1"></a>$h$: the echo it gives back to one tiny unit impulse. If $u$ is the input, the</span>
+<span id="cb11-289"><a href="#cb11-289" aria-hidden="true" tabindex="-1"></a>output is</span>
+<span id="cb11-290"><a href="#cb11-290" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-291"><a href="#cb11-291" aria-hidden="true" tabindex="-1"></a>y(t)=(h*u)(t)=\int_0^t h(t-\tau)u(\tau)\,d\tau.</span>
+<span id="cb11-292"><a href="#cb11-292" aria-hidden="true" tabindex="-1"></a>$$ {#eq-lti}</span>
+<span id="cb11-293"><a href="#cb11-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-294"><a href="#cb11-294" aria-hidden="true" tabindex="-1"></a>The words "linear" and "time-invariant" are doing real work here. Linearity says</span>
+<span id="cb11-295"><a href="#cb11-295" aria-hidden="true" tabindex="-1"></a>we are allowed to add the echoes from separate impulses. Time-invariance says an</span>
+<span id="cb11-296"><a href="#cb11-296" aria-hidden="true" tabindex="-1"></a>impulse delayed to time $\tau$ produces the same echo shape, just delayed. Those</span>
+<span id="cb11-297"><a href="#cb11-297" aria-hidden="true" tabindex="-1"></a>two promises are precisely what make the convolution formula inevitable.</span>
+<span id="cb11-298"><a href="#cb11-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-299"><a href="#cb11-299" aria-hidden="true" tabindex="-1"></a>This is where convolution reaches back toward the Laplace-transform story from</span>
+<span id="cb11-300"><a href="#cb11-300" aria-hidden="true" tabindex="-1"></a>the previous post. There, the transform exposed the exponential DNA of a</span>
+<span id="cb11-301"><a href="#cb11-301" aria-hidden="true" tabindex="-1"></a>function. Here, convolution says that a system with memory is not responding</span>
+<span id="cb11-302"><a href="#cb11-302" aria-hidden="true" tabindex="-1"></a>only to the present. It is folding the whole past into the present, one aged</span>
+<span id="cb11-303"><a href="#cb11-303" aria-hidden="true" tabindex="-1"></a>echo at a time.</span>
+<span id="cb11-304"><a href="#cb11-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-305"><a href="#cb11-305" aria-hidden="true" tabindex="-1"></a>Convolution is not a decoration on the theory. It is the arithmetic of linear</span>
+<span id="cb11-306"><a href="#cb11-306" aria-hidden="true" tabindex="-1"></a>memory.</span>
+<span id="cb11-307"><a href="#cb11-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-308"><a href="#cb11-308" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why Fourier transforms love convolution</span></span>
+<span id="cb11-309"><a href="#cb11-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-310"><a href="#cb11-310" aria-hidden="true" tabindex="-1"></a>The reason convolution becomes algorithmically powerful is that it is expensive</span>
+<span id="cb11-311"><a href="#cb11-311" aria-hidden="true" tabindex="-1"></a>in its native form. For two length-$n$ lists, the direct sliding computation</span>
+<span id="cb11-312"><a href="#cb11-312" aria-hidden="true" tabindex="-1"></a>checks about $n^2$ pairs. That is fine for dice and painful for long signals.</span>
+<span id="cb11-313"><a href="#cb11-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-314"><a href="#cb11-314" aria-hidden="true" tabindex="-1"></a>Fourier analysis changes the room in which the calculation happens.</span>
+<span id="cb11-315"><a href="#cb11-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-316"><a href="#cb11-316" aria-hidden="true" tabindex="-1"></a>There is a theorem, usually called the **convolution theorem**, which says:</span>
+<span id="cb11-317"><a href="#cb11-317" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb11-318"><a href="#cb11-318" aria-hidden="true" tabindex="-1"></a>\widehat{f*g}=\widehat f \cdot \widehat g.</span>
+<span id="cb11-319"><a href="#cb11-319" aria-hidden="true" tabindex="-1"></a>$$ {#eq-convolution-theorem}</span>
+<span id="cb11-320"><a href="#cb11-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-321"><a href="#cb11-321" aria-hidden="true" tabindex="-1"></a>Depending on the exact Fourier convention, there may be a harmless constant</span>
+<span id="cb11-322"><a href="#cb11-322" aria-hidden="true" tabindex="-1"></a>floating around this formula. Do not let that distract from the structural</span>
+<span id="cb11-323"><a href="#cb11-323" aria-hidden="true" tabindex="-1"></a>point:</span>
+<span id="cb11-324"><a href="#cb11-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-325"><a href="#cb11-325" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; In the Fourier world, convolution becomes pointwise multiplication.</span></span>
+<span id="cb11-326"><a href="#cb11-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-327"><a href="#cb11-327" aria-hidden="true" tabindex="-1"></a>This should rhyme with the Laplace post. There, differentiation became</span>
+<span id="cb11-328"><a href="#cb11-328" aria-hidden="true" tabindex="-1"></a>multiplication by $s$. Here, convolution becomes multiplication frequency by</span>
+<span id="cb11-329"><a href="#cb11-329" aria-hidden="true" tabindex="-1"></a>frequency. In both cases, a messy operation in the original world becomes a</span>
+<span id="cb11-330"><a href="#cb11-330" aria-hidden="true" tabindex="-1"></a>simple operation after a transform.</span>
+<span id="cb11-331"><a href="#cb11-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-332"><a href="#cb11-332" aria-hidden="true" tabindex="-1"></a>That is the deeper pattern:</span>
+<span id="cb11-333"><a href="#cb11-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-334"><a href="#cb11-334" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Original world <span class="pp">|</span> Transform world <span class="pp">|</span></span>
+<span id="cb11-335"><a href="#cb11-335" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb11-336"><a href="#cb11-336" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> differentiate <span class="pp">|</span> multiply by frequency / $s$ <span class="pp">|</span></span>
+<span id="cb11-337"><a href="#cb11-337" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> convolve <span class="pp">|</span> multiply pointwise <span class="pp">|</span></span>
+<span id="cb11-338"><a href="#cb11-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-339"><a href="#cb11-339" aria-hidden="true" tabindex="-1"></a>Why should convolution turn into multiplication? A good intuition is that</span>
+<span id="cb11-340"><a href="#cb11-340" aria-hidden="true" tabindex="-1"></a>Fourier modes are the pure tones of translation. More precisely, a complex</span>
+<span id="cb11-341"><a href="#cb11-341" aria-hidden="true" tabindex="-1"></a>exponential $e^{i\omega t}$, shifted in time, does not become some new species</span>
+<span id="cb11-342"><a href="#cb11-342" aria-hidden="true" tabindex="-1"></a>of function; it only picks up a scalar phase factor. Since convolution is built</span>
+<span id="cb11-343"><a href="#cb11-343" aria-hidden="true" tabindex="-1"></a>from shifted copies, the Fourier basis is exactly the coordinate system where</span>
+<span id="cb11-344"><a href="#cb11-344" aria-hidden="true" tabindex="-1"></a>those shifts become simple scalings. In the right coordinates, the sliding</span>
+<span id="cb11-345"><a href="#cb11-345" aria-hidden="true" tabindex="-1"></a>machine diagonalizes.</span>
+<span id="cb11-346"><a href="#cb11-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-347"><a href="#cb11-347" aria-hidden="true" tabindex="-1"></a>That last word is not accidental. If you have read the spectral theorem post,</span>
+<span id="cb11-348"><a href="#cb11-348" aria-hidden="true" tabindex="-1"></a>you have seen this move before. A hard linear operation becomes easy when we</span>
+<span id="cb11-349"><a href="#cb11-349" aria-hidden="true" tabindex="-1"></a>write it in the directions it naturally stretches. Fourier analysis is the</span>
+<span id="cb11-350"><a href="#cb11-350" aria-hidden="true" tabindex="-1"></a>spectral theorem for translation-shaped problems.</span>
+<span id="cb11-351"><a href="#cb11-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-352"><a href="#cb11-352" aria-hidden="true" tabindex="-1"></a>The computational payoff is the fast Fourier transform. Instead of doing the</span>
+<span id="cb11-353"><a href="#cb11-353" aria-hidden="true" tabindex="-1"></a>sliding sum directly, one can:</span>
+<span id="cb11-354"><a href="#cb11-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-355"><a href="#cb11-355" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>transform both lists,</span>
+<span id="cb11-356"><a href="#cb11-356" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>multiply corresponding Fourier coefficients,</span>
+<span id="cb11-357"><a href="#cb11-357" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>transform back.</span>
+<span id="cb11-358"><a href="#cb11-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-359"><a href="#cb11-359" aria-hidden="true" tabindex="-1"></a>For finite lists there is one more practical wrinkle. The raw discrete Fourier</span>
+<span id="cb11-360"><a href="#cb11-360" aria-hidden="true" tabindex="-1"></a>transform naturally computes **circular** convolution, where the right edge wraps</span>
+<span id="cb11-361"><a href="#cb11-361" aria-hidden="true" tabindex="-1"></a>back around to the left. To recover the ordinary straight-line convolution from</span>
+<span id="cb11-362"><a href="#cb11-362" aria-hidden="true" tabindex="-1"></a>@eq-conv, you zero-pad the lists to length at least <span class="in">`len(a) + len(b) - 1`</span> before</span>
+<span id="cb11-363"><a href="#cb11-363" aria-hidden="true" tabindex="-1"></a>transforming. With that padding in place, the direct convolution costs about</span>
+<span id="cb11-364"><a href="#cb11-364" aria-hidden="true" tabindex="-1"></a>$n^2$ operations, while the FFT route costs about $n\log n$ operations</span>
+<span id="cb11-365"><a href="#cb11-365" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">@oppenheim1999discrete</span><span class="co">]</span>.</span>
+<span id="cb11-366"><a href="#cb11-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-367"><a href="#cb11-367" aria-hidden="true" tabindex="-1"></a>That difference is why convolution can be everywhere at industrial scale: audio</span>
+<span id="cb11-368"><a href="#cb11-368" aria-hidden="true" tabindex="-1"></a>filters, image blur, large integer multiplication, polynomial arithmetic,</span>
+<span id="cb11-369"><a href="#cb11-369" aria-hidden="true" tabindex="-1"></a>probability distributions, and the convolutional layers that gave early deep</span>
+<span id="cb11-370"><a href="#cb11-370" aria-hidden="true" tabindex="-1"></a>learning systems their eyes.</span>
+<span id="cb11-371"><a href="#cb11-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-372"><a href="#cb11-372" aria-hidden="true" tabindex="-1"></a><span class="fu">## A checksum for the shortcut</span></span>
+<span id="cb11-373"><a href="#cb11-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-374"><a href="#cb11-374" aria-hidden="true" tabindex="-1"></a>It is useful to end with a piece of code that has no philosophy in it. We will</span>
+<span id="cb11-375"><a href="#cb11-375" aria-hidden="true" tabindex="-1"></a>compute the same convolution two ways: directly, by the sliding sum, and through</span>
+<span id="cb11-376"><a href="#cb11-376" aria-hidden="true" tabindex="-1"></a>the Fourier shortcut with zero-padding.</span>
+<span id="cb11-377"><a href="#cb11-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-380"><a href="#cb11-380" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb11-381"><a href="#cb11-381" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-382"><a href="#cb11-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-383"><a href="#cb11-383" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fft_convolve(a, b):</span>
+<span id="cb11-384"><a href="#cb11-384" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(a) <span class="op">+</span> <span class="bu">len</span>(b) <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb11-385"><a href="#cb11-385" aria-hidden="true" tabindex="-1"></a>    A <span class="op">=</span> np.fft.rfft(a, n)</span>
+<span id="cb11-386"><a href="#cb11-386" aria-hidden="true" tabindex="-1"></a>    B <span class="op">=</span> np.fft.rfft(b, n)</span>
+<span id="cb11-387"><a href="#cb11-387" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.rint(np.fft.irfft(A <span class="op">*</span> B, n)).astype(<span class="bu">int</span>).tolist()</span>
+<span id="cb11-388"><a href="#cb11-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-389"><a href="#cb11-389" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> [<span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>]       <span class="co"># 2 - x + 3x^2</span></span>
+<span id="cb11-390"><a href="#cb11-390" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">4</span>]           <span class="co"># 1 + 4x</span></span>
+<span id="cb11-391"><a href="#cb11-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-392"><a href="#cb11-392" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(convolve(A, B))</span>
+<span id="cb11-393"><a href="#cb11-393" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fft_convolve(A, B))</span>
+<span id="cb11-394"><a href="#cb11-394" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-395"><a href="#cb11-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-396"><a href="#cb11-396" aria-hidden="true" tabindex="-1"></a>The two answers agree. The first route watched every overlapping pair directly.</span>
+<span id="cb11-397"><a href="#cb11-397" aria-hidden="true" tabindex="-1"></a>The second route changed coordinates, multiplied frequency by frequency, and</span>
+<span id="cb11-398"><a href="#cb11-398" aria-hidden="true" tabindex="-1"></a>changed back. Same operation, different room. The rounding in <span class="in">`fft_convolve`</span> is</span>
+<span id="cb11-399"><a href="#cb11-399" aria-hidden="true" tabindex="-1"></a>only there because the FFT travels through floating-point arithmetic; for these</span>
+<span id="cb11-400"><a href="#cb11-400" aria-hidden="true" tabindex="-1"></a>integer coefficients, any <span class="in">`2.9999999997`</span> should plainly come home as <span class="in">`3`</span>.</span>
+<span id="cb11-401"><a href="#cb11-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-402"><a href="#cb11-402" aria-hidden="true" tabindex="-1"></a>For this tiny example the FFT route is silly. For million-point signals, or for</span>
+<span id="cb11-403"><a href="#cb11-403" aria-hidden="true" tabindex="-1"></a>the large polynomial multiplications that sit inside serious integer arithmetic,</span>
+<span id="cb11-404"><a href="#cb11-404" aria-hidden="true" tabindex="-1"></a>it is a different world.</span>
+<span id="cb11-405"><a href="#cb11-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-406"><a href="#cb11-406" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to remember</span></span>
+<span id="cb11-407"><a href="#cb11-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-408"><a href="#cb11-408" aria-hidden="true" tabindex="-1"></a>Convolution is the mathematics of overlap and echo.</span>
+<span id="cb11-409"><a href="#cb11-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-410"><a href="#cb11-410" aria-hidden="true" tabindex="-1"></a>It takes two sources of contribution and asks, for every target, how many</span>
+<span id="cb11-411"><a href="#cb11-411" aria-hidden="true" tabindex="-1"></a>weighted ways the two sources can combine to hit that target. That is why the</span>
+<span id="cb11-412"><a href="#cb11-412" aria-hidden="true" tabindex="-1"></a>same formula counts dice sums, multiplies polynomials, adds independent random</span>
+<span id="cb11-413"><a href="#cb11-413" aria-hidden="true" tabindex="-1"></a>variables, blurs images, filters signals, and describes the memory of a linear</span>
+<span id="cb11-414"><a href="#cb11-414" aria-hidden="true" tabindex="-1"></a>system.</span>
+<span id="cb11-415"><a href="#cb11-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-416"><a href="#cb11-416" aria-hidden="true" tabindex="-1"></a>The sliding picture is not a mnemonic pasted on afterward. It is the formula</span>
+<span id="cb11-417"><a href="#cb11-417" aria-hidden="true" tabindex="-1"></a>made visible: one strip reversed because complements run backward, then shifted</span>
+<span id="cb11-418"><a href="#cb11-418" aria-hidden="true" tabindex="-1"></a>because the target changes. The echo picture is the same idea in time: every</span>
+<span id="cb11-419"><a href="#cb11-419" aria-hidden="true" tabindex="-1"></a>past input leaves a delayed response, and the present is the sum of all those</span>
+<span id="cb11-420"><a href="#cb11-420" aria-hidden="true" tabindex="-1"></a>aged responses.</span>
+<span id="cb11-421"><a href="#cb11-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-422"><a href="#cb11-422" aria-hidden="true" tabindex="-1"></a>And the reason convolution keeps returning in serious mathematics is that</span>
+<span id="cb11-423"><a href="#cb11-423" aria-hidden="true" tabindex="-1"></a>Fourier and Laplace transforms know how to tame it. In the original world it is</span>
+<span id="cb11-424"><a href="#cb11-424" aria-hidden="true" tabindex="-1"></a>a sum over all overlapping histories. In the transformed world it is ordinary</span>
+<span id="cb11-425"><a href="#cb11-425" aria-hidden="true" tabindex="-1"></a>multiplication. A complicated memory becomes a simple product, provided you are</span>
+<span id="cb11-426"><a href="#cb11-426" aria-hidden="true" tabindex="-1"></a>willing to look at it in the right coordinates.</span>
+<span id="cb11-427"><a href="#cb11-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-428"><a href="#cb11-428" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb11-429"><a href="#cb11-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-430"><a href="#cb11-430" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *Convolution: The Mathematics of Overlap and Echo*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/convolution-the-arithmetic-of-overlap/`</span><span class="at">.</span></span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Terry Fang · All rights reserved · Reproduction or republication in any form requires attribution and the author’s prior permission.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

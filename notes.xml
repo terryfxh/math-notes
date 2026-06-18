@@ -10,7 +10,530 @@
 <atom:link href="https://terryfxh.github.io/math-notes/notes.xml" rel="self" type="application/rss+xml"/>
 <description>Self-contained notes in pure and applied mathematics, derived from first principles with runnable code where it helps.</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Sun, 14 Jun 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 18 Jun 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Convolution: The Mathematics of Overlap and Echo</title>
+  <link>https://terryfxh.github.io/math-notes/posts/convolution-the-arithmetic-of-overlap/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p><em>“Mathematics is the art of giving the same name to different things.”</em></p>
+<p><span class="attribution">– Henri Poincare, traditionally attributed</span></p>
+</div>
+<p>Convolution has a public-relations problem. It is the operation behind dice sums, image blur, audio filters, polynomial multiplication, differential equations, and the fast Fourier transform, but the first time many people meet it, it looks like a cryptic sum with one index running backward.</p>
+<p>So let us postpone the symbols for a moment.</p>
+<p>Here is the picture I want you to carry instead.</p>
+<p>Imagine two transparent strips laid over the same number line. One strip has dark ink printed on it: a heavy patch means “this position matters a lot,” a light patch means “this position barely matters.” Now flip the second strip around, slide it across the first, and at each position ask:</p>
+<blockquote class="blockquote">
+<p>How much ink is overlapping ink?</p>
+</blockquote>
+<p>Where the dark parts meet, the answer is large. Where a dark part meets a blank part, the answer is small. As you slide, the overlap swells, peaks, and fades. That sliding score is convolution. The formula, when it finally appears, is only the receipt for this sliding overlap.</p>
+<p>I first learned to <em>see</em> this operation from Grant Sanderson’s 3Blue1Brown video on the subject <span class="citation" data-cites="sanderson2022convolutions">[1]</span>. What follows is an attempt to rebuild the picture from scratch, slowly enough that the formula stops feeling like a definition and starts feeling like the shadow cast by a moving stencil.</p>
+<section id="the-toy-version-two-dice" class="level2">
+<h2 class="anchored" data-anchor-id="the-toy-version-two-dice">The toy version: two dice</h2>
+<p>Let us begin somewhere almost insultingly concrete. Roll two fair dice. A total of <img src="https://latex.codecogs.com/png.latex?2"> is rare because there is only one way to get it: <img src="https://latex.codecogs.com/png.latex?%0A(1,1).%0A"> A total of <img src="https://latex.codecogs.com/png.latex?7"> is common because six pairs land there: <img src="https://latex.codecogs.com/png.latex?%0A(1,6),%5C%20(2,5),%5C%20(3,4),%5C%20(4,3),%5C%20(5,2),%5C%20(6,1).%0A"></p>
+<p>The familiar count is <img src="https://latex.codecogs.com/png.latex?%0A1,%5C%202,%5C%203,%5C%204,%5C%205,%5C%206,%5C%205,%5C%204,%5C%203,%5C%202,%5C%201.%0A"></p>
+<p>That pyramid is already a convolution. One die contributes a number. The other die contributes a number. For a target total <img src="https://latex.codecogs.com/png.latex?k">, we ask:</p>
+<blockquote class="blockquote">
+<p>Which pairs of contributions land exactly on <img src="https://latex.codecogs.com/png.latex?k">?</p>
+</blockquote>
+<p>If the first die gives <img src="https://latex.codecogs.com/png.latex?i">, then the second die is forced to give <img src="https://latex.codecogs.com/png.latex?k-i">. That is the whole reason the formula contains the backward-looking index. More generally, if <img src="https://latex.codecogs.com/png.latex?a_i"> is the weight of the first contribution being <img src="https://latex.codecogs.com/png.latex?i">, and <img src="https://latex.codecogs.com/png.latex?b_j"> is the weight of the second contribution being <img src="https://latex.codecogs.com/png.latex?j">, then the weight at target <img src="https://latex.codecogs.com/png.latex?k"> is <span id="eq-conv"><img src="https://latex.codecogs.com/png.latex?%0A(a*b)_k%20=%20%5Csum_i%20a_i%20b_%7Bk-i%7D.%0A%5Ctag%7B1%7D"></span></p>
+<p>Read Equation&nbsp;1 as a sentence, not as a symbol:</p>
+<blockquote class="blockquote">
+<p>Fix the target <img src="https://latex.codecogs.com/png.latex?k">. Try every possible first contribution <img src="https://latex.codecogs.com/png.latex?i">. The second contribution is then forced to be <img src="https://latex.codecogs.com/png.latex?k-i">. Multiply the two weights. Add all the compatible stories.</p>
+</blockquote>
+<p>That phrase, <strong>all the compatible stories</strong>, is the heart of the operation. Convolution is what happens when many little two-part explanations can lead to the same observed result, and we refuse to forget any of them.</p>
+</section>
+<section id="why-one-list-gets-flipped" class="level2">
+<h2 class="anchored" data-anchor-id="why-one-list-gets-flipped">Why one list gets flipped</h2>
+<p>Now let the stencil picture do some work. Write the first list of weights in place. Write the second list backward. Slide the reversed list past the first. At each position, multiply the overlapping entries and add.</p>
+<p>The reversal is not a convention pasted on afterward. It is the geometry of addition. As <img src="https://latex.codecogs.com/png.latex?i"> moves right, its complement <img src="https://latex.codecogs.com/png.latex?k-i"> moves left. One hand walks forward while the other walks backward. The flipped strip is the formula made visible.</p>
+<p>For fair dice, if we only count ways, both strips are <img src="https://latex.codecogs.com/png.latex?%0A%5B1,1,1,1,1,1%5D.%0A"> Slide one copy past the other. First only one pair overlaps. Then two pairs. Then three, four, five, six. Then the overlap shrinks again. The pyramid was not a probability miracle. It was the length of the overlap window.</p>
+<p>There is one small indexing detail worth saying out loud. In the code below the list entry at index <img src="https://latex.codecogs.com/png.latex?0"> stands for die face <img src="https://latex.codecogs.com/png.latex?1">, index <img src="https://latex.codecogs.com/png.latex?1"> stands for face <img src="https://latex.codecogs.com/png.latex?2">, and so on. So output index <img src="https://latex.codecogs.com/png.latex?r"> corresponds to the real-world total <img src="https://latex.codecogs.com/png.latex?r+2">. That offset is not mathematics; it is just Python being zero-indexed.</p>
+<div id="bc1b411f" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> convolve(a, b):</span>
+<span id="cb1-2">    out <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(a) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(b) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i, ai <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(a):</span>
+<span id="cb1-4">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> j, bj <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(b):</span>
+<span id="cb1-5">            out[i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> ai <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> bj</span>
+<span id="cb1-6">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> out</span>
+<span id="cb1-7"></span>
+<span id="cb1-8">die <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]</span>
+<span id="cb1-9">counts <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> convolve(die, die)</span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(counts)</span>
+<span id="cb1-12"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(counts))</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1]
+36</code></pre>
+</div>
+</div>
+<p>The output has total mass <img src="https://latex.codecogs.com/png.latex?36">, one count for each ordered pair of die rolls. If we divide by <img src="https://latex.codecogs.com/png.latex?36">, those counts become probabilities.</p>
+<div id="9480812b" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">probabilities <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [c <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">36</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> c <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> counts]</span>
+<span id="cb3-2"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> total, p <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">zip</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>), probabilities):</span>
+<span id="cb3-3">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>total<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:2d}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>p<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.3f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 2: 0.028
+ 3: 0.056
+ 4: 0.083
+ 5: 0.111
+ 6: 0.139
+ 7: 0.167
+ 8: 0.139
+ 9: 0.111
+10: 0.083
+11: 0.056
+12: 0.028</code></pre>
+</div>
+</div>
+<p>Nothing in that code knows about dice. It knows only one rule: combine all pairs whose indices add to the same target. The dice merely gave the rule a friendly face.</p>
+</section>
+<section id="loaded-dice-same-stencil" class="level2">
+<h2 class="anchored" data-anchor-id="loaded-dice-same-stencil">Loaded dice, same stencil</h2>
+<p>Let us make the dice unfair, because unfairness reveals what the multiplication in Equation&nbsp;1 is doing.</p>
+<p>Suppose the first die prefers low numbers and the second prefers high numbers. Then a total can become likely for two different reasons: many pairs may hit it, or a few especially heavy pairs may hit it. Convolution does not care which story wins. It adds the weights of all compatible stories.</p>
+<div id="904fbd6b" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">low_die <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]</span>
+<span id="cb5-2">high_die <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>]</span>
+<span id="cb5-3"></span>
+<span id="cb5-4">total_weight <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(low_die) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(high_die)</span>
+<span id="cb5-5">weighted <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> convolve(low_die, high_die)</span>
+<span id="cb5-6"></span>
+<span id="cb5-7"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> total, weight <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">zip</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>), weighted):</span>
+<span id="cb5-8">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>total<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:2d}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>weight <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> total_weight<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.3f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 2: 0.014
+ 3: 0.039
+ 4: 0.073
+ 5: 0.113
+ 6: 0.159
+ 7: 0.206
+ 8: 0.159
+ 9: 0.113
+10: 0.073
+11: 0.039
+12: 0.014</code></pre>
+</div>
+</div>
+<p>This is why convolution is the natural operation for adding independent random variables. The word “independent” is exactly what lets the weight of a pair factor as <img src="https://latex.codecogs.com/png.latex?%0AP(X=i,%5C%20Y=j)=P(X=i)P(Y=j).%0A"> Once that multiplication is legal, summing over all pairs with <img src="https://latex.codecogs.com/png.latex?i+j=k"> gives the distribution of <img src="https://latex.codecogs.com/png.latex?X+Y">.</p>
+<p>So convolution is not an arbitrary new operation. It is what ordinary addition of uncertain quantities looks like when you keep every possible way the target could have happened.</p>
+<p>Take a moment with that. The operation did not begin life as a formula. It began as a demand for honesty: if several hidden pairings can produce the same visible outcome, count them all.</p>
+</section>
+<section id="polynomials-were-doing-it-all-along" class="level2">
+<h2 class="anchored" data-anchor-id="polynomials-were-doing-it-all-along">Polynomials were doing it all along</h2>
+<p>Now put probability aside and multiply two polynomials: <img src="https://latex.codecogs.com/png.latex?%0A(a_0+a_1x+a_2x%5E2)(b_0+b_1x+b_2x%5E2).%0A"></p>
+<p>Where does the coefficient of <img src="https://latex.codecogs.com/png.latex?x%5E3"> come from? It comes from every pair of terms whose exponents add to <img src="https://latex.codecogs.com/png.latex?3">: <img src="https://latex.codecogs.com/png.latex?%0Aa_1b_2x%5E3%20+%20a_2b_1x%5E3.%0A"> More generally, the coefficient of <img src="https://latex.codecogs.com/png.latex?x%5Ek"> in <img src="https://latex.codecogs.com/png.latex?%0AA(x)B(x)%0A"> is <img src="https://latex.codecogs.com/png.latex?%0A%5Csum_i%20a_i%20b_%7Bk-i%7D.%0A"></p>
+<p>That is the same formula again.</p>
+<p>This is one of those moments where mathematics earns Poincare’s line in the epigraph. Adding random variables and multiplying polynomials look unrelated at the surface. One talks about probability; the other talks about algebra. But underneath, both ask for the same bookkeeping:</p>
+<blockquote class="blockquote">
+<p>Which pairs of indices add to this target?</p>
+</blockquote>
+<p>That is why probability generating functions work for nonnegative integer-valued random variables. If <img src="https://latex.codecogs.com/png.latex?%0AA(x)=%5Csum_i%20P(X=i)x%5Ei,%5Cqquad%20B(x)=%5Csum_j%20P(Y=j)x%5Ej,%0A"> then <img src="https://latex.codecogs.com/png.latex?%0AA(x)B(x)%0A"> is the generating function for <img src="https://latex.codecogs.com/png.latex?X+Y">. Polynomial multiplication is doing the probability convolution for you.</p>
+<div id="eea7f35e" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> poly_mul(a, b):</span>
+<span id="cb7-2">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> convolve(a, b)</span>
+<span id="cb7-3"></span>
+<span id="cb7-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># (1 + 2x + 3x^2)(4 + 5x + 6x^2)</span></span>
+<span id="cb7-5">A <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>]</span>
+<span id="cb7-6">B <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>]</span>
+<span id="cb7-7"></span>
+<span id="cb7-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(poly_mul(A, B))  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># coefficients of 4 + 13x + 28x^2 + 27x^3 + 18x^4</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[4, 13, 28, 27, 18]</code></pre>
+</div>
+</div>
+<p>It is worth pausing here. A single operation has now worn two costumes:</p>
+<ul>
+<li>in probability, it adds independent quantities;</li>
+<li>in algebra, it multiplies polynomials.</li>
+</ul>
+<p>The shared mechanism is not a metaphor. It is the same sum.</p>
+</section>
+<section id="from-lists-to-functions" class="level2">
+<h2 class="anchored" data-anchor-id="from-lists-to-functions">From lists to functions</h2>
+<p>So far our objects have been finite lists, tidy little strips with only a few slots. But the same picture survives when the strips become continuous.</p>
+<p>Imagine two functions <img src="https://latex.codecogs.com/png.latex?f"> and <img src="https://latex.codecogs.com/png.latex?g"> on the real line. We want a new function whose value at <img src="https://latex.codecogs.com/png.latex?t"> gathers every way to split <img src="https://latex.codecogs.com/png.latex?t"> into two pieces: <img src="https://latex.codecogs.com/png.latex?%0At%20=%20%5Ctau%20+%20(t-%5Ctau).%0A"> The first function pays weight <img src="https://latex.codecogs.com/png.latex?f(%5Ctau)"> for the first piece. The second, flipped-and-slid function pays weight <img src="https://latex.codecogs.com/png.latex?g(t-%5Ctau)"> for the complement. Multiply those weights and add over every possible split. Since the splits are continuous, “add” becomes “integrate”: <span id="eq-cont-conv"><img src="https://latex.codecogs.com/png.latex?%0A(f*g)(t)=%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%20f(%5Ctau)g(t-%5Ctau)%5C,d%5Ctau.%0A%5Ctag%7B2%7D"></span></p>
+<p>That is continuous convolution, at least for functions nice enough that the integral actually converges, say integrable functions or the well-behaved signals one usually meets first. The technical hypotheses matter in analysis, but the picture has not changed: slide, multiply overlap, add.</p>
+<p>Again, do not let the integral intimidate you. It says the same thing Equation&nbsp;1 said:</p>
+<blockquote class="blockquote">
+<p>Fix the target. Try every first contribution. The second contribution is forced. Multiply. Add.</p>
+</blockquote>
+</section>
+<section id="echoes-and-memory" class="level2">
+<h2 class="anchored" data-anchor-id="echoes-and-memory">Echoes and memory</h2>
+<p>If the functions live in time and nothing happens before <img src="https://latex.codecogs.com/png.latex?t=0">, the natural version is the causal convolution <span id="eq-causal-conv"><img src="https://latex.codecogs.com/png.latex?%0A(f*g)(t)=%5Cint_0%5Et%20f(%5Ctau)g(t-%5Ctau)%5C,d%5Ctau.%0A%5Ctag%7B3%7D"></span></p>
+<p>This is where convolution stops being only an overlap machine and becomes a memory machine.</p>
+<p>Imagine shouting in a canyon. Your voice does not vanish at the instant you make it; the canyon keeps answering. A sharp clap at time <img src="https://latex.codecogs.com/png.latex?%5Ctau"> leaves an echo pattern after it, and by time <img src="https://latex.codecogs.com/png.latex?t"> that pattern has aged by <img src="https://latex.codecogs.com/png.latex?t-%5Ctau"> seconds. If your whole input is made of many tiny claps, then the output at time <img src="https://latex.codecogs.com/png.latex?t"> is the sum of all their aged echoes.</p>
+<p>That is exactly Equation&nbsp;3. Under the usual regularity assumptions, a linear time-invariant causal system is determined by its <strong>impulse response</strong> <img src="https://latex.codecogs.com/png.latex?h">: the echo it gives back to one tiny unit impulse. If <img src="https://latex.codecogs.com/png.latex?u"> is the input, the output is <span id="eq-lti"><img src="https://latex.codecogs.com/png.latex?%0Ay(t)=(h*u)(t)=%5Cint_0%5Et%20h(t-%5Ctau)u(%5Ctau)%5C,d%5Ctau.%0A%5Ctag%7B4%7D"></span></p>
+<p>The words “linear” and “time-invariant” are doing real work here. Linearity says we are allowed to add the echoes from separate impulses. Time-invariance says an impulse delayed to time <img src="https://latex.codecogs.com/png.latex?%5Ctau"> produces the same echo shape, just delayed. Those two promises are precisely what make the convolution formula inevitable.</p>
+<p>This is where convolution reaches back toward the Laplace-transform story from the previous post. There, the transform exposed the exponential DNA of a function. Here, convolution says that a system with memory is not responding only to the present. It is folding the whole past into the present, one aged echo at a time.</p>
+<p>Convolution is not a decoration on the theory. It is the arithmetic of linear memory.</p>
+</section>
+<section id="why-fourier-transforms-love-convolution" class="level2">
+<h2 class="anchored" data-anchor-id="why-fourier-transforms-love-convolution">Why Fourier transforms love convolution</h2>
+<p>The reason convolution becomes algorithmically powerful is that it is expensive in its native form. For two length-<img src="https://latex.codecogs.com/png.latex?n"> lists, the direct sliding computation checks about <img src="https://latex.codecogs.com/png.latex?n%5E2"> pairs. That is fine for dice and painful for long signals.</p>
+<p>Fourier analysis changes the room in which the calculation happens.</p>
+<p>There is a theorem, usually called the <strong>convolution theorem</strong>, which says: <span id="eq-convolution-theorem"><img src="https://latex.codecogs.com/png.latex?%0A%5Cwidehat%7Bf*g%7D=%5Cwidehat%20f%20%5Ccdot%20%5Cwidehat%20g.%0A%5Ctag%7B5%7D"></span></p>
+<p>Depending on the exact Fourier convention, there may be a harmless constant floating around this formula. Do not let that distract from the structural point:</p>
+<blockquote class="blockquote">
+<p>In the Fourier world, convolution becomes pointwise multiplication.</p>
+</blockquote>
+<p>This should rhyme with the Laplace post. There, differentiation became multiplication by <img src="https://latex.codecogs.com/png.latex?s">. Here, convolution becomes multiplication frequency by frequency. In both cases, a messy operation in the original world becomes a simple operation after a transform.</p>
+<p>That is the deeper pattern:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Original world</th>
+<th>Transform world</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>differentiate</td>
+<td>multiply by frequency / <img src="https://latex.codecogs.com/png.latex?s"></td>
+</tr>
+<tr class="even">
+<td>convolve</td>
+<td>multiply pointwise</td>
+</tr>
+</tbody>
+</table>
+<p>Why should convolution turn into multiplication? A good intuition is that Fourier modes are the pure tones of translation. More precisely, a complex exponential <img src="https://latex.codecogs.com/png.latex?e%5E%7Bi%5Comega%20t%7D">, shifted in time, does not become some new species of function; it only picks up a scalar phase factor. Since convolution is built from shifted copies, the Fourier basis is exactly the coordinate system where those shifts become simple scalings. In the right coordinates, the sliding machine diagonalizes.</p>
+<p>That last word is not accidental. If you have read the spectral theorem post, you have seen this move before. A hard linear operation becomes easy when we write it in the directions it naturally stretches. Fourier analysis is the spectral theorem for translation-shaped problems.</p>
+<p>The computational payoff is the fast Fourier transform. Instead of doing the sliding sum directly, one can:</p>
+<ol type="1">
+<li>transform both lists,</li>
+<li>multiply corresponding Fourier coefficients,</li>
+<li>transform back.</li>
+</ol>
+<p>For finite lists there is one more practical wrinkle. The raw discrete Fourier transform naturally computes <strong>circular</strong> convolution, where the right edge wraps back around to the left. To recover the ordinary straight-line convolution from Equation&nbsp;1, you zero-pad the lists to length at least <code>len(a) + len(b) - 1</code> before transforming. With that padding in place, the direct convolution costs about <img src="https://latex.codecogs.com/png.latex?n%5E2"> operations, while the FFT route costs about <img src="https://latex.codecogs.com/png.latex?n%5Clog%20n"> operations <span class="citation" data-cites="oppenheim1999discrete">[2]</span>.</p>
+<p>That difference is why convolution can be everywhere at industrial scale: audio filters, image blur, large integer multiplication, polynomial arithmetic, probability distributions, and the convolutional layers that gave early deep learning systems their eyes.</p>
+</section>
+<section id="a-checksum-for-the-shortcut" class="level2">
+<h2 class="anchored" data-anchor-id="a-checksum-for-the-shortcut">A checksum for the shortcut</h2>
+<p>It is useful to end with a piece of code that has no philosophy in it. We will compute the same convolution two ways: directly, by the sliding sum, and through the Fourier shortcut with zero-padding.</p>
+<div id="17d44272" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb9-2"></span>
+<span id="cb9-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> fft_convolve(a, b):</span>
+<span id="cb9-4">    n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(a) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(b) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb9-5">    A <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.fft.rfft(a, n)</span>
+<span id="cb9-6">    B <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.fft.rfft(b, n)</span>
+<span id="cb9-7">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> np.rint(np.fft.irfft(A <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> B, n)).astype(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>).tolist()</span>
+<span id="cb9-8"></span>
+<span id="cb9-9">A <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>]       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2 - x + 3x^2</span></span>
+<span id="cb9-10">B <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>]           <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1 + 4x</span></span>
+<span id="cb9-11"></span>
+<span id="cb9-12"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(convolve(A, B))</span>
+<span id="cb9-13"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(fft_convolve(A, B))</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[2, 7, -1, 12]
+[2, 7, -1, 12]</code></pre>
+</div>
+</div>
+<p>The two answers agree. The first route watched every overlapping pair directly. The second route changed coordinates, multiplied frequency by frequency, and changed back. Same operation, different room. The rounding in <code>fft_convolve</code> is only there because the FFT travels through floating-point arithmetic; for these integer coefficients, any <code>2.9999999997</code> should plainly come home as <code>3</code>.</p>
+<p>For this tiny example the FFT route is silly. For million-point signals, or for the large polynomial multiplications that sit inside serious integer arithmetic, it is a different world.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>Convolution is the mathematics of overlap and echo.</p>
+<p>It takes two sources of contribution and asks, for every target, how many weighted ways the two sources can combine to hit that target. That is why the same formula counts dice sums, multiplies polynomials, adds independent random variables, blurs images, filters signals, and describes the memory of a linear system.</p>
+<p>The sliding picture is not a mnemonic pasted on afterward. It is the formula made visible: one strip reversed because complements run backward, then shifted because the target changes. The echo picture is the same idea in time: every past input leaves a delayed response, and the present is the sum of all those aged responses.</p>
+<p>And the reason convolution keeps returning in serious mathematics is that Fourier and Laplace transforms know how to tame it. In the original world it is a sum over all overlapping histories. In the transformed world it is ordinary multiplication. A complicated memory becomes a simple product, provided you are willing to look at it in the right coordinates.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Convolution: The Mathematics of Overlap and Echo</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/convolution-the-arithmetic-of-overlap/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
+<div id="ref-sanderson2022convolutions" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">G. Sanderson, <span>“But what is a convolution?”</span> 3Blue1Brown, YouTube video, 2022. Available: <a href="https://www.youtube.com/watch?v=KuXjwB4LzSA">https://www.youtube.com/watch?v=KuXjwB4LzSA</a></div>
+</div>
+<div id="ref-oppenheim1999discrete" class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">A. V. Oppenheim, R. W. Schafer, and J. R. Buck, <em>Discrete-time signal processing</em>, 2nd ed. Prentice Hall, 1999.</div>
+</div>
+</div></section></div> ]]></description>
+  <category>pure</category>
+  <category>applied</category>
+  <category>probability</category>
+  <category>computer-science</category>
+  <category>algorithms</category>
+  <category>analysis</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/convolution-the-arithmetic-of-overlap/</guid>
+  <pubDate>Thu, 18 Jun 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Why Laplace Transforms Are So Useful</title>
   <link>https://terryfxh.github.io/math-notes/posts/why-laplace-transforms-are-so-useful/</link>
