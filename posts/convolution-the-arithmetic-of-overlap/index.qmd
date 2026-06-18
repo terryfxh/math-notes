@@ -1,0 +1,420 @@
+---
+title: "Convolution: The Mathematics of Overlap and Echo"
+description: "How a sliding overlap counts dice sums, multiplies polynomials, blurs images, describes system memory, and lets Fourier transforms turn a slow calculation into pointwise multiplication."
+date: 2026-06-18
+categories: [pure, applied, probability, computer-science, algorithms, analysis]
+bibliography: ../../references.bib
+draft: false
+---
+
+::: {.epigraph}
+*"Mathematics is the art of giving the same name to different things."*
+
+[-- Henri Poincare, traditionally attributed]{.attribution}
+:::
+
+Convolution has a public-relations problem. It is the operation behind dice
+sums, image blur, audio filters, polynomial multiplication, differential
+equations, and the fast Fourier transform, but the first time many people meet
+it, it looks like a cryptic sum with one index running backward.
+
+So let us postpone the symbols for a moment.
+
+Here is the picture I want you to carry instead.
+
+Imagine two transparent strips laid over the same number line. One strip has
+dark ink printed on it: a heavy patch means "this position matters a lot," a
+light patch means "this position barely matters." Now flip the second strip
+around, slide it across the first, and at each position ask:
+
+> How much ink is overlapping ink?
+
+Where the dark parts meet, the answer is large. Where a dark part meets a blank
+part, the answer is small. As you slide, the overlap swells, peaks, and fades.
+That sliding score is convolution. The formula, when it finally appears, is
+only the receipt for this sliding overlap.
+
+I first learned to *see* this operation from Grant Sanderson's 3Blue1Brown video
+on the subject [@sanderson2022convolutions]. What follows is an attempt to
+rebuild the picture from scratch, slowly enough that the formula stops feeling
+like a definition and starts feeling like the shadow cast by a moving stencil.
+
+## The toy version: two dice
+
+Let us begin somewhere almost insultingly concrete. Roll two fair dice. A total
+of $2$ is rare because there is only one way to get it:
+$$
+(1,1).
+$$
+A total of $7$ is common because six pairs land there:
+$$
+(1,6),\ (2,5),\ (3,4),\ (4,3),\ (5,2),\ (6,1).
+$$
+
+The familiar count is
+$$
+1,\ 2,\ 3,\ 4,\ 5,\ 6,\ 5,\ 4,\ 3,\ 2,\ 1.
+$$
+
+That pyramid is already a convolution. One die contributes a number. The other
+die contributes a number. For a target total $k$, we ask:
+
+> Which pairs of contributions land exactly on $k$?
+
+If the first die gives $i$, then the second die is forced to give $k-i$. That is
+the whole reason the formula contains the backward-looking index. More generally,
+if $a_i$ is the weight of the first contribution being $i$, and $b_j$ is the
+weight of the second contribution being $j$, then the weight at target $k$ is
+$$
+(a*b)_k = \sum_i a_i b_{k-i}.
+$$ {#eq-conv}
+
+Read @eq-conv as a sentence, not as a symbol:
+
+> Fix the target $k$. Try every possible first contribution $i$. The second
+> contribution is then forced to be $k-i$. Multiply the two weights. Add all the
+> compatible stories.
+
+That phrase, **all the compatible stories**, is the heart of the operation.
+Convolution is what happens when many little two-part explanations can lead to
+the same observed result, and we refuse to forget any of them.
+
+## Why one list gets flipped
+
+Now let the stencil picture do some work. Write the first list of weights in
+place. Write the second list backward. Slide the reversed list past the first.
+At each position, multiply the overlapping entries and add.
+
+The reversal is not a convention pasted on afterward. It is the geometry of
+addition. As $i$ moves right, its complement $k-i$ moves left. One hand walks
+forward while the other walks backward. The flipped strip is the formula made
+visible.
+
+For fair dice, if we only count ways, both strips are
+$$
+[1,1,1,1,1,1].
+$$
+Slide one copy past the other. First only one pair overlaps. Then two pairs.
+Then three, four, five, six. Then the overlap shrinks again. The pyramid was not
+a probability miracle. It was the length of the overlap window.
+
+There is one small indexing detail worth saying out loud. In the code below the
+list entry at index $0$ stands for die face $1$, index $1$ stands for face $2$,
+and so on. So output index $r$ corresponds to the real-world total $r+2$.
+That offset is not mathematics; it is just Python being zero-indexed.
+
+```{python}
+def convolve(a, b):
+    out = [0] * (len(a) + len(b) - 1)
+    for i, ai in enumerate(a):
+        for j, bj in enumerate(b):
+            out[i + j] += ai * bj
+    return out
+
+die = [1, 1, 1, 1, 1, 1]
+counts = convolve(die, die)
+
+print(counts)
+print(sum(counts))
+```
+
+The output has total mass $36$, one count for each ordered pair of die rolls. If
+we divide by $36$, those counts become probabilities.
+
+```{python}
+probabilities = [c / 36 for c in counts]
+for total, p in zip(range(2, 13), probabilities):
+    print(f"{total:2d}: {p:.3f}")
+```
+
+Nothing in that code knows about dice. It knows only one rule: combine all pairs
+whose indices add to the same target. The dice merely gave the rule a friendly
+face.
+
+## Loaded dice, same stencil
+
+Let us make the dice unfair, because unfairness reveals what the multiplication
+in @eq-conv is doing.
+
+Suppose the first die prefers low numbers and the second prefers high numbers.
+Then a total can become likely for two different reasons: many pairs may hit it,
+or a few especially heavy pairs may hit it. Convolution does not care which
+story wins. It adds the weights of all compatible stories.
+
+```{python}
+low_die = [6, 5, 4, 3, 2, 1]
+high_die = [1, 2, 3, 4, 5, 6]
+
+total_weight = sum(low_die) * sum(high_die)
+weighted = convolve(low_die, high_die)
+
+for total, weight in zip(range(2, 13), weighted):
+    print(f"{total:2d}: {weight / total_weight:.3f}")
+```
+
+This is why convolution is the natural operation for adding independent random
+variables. The word "independent" is exactly what lets the weight of a pair
+factor as
+$$
+P(X=i,\ Y=j)=P(X=i)P(Y=j).
+$$
+Once that multiplication is legal, summing over all pairs with $i+j=k$ gives the
+distribution of $X+Y$.
+
+So convolution is not an arbitrary new operation. It is what ordinary addition
+of uncertain quantities looks like when you keep every possible way the target
+could have happened.
+
+Take a moment with that. The operation did not begin life as a formula. It began
+as a demand for honesty: if several hidden pairings can produce the same visible
+outcome, count them all.
+
+## Polynomials were doing it all along
+
+Now put probability aside and multiply two polynomials:
+$$
+(a_0+a_1x+a_2x^2)(b_0+b_1x+b_2x^2).
+$$
+
+Where does the coefficient of $x^3$ come from? It comes from every pair of terms
+whose exponents add to $3$:
+$$
+a_1b_2x^3 + a_2b_1x^3.
+$$
+More generally, the coefficient of $x^k$ in
+$$
+A(x)B(x)
+$$
+is
+$$
+\sum_i a_i b_{k-i}.
+$$
+
+That is the same formula again.
+
+This is one of those moments where mathematics earns Poincare's line in the
+epigraph. Adding random variables and multiplying polynomials look unrelated at
+the surface. One talks about probability; the other talks about algebra. But
+underneath, both ask for the same bookkeeping:
+
+> Which pairs of indices add to this target?
+
+That is why probability generating functions work for nonnegative
+integer-valued random variables. If
+$$
+A(x)=\sum_i P(X=i)x^i,\qquad B(x)=\sum_j P(Y=j)x^j,
+$$
+then
+$$
+A(x)B(x)
+$$
+is the generating function for $X+Y$. Polynomial multiplication is doing the
+probability convolution for you.
+
+```{python}
+def poly_mul(a, b):
+    return convolve(a, b)
+
+# (1 + 2x + 3x^2)(4 + 5x + 6x^2)
+A = [1, 2, 3]
+B = [4, 5, 6]
+
+print(poly_mul(A, B))  # coefficients of 4 + 13x + 28x^2 + 27x^3 + 18x^4
+```
+
+It is worth pausing here. A single operation has now worn two costumes:
+
+- in probability, it adds independent quantities;
+- in algebra, it multiplies polynomials.
+
+The shared mechanism is not a metaphor. It is the same sum.
+
+## From lists to functions
+
+So far our objects have been finite lists, tidy little strips with only a few
+slots. But the same picture survives when the strips become continuous.
+
+Imagine two functions $f$ and $g$ on the real line. We want a new function whose
+value at $t$ gathers every way to split $t$ into two pieces:
+$$
+t = \tau + (t-\tau).
+$$
+The first function pays weight $f(\tau)$ for the first piece. The second,
+flipped-and-slid function pays weight $g(t-\tau)$ for the complement. Multiply
+those weights and add over every possible split. Since the splits are
+continuous, "add" becomes "integrate":
+$$
+(f*g)(t)=\int_{-\infty}^{\infty} f(\tau)g(t-\tau)\,d\tau.
+$$ {#eq-cont-conv}
+
+That is continuous convolution, at least for functions nice enough that the
+integral actually converges, say integrable functions or the well-behaved
+signals one usually meets first. The technical hypotheses matter in analysis,
+but the picture has not changed: slide, multiply overlap, add.
+
+Again, do not let the integral intimidate you. It says the same thing @eq-conv
+said:
+
+> Fix the target. Try every first contribution. The second contribution is
+> forced. Multiply. Add.
+
+## Echoes and memory
+
+If the functions live in time and nothing happens before $t=0$, the natural
+version is the causal convolution
+$$
+(f*g)(t)=\int_0^t f(\tau)g(t-\tau)\,d\tau.
+$$ {#eq-causal-conv}
+
+This is where convolution stops being only an overlap machine and becomes a
+memory machine.
+
+Imagine shouting in a canyon. Your voice does not vanish at the instant you make
+it; the canyon keeps answering. A sharp clap at time $\tau$ leaves an echo
+pattern after it, and by time $t$ that pattern has aged by $t-\tau$ seconds. If
+your whole input is made of many tiny claps, then the output at time $t$ is the
+sum of all their aged echoes.
+
+That is exactly @eq-causal-conv. Under the usual regularity assumptions, a
+linear time-invariant causal system is determined by its **impulse response**
+$h$: the echo it gives back to one tiny unit impulse. If $u$ is the input, the
+output is
+$$
+y(t)=(h*u)(t)=\int_0^t h(t-\tau)u(\tau)\,d\tau.
+$$ {#eq-lti}
+
+The words "linear" and "time-invariant" are doing real work here. Linearity says
+we are allowed to add the echoes from separate impulses. Time-invariance says an
+impulse delayed to time $\tau$ produces the same echo shape, just delayed. Those
+two promises are precisely what make the convolution formula inevitable.
+
+This is where convolution reaches back toward the Laplace-transform story from
+the previous post. There, the transform exposed the exponential DNA of a
+function. Here, convolution says that a system with memory is not responding
+only to the present. It is folding the whole past into the present, one aged
+echo at a time.
+
+Convolution is not a decoration on the theory. It is the arithmetic of linear
+memory.
+
+## Why Fourier transforms love convolution
+
+The reason convolution becomes algorithmically powerful is that it is expensive
+in its native form. For two length-$n$ lists, the direct sliding computation
+checks about $n^2$ pairs. That is fine for dice and painful for long signals.
+
+Fourier analysis changes the room in which the calculation happens.
+
+There is a theorem, usually called the **convolution theorem**, which says:
+$$
+\widehat{f*g}=\widehat f \cdot \widehat g.
+$$ {#eq-convolution-theorem}
+
+Depending on the exact Fourier convention, there may be a harmless constant
+floating around this formula. Do not let that distract from the structural
+point:
+
+> In the Fourier world, convolution becomes pointwise multiplication.
+
+This should rhyme with the Laplace post. There, differentiation became
+multiplication by $s$. Here, convolution becomes multiplication frequency by
+frequency. In both cases, a messy operation in the original world becomes a
+simple operation after a transform.
+
+That is the deeper pattern:
+
+| Original world | Transform world |
+|---|---|
+| differentiate | multiply by frequency / $s$ |
+| convolve | multiply pointwise |
+
+Why should convolution turn into multiplication? A good intuition is that
+Fourier modes are the pure tones of translation. More precisely, a complex
+exponential $e^{i\omega t}$, shifted in time, does not become some new species
+of function; it only picks up a scalar phase factor. Since convolution is built
+from shifted copies, the Fourier basis is exactly the coordinate system where
+those shifts become simple scalings. In the right coordinates, the sliding
+machine diagonalizes.
+
+That last word is not accidental. If you have read the spectral theorem post,
+you have seen this move before. A hard linear operation becomes easy when we
+write it in the directions it naturally stretches. Fourier analysis is the
+spectral theorem for translation-shaped problems.
+
+The computational payoff is the fast Fourier transform. Instead of doing the
+sliding sum directly, one can:
+
+1. transform both lists,
+2. multiply corresponding Fourier coefficients,
+3. transform back.
+
+For finite lists there is one more practical wrinkle. The raw discrete Fourier
+transform naturally computes **circular** convolution, where the right edge wraps
+back around to the left. To recover the ordinary straight-line convolution from
+@eq-conv, you zero-pad the lists to length at least `len(a) + len(b) - 1` before
+transforming. With that padding in place, the direct convolution costs about
+$n^2$ operations, while the FFT route costs about $n\log n$ operations
+[@oppenheim1999discrete].
+
+That difference is why convolution can be everywhere at industrial scale: audio
+filters, image blur, large integer multiplication, polynomial arithmetic,
+probability distributions, and the convolutional layers that gave early deep
+learning systems their eyes.
+
+## A checksum for the shortcut
+
+It is useful to end with a piece of code that has no philosophy in it. We will
+compute the same convolution two ways: directly, by the sliding sum, and through
+the Fourier shortcut with zero-padding.
+
+```{python}
+import numpy as np
+
+def fft_convolve(a, b):
+    n = len(a) + len(b) - 1
+    A = np.fft.rfft(a, n)
+    B = np.fft.rfft(b, n)
+    return np.rint(np.fft.irfft(A * B, n)).astype(int).tolist()
+
+A = [2, -1, 3]       # 2 - x + 3x^2
+B = [1, 4]           # 1 + 4x
+
+print(convolve(A, B))
+print(fft_convolve(A, B))
+```
+
+The two answers agree. The first route watched every overlapping pair directly.
+The second route changed coordinates, multiplied frequency by frequency, and
+changed back. Same operation, different room. The rounding in `fft_convolve` is
+only there because the FFT travels through floating-point arithmetic; for these
+integer coefficients, any `2.9999999997` should plainly come home as `3`.
+
+For this tiny example the FFT route is silly. For million-point signals, or for
+the large polynomial multiplications that sit inside serious integer arithmetic,
+it is a different world.
+
+## What to remember
+
+Convolution is the mathematics of overlap and echo.
+
+It takes two sources of contribution and asks, for every target, how many
+weighted ways the two sources can combine to hit that target. That is why the
+same formula counts dice sums, multiplies polynomials, adds independent random
+variables, blurs images, filters signals, and describes the memory of a linear
+system.
+
+The sliding picture is not a mnemonic pasted on afterward. It is the formula
+made visible: one strip reversed because complements run backward, then shifted
+because the target changes. The echo picture is the same idea in time: every
+past input leaves a delayed response, and the present is the sum of all those
+aged responses.
+
+And the reason convolution keeps returning in serious mathematics is that
+Fourier and Laplace transforms know how to tame it. In the original world it is
+a sum over all overlapping histories. In the transformed world it is ordinary
+multiplication. A complicated memory becomes a simple product, provided you are
+willing to look at it in the right coordinates.
+
+## How to cite
+
+> Terry (2026). *Convolution: The Mathematics of Overlap and Echo*. Retrieved from `https://terryfxh.github.io/math-notes/posts/convolution-the-arithmetic-of-overlap/`.

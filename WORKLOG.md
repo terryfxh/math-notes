@@ -14,7 +14,7 @@ The table below is regenerated from `posts/*/index.qmd` by `python tools/blog.py
 Do not edit it by hand — edits between the AUTO markers are overwritten.
 
 <!-- AUTO:STATUS:START -->
-_Last updated 2026-06-13 — 15 published posts._
+_Last updated 2026-06-18 — 17 published posts._
 
 | Date | Slug | Title | Categories |
 |---|---|---|---|
@@ -33,6 +33,8 @@ _Last updated 2026-06-13 — 15 published posts._
 | 2026-06-10 | `the-inscribed-rectangle-problem` | The Inscribed Rectangle Problem | pure, topology |
 | 2026-06-10 | `uniform-convergence` | Real Analysis: How a Limit of Functions Can Lie | pure, real-analysis, foundations |
 | 2026-06-11 | `quaternions` | Quaternions: Seeing Four Dimensions with Three-Dimensional Eyes | pure, algebra, geometry |
+| 2026-06-14 | `why-laplace-transforms-are-so-useful` | Why Laplace Transforms Are So Useful | applied, pure, differential-equations |
+| 2026-06-18 | `convolution-the-arithmetic-of-overlap` | Convolution: The Mathematics of Overlap and Echo | pure, applied, probability, computer-science, algorithms, analysis |
 <!-- AUTO:STATUS:END -->
 
 ---
@@ -43,6 +45,8 @@ One entry is appended automatically the first time `tools/worklog.py` sees a pub
 post (run via `python tools/blog.py worklog`). Newest on top.
 
 <!-- AUTO:LOG:START -->
+- **2026-06-18** — published `convolution-the-arithmetic-of-overlap`: Convolution: The Mathematics of Overlap and Echo (pure, applied, probability, computer-science, algorithms, analysis)
+- **2026-06-14** — published `why-laplace-transforms-are-so-useful`: Why Laplace Transforms Are So Useful (applied, pure, differential-equations)
 - **2026-06-11** — published `quaternions`: Quaternions: Seeing Four Dimensions with Three-Dimensional Eyes (pure, algebra, geometry)
 - **2026-06-10** — published `uniform-convergence`: Real Analysis: How a Limit of Functions Can Lie (pure, real-analysis, foundations)
 - **2026-06-10** — published `the-inscribed-rectangle-problem`: The Inscribed Rectangle Problem (pure, topology)
