@@ -16,6 +16,8 @@ __pycache__/
 Thumbs.db
 
 **/*.quarto_ipynb
+**/*.quarto_ipynb_*
+posts/**/index_files/
 
 # Design-system export artifacts (scratch from the design tooling).
 # The published site only consumes the token CSS in tokens/ and styles.css;
