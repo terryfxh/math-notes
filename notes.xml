@@ -115,6 +115,268 @@
   <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
+  <title>The Essence of Linear Algebra</title>
+  <link>https://terryfxh.github.io/math-notes/posts/the-essence-of-linear-algebra/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p>“The introduction of numbers as coordinates … is an act of violence.”</p>
+<p><span class="attribution">— Hermann Weyl, <em>Philosophy of Mathematics and Natural Science</em></span></p>
+</div>
+<p>Linear algebra has a public relations problem. It is often introduced as a warehouse of rectangular arrays, row reductions, strange multiplication rules, and determinants that appear from nowhere. You are told to compute</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bpmatrix%7D%0A2%20&amp;%20-1%20%5C%5C%0A3%20&amp;%204%0A%5Cend%7Bpmatrix%7D%0A%5Cbegin%7Bpmatrix%7D%0A5%20%5C%5C%0A1%0A%5Cend%7Bpmatrix%7D,%0A"></p>
+<p>and if you are obedient enough, you get</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bpmatrix%7D%0A9%20%5C%5C%0A19%0A%5Cend%7Bpmatrix%7D.%0A"></p>
+<p>The arithmetic is easy. The question it hides is not. What <em>happened</em>?</p>
+<p>The answer is that a point of space moved. Or better: the whole plane moved, and that particular vector was carried along with it. The matrix did not sit there as a spreadsheet of four numbers. It stretched, sheared, maybe flipped the grid beneath your feet, and the output vector is where your input vector landed.</p>
+<p>That is the picture I want to build. Linear algebra is the study of objects that can be added and scaled, and of transformations that respect those two actions. The miracle is that this simple sentence contains arrows in physics, lists in computer science, systems of equations, rotations in three-dimensional space, least-squares fitting, Fourier analysis, differential equations, and functions themselves. The subject looks like a bag of techniques only when you stare at the numbers too soon. Look first at the motion.</p>
+<section id="what-is-a-vector" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-vector">What is a vector?</h2>
+<p>Ask three people what a vector is and you will get three honest answers.</p>
+<p>A physicist says a vector is an arrow. It has length and direction. A velocity vector tells you not only how fast something moves, but which way. A force vector pushes north-east harder than it pushes north. This is the oldest picture and the one your eyes trust first.</p>
+<p>A computer scientist says a vector is an ordered list of numbers. In the plane it may look like <img src="https://latex.codecogs.com/png.latex?(3,%202)">. In a data set it may have a thousand entries. A picture can be encoded as a vector of pixel intensities; a sentence can be embedded as a vector of features. Here the arrow is less important than the coordinates.</p>
+<p>A mathematician gives the least romantic answer and the most powerful one: a vector is any object for which addition and scalar multiplication make sense, provided those operations obey the expected rules. Arrows qualify. Lists of numbers qualify. Functions qualify. Polynomials qualify. Signals qualify.</p>
+<p>At first these sound like different species. Coordinates are the bridge between them.</p>
+<p>Draw an arrow in the plane. Now lay a coordinate grid over it. If the arrow ends three steps to the right and two steps up, the computer scientist writes <img src="https://latex.codecogs.com/png.latex?(3,2)">. The list is not a replacement for the arrow. It is the arrow described in the language of a particular grid.</p>
+<p>That last phrase matters. Coordinates are not the vector itself. Coordinates are how the vector sounds when spoken in one chosen coordinate system. Change the grid and the same arrow gets a different list of numbers. Forget this, and linear algebra becomes symbol pushing. Remember it, and the subject starts to breathe.</p>
+<p>Two operations are the whole engine.</p>
+<p>Vector addition means placing arrows tip to tail. Walk along <img src="https://latex.codecogs.com/png.latex?u">, then walk along <img src="https://latex.codecogs.com/png.latex?v">; the vector <img src="https://latex.codecogs.com/png.latex?u+v"> is the shortcut from where you started to where you ended. In coordinates, this becomes componentwise addition:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A(a,b)%20+%20(c,d)%20=%20(a+c,%20b+d).%0A"></p>
+<p>Scalar multiplication means stretching or reversing an arrow. The vector <img src="https://latex.codecogs.com/png.latex?3v"> is three times as long in the same direction; <img src="https://latex.codecogs.com/png.latex?-v"> points the opposite way; <img src="https://latex.codecogs.com/png.latex?0v"> collapses to the origin. In coordinates,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ac(a,b)%20=%20(ca,%20cb).%0A"></p>
+<p>Almost everything that follows is a sophisticated consequence of these two moves: add and scale.</p>
+</section>
+<section id="linear-combinations-span-and-basis" class="level2">
+<h2 class="anchored" data-anchor-id="linear-combinations-span-and-basis">Linear combinations, span, and basis</h2>
+<p>Imagine the two ordinary coordinate arrows in the plane:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Chat%7B%5Cimath%7D%20=%0A%5Cbegin%7Bpmatrix%7D%0A1%20%5C%5C%0A0%0A%5Cend%7Bpmatrix%7D,%0A%5Cqquad%0A%5Chat%7B%5Cjmath%7D%20=%0A%5Cbegin%7Bpmatrix%7D%0A0%20%5C%5C%0A1%0A%5Cend%7Bpmatrix%7D.%0A"></p>
+<p>The vector <img src="https://latex.codecogs.com/png.latex?(3,2)"> is really shorthand for</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A3%5Chat%7B%5Cimath%7D%20+%202%5Chat%7B%5Cjmath%7D.%0A"></p>
+<p>Stretch the first basis vector by <img src="https://latex.codecogs.com/png.latex?3">, stretch the second by <img src="https://latex.codecogs.com/png.latex?2">, then add the results. Coordinates are instructions for building a vector out of chosen building blocks.</p>
+<p>A <strong>linear combination</strong> is exactly this kind of recipe:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ac_1v_1%20+%20c_2v_2%20+%20%5Ccdots%20+%20c_kv_k.%0A"></p>
+<p>You are allowed to scale the given vectors however you like, including by negative numbers, then add them. The set of all vectors you can make this way is their <strong>span</strong>.</p>
+<p>One nonzero vector in the plane spans a line through the origin. You can slide back and forth along that direction, but you can never step off the line. Two vectors usually span the whole plane, because one gives you one direction and the other gives you a way to step away from it. But if the second vector lies on the same line as the first, it adds no new freedom. Then the span is still just a line.</p>
+<p>That is the visual content of linear dependence.</p>
+<p>A vector is <strong>linearly dependent</strong> on others if it already lies in their span. It is not giving you a new direction. It is a repeated sentence in a language you already know how to speak. A set of vectors is <strong>linearly independent</strong> if no vector in the set can be built from the others.</p>
+<p>A <strong>basis</strong> of a vector space is a linearly independent set that spans the whole space. Both halves are essential. Spanning means the set is large enough to reach everywhere. Independence means it has no redundant directions. A basis is a minimal vocabulary for a space.</p>
+<p>So the Cartesian unit vectors are not sacred. They are just a convenient basis. You could choose two slanted arrows instead, as long as they are not parallel. The same plane would still be there. Only the language would change.</p>
+</section>
+<section id="a-matrix-is-a-moving-grid" class="level2">
+<h2 class="anchored" data-anchor-id="a-matrix-is-a-moving-grid">A matrix is a moving grid</h2>
+<p>Now let the whole plane move.</p>
+<p>A <strong>transformation</strong> is like a function with geometry attached. It takes an input vector and returns an output vector. If you imagine every vector in the plane as a point, a transformation tells each point where to go.</p>
+<p>Most transformations are chaotic. They can curl lines into circles, tear the grid, or send nearby points far apart. Linear algebra studies the calm ones: <strong>linear transformations</strong>.</p>
+<p>Geometrically, a linear transformation does three things:</p>
+<ol type="1">
+<li>It keeps grid lines straight.</li>
+<li>It keeps parallel grid lines parallel and evenly spaced.</li>
+<li>It keeps the origin fixed.</li>
+</ol>
+<p>Those visual rules are the picture version of the algebraic rules</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AT(u+v)%20=%20T(u)%20+%20T(v),%0A%5Cqquad%0AT(cv)%20=%20cT(v).%0A"></p>
+<p>In words, transforming after adding is the same as adding after transforming, and transforming after scaling is the same as scaling after transforming. The map respects the two operations that define vector behavior.</p>
+<p>Here is why matrices enter. Since every vector in the plane is built from <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cimath%7D"> and <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cjmath%7D">, a linear transformation is completely determined once we know where those two basis vectors go.</p>
+<p>If</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AT(%5Chat%7B%5Cimath%7D)%20=%0A%5Cbegin%7Bpmatrix%7D%0Aa%20%5C%5C%0Ac%0A%5Cend%7Bpmatrix%7D,%0A%5Cqquad%0AT(%5Chat%7B%5Cjmath%7D)%20=%0A%5Cbegin%7Bpmatrix%7D%0Ab%20%5C%5C%0Ad%0A%5Cend%7Bpmatrix%7D,%0A"></p>
+<p>then the vector</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ax%5Chat%7B%5Cimath%7D%20+%20y%5Chat%7B%5Cjmath%7D%0A"></p>
+<p>must land at</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AxT(%5Chat%7B%5Cimath%7D)%20+%20yT(%5Chat%7B%5Cjmath%7D)%0A=%0Ax%0A%5Cbegin%7Bpmatrix%7D%0Aa%20%5C%5C%0Ac%0A%5Cend%7Bpmatrix%7D%0A+%20y%0A%5Cbegin%7Bpmatrix%7D%0Ab%20%5C%5C%0Ad%0A%5Cend%7Bpmatrix%7D%0A=%0A%5Cbegin%7Bpmatrix%7D%0Aax%20+%20by%20%5C%5C%0Acx%20+%20dy%0A%5Cend%7Bpmatrix%7D.%0A"></p>
+<p>We pack the landing places of the basis vectors into the columns of a matrix:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AA%20=%0A%5Cbegin%7Bpmatrix%7D%0Aa%20&amp;%20b%20%5C%5C%0Ac%20&amp;%20d%0A%5Cend%7Bpmatrix%7D.%0A"></p>
+<p>This is the essence of a matrix: <strong>its columns say where the basis vectors go</strong>. Matrix-vector multiplication is not an arbitrary rule. It is the inevitable answer to the question, “If the basis vectors move there, where does every other vector go?”</p>
+</section>
+<section id="matrix-multiplication-is-composition" class="level2">
+<h2 class="anchored" data-anchor-id="matrix-multiplication-is-composition">Matrix multiplication is composition</h2>
+<p>Suppose one transformation rotates the plane, and another shears it. You can do the rotation first and then the shear. The result is a new transformation, built from the two smaller ones.</p>
+<p>This is called composition. Matrices record it as multiplication.</p>
+<p>If <img src="https://latex.codecogs.com/png.latex?A"> and <img src="https://latex.codecogs.com/png.latex?B"> are matrices, then <img src="https://latex.codecogs.com/png.latex?AB"> means: first apply <img src="https://latex.codecogs.com/png.latex?B">, then apply <img src="https://latex.codecogs.com/png.latex?A">. The order reads right to left because</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AABx%20=%20A(Bx).%0A"></p>
+<p>That notation is not trying to be mysterious. It is just function composition in matrix clothing.</p>
+<p>The column rule explains matrix multiplication without memorizing a formula. To know the matrix for the combined transformation, ask where the basis vectors end up. The first column of <img src="https://latex.codecogs.com/png.latex?AB"> is where <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cimath%7D"> lands after <img src="https://latex.codecogs.com/png.latex?B"> and then <img src="https://latex.codecogs.com/png.latex?A">. That is <img src="https://latex.codecogs.com/png.latex?A"> applied to the first column of <img src="https://latex.codecogs.com/png.latex?B">. The second column is <img src="https://latex.codecogs.com/png.latex?A"> applied to the second column of <img src="https://latex.codecogs.com/png.latex?B">. In higher dimensions the same rule continues column by column.</p>
+<p>Three-dimensional space is no different in spirit. A <img src="https://latex.codecogs.com/png.latex?3%20%5Ctimes%203"> matrix tells where the three basis vectors land. Rotations, shears, stretches, projections, and reflections in space all fit the same picture. The numbers grow, but the idea does not.</p>
+</section>
+<section id="the-determinant-measures-volume" class="level2">
+<h2 class="anchored" data-anchor-id="the-determinant-measures-volume">The determinant measures volume</h2>
+<p>Imagine the plane as an infinite sheet of graph paper. Every little unit square is a tile. A linear transformation grabs the whole sheet and moves it in one perfectly disciplined motion: straight grid lines stay straight, parallel lines stay parallel, and every copy of the same tile becomes the same slanted tile.</p>
+<p>So if you understand what happens to one unit square, you understand what happens to area everywhere.</p>
+<p>The original unit square is spanned by <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cimath%7D"> and <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cjmath%7D">. After the transformation, its sides are the two transformed basis vectors, <img src="https://latex.codecogs.com/png.latex?T(%5Chat%7B%5Cimath%7D)"> and <img src="https://latex.codecogs.com/png.latex?T(%5Chat%7B%5Cjmath%7D)">. The square has become a parallelogram. The determinant is the signed area of that new fundamental tile.</p>
+<p>For</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AA%20=%0A%5Cbegin%7Bpmatrix%7D%0Aa%20&amp;%20b%20%5C%5C%0Ac%20&amp;%20d%0A%5Cend%7Bpmatrix%7D,%0A"></p>
+<p>the determinant</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cdet(A)%20=%20ad%20-%20bc%0A"></p>
+<p>is not just a number produced by a formula. It is the exchange rate between old area and new area.</p>
+<p>If <img src="https://latex.codecogs.com/png.latex?%5Cdet(A)=3">, the transformed unit tile has area <img src="https://latex.codecogs.com/png.latex?3">, and the entire graph paper has been made three times roomier. Every region, no matter how curved or irregular, can be approximated by tiny grid tiles, and each of those tiles has had its area multiplied by <img src="https://latex.codecogs.com/png.latex?3">. If <img src="https://latex.codecogs.com/png.latex?%5Cdet(A)=1/2">, the whole plane has been squeezed to half its area. The determinant is not measuring one special square; it is measuring how the transformation changes the density of space itself.</p>
+<p>The sign carries a separate piece of information. If <img src="https://latex.codecogs.com/png.latex?%5Cdet(A)%3E0">, orientation is preserved: a tiny ordered pair of arrows keeps the same clockwise or counterclockwise sense in the transformed world. If <img src="https://latex.codecogs.com/png.latex?%5Cdet(A)%3C0">, the sheet has been flipped. The area may double, but the plane has turned inside out in the only way a plane can. A small clockwise loop becomes counterclockwise. The transformation has not merely stretched the grid; it has made the coordinate system look back at you from the other side of the mirror.</p>
+<p>The most dramatic determinant is zero.</p>
+<p>If <img src="https://latex.codecogs.com/png.latex?%5Cdet(A)=0">, the transformed fundamental tile has no area at all. That does not mean it became a very skinny parallelogram. It means it became a line segment, or a point. One whole direction of motion has been erased. The graph paper has not been resized; it has been pressed flat until a two-dimensional world can no longer breathe as two-dimensional.</p>
+<p>This is the moment linear dependence becomes visible. The two transformed basis vectors used to point in independent directions, giving the plane two degrees of freedom. After a zero-determinant transformation, one transformed basis vector lies along the span of the other. The second direction is no longer genuinely new. It is just another way to walk along the same line.</p>
+<p>In three dimensions the same story becomes volume. The unit cube becomes a slanted parallelepiped, and <img src="https://latex.codecogs.com/png.latex?%5Cdet(A)"> tells how many signed unit cubes fit inside it. A zero determinant means the cube has been flattened into a sheet, a line, or a point. A room has become a shadow.</p>
+<p>That is why zero determinants matter. They are not merely bad denominators. They are the sound of dimension being lost.</p>
+</section>
+<section id="solving-equations-means-finding-a-preimage" class="level2">
+<h2 class="anchored" data-anchor-id="solving-equations-means-finding-a-preimage">Solving equations means finding a preimage</h2>
+<p>A system of linear equations can be read as a question about a transformation.</p>
+<p>If</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AAx%20=%20b,%0A"></p>
+<p>then <img src="https://latex.codecogs.com/png.latex?A"> is a linear transformation, <img src="https://latex.codecogs.com/png.latex?x"> is the input vector we are hunting for, and <img src="https://latex.codecogs.com/png.latex?b"> is the target output. Solving the system means asking:</p>
+<blockquote class="blockquote">
+<p>Which vector lands on <img src="https://latex.codecogs.com/png.latex?b"> after the space moves by <img src="https://latex.codecogs.com/png.latex?A">?</p>
+</blockquote>
+<p>If the transformation does not collapse dimension, there is exactly one answer. The inverse matrix <img src="https://latex.codecogs.com/png.latex?A%5E%7B-1%7D"> is the transformation that undoes <img src="https://latex.codecogs.com/png.latex?A">. Apply it to both sides and the hidden input reappears:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ax%20=%20A%5E%7B-1%7Db.%0A"></p>
+<p>But if <img src="https://latex.codecogs.com/png.latex?A"> crushes the plane onto a line, then most target vectors are unreachable. No input lands on a point outside that line. Some targets on the line may have infinitely many inputs, because whole directions were crushed together.</p>
+<p>This leads to two spaces that are more useful than their names suggest.</p>
+<p>The <strong>column space</strong> of a matrix is the span of its columns. Since the columns are where the basis vectors land, the column space is the set of all possible outputs. It is the transformed world that <img src="https://latex.codecogs.com/png.latex?A"> can actually reach.</p>
+<p>The <strong>rank</strong> is the dimension of the column space. A full-rank square matrix has not lost dimension. A rank-one matrix from the plane to the plane has collapsed all outputs onto a line.</p>
+<p>The <strong>null space</strong>, or kernel, is the set of input vectors that land at the origin:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cker(A)%20=%20%5C%7Bx%20:%20Ax%20=%200%5C%7D.%0A"></p>
+<p>These are the directions the transformation erases. If a whole line of vectors goes to zero, then adding any vector from that line to a solution of <img src="https://latex.codecogs.com/png.latex?Ax=b"> gives another solution. The null space is the ambiguity left behind by compression.</p>
+</section>
+<section id="nonsquare-matrices-move-between-dimensions" class="level2">
+<h2 class="anchored" data-anchor-id="nonsquare-matrices-move-between-dimensions">Nonsquare matrices move between dimensions</h2>
+<p>Square matrices transform a space into another copy of itself: plane to plane, space to space. Nonsquare matrices are just as geometric. They move vectors between dimensions.</p>
+<p>A <img src="https://latex.codecogs.com/png.latex?3%20%5Ctimes%202"> matrix takes two-dimensional input and produces three-dimensional output. Its two columns live in <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5E3">, so they say where the two basis vectors of the input plane land in space. Visually, the matrix can embed a flat coordinate plane as a slanted plane inside three-dimensional space when those two columns are independent. If they are dependent, even this map can collapse the input plane down to a line.</p>
+<p>A <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%203"> matrix goes the other way. It takes three-dimensional input and returns a point in the plane. Projection is the natural picture: it can flatten space onto a screen.</p>
+<p>The multiplication rule now becomes intuitive. If one matrix sends <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5En"> to <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5Em">, and the next sends <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5Em"> to <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5Ek">, their composition makes sense. The output dimension of the first transformation must match the input dimension of the second. Otherwise you are trying to feed a three-dimensional vector into a machine that expects two coordinates.</p>
+<p>That is the whole reason behind the dimension rule for matrix multiplication.</p>
+</section>
+<section id="dot-products-and-duality" class="level2">
+<h2 class="anchored" data-anchor-id="dot-products-and-duality">Dot products and duality</h2>
+<p>The dot product has two faces.</p>
+<p>Computationally, it multiplies matching coordinates and adds:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bpmatrix%7D%0Aa%20%5C%5C%0Ab%0A%5Cend%7Bpmatrix%7D%0A%5Ccdot%0A%5Cbegin%7Bpmatrix%7D%0Ac%20%5C%5C%0Ad%0A%5Cend%7Bpmatrix%7D%0A=%20ac%20+%20bd.%0A"></p>
+<p>Geometrically, it measures projection. If <img src="https://latex.codecogs.com/png.latex?v"> and <img src="https://latex.codecogs.com/png.latex?w"> are vectors, then</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Av%20%5Ccdot%20w%20=%20%5C%7Cv%5C%7C%5C,%5C%7Cw%5C%7C%5Ccos%5Ctheta,%0A"></p>
+<p>where <img src="https://latex.codecogs.com/png.latex?%5Ctheta"> is the angle between them.</p>
+<p>But do not let the formula rush past the picture. Choose one vector, say <img src="https://latex.codecogs.com/png.latex?w">, and think of it as a measuring ruler laid across the plane. Now drop the shadow of <img src="https://latex.codecogs.com/png.latex?v"> onto that ruler. If <img src="https://latex.codecogs.com/png.latex?v"> points mostly along <img src="https://latex.codecogs.com/png.latex?w">, the shadow is long and positive. If <img src="https://latex.codecogs.com/png.latex?v"> points perpendicular to <img src="https://latex.codecogs.com/png.latex?w">, the shadow vanishes. If it points against <img src="https://latex.codecogs.com/png.latex?w">, the shadow lands backward and becomes negative.</p>
+<p>The dot product is this signed shadow, scaled by the length of the ruler. A unit vector asks the cleanest possible question: “How much of you points in my direction?” A longer vector asks the same question more loudly.</p>
+<p>There is a deeper way to say the same thing, and it is one of the places where linear algebra quietly changes flavor.</p>
+<p>A linear transformation from the plane to the number line takes a vector and returns a single number. Since its output is one-dimensional, its matrix has one row:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bpmatrix%7D%0Ap%20&amp;%20q%0A%5Cend%7Bpmatrix%7D.%0A"></p>
+<p>Applied to <img src="https://latex.codecogs.com/png.latex?(x,y)">, it gives</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Apx%20+%20qy.%0A"></p>
+<p>But that is exactly the dot product with the vector <img src="https://latex.codecogs.com/png.latex?(p,q)">:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bpmatrix%7D%0Ap%20%5C%5C%0Aq%0A%5Cend%7Bpmatrix%7D%0A%5Ccdot%0A%5Cbegin%7Bpmatrix%7D%0Ax%20%5C%5C%0Ay%0A%5Cend%7Bpmatrix%7D.%0A"></p>
+<p>This is <strong>duality</strong> in its most visible form. Every linear measurement of the plane, every linear map from vectors to numbers, corresponds to a unique vector in the plane. To apply the measurement is to take a dot product with that vector.</p>
+<p>That sentence is worth slowing down for. A linear measurement sounds like a machine: feed it a two-dimensional vector, receive a one-dimensional number. But duality says the machine has a physical avatar. It can be drawn as an arrow.</p>
+<p>The arrow points in the direction the measurement cares about most. Its length records how aggressively the measurement cares. Vectors perpendicular to it register zero, because they move across its level lines without climbing its scale. Vectors aligned with it register strongly, because they march straight up the measuring axis.</p>
+<p>So a vector can be an object being measured, but it can also be the measuring device itself. This is the small conceptual trapdoor under the dot product: the same arrow can be a direction in space or a linear question asked of space.</p>
+</section>
+<section id="the-cross-product-hides-a-dual-vector" class="level2">
+<h2 class="anchored" data-anchor-id="the-cross-product-hides-a-dual-vector">The cross product hides a dual vector</h2>
+<p>The usual introduction to the cross product says this:</p>
+<p>Given two vectors <img src="https://latex.codecogs.com/png.latex?u"> and <img src="https://latex.codecogs.com/png.latex?v"> in three-dimensional space, <img src="https://latex.codecogs.com/png.latex?u%20%5Ctimes%20v"> is a new vector perpendicular to both. Its length is the area of the parallelogram spanned by <img src="https://latex.codecogs.com/png.latex?u"> and <img src="https://latex.codecogs.com/png.latex?v">, and its direction is chosen by the right-hand rule.</p>
+<p>That is true, but it can feel like a trick. Why should an area become a vector? Why should perpendicularity appear?</p>
+<p>Duality gives a cleaner picture.</p>
+<p>Fix two vectors <img src="https://latex.codecogs.com/png.latex?u"> and <img src="https://latex.codecogs.com/png.latex?v"> in space. Now imagine a third vector <img src="https://latex.codecogs.com/png.latex?x">. The scalar triple product</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cdet%0A%5Cbegin%7Bpmatrix%7D%0A%7C%20&amp;%20%7C%20&amp;%20%7C%20%5C%5C%0Au%20&amp;%20v%20&amp;%20x%20%5C%5C%0A%7C%20&amp;%20%7C%20&amp;%20%7C%0A%5Cend%7Bpmatrix%7D%0A"></p>
+<p>is the signed volume of the parallelepiped built from <img src="https://latex.codecogs.com/png.latex?u">, <img src="https://latex.codecogs.com/png.latex?v">, and <img src="https://latex.codecogs.com/png.latex?x">.</p>
+<p>Now freeze <img src="https://latex.codecogs.com/png.latex?u"> and <img src="https://latex.codecogs.com/png.latex?v">. They form a hinged parallelogram in space, like a little rigid sail. The third vector <img src="https://latex.codecogs.com/png.latex?x"> is allowed to move. Each time you choose a new <img src="https://latex.codecogs.com/png.latex?x">, the sail sweeps out a parallelepiped, and the determinant reports its signed volume.</p>
+<p>So with <img src="https://latex.codecogs.com/png.latex?u"> and <img src="https://latex.codecogs.com/png.latex?v"> fixed, the rule</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ax%20%5Clongmapsto%20%5Cdet(u,v,x)%0A"></p>
+<p>is a measurement of <img src="https://latex.codecogs.com/png.latex?x">. It takes a three-dimensional vector and returns a number. More importantly, it is linear in <img src="https://latex.codecogs.com/png.latex?x">: double the height, double the volume; add two height vectors, add the signed volumes.</p>
+<p>By duality, every such linear map is the same as dotting with one particular vector. There must be a vector <img src="https://latex.codecogs.com/png.latex?w"> such that</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Aw%20%5Ccdot%20x%20=%0A%5Cdet(u,%20v,%20x)%0A%5Cqquad%20%5Ctext%7Bfor%20every%20%7D%20x.%0A"></p>
+<p>That vector <img src="https://latex.codecogs.com/png.latex?w"> is <img src="https://latex.codecogs.com/png.latex?u%20%5Ctimes%20v">.</p>
+<p>This turns the cross product from a rule into a necessity. The fixed vectors <img src="https://latex.codecogs.com/png.latex?u"> and <img src="https://latex.codecogs.com/png.latex?v"> define a volume-measuring machine. Duality says every such linear machine is secretly dot product with one vector. The cross product is that secret vector.</p>
+<p>Now its strange properties stop being strange.</p>
+<p>If <img src="https://latex.codecogs.com/png.latex?x=u">, the parallelepiped has two identical edges and therefore zero volume: <img src="https://latex.codecogs.com/png.latex?%5Cdet(u,v,u)=0">. Hence</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A(u%20%5Ctimes%20v)%5Ccdot%20u%20=%200.%0A"></p>
+<p>So <img src="https://latex.codecogs.com/png.latex?u%20%5Ctimes%20v"> must be perpendicular to <img src="https://latex.codecogs.com/png.latex?u">. The same argument with <img src="https://latex.codecogs.com/png.latex?x=v"> makes it perpendicular to <img src="https://latex.codecogs.com/png.latex?v">. Perpendicularity was not bolted onto the definition. It fell out of the fact that repeated edges make no volume.</p>
+<p>Its length is forced too. The dot product <img src="https://latex.codecogs.com/png.latex?(u%20%5Ctimes%20v)%5Ccdot%20x"> computes volume by taking the shadow of <img src="https://latex.codecogs.com/png.latex?x"> in the direction of <img src="https://latex.codecogs.com/png.latex?u%20%5Ctimes%20v"> and multiplying by <img src="https://latex.codecogs.com/png.latex?%5C%7Cu%20%5Ctimes%20v%5C%7C">. But volume is also base area times height. Therefore <img src="https://latex.codecogs.com/png.latex?%5C%7Cu%20%5Ctimes%20v%5C%7C"> must be the area of the parallelogram spanned by <img src="https://latex.codecogs.com/png.latex?u"> and <img src="https://latex.codecogs.com/png.latex?v">, and the direction must be the normal that makes the signed volume come out with the right orientation.</p>
+<p>The cross product is not a random recipe. It is the dual vector for the linear measurement “how much signed volume do <img src="https://latex.codecogs.com/png.latex?u">, <img src="https://latex.codecogs.com/png.latex?v">, and this input vector create?” Once you see that, the right-hand rule becomes bookkeeping. The real idea is that an oriented area in three-dimensional space knows how to measure height, and duality lets that measuring habit be represented by a perpendicular arrow.</p>
+</section>
+<section id="changing-basis-means-translating-languages" class="level2">
+<h2 class="anchored" data-anchor-id="changing-basis-means-translating-languages">Changing basis means translating languages</h2>
+<p>Coordinates are language. A basis is a dictionary.</p>
+<p>Suppose your friend uses two slanted basis vectors <img src="https://latex.codecogs.com/png.latex?b_1"> and <img src="https://latex.codecogs.com/png.latex?b_2"> instead of the standard <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cimath%7D"> and <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cjmath%7D">. When your friend writes <img src="https://latex.codecogs.com/png.latex?(2,3)">, they do not mean two steps right and three steps up. They mean</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A2b_1%20+%203b_2.%0A"></p>
+<p>To translate their coordinates into ours, build the matrix</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AB%20=%0A%5Cbegin%7Bpmatrix%7D%0A%7C%20&amp;%20%7C%20%5C%5C%0Ab_1%20&amp;%20b_2%20%5C%5C%0A%7C%20&amp;%20%7C%0A%5Cend%7Bpmatrix%7D.%0A"></p>
+<p>Its columns are their basis vectors written in our coordinates. Therefore</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Ctext%7Bour%20coordinates%7D%20=%20B(%5Ctext%7Btheir%20coordinates%7D).%0A"></p>
+<p>To translate back, use <img src="https://latex.codecogs.com/png.latex?B%5E%7B-1%7D">:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Ctext%7Btheir%20coordinates%7D%20=%20B%5E%7B-1%7D(%5Ctext%7Bour%20coordinates%7D).%0A"></p>
+<p>This becomes powerful when studying transformations. Suppose <img src="https://latex.codecogs.com/png.latex?M"> is a linear transformation written in our standard coordinates. What matrix describes the same transformation from your friend’s coordinate system?</p>
+<p>Start with their coordinates. Translate into our language with <img src="https://latex.codecogs.com/png.latex?B">. Apply the transformation <img src="https://latex.codecogs.com/png.latex?M">. Translate back with <img src="https://latex.codecogs.com/png.latex?B%5E%7B-1%7D">. The matrix they see is</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AB%5E%7B-1%7DMB.%0A"></p>
+<p>This expression is not algebraic decoration. It is a three-step story:</p>
+<ol type="1">
+<li>Change from their coordinates to ours.</li>
+<li>Do the transformation.</li>
+<li>Change back.</li>
+</ol>
+<p>Many books write this as <img src="https://latex.codecogs.com/png.latex?A%5E%7B-1%7DMA"> when <img src="https://latex.codecogs.com/png.latex?A"> is the change-of-basis matrix. The letters do not matter. The sandwich does. A transformation can look complicated in one language and simple in another.</p>
+</section>
+<section id="eigenvectors-are-the-directions-that-survive" class="level2">
+<h2 class="anchored" data-anchor-id="eigenvectors-are-the-directions-that-survive">Eigenvectors are the directions that survive</h2>
+<p>Now we reach one of the most useful ideas in the subject.</p>
+<p>Most vectors change direction when a matrix acts on them. A shear drags the top of the plane sideways. A generic vector comes out pointing somewhere new. But some special vectors keep their direction. They may stretch, shrink, or reverse, but they stay on the same line.</p>
+<p>Those are <strong>eigenvectors</strong>. If</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AAv%20=%20%5Clambda%20v%0A"></p>
+<p>for some nonzero vector <img src="https://latex.codecogs.com/png.latex?v">, then <img src="https://latex.codecogs.com/png.latex?v"> is an eigenvector and <img src="https://latex.codecogs.com/png.latex?%5Clambda"> is its eigenvalue. The eigenvalue is the scale factor along that direction.</p>
+<p>Geometrically, an eigenvector is a direction the transformation treats simply. Everything else may mix, but this line is preserved.</p>
+<p>To find such directions, rewrite the equation:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AAv%20=%20%5Clambda%20v%0A%5Cqquad%20%5CLongleftrightarrow%20%5Cqquad%0A(A-%5Clambda%20I)v%20=%200.%0A"></p>
+<p>We are looking for a nonzero vector that gets crushed to zero by <img src="https://latex.codecogs.com/png.latex?A-%5Clambda%20I">. That can happen only when this new matrix loses dimension, which is exactly when its determinant is zero:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cdet(A-%5Clambda%20I)=0.%0A"></p>
+<p>That equation gives the possible eigenvalues. Each eigenvalue then gives a null space, and the nonzero vectors in that null space are the eigenvectors.</p>
+<p>In three dimensions, a rotation often has a visible eigenvector: the axis of rotation. Points spin around it, but the axis itself stays fixed. Its eigenvalue is <img src="https://latex.codecogs.com/png.latex?1"> if the direction is unchanged.</p>
+<p>The real prize comes when a space has a basis made of eigenvectors. In that basis, the transformation becomes diagonal:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bpmatrix%7D%0A%5Clambda_1%20&amp;%200%20&amp;%20%5Ccdots%20&amp;%200%20%5C%5C%0A0%20&amp;%20%5Clambda_2%20&amp;%20%5Ccdots%20&amp;%200%20%5C%5C%0A%5Cvdots%20&amp;%20%5Cvdots%20&amp;%20%5Cddots%20&amp;%20%5Cvdots%20%5C%5C%0A0%20&amp;%200%20&amp;%20%5Ccdots%20&amp;%20%5Clambda_n%0A%5Cend%7Bpmatrix%7D.%0A"></p>
+<p>Diagonal matrices are easy because they do not mix coordinates. They just scale each basis direction independently. Repeating the transformation becomes almost trivial:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AD%5Ek%20=%0A%5Cbegin%7Bpmatrix%7D%0A%5Clambda_1%5Ek%20&amp;%200%20&amp;%20%5Ccdots%20&amp;%200%20%5C%5C%0A0%20&amp;%20%5Clambda_2%5Ek%20&amp;%20%5Ccdots%20&amp;%200%20%5C%5C%0A%5Cvdots%20&amp;%20%5Cvdots%20&amp;%20%5Cddots%20&amp;%20%5Cvdots%20%5C%5C%0A0%20&amp;%200%20&amp;%20%5Ccdots%20&amp;%20%5Clambda_n%5Ek%0A%5Cend%7Bpmatrix%7D.%0A"></p>
+<p>This is why eigenvectors show up in dynamical systems, Markov chains, vibrations, differential equations, graph algorithms, and data analysis. They are the coordinate system in which the transformation stops mixing its story.</p>
+</section>
+<section id="abstract-vector-spaces-are-not-a-retreat-from-pictures" class="level2">
+<h2 class="anchored" data-anchor-id="abstract-vector-spaces-are-not-a-retreat-from-pictures">Abstract vector spaces are not a retreat from pictures</h2>
+<p>At this point the mathematician’s definition of vector begins to look less cold. It was not trying to erase the arrow. It was trying to preserve the part of the arrow that mattered.</p>
+<p>A function can be added to another function:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A(f+g)(x)%20=%20f(x)%20+%20g(x).%0A"></p>
+<p>A function can be scaled:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A(cf)(x)%20=%20c%20f(x).%0A"></p>
+<p>So suitable collections of functions form vector spaces. The zero vector is the zero function. A linearly independent set of functions is a collection where none can be built as a linear combination of the others. A basis, when one exists in the right sense, lets us describe functions by coordinates.</p>
+<p>Even calculus fits the linear algebra picture. The derivative is a linear operator because</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cfrac%7Bd%7D%7Bdx%7D(f+g)%20=%20%5Cfrac%7Bdf%7D%7Bdx%7D%20+%20%5Cfrac%7Bdg%7D%7Bdx%7D,%0A%5Cqquad%0A%5Cfrac%7Bd%7D%7Bdx%7D(cf)%20=%20c%5Cfrac%7Bdf%7D%7Bdx%7D.%0A"></p>
+<p>On a suitable function space, differentiation transforms one function into another while respecting addition and scaling. That makes it a linear transformation, just not one between small finite-dimensional spaces. In this world, the eigenvector equation becomes</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cfrac%7Bdf%7D%7Bdx%7D%20=%20%5Clambda%20f.%0A"></p>
+<p>The functions that keep their “direction” under differentiation are exponentials. This is the same eigenvector idea wearing the clothes of calculus.</p>
+<p>The abstract definition says: whenever you have objects with vector addition and scalar multiplication satisfying the usual axioms, you may bring the whole machine of linear algebra with you. Span, basis, linear maps, kernels, rank, duality, eigenvectors, and diagonalization are no longer facts about arrows alone. They are facts about structure.</p>
+<p>That is not abstraction as escape. It is abstraction as transportation. You learn something once in the plane, then carry it into places your eyes cannot draw.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>If you remember only one sentence, make it this:</p>
+<blockquote class="blockquote">
+<p>Linear algebra is the study of things that can be added and scaled, and of transformations that respect addition and scaling.</p>
+</blockquote>
+<p>Vectors are not merely arrows or lists. They are objects that live inside this add-and-scale world. A basis is a language for describing them. A matrix records where basis vectors go under a linear transformation. Matrix multiplication is composition of motion. The determinant measures how area or volume changes. Column space tells what outputs are reachable; null space tells what inputs are erased. Dot products are linear measurements in disguise. Cross products are dual vectors for volume measurements. Change of basis is translation between coordinate languages. Eigenvectors are the directions in which a transformation becomes simple. And abstract vector spaces are the reason all of this applies far beyond the plane.</p>
+<p>The numbers matter, of course. But they are not the essence. The essence is the grid moving, the space stretching, the hidden directions revealing themselves, and the same simple structure appearing in arrows, data, equations, and functions.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>The Essence of Linear Algebra</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/the-essence-of-linear-algebra/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+</section>
+
+ ]]></description>
+  <category>pure</category>
+  <category>applied</category>
+  <category>linear-algebra</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/the-essence-of-linear-algebra/</guid>
+  <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
+</item>
+<item>
   <title>Convolution: The Mathematics of Overlap and Echo</title>
   <link>https://terryfxh.github.io/math-notes/posts/convolution-the-arithmetic-of-overlap/</link>
   <description><![CDATA[ 
