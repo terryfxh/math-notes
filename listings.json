@@ -2,6 +2,7 @@
   {
     "listing": "/notes.html",
     "items": [
+      "/posts/at-least-one-side-of-one-sheep/index.html",
       "/posts/convolution-the-arithmetic-of-overlap/index.html",
       "/posts/why-laplace-transforms-are-so-useful/index.html",
       "/posts/quaternions/index.html",
