@@ -1,0 +1,821 @@
+---
+title: "The Essence of Linear Algebra"
+description: "A visual tour of vectors, matrices, determinants, duality, eigenvectors, and abstract vector spaces, all organized around one idea: linear algebra is the study of add-and-scale structure."
+date: 2026-06-19
+categories: [pure, applied, linear-algebra]
+bibliography: ../../references.bib
+draft: false
+---
+
+::: {.epigraph}
+"The introduction of numbers as coordinates ... is an act of violence."
+
+[— Hermann Weyl, *Philosophy of Mathematics and Natural Science*]{.attribution}
+:::
+
+Linear algebra has a public relations problem. It is often introduced as a
+warehouse of rectangular arrays, row reductions, strange multiplication rules,
+and determinants that appear from nowhere. You are told to compute
+
+$$
+\begin{pmatrix}
+2 & -1 \\
+3 & 4
+\end{pmatrix}
+\begin{pmatrix}
+5 \\
+1
+\end{pmatrix},
+$$
+
+and if you are obedient enough, you get
+
+$$
+\begin{pmatrix}
+9 \\
+19
+\end{pmatrix}.
+$$
+
+The arithmetic is easy. The question it hides is not. What *happened*?
+
+The answer is that a point of space moved. Or better: the whole plane moved, and
+that particular vector was carried along with it. The matrix did not sit there as
+a spreadsheet of four numbers. It stretched, sheared, maybe flipped the grid
+beneath your feet, and the output vector is where your input vector landed.
+
+That is the picture I want to build. Linear algebra is the study of objects that
+can be added and scaled, and of transformations that respect those two actions.
+The miracle is that this simple sentence contains arrows in physics, lists in
+computer science, systems of equations, rotations in three-dimensional space,
+least-squares fitting, Fourier analysis, differential equations, and functions
+themselves. The subject looks like a bag of techniques only when you stare at the
+numbers too soon. Look first at the motion.
+
+## What is a vector?
+
+Ask three people what a vector is and you will get three honest answers.
+
+A physicist says a vector is an arrow. It has length and direction. A velocity
+vector tells you not only how fast something moves, but which way. A force vector
+pushes north-east harder than it pushes north. This is the oldest picture and the
+one your eyes trust first.
+
+A computer scientist says a vector is an ordered list of numbers. In the plane it
+may look like $(3, 2)$. In a data set it may have a thousand entries. A picture
+can be encoded as a vector of pixel intensities; a sentence can be embedded as a
+vector of features. Here the arrow is less important than the coordinates.
+
+A mathematician gives the least romantic answer and the most powerful one: a
+vector is any object for which addition and scalar multiplication make sense,
+provided those operations obey the expected rules. Arrows qualify. Lists of
+numbers qualify. Functions qualify. Polynomials qualify. Signals qualify.
+
+At first these sound like different species. Coordinates are the bridge between
+them.
+
+Draw an arrow in the plane. Now lay a coordinate grid over it. If the arrow ends
+three steps to the right and two steps up, the computer scientist writes
+$(3,2)$. The list is not a replacement for the arrow. It is the arrow described
+in the language of a particular grid.
+
+That last phrase matters. Coordinates are not the vector itself. Coordinates are
+how the vector sounds when spoken in one chosen coordinate system. Change the
+grid and the same arrow gets a different list of numbers. Forget this, and
+linear algebra becomes symbol pushing. Remember it, and the subject starts to
+breathe.
+
+Two operations are the whole engine.
+
+Vector addition means placing arrows tip to tail. Walk along $u$, then walk along
+$v$; the vector $u+v$ is the shortcut from where you started to where you ended.
+In coordinates, this becomes componentwise addition:
+
+$$
+(a,b) + (c,d) = (a+c, b+d).
+$$
+
+Scalar multiplication means stretching or reversing an arrow. The vector $3v$ is
+three times as long in the same direction; $-v$ points the opposite way; $0v$
+collapses to the origin. In coordinates,
+
+$$
+c(a,b) = (ca, cb).
+$$
+
+Almost everything that follows is a sophisticated consequence of these two
+moves: add and scale.
+
+## Linear combinations, span, and basis
+
+Imagine the two ordinary coordinate arrows in the plane:
+
+$$
+\hat{\imath} =
+\begin{pmatrix}
+1 \\
+0
+\end{pmatrix},
+\qquad
+\hat{\jmath} =
+\begin{pmatrix}
+0 \\
+1
+\end{pmatrix}.
+$$
+
+The vector $(3,2)$ is really shorthand for
+
+$$
+3\hat{\imath} + 2\hat{\jmath}.
+$$
+
+Stretch the first basis vector by $3$, stretch the second by $2$, then add the
+results. Coordinates are instructions for building a vector out of chosen
+building blocks.
+
+A **linear combination** is exactly this kind of recipe:
+
+$$
+c_1v_1 + c_2v_2 + \cdots + c_kv_k.
+$$
+
+You are allowed to scale the given vectors however you like, including by
+negative numbers, then add them. The set of all vectors you can make this way is
+their **span**.
+
+One nonzero vector in the plane spans a line through the origin. You can slide
+back and forth along that direction, but you can never step off the line. Two
+vectors usually span the whole plane, because one gives you one direction and the
+other gives you a way to step away from it. But if the second vector lies on the
+same line as the first, it adds no new freedom. Then the span is still just a
+line.
+
+That is the visual content of linear dependence.
+
+A vector is **linearly dependent** on others if it already lies in their span. It
+is not giving you a new direction. It is a repeated sentence in a language you
+already know how to speak. A set of vectors is **linearly independent** if no
+vector in the set can be built from the others.
+
+A **basis** of a vector space is a linearly independent set that spans the whole
+space. Both halves are essential. Spanning means the set is large enough to reach
+everywhere. Independence means it has no redundant directions. A basis is a
+minimal vocabulary for a space.
+
+So the Cartesian unit vectors are not sacred. They are just a convenient basis.
+You could choose two slanted arrows instead, as long as they are not parallel.
+The same plane would still be there. Only the language would change.
+
+## A matrix is a moving grid
+
+Now let the whole plane move.
+
+A **transformation** is like a function with geometry attached. It takes an input
+vector and returns an output vector. If you imagine every vector in the plane as a
+point, a transformation tells each point where to go.
+
+Most transformations are chaotic. They can curl lines into circles, tear the
+grid, or send nearby points far apart. Linear algebra studies the calm ones:
+**linear transformations**.
+
+Geometrically, a linear transformation does three things:
+
+1. It keeps grid lines straight.
+2. It keeps parallel grid lines parallel and evenly spaced.
+3. It keeps the origin fixed.
+
+Those visual rules are the picture version of the algebraic rules
+
+$$
+T(u+v) = T(u) + T(v),
+\qquad
+T(cv) = cT(v).
+$$
+
+In words, transforming after adding is the same as adding after transforming,
+and transforming after scaling is the same as scaling after transforming. The map
+respects the two operations that define vector behavior.
+
+Here is why matrices enter. Since every vector in the plane is built from
+$\hat{\imath}$ and $\hat{\jmath}$, a linear transformation is completely
+determined once we know where those two basis vectors go.
+
+If
+
+$$
+T(\hat{\imath}) =
+\begin{pmatrix}
+a \\
+c
+\end{pmatrix},
+\qquad
+T(\hat{\jmath}) =
+\begin{pmatrix}
+b \\
+d
+\end{pmatrix},
+$$
+
+then the vector
+
+$$
+x\hat{\imath} + y\hat{\jmath}
+$$
+
+must land at
+
+$$
+xT(\hat{\imath}) + yT(\hat{\jmath})
+=
+x
+\begin{pmatrix}
+a \\
+c
+\end{pmatrix}
++ y
+\begin{pmatrix}
+b \\
+d
+\end{pmatrix}
+=
+\begin{pmatrix}
+ax + by \\
+cx + dy
+\end{pmatrix}.
+$$
+
+We pack the landing places of the basis vectors into the columns of a matrix:
+
+$$
+A =
+\begin{pmatrix}
+a & b \\
+c & d
+\end{pmatrix}.
+$$
+
+This is the essence of a matrix: **its columns say where the basis vectors go**.
+Matrix-vector multiplication is not an arbitrary rule. It is the inevitable
+answer to the question, "If the basis vectors move there, where does every other
+vector go?"
+
+## Matrix multiplication is composition
+
+Suppose one transformation rotates the plane, and another shears it. You can do
+the rotation first and then the shear. The result is a new transformation, built
+from the two smaller ones.
+
+This is called composition. Matrices record it as multiplication.
+
+If $A$ and $B$ are matrices, then $AB$ means: first apply $B$, then apply $A$.
+The order reads right to left because
+
+$$
+ABx = A(Bx).
+$$
+
+That notation is not trying to be mysterious. It is just function composition in
+matrix clothing.
+
+The column rule explains matrix multiplication without memorizing a formula. To
+know the matrix for the combined transformation, ask where the basis vectors end
+up. The first column of $AB$ is where $\hat{\imath}$ lands after $B$ and then
+$A$. That is $A$ applied to the first column of $B$. The second column is $A$
+applied to the second column of $B$. In higher dimensions the same rule continues
+column by column.
+
+Three-dimensional space is no different in spirit. A $3 \times 3$ matrix tells
+where the three basis vectors land. Rotations, shears, stretches, projections,
+and reflections in space all fit the same picture. The numbers grow, but the
+idea does not.
+
+## The determinant measures volume
+
+Imagine the plane as an infinite sheet of graph paper. Every little unit square
+is a tile. A linear transformation grabs the whole sheet and moves it in one
+perfectly disciplined motion: straight grid lines stay straight, parallel lines
+stay parallel, and every copy of the same tile becomes the same slanted tile.
+
+So if you understand what happens to one unit square, you understand what happens
+to area everywhere.
+
+The original unit square is spanned by $\hat{\imath}$ and $\hat{\jmath}$. After
+the transformation, its sides are the two transformed basis vectors,
+$T(\hat{\imath})$ and $T(\hat{\jmath})$. The square has become a parallelogram.
+The determinant is the signed area of that new fundamental tile.
+
+For
+
+$$
+A =
+\begin{pmatrix}
+a & b \\
+c & d
+\end{pmatrix},
+$$
+
+the determinant
+
+$$
+\det(A) = ad - bc
+$$
+
+is not just a number produced by a formula. It is the exchange rate between old
+area and new area.
+
+If $\det(A)=3$, the transformed unit tile has area $3$, and the entire graph
+paper has been made three times roomier. Every region, no matter how curved or
+irregular, can be approximated by tiny grid tiles, and each of those tiles has
+had its area multiplied by $3$. If $\det(A)=1/2$, the whole plane has been
+squeezed to half its area. The determinant is not measuring one special square;
+it is measuring how the transformation changes the density of space itself.
+
+The sign carries a separate piece of information. If $\det(A)>0$, orientation is
+preserved: a tiny ordered pair of arrows keeps the same clockwise or
+counterclockwise sense in the transformed world. If $\det(A)<0$, the sheet has
+been flipped. The area may double, but the plane has turned inside out in the
+only way a plane can. A small clockwise loop becomes counterclockwise. The
+transformation has not merely stretched the grid; it has made the coordinate
+system look back at you from the other side of the mirror.
+
+The most dramatic determinant is zero.
+
+If $\det(A)=0$, the transformed fundamental tile has no area at all. That does
+not mean it became a very skinny parallelogram. It means it became a line
+segment, or a point. One whole direction of motion has been erased. The graph
+paper has not been resized; it has been pressed flat until a two-dimensional
+world can no longer breathe as two-dimensional.
+
+This is the moment linear dependence becomes visible. The two transformed basis
+vectors used to point in independent directions, giving the plane two degrees of
+freedom. After a zero-determinant transformation, one transformed basis vector
+lies along the span of the other. The second direction is no longer genuinely
+new. It is just another way to walk along the same line.
+
+In three dimensions the same story becomes volume. The unit cube becomes a
+slanted parallelepiped, and $\det(A)$ tells how many signed unit cubes fit inside
+it. A zero determinant means the cube has been flattened into a sheet, a line, or
+a point. A room has become a shadow.
+
+That is why zero determinants matter. They are not merely bad denominators. They
+are the sound of dimension being lost.
+
+## Solving equations means finding a preimage
+
+A system of linear equations can be read as a question about a transformation.
+
+If
+
+$$
+Ax = b,
+$$
+
+then $A$ is a linear transformation, $x$ is the input vector we are hunting for,
+and $b$ is the target output. Solving the system means asking:
+
+> Which vector lands on $b$ after the space moves by $A$?
+
+If the transformation does not collapse dimension, there is exactly one answer.
+The inverse matrix $A^{-1}$ is the transformation that undoes $A$. Apply it to
+both sides and the hidden input reappears:
+
+$$
+x = A^{-1}b.
+$$
+
+But if $A$ crushes the plane onto a line, then most target vectors are
+unreachable. No input lands on a point outside that line. Some targets on the
+line may have infinitely many inputs, because whole directions were crushed
+together.
+
+This leads to two spaces that are more useful than their names suggest.
+
+The **column space** of a matrix is the span of its columns. Since the columns
+are where the basis vectors land, the column space is the set of all possible
+outputs. It is the transformed world that $A$ can actually reach.
+
+The **rank** is the dimension of the column space. A full-rank square matrix has
+not lost dimension. A rank-one matrix from the plane to the plane has collapsed
+all outputs onto a line.
+
+The **null space**, or kernel, is the set of input vectors that land at the
+origin:
+
+$$
+\ker(A) = \{x : Ax = 0\}.
+$$
+
+These are the directions the transformation erases. If a whole line of vectors
+goes to zero, then adding any vector from that line to a solution of $Ax=b$
+gives another solution. The null space is the ambiguity left behind by
+compression.
+
+## Nonsquare matrices move between dimensions
+
+Square matrices transform a space into another copy of itself: plane to plane,
+space to space. Nonsquare matrices are just as geometric. They move vectors
+between dimensions.
+
+A $3 \times 2$ matrix takes two-dimensional input and produces
+three-dimensional output. Its two columns live in $\mathbb{R}^3$, so they say
+where the two basis vectors of the input plane land in space. Visually, the
+matrix can embed a flat coordinate plane as a slanted plane inside
+three-dimensional space when those two columns are independent. If they are
+dependent, even this map can collapse the input plane down to a line.
+
+A $2 \times 3$ matrix goes the other way. It takes three-dimensional input and
+returns a point in the plane. Projection is the natural picture: it can flatten
+space onto a screen.
+
+The multiplication rule now becomes intuitive. If one matrix sends
+$\mathbb{R}^n$ to $\mathbb{R}^m$, and the next sends $\mathbb{R}^m$ to
+$\mathbb{R}^k$, their composition makes sense. The output dimension of the first
+transformation must match the input dimension of the second. Otherwise you are
+trying to feed a three-dimensional vector into a machine that expects two
+coordinates.
+
+That is the whole reason behind the dimension rule for matrix multiplication.
+
+## Dot products and duality
+
+The dot product has two faces.
+
+Computationally, it multiplies matching coordinates and adds:
+
+$$
+\begin{pmatrix}
+a \\
+b
+\end{pmatrix}
+\cdot
+\begin{pmatrix}
+c \\
+d
+\end{pmatrix}
+= ac + bd.
+$$
+
+Geometrically, it measures projection. If $v$ and $w$ are vectors, then
+
+$$
+v \cdot w = \|v\|\,\|w\|\cos\theta,
+$$
+
+where $\theta$ is the angle between them.
+
+But do not let the formula rush past the picture. Choose one vector, say $w$, and
+think of it as a measuring ruler laid across the plane. Now drop the shadow of
+$v$ onto that ruler. If $v$ points mostly along $w$, the shadow is long and
+positive. If $v$ points perpendicular to $w$, the shadow vanishes. If it points
+against $w$, the shadow lands backward and becomes negative.
+
+The dot product is this signed shadow, scaled by the length of the ruler. A unit
+vector asks the cleanest possible question: "How much of you points in my
+direction?" A longer vector asks the same question more loudly.
+
+There is a deeper way to say the same thing, and it is one of the places where
+linear algebra quietly changes flavor.
+
+A linear transformation from the plane to the number line takes a vector and
+returns a single number. Since its output is one-dimensional, its matrix has one
+row:
+
+$$
+\begin{pmatrix}
+p & q
+\end{pmatrix}.
+$$
+
+Applied to $(x,y)$, it gives
+
+$$
+px + qy.
+$$
+
+But that is exactly the dot product with the vector $(p,q)$:
+
+$$
+\begin{pmatrix}
+p \\
+q
+\end{pmatrix}
+\cdot
+\begin{pmatrix}
+x \\
+y
+\end{pmatrix}.
+$$
+
+This is **duality** in its most visible form. Every linear measurement of the
+plane, every linear map from vectors to numbers, corresponds to a unique vector
+in the plane. To apply the measurement is to take a dot product with that vector.
+
+That sentence is worth slowing down for. A linear measurement sounds like a
+machine: feed it a two-dimensional vector, receive a one-dimensional number. But
+duality says the machine has a physical avatar. It can be drawn as an arrow.
+
+The arrow points in the direction the measurement cares about most. Its length
+records how aggressively the measurement cares. Vectors perpendicular to it
+register zero, because they move across its level lines without climbing its
+scale. Vectors aligned with it register strongly, because they march straight up
+the measuring axis.
+
+So a vector can be an object being measured, but it can also be the measuring
+device itself. This is the small conceptual trapdoor under the dot product: the
+same arrow can be a direction in space or a linear question asked of space.
+
+## The cross product hides a dual vector
+
+The usual introduction to the cross product says this:
+
+Given two vectors $u$ and $v$ in three-dimensional space, $u \times v$ is a new
+vector perpendicular to both. Its length is the area of the parallelogram spanned
+by $u$ and $v$, and its direction is chosen by the right-hand rule.
+
+That is true, but it can feel like a trick. Why should an area become a vector?
+Why should perpendicularity appear?
+
+Duality gives a cleaner picture.
+
+Fix two vectors $u$ and $v$ in space. Now imagine a third vector $x$. The scalar
+triple product
+
+$$
+\det
+\begin{pmatrix}
+| & | & | \\
+u & v & x \\
+| & | & |
+\end{pmatrix}
+$$
+
+is the signed volume of the parallelepiped built from $u$, $v$, and $x$.
+
+Now freeze $u$ and $v$. They form a hinged parallelogram in space, like a little
+rigid sail. The third vector $x$ is allowed to move. Each time you choose a new
+$x$, the sail sweeps out a parallelepiped, and the determinant reports its signed
+volume.
+
+So with $u$ and $v$ fixed, the rule
+
+$$
+x \longmapsto \det(u,v,x)
+$$
+
+is a measurement of $x$. It takes a three-dimensional vector and returns a
+number. More importantly, it is linear in $x$: double the height, double the
+volume; add two height vectors, add the signed volumes.
+
+By duality, every such linear map is the same as dotting with one particular
+vector. There must be a vector $w$ such that
+
+$$
+w \cdot x =
+\det(u, v, x)
+\qquad \text{for every } x.
+$$
+
+That vector $w$ is $u \times v$.
+
+This turns the cross product from a rule into a necessity. The fixed vectors
+$u$ and $v$ define a volume-measuring machine. Duality says every such linear
+machine is secretly dot product with one vector. The cross product is that
+secret vector.
+
+Now its strange properties stop being strange.
+
+If $x=u$, the parallelepiped has two identical edges and therefore zero volume:
+$\det(u,v,u)=0$. Hence
+
+$$
+(u \times v)\cdot u = 0.
+$$
+
+So $u \times v$ must be perpendicular to $u$. The same argument with $x=v$ makes
+it perpendicular to $v$. Perpendicularity was not bolted onto the definition. It
+fell out of the fact that repeated edges make no volume.
+
+Its length is forced too. The dot product $(u \times v)\cdot x$ computes volume
+by taking the shadow of $x$ in the direction of $u \times v$ and multiplying by
+$\|u \times v\|$. But volume is also base area times height. Therefore
+$\|u \times v\|$ must be the area of the parallelogram spanned by $u$ and $v$,
+and the direction must be the normal that makes the signed volume come out with
+the right orientation.
+
+The cross product is not a random recipe. It is the dual vector for the linear
+measurement "how much signed volume do $u$, $v$, and this input vector create?"
+Once you see that, the right-hand rule becomes bookkeeping. The real idea is
+that an oriented area in three-dimensional space knows how to measure height,
+and duality lets that measuring habit be represented by a perpendicular arrow.
+
+## Changing basis means translating languages
+
+Coordinates are language. A basis is a dictionary.
+
+Suppose your friend uses two slanted basis vectors $b_1$ and $b_2$ instead of
+the standard $\hat{\imath}$ and $\hat{\jmath}$. When your friend writes
+$(2,3)$, they do not mean two steps right and three steps up. They mean
+
+$$
+2b_1 + 3b_2.
+$$
+
+To translate their coordinates into ours, build the matrix
+
+$$
+B =
+\begin{pmatrix}
+| & | \\
+b_1 & b_2 \\
+| & |
+\end{pmatrix}.
+$$
+
+Its columns are their basis vectors written in our coordinates. Therefore
+
+$$
+\text{our coordinates} = B(\text{their coordinates}).
+$$
+
+To translate back, use $B^{-1}$:
+
+$$
+\text{their coordinates} = B^{-1}(\text{our coordinates}).
+$$
+
+This becomes powerful when studying transformations. Suppose $M$ is a linear
+transformation written in our standard coordinates. What matrix describes the
+same transformation from your friend's coordinate system?
+
+Start with their coordinates. Translate into our language with $B$. Apply the
+transformation $M$. Translate back with $B^{-1}$. The matrix they see is
+
+$$
+B^{-1}MB.
+$$
+
+This expression is not algebraic decoration. It is a three-step story:
+
+1. Change from their coordinates to ours.
+2. Do the transformation.
+3. Change back.
+
+Many books write this as $A^{-1}MA$ when $A$ is the change-of-basis matrix. The
+letters do not matter. The sandwich does. A transformation can look complicated
+in one language and simple in another.
+
+## Eigenvectors are the directions that survive
+
+Now we reach one of the most useful ideas in the subject.
+
+Most vectors change direction when a matrix acts on them. A shear drags the top
+of the plane sideways. A generic vector comes out pointing somewhere new. But
+some special vectors keep their direction. They may stretch, shrink, or reverse,
+but they stay on the same line.
+
+Those are **eigenvectors**. If
+
+$$
+Av = \lambda v
+$$
+
+for some nonzero vector $v$, then $v$ is an eigenvector and $\lambda$ is its
+eigenvalue. The eigenvalue is the scale factor along that direction.
+
+Geometrically, an eigenvector is a direction the transformation treats simply.
+Everything else may mix, but this line is preserved.
+
+To find such directions, rewrite the equation:
+
+$$
+Av = \lambda v
+\qquad \Longleftrightarrow \qquad
+(A-\lambda I)v = 0.
+$$
+
+We are looking for a nonzero vector that gets crushed to zero by
+$A-\lambda I$. That can happen only when this new matrix loses dimension, which
+is exactly when its determinant is zero:
+
+$$
+\det(A-\lambda I)=0.
+$$
+
+That equation gives the possible eigenvalues. Each eigenvalue then gives a null
+space, and the nonzero vectors in that null space are the eigenvectors.
+
+In three dimensions, a rotation often has a visible eigenvector: the axis of
+rotation. Points spin around it, but the axis itself stays fixed. Its eigenvalue
+is $1$ if the direction is unchanged.
+
+The real prize comes when a space has a basis made of eigenvectors. In that
+basis, the transformation becomes diagonal:
+
+$$
+\begin{pmatrix}
+\lambda_1 & 0 & \cdots & 0 \\
+0 & \lambda_2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \lambda_n
+\end{pmatrix}.
+$$
+
+Diagonal matrices are easy because they do not mix coordinates. They just scale
+each basis direction independently. Repeating the transformation becomes almost
+trivial:
+
+$$
+D^k =
+\begin{pmatrix}
+\lambda_1^k & 0 & \cdots & 0 \\
+0 & \lambda_2^k & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \lambda_n^k
+\end{pmatrix}.
+$$
+
+This is why eigenvectors show up in dynamical systems, Markov chains, vibrations,
+differential equations, graph algorithms, and data analysis. They are the
+coordinate system in which the transformation stops mixing its story.
+
+## Abstract vector spaces are not a retreat from pictures
+
+At this point the mathematician's definition of vector begins to look less cold.
+It was not trying to erase the arrow. It was trying to preserve the part of the
+arrow that mattered.
+
+A function can be added to another function:
+
+$$
+(f+g)(x) = f(x) + g(x).
+$$
+
+A function can be scaled:
+
+$$
+(cf)(x) = c f(x).
+$$
+
+So suitable collections of functions form vector spaces. The zero vector is the
+zero function. A linearly independent set of functions is a collection where none
+can be built as a linear combination of the others. A basis, when one exists in
+the right sense, lets us describe functions by coordinates.
+
+Even calculus fits the linear algebra picture. The derivative is a linear
+operator because
+
+$$
+\frac{d}{dx}(f+g) = \frac{df}{dx} + \frac{dg}{dx},
+\qquad
+\frac{d}{dx}(cf) = c\frac{df}{dx}.
+$$
+
+On a suitable function space, differentiation transforms one function into
+another while respecting addition and scaling. That makes it a linear
+transformation, just not one between small finite-dimensional spaces. In this
+world, the eigenvector equation becomes
+
+$$
+\frac{df}{dx} = \lambda f.
+$$
+
+The functions that keep their "direction" under differentiation are
+exponentials. This is the same eigenvector idea wearing the clothes of calculus.
+
+The abstract definition says: whenever you have objects with vector addition and
+scalar multiplication satisfying the usual axioms, you may bring the whole
+machine of linear algebra with you. Span, basis, linear maps, kernels, rank,
+duality, eigenvectors, and diagonalization are no longer facts about arrows
+alone. They are facts about structure.
+
+That is not abstraction as escape. It is abstraction as transportation. You
+learn something once in the plane, then carry it into places your eyes cannot
+draw.
+
+## What to remember
+
+If you remember only one sentence, make it this:
+
+> Linear algebra is the study of things that can be added and scaled, and of
+> transformations that respect addition and scaling.
+
+Vectors are not merely arrows or lists. They are objects that live inside this
+add-and-scale world. A basis is a language for describing them. A matrix records
+where basis vectors go under a linear transformation. Matrix multiplication is
+composition of motion. The determinant measures how area or volume changes.
+Column space tells what outputs are reachable; null space tells what inputs are
+erased. Dot products are linear measurements in disguise. Cross products are
+dual vectors for volume measurements. Change of basis is translation between
+coordinate languages. Eigenvectors are the directions in which a transformation
+becomes simple. And abstract vector spaces are the reason all of this applies
+far beyond the plane.
+
+The numbers matter, of course. But they are not the essence. The essence is the
+grid moving, the space stretching, the hidden directions revealing themselves,
+and the same simple structure appearing in arrows, data, equations, and
+functions.
+
+## How to cite
+
+> Terry (2026). *The Essence of Linear Algebra*. Retrieved from `https://terryfxh.github.io/math-notes/posts/the-essence-of-linear-algebra/`.
