@@ -47,7 +47,7 @@ The determinant is one of the most computable objects in mathematics. Gaussian
 elimination finds it quickly, even for enormous matrices. The permanent, in
 general, is one of the canonical hard counting problems. For $0$-$1$ matrices it
 counts perfect matchings in a bipartite graph, and Valiant proved that computing
-it exactly is #P-complete [@valiant1979permanent].
+it exactly is $\#P$-complete [@valiant1979permanent].
 
 So the question is not just "what is the difference?" The question is: how can a
 minus sign carry that much power?
@@ -153,9 +153,10 @@ the volume stretches. Add one column to another, and the volume does not change,
 because you have sheared the shape without changing its base-height content.
 Swap two columns, and the orientation flips, so the sign changes.
 
-These three habits are what make Gaussian elimination possible. Row operations
-do not merely manipulate entries; they manipulate volume in controlled ways.
-Shears preserve it. Swaps flip its sign. Scaling a row scales it. By the end of
+These three habits are what make Gaussian elimination possible. The same rules
+hold row-by-row as well as column-by-column, so row operations do not merely
+manipulate entries; they manipulate signed volume in controlled ways. Shears
+preserve it. Swaps flip its sign. Scaling a row scales it. By the end of
 elimination, the matrix has been simplified to a triangular one, where the
 volume is just the product of the diagonal entries.
 
@@ -260,9 +261,9 @@ positive. That is close, but it needs sharpening.
 Subtraction alone is not magic. The magic is that the determinant's cancellations
 are structured. They are exactly the cancellations required by geometry:
 
-- If two columns agree, the answer must be zero.
+- If two columns agree, the determinant must be zero.
 - If one column is a sum of two columns, the volume splits linearly.
-- If one column is sheared by adding another column, the volume is unchanged.
+- If one column is changed by adding a multiple of another, the volume is unchanged.
 - If two columns swap places, the orientation reverses.
 
 These rules are so rigid that they determine the determinant. More importantly,
@@ -270,12 +271,13 @@ they let an algorithm take shortcuts. Gaussian elimination can kill entries one
 at a time because it knows which operations preserve signed volume and which
 operations change it in simple ways.
 
-The permanent does not behave like volume. Adding one row to another does not
-preserve the number of matchings. Swapping columns does not introduce an
-orientation sign. Two equal columns do not make the answer vanish. The permanent
-is not an invariant of a shape being sheared through space. It is a count of
-discrete choices, and counts are stubborn. If there are a million possible
-matchings, the permanent is trying to account for a million possible matchings.
+The permanent does not behave like volume. In the matching interpretation,
+adding one row to another does not preserve the number of matchings. Swapping
+columns does not introduce an orientation sign. Two equal columns do not make
+the answer vanish. The permanent is not an invariant of a shape being sheared
+through space. In its $0$-$1$ form, it is a count of discrete choices, and counts
+are stubborn. If there are a million possible matchings, the permanent is trying
+to account for a million possible matchings.
 
 This is why the naive formula is misleading in opposite directions.
 
@@ -286,7 +288,7 @@ For the permanent, the $n!$-term formula looks similar, but the object is
 genuinely asking a counting question with no comparable general compression
 known. Valiant's theorem says this is not an accident of our imagination: even
 for $0$-$1$ matrices, exact permanent computation captures the difficulty of
-#P counting problems [@valiant1979permanent].
+$\#P$ counting problems [@valiant1979permanent].
 
 ## A small warning about slogans
 
@@ -344,7 +346,7 @@ signed volume, so its terms cancel in exactly the ways geometry demands. Those
 cancellations make row reduction possible and let us compute it quickly. The
 permanent is a counting function. For a $0$-$1$ matrix, it counts perfect
 matchings in a bipartite graph. It has no orientation to exploit, no general
-Gaussian-elimination shortcut, and exact computation is #P-complete.
+Gaussian-elimination shortcut, and exact computation is $\#P$-complete.
 
 So the minus sign in the determinant is not a nuisance. It is the reason the
 determinant is a geometric object rather than just an enormous sum.
