@@ -10,7 +10,166 @@
 <atom:link href="https://terryfxh.github.io/math-notes/notes.xml" rel="self" type="application/rss+xml"/>
 <description>Self-contained notes in pure and applied mathematics, derived from first principles with runnable code where it helps.</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Fri, 19 Jun 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 22 Jun 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Permanent vs. Determinant</title>
+  <link>https://terryfxh.github.io/math-notes/posts/permanent-vs-determinant/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p>“A mathematician, like a painter or a poet, is a maker of patterns.”</p>
+<p><span class="attribution">— G. H. Hardy, <em>A Mathematician’s Apology</em></span></p>
+</div>
+<p>Here is a tiny act of vandalism.</p>
+<p>Take the determinant of a <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%202"> matrix:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cdet%0A%5Cbegin%7Bpmatrix%7D%0Aa%20&amp;%20b%20%5C%5C%0Ac%20&amp;%20d%0A%5Cend%7Bpmatrix%7D%0A=%20ad%20-%20bc.%0A"></p>
+<p>Now erase the minus sign and write a plus sign instead:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Coperatorname%7Bper%7D%0A%5Cbegin%7Bpmatrix%7D%0Aa%20&amp;%20b%20%5C%5C%0Ac%20&amp;%20d%0A%5Cend%7Bpmatrix%7D%0A=%20ad%20+%20bc.%0A"></p>
+<p>That second expression is called the <strong>permanent</strong>. It looks like the determinant’s harmless cousin. Same products. Same entries. Same tiny formula. Only the sign has changed.</p>
+<p>But that sign is not punctuation. It is the trapdoor between two worlds.</p>
+<p>The determinant is one of the most computable objects in mathematics. Gaussian elimination finds it quickly, even for enormous matrices. The permanent, in general, is one of the canonical hard counting problems. For <img src="https://latex.codecogs.com/png.latex?0">-<img src="https://latex.codecogs.com/png.latex?1"> matrices it counts perfect matchings in a bipartite graph, and Valiant proved that computing it exactly is #P-complete <span class="citation" data-cites="valiant1979permanent">[1]</span>.</p>
+<p>So the question is not just “what is the difference?” The question is: how can a minus sign carry that much power?</p>
+<section id="two-ways-to-pair-two-rows" class="level2">
+<h2 class="anchored" data-anchor-id="two-ways-to-pair-two-rows">Two ways to pair two rows</h2>
+<p>Start with the <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%202"> case and forget matrices for a moment. Imagine two workers and two jobs. The entry <img src="https://latex.codecogs.com/png.latex?a_%7Bij%7D"> is the weight, compatibility, or value of assigning worker <img src="https://latex.codecogs.com/png.latex?i"> to job <img src="https://latex.codecogs.com/png.latex?j">.</p>
+<p>There are exactly two perfect assignments:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Barray%7D%7Bccl%7D%0A%5Ctext%7Bstraight%20pairing%7D%20&amp;:&amp;%201%20%5Cmapsto%201,%5Cquad%202%20%5Cmapsto%202,%20%5C%5C%0A%5Ctext%7Bcrossed%20pairing%7D%20%20&amp;:&amp;%201%20%5Cmapsto%202,%5Cquad%202%20%5Cmapsto%201.%0A%5Cend%7Barray%7D%0A"></p>
+<p>The straight pairing contributes <img src="https://latex.codecogs.com/png.latex?ad">. The crossed pairing contributes <img src="https://latex.codecogs.com/png.latex?bc">.</p>
+<p>The permanent adds both:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Coperatorname%7Bper%7D%0A%5Cbegin%7Bpmatrix%7D%0Aa%20&amp;%20b%20%5C%5C%0Ac%20&amp;%20d%0A%5Cend%7Bpmatrix%7D%0A=%20ad%20+%20bc.%0A"></p>
+<p>It asks: how much total weight is there across all perfect assignments?</p>
+<p>The determinant also sees the same two assignments, but it gives one of them a negative sign:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cdet%0A%5Cbegin%7Bpmatrix%7D%0Aa%20&amp;%20b%20%5C%5C%0Ac%20&amp;%20d%0A%5Cend%7Bpmatrix%7D%0A=%20ad%20-%20bc.%0A"></p>
+<p>That negative sign is orientation. In the plane, the straight pairing keeps the two basis directions in their original order; the crossed pairing swaps them. Swapping two directions reverses orientation, and the determinant remembers that reversal as a minus sign.</p>
+<p>Already the personalities are different. The permanent is a census. The determinant is a signed census, where oppositely oriented arrangements can cancel each other out.</p>
+</section>
+<section id="the-general-formula" class="level2">
+<h2 class="anchored" data-anchor-id="the-general-formula">The general formula</h2>
+<p>For an <img src="https://latex.codecogs.com/png.latex?n%20%5Ctimes%20n"> matrix <img src="https://latex.codecogs.com/png.latex?A=(a_%7Bij%7D)">, both formulas run over all permutations of <img src="https://latex.codecogs.com/png.latex?%5C%7B1,%5Cdots,n%5C%7D">. A permutation <img src="https://latex.codecogs.com/png.latex?%5Csigma"> chooses exactly one column <img src="https://latex.codecogs.com/png.latex?%5Csigma(i)"> for each row <img src="https://latex.codecogs.com/png.latex?i">, and because <img src="https://latex.codecogs.com/png.latex?%5Csigma"> is a permutation, no two rows choose the same column.</p>
+<p>The permanent is</p>
+<p><span id="eq-permanent"><img src="https://latex.codecogs.com/png.latex?%0A%5Coperatorname%7Bper%7D(A)%0A=%0A%5Csum_%7B%5Csigma%5Cin%20S_n%7D%0A%5Cprod_%7Bi=1%7D%5En%20a_%7Bi,%5Csigma(i)%7D.%0A%5Ctag%7B1%7D"></span></p>
+<p>The determinant is</p>
+<p><span id="eq-determinant"><img src="https://latex.codecogs.com/png.latex?%0A%5Cdet(A)%0A=%0A%5Csum_%7B%5Csigma%5Cin%20S_n%7D%0A%5Coperatorname%7Bsgn%7D(%5Csigma)%0A%5Cprod_%7Bi=1%7D%5En%20a_%7Bi,%5Csigma(i)%7D.%0A%5Ctag%7B2%7D"></span></p>
+<p>There it is: the same sum, except the determinant attaches the sign of the permutation. Even permutations contribute positively. Odd permutations contribute negatively.</p>
+<p>If you have only seen determinants as row-reduction outputs, Equation&nbsp;2 may look like a terrible way to compute them. It is. There are <img src="https://latex.codecogs.com/png.latex?n!"> permutations, and <img src="https://latex.codecogs.com/png.latex?n!"> grows like an explosion with a clock attached. But the formula is the right way to understand what the determinant is doing. It is collecting every possible way the transformed basis vectors can contribute to oriented volume, then letting opposite orientations cancel.</p>
+<p>The permanent does the same collection without the orientation cancellation.</p>
+</section>
+<section id="what-the-determinant-is-allowed-to-forget" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-determinant-is-allowed-to-forget">What the determinant is allowed to forget</h2>
+<p>The determinant is not merely a formula. It is signed volume.</p>
+<p>Put the columns of a matrix in space. They span a parallelogram in two dimensions, a parallelepiped in three, and an <img src="https://latex.codecogs.com/png.latex?n">-dimensional volume in general. The determinant tells you the signed size of that volume. Stretch a column, and the volume stretches. Add one column to another, and the volume does not change, because you have sheared the shape without changing its base-height content. Swap two columns, and the orientation flips, so the sign changes.</p>
+<p>These three habits are what make Gaussian elimination possible. Row operations do not merely manipulate entries; they manipulate volume in controlled ways. Shears preserve it. Swaps flip its sign. Scaling a row scales it. By the end of elimination, the matrix has been simplified to a triangular one, where the volume is just the product of the diagonal entries.</p>
+<p>So the determinant has a compression principle:</p>
+<blockquote class="blockquote">
+<p>Many different-looking matrices represent the same signed volume, and row reduction is allowed to move among them without losing the answer.</p>
+</blockquote>
+<p>That is the algorithmic miracle. The determinant can forget enormous amounts of detail because signed volume is an invariant. It does not need to remember every assignment separately.</p>
+<p>The permanent has no such mercy.</p>
+</section>
+<section id="what-the-permanent-refuses-to-forget" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-permanent-refuses-to-forget">What the permanent refuses to forget</h2>
+<p>Take a <img src="https://latex.codecogs.com/png.latex?0">-<img src="https://latex.codecogs.com/png.latex?1"> matrix and read it as the adjacency matrix of a bipartite graph. Rows are workers, columns are jobs, and <img src="https://latex.codecogs.com/png.latex?a_%7Bij%7D=1"> means worker <img src="https://latex.codecogs.com/png.latex?i"> is allowed to take job <img src="https://latex.codecogs.com/png.latex?j">.</p>
+<p>For any permutation <img src="https://latex.codecogs.com/png.latex?%5Csigma">, the product</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cprod_%7Bi=1%7D%5En%20a_%7Bi,%5Csigma(i)%7D%0A"></p>
+<p>is <img src="https://latex.codecogs.com/png.latex?1"> exactly when every chosen assignment is allowed, and <img src="https://latex.codecogs.com/png.latex?0"> otherwise. Therefore Equation&nbsp;1 counts the number of perfect matchings in the graph:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Coperatorname%7Bper%7D(A)%0A=%0A%5C#%5C%7B%5Ctext%7Bperfect%20matchings%20of%20the%20bipartite%20graph%7D%5C%7D.%0A"></p>
+<p>This is the permanent’s natural habitat. It counts how many global arrangements survive local restrictions. That is why it appears in enumerative combinatorics <span class="citation" data-cites="stanley2012">[2]</span>.</p>
+<p>Now compare what happens when two columns are equal.</p>
+<p>For the determinant, equal columns force collapse. Geometrically, two basis directions have landed on the same direction, so the volume is zero. Algebraically, the terms in Equation&nbsp;2 pair off: swapping those two equal columns leaves the product unchanged but reverses the sign. Every positive term meets an equal negative term and disappears.</p>
+<p>For the permanent, equal columns do not cancel. They reinforce. If two jobs have identical compatibility patterns, the permanent sees two genuinely different assignments. Worker 1 taking job A while worker 2 takes job B is not the same as worker 1 taking job B while worker 2 takes job A, even if the columns look identical. The permanent says: count both.</p>
+<p>This is the heart of the matter.</p>
+<p>The determinant turns symmetry into cancellation. The permanent turns symmetry into multiplicity.</p>
+</section>
+<section id="the-all-ones-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="the-all-ones-matrix">The all-ones matrix</h2>
+<p>Here is the cleanest place to feel the difference. Let <img src="https://latex.codecogs.com/png.latex?J_n"> be the <img src="https://latex.codecogs.com/png.latex?n%20%5Ctimes%20n"> matrix whose entries are all <img src="https://latex.codecogs.com/png.latex?1">.</p>
+<p>Every worker can do every job. How many perfect assignments are there?</p>
+<p>There are <img src="https://latex.codecogs.com/png.latex?n!">, one for each permutation, so</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Coperatorname%7Bper%7D(J_n)%20=%20n!.%0A"></p>
+<p>The permanent sees the full combinatorial abundance.</p>
+<p>But the determinant sees something else:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cdet(J_n)%20=%200%0A%5Cqquad%20%5Ctext%7Bfor%20%7D%20n%5Cge%202.%0A"></p>
+<p>All columns are identical. As vectors, they span only a line. The <img src="https://latex.codecogs.com/png.latex?n">-dimensional volume has collapsed completely. The determinant does not care that there are many assignments; it cares that the transformed coordinate directions do not enclose any volume.</p>
+<p>This example is almost unfairly revealing. The same matrix is either maximally rich or completely degenerate, depending on the question.</p>
+<p>The permanent asks, “How many ways can the choices be matched?”</p>
+<p>The determinant asks, “How much oriented space do these columns enclose?”</p>
+<p>Those are not two versions of the same question. They only wear the same notation.</p>
+</section>
+<section id="why-the-sign-makes-computation-easier" class="level2">
+<h2 class="anchored" data-anchor-id="why-the-sign-makes-computation-easier">Why the sign makes computation easier</h2>
+<p>It is tempting to say that the determinant is easy because subtraction allows cancellation, while the permanent is hard because all permutation signs are positive. That is close, but it needs sharpening.</p>
+<p>Subtraction alone is not magic. The magic is that the determinant’s cancellations are structured. They are exactly the cancellations required by geometry:</p>
+<ul>
+<li>If two columns agree, the answer must be zero.</li>
+<li>If one column is a sum of two columns, the volume splits linearly.</li>
+<li>If one column is sheared by adding another column, the volume is unchanged.</li>
+<li>If two columns swap places, the orientation reverses.</li>
+</ul>
+<p>These rules are so rigid that they determine the determinant. More importantly, they let an algorithm take shortcuts. Gaussian elimination can kill entries one at a time because it knows which operations preserve signed volume and which operations change it in simple ways.</p>
+<p>The permanent does not behave like volume. Adding one row to another does not preserve the number of matchings. Swapping columns does not introduce an orientation sign. Two equal columns do not make the answer vanish. The permanent is not an invariant of a shape being sheared through space. It is a count of discrete choices, and counts are stubborn. If there are a million possible matchings, the permanent is trying to account for a million possible matchings.</p>
+<p>This is why the naive formula is misleading in opposite directions.</p>
+<p>For the determinant, the <img src="https://latex.codecogs.com/png.latex?n!">-term formula looks hard, but the object has hidden geometry that lets us compress the computation.</p>
+<p>For the permanent, the <img src="https://latex.codecogs.com/png.latex?n!">-term formula looks similar, but the object is genuinely asking a counting question with no comparable general compression known. Valiant’s theorem says this is not an accident of our imagination: even for <img src="https://latex.codecogs.com/png.latex?0">-<img src="https://latex.codecogs.com/png.latex?1"> matrices, exact permanent computation captures the difficulty of #P counting problems <span class="citation" data-cites="valiant1979permanent">[1]</span>.</p>
+</section>
+<section id="a-small-warning-about-slogans" class="level2">
+<h2 class="anchored" data-anchor-id="a-small-warning-about-slogans">A small warning about slogans</h2>
+<p>“The permanent is hard because it has no minus signs” is a useful first sentence, but it is not the whole explanation.</p>
+<p>There are special families where permanent-like counts become tractable. Planar matching problems, for example, can sometimes be smuggled back into a determinant or Pfaffian after choosing signs with great care; the dimer-counting story behind domino tilings is one beautiful example. We already touched that world in the domino post.</p>
+<p>The deeper slogan is this:</p>
+<blockquote class="blockquote">
+<p>Signs are useful when they encode structure.</p>
+</blockquote>
+<p>In the determinant, permutation signs encode orientation. That orientation gives the determinant its geometric meaning, its cancellation laws, and its fast algorithms. In the permanent, replacing every permutation sign by <img src="https://latex.codecogs.com/png.latex?+"> destroys that orientation. What remains is not a bad determinant. It is a different creature: a pure count of compatible global choices.</p>
+</section>
+<section id="why-this-belongs-in-linear-algebra" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-belongs-in-linear-algebra">Why this belongs in linear algebra</h2>
+<p>At first, the permanent sounds like combinatorics and the determinant sounds like linear algebra. That is true, but too neat.</p>
+<p>The determinant sits at a crossing point. It is a polynomial in the matrix entries, a volume measurement, a test for invertibility, and a signed sum over permutations. Linear algebra usually teaches the volume and invertibility stories. Combinatorics notices the sum over permutations. Algorithms notice the gap between the two formulas.</p>
+<p>The permanent forces all three perspectives into the same room. It asks:</p>
+<blockquote class="blockquote">
+<p>What part of the determinant’s power came from the products, and what part came from the signs?</p>
+</blockquote>
+<p>The answer is bracing. The products alone give you assignments. The signs give you orientation. Orientation gives you cancellation. Cancellation gives you a geometry. Geometry gives you fast computation.</p>
+<p>Remove the signs, and you do not get a simpler determinant. You get the permanent: an object that remembers every compatible arrangement and refuses to let opposite terms annihilate each other.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>The determinant and the permanent are built from the same permutation products. The determinant weights each product by the sign of the permutation; the permanent gives every product a plus sign.</p>
+<p>That small formal difference changes the meaning completely. The determinant is signed volume, so its terms cancel in exactly the ways geometry demands. Those cancellations make row reduction possible and let us compute it quickly. The permanent is a counting function. For a <img src="https://latex.codecogs.com/png.latex?0">-<img src="https://latex.codecogs.com/png.latex?1"> matrix, it counts perfect matchings in a bipartite graph. It has no orientation to exploit, no general Gaussian-elimination shortcut, and exact computation is #P-complete.</p>
+<p>So the minus sign in the determinant is not a nuisance. It is the reason the determinant is a geometric object rather than just an enormous sum.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Permanent vs.&nbsp;Determinant</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/permanent-vs-determinant/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
+<div id="ref-valiant1979permanent" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. G. Valiant, <span>“The complexity of computing the permanent,”</span> <em>Theoretical Computer Science</em>, vol. 8, no. 2, pp. 189–201, 1979.</div>
+</div>
+<div id="ref-stanley2012" class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">R. P. Stanley, <em>Enumerative combinatorics, volume 1</em>, 2nd ed. in Cambridge studies in advanced mathematics. Cambridge University Press, 2012.</div>
+</div>
+</div></section></div> ]]></description>
+  <category>pure</category>
+  <category>applied</category>
+  <category>combinatorics</category>
+  <category>computer-science</category>
+  <category>algorithms</category>
+  <category>linear-algebra</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/permanent-vs-determinant/</guid>
+  <pubDate>Mon, 22 Jun 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>At Least One Side of One Sheep</title>
   <link>https://terryfxh.github.io/math-notes/posts/at-least-one-side-of-one-sheep/</link>
