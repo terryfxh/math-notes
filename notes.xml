@@ -30,7 +30,7 @@
 <p><img src="https://latex.codecogs.com/png.latex?%0A%5Coperatorname%7Bper%7D%0A%5Cbegin%7Bpmatrix%7D%0Aa%20&amp;%20b%20%5C%5C%0Ac%20&amp;%20d%0A%5Cend%7Bpmatrix%7D%0A=%20ad%20+%20bc.%0A"></p>
 <p>That second expression is called the <strong>permanent</strong>. It looks like the determinant’s harmless cousin. Same products. Same entries. Same tiny formula. Only the sign has changed.</p>
 <p>But that sign is not punctuation. It is the trapdoor between two worlds.</p>
-<p>The determinant is one of the most computable objects in mathematics. Gaussian elimination finds it quickly, even for enormous matrices. The permanent, in general, is one of the canonical hard counting problems. For <img src="https://latex.codecogs.com/png.latex?0">-<img src="https://latex.codecogs.com/png.latex?1"> matrices it counts perfect matchings in a bipartite graph, and Valiant proved that computing it exactly is #P-complete <span class="citation" data-cites="valiant1979permanent">[1]</span>.</p>
+<p>The determinant is one of the most computable objects in mathematics. Gaussian elimination finds it quickly, even for enormous matrices. The permanent, in general, is one of the canonical hard counting problems. For <img src="https://latex.codecogs.com/png.latex?0">-<img src="https://latex.codecogs.com/png.latex?1"> matrices it counts perfect matchings in a bipartite graph, and Valiant proved that computing it exactly is <img src="https://latex.codecogs.com/png.latex?%5C#P">-complete <span class="citation" data-cites="valiant1979permanent">[1]</span>.</p>
 <p>So the question is not just “what is the difference?” The question is: how can a minus sign carry that much power?</p>
 <section id="two-ways-to-pair-two-rows" class="level2">
 <h2 class="anchored" data-anchor-id="two-ways-to-pair-two-rows">Two ways to pair two rows</h2>
@@ -61,7 +61,7 @@
 <h2 class="anchored" data-anchor-id="what-the-determinant-is-allowed-to-forget">What the determinant is allowed to forget</h2>
 <p>The determinant is not merely a formula. It is signed volume.</p>
 <p>Put the columns of a matrix in space. They span a parallelogram in two dimensions, a parallelepiped in three, and an <img src="https://latex.codecogs.com/png.latex?n">-dimensional volume in general. The determinant tells you the signed size of that volume. Stretch a column, and the volume stretches. Add one column to another, and the volume does not change, because you have sheared the shape without changing its base-height content. Swap two columns, and the orientation flips, so the sign changes.</p>
-<p>These three habits are what make Gaussian elimination possible. Row operations do not merely manipulate entries; they manipulate volume in controlled ways. Shears preserve it. Swaps flip its sign. Scaling a row scales it. By the end of elimination, the matrix has been simplified to a triangular one, where the volume is just the product of the diagonal entries.</p>
+<p>These three habits are what make Gaussian elimination possible. The same rules hold row-by-row as well as column-by-column, so row operations do not merely manipulate entries; they manipulate signed volume in controlled ways. Shears preserve it. Swaps flip its sign. Scaling a row scales it. By the end of elimination, the matrix has been simplified to a triangular one, where the volume is just the product of the diagonal entries.</p>
 <p>So the determinant has a compression principle:</p>
 <blockquote class="blockquote">
 <p>Many different-looking matrices represent the same signed volume, and row reduction is allowed to move among them without losing the answer.</p>
@@ -103,16 +103,16 @@
 <p>It is tempting to say that the determinant is easy because subtraction allows cancellation, while the permanent is hard because all permutation signs are positive. That is close, but it needs sharpening.</p>
 <p>Subtraction alone is not magic. The magic is that the determinant’s cancellations are structured. They are exactly the cancellations required by geometry:</p>
 <ul>
-<li>If two columns agree, the answer must be zero.</li>
+<li>If two columns agree, the determinant must be zero.</li>
 <li>If one column is a sum of two columns, the volume splits linearly.</li>
-<li>If one column is sheared by adding another column, the volume is unchanged.</li>
+<li>If one column is changed by adding a multiple of another, the volume is unchanged.</li>
 <li>If two columns swap places, the orientation reverses.</li>
 </ul>
 <p>These rules are so rigid that they determine the determinant. More importantly, they let an algorithm take shortcuts. Gaussian elimination can kill entries one at a time because it knows which operations preserve signed volume and which operations change it in simple ways.</p>
-<p>The permanent does not behave like volume. Adding one row to another does not preserve the number of matchings. Swapping columns does not introduce an orientation sign. Two equal columns do not make the answer vanish. The permanent is not an invariant of a shape being sheared through space. It is a count of discrete choices, and counts are stubborn. If there are a million possible matchings, the permanent is trying to account for a million possible matchings.</p>
+<p>The permanent does not behave like volume. In the matching interpretation, adding one row to another does not preserve the number of matchings. Swapping columns does not introduce an orientation sign. Two equal columns do not make the answer vanish. The permanent is not an invariant of a shape being sheared through space. In its <img src="https://latex.codecogs.com/png.latex?0">-<img src="https://latex.codecogs.com/png.latex?1"> form, it is a count of discrete choices, and counts are stubborn. If there are a million possible matchings, the permanent is trying to account for a million possible matchings.</p>
 <p>This is why the naive formula is misleading in opposite directions.</p>
 <p>For the determinant, the <img src="https://latex.codecogs.com/png.latex?n!">-term formula looks hard, but the object has hidden geometry that lets us compress the computation.</p>
-<p>For the permanent, the <img src="https://latex.codecogs.com/png.latex?n!">-term formula looks similar, but the object is genuinely asking a counting question with no comparable general compression known. Valiant’s theorem says this is not an accident of our imagination: even for <img src="https://latex.codecogs.com/png.latex?0">-<img src="https://latex.codecogs.com/png.latex?1"> matrices, exact permanent computation captures the difficulty of #P counting problems <span class="citation" data-cites="valiant1979permanent">[1]</span>.</p>
+<p>For the permanent, the <img src="https://latex.codecogs.com/png.latex?n!">-term formula looks similar, but the object is genuinely asking a counting question with no comparable general compression known. Valiant’s theorem says this is not an accident of our imagination: even for <img src="https://latex.codecogs.com/png.latex?0">-<img src="https://latex.codecogs.com/png.latex?1"> matrices, exact permanent computation captures the difficulty of <img src="https://latex.codecogs.com/png.latex?%5C#P"> counting problems <span class="citation" data-cites="valiant1979permanent">[1]</span>.</p>
 </section>
 <section id="a-small-warning-about-slogans" class="level2">
 <h2 class="anchored" data-anchor-id="a-small-warning-about-slogans">A small warning about slogans</h2>
@@ -138,7 +138,7 @@
 <section id="what-to-remember" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
 <p>The determinant and the permanent are built from the same permutation products. The determinant weights each product by the sign of the permutation; the permanent gives every product a plus sign.</p>
-<p>That small formal difference changes the meaning completely. The determinant is signed volume, so its terms cancel in exactly the ways geometry demands. Those cancellations make row reduction possible and let us compute it quickly. The permanent is a counting function. For a <img src="https://latex.codecogs.com/png.latex?0">-<img src="https://latex.codecogs.com/png.latex?1"> matrix, it counts perfect matchings in a bipartite graph. It has no orientation to exploit, no general Gaussian-elimination shortcut, and exact computation is #P-complete.</p>
+<p>That small formal difference changes the meaning completely. The determinant is signed volume, so its terms cancel in exactly the ways geometry demands. Those cancellations make row reduction possible and let us compute it quickly. The permanent is a counting function. For a <img src="https://latex.codecogs.com/png.latex?0">-<img src="https://latex.codecogs.com/png.latex?1"> matrix, it counts perfect matchings in a bipartite graph. It has no orientation to exploit, no general Gaussian-elimination shortcut, and exact computation is <img src="https://latex.codecogs.com/png.latex?%5C#P">-complete.</p>
 <p>So the minus sign in the determinant is not a nuisance. It is the reason the determinant is a geometric object rather than just an enormous sum.</p>
 </section>
 <section id="how-to-cite" class="level2">
@@ -155,7 +155,7 @@
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
 <div id="ref-valiant1979permanent" class="csl-entry">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. G. Valiant, <span>“The complexity of computing the permanent,”</span> <em>Theoretical Computer Science</em>, vol. 8, no. 2, pp. 189–201, 1979.</div>
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. G. Valiant, <span>“The complexity of computing the permanent,”</span> <em>Theoretical Computer Science</em>, vol. 8, no. 2, pp. 189–201, 1979, doi: <a href="https://doi.org/10.1016/0304-3975(79)90044-6">10.1016/0304-3975(79)90044-6</a>.</div>
 </div>
 <div id="ref-stanley2012" class="csl-entry">
 <div class="csl-left-margin">[2] </div><div class="csl-right-inline">R. P. Stanley, <em>Enumerative combinatorics, volume 1</em>, 2nd ed. in Cambridge studies in advanced mathematics. Cambridge University Press, 2012.</div>

@@ -297,7 +297,7 @@ c &amp; d
 \]</span></p>
 <p>That second expression is called the <strong>permanent</strong>. It looks like the determinant’s harmless cousin. Same products. Same entries. Same tiny formula. Only the sign has changed.</p>
 <p>But that sign is not punctuation. It is the trapdoor between two worlds.</p>
-<p>The determinant is one of the most computable objects in mathematics. Gaussian elimination finds it quickly, even for enormous matrices. The permanent, in general, is one of the canonical hard counting problems. For <span class="math inline">\(0\)</span>-<span class="math inline">\(1\)</span> matrices it counts perfect matchings in a bipartite graph, and Valiant proved that computing it exactly is #P-complete <span class="citation" data-cites="valiant1979permanent"><a href="#ref-valiant1979permanent" role="doc-biblioref">[1]</a></span>.</p>
+<p>The determinant is one of the most computable objects in mathematics. Gaussian elimination finds it quickly, even for enormous matrices. The permanent, in general, is one of the canonical hard counting problems. For <span class="math inline">\(0\)</span>-<span class="math inline">\(1\)</span> matrices it counts perfect matchings in a bipartite graph, and Valiant proved that computing it exactly is <span class="math inline">\(\#P\)</span>-complete <span class="citation" data-cites="valiant1979permanent"><a href="#ref-valiant1979permanent" role="doc-biblioref">[1]</a></span>.</p>
 <p>So the question is not just “what is the difference?” The question is: how can a minus sign carry that much power?</p>
 <section id="two-ways-to-pair-two-rows" class="level2">
 <h2 class="anchored" data-anchor-id="two-ways-to-pair-two-rows">Two ways to pair two rows</h2>
@@ -358,7 +358,7 @@ c &amp; d
 <h2 class="anchored" data-anchor-id="what-the-determinant-is-allowed-to-forget">What the determinant is allowed to forget</h2>
 <p>The determinant is not merely a formula. It is signed volume.</p>
 <p>Put the columns of a matrix in space. They span a parallelogram in two dimensions, a parallelepiped in three, and an <span class="math inline">\(n\)</span>-dimensional volume in general. The determinant tells you the signed size of that volume. Stretch a column, and the volume stretches. Add one column to another, and the volume does not change, because you have sheared the shape without changing its base-height content. Swap two columns, and the orientation flips, so the sign changes.</p>
-<p>These three habits are what make Gaussian elimination possible. Row operations do not merely manipulate entries; they manipulate volume in controlled ways. Shears preserve it. Swaps flip its sign. Scaling a row scales it. By the end of elimination, the matrix has been simplified to a triangular one, where the volume is just the product of the diagonal entries.</p>
+<p>These three habits are what make Gaussian elimination possible. The same rules hold row-by-row as well as column-by-column, so row operations do not merely manipulate entries; they manipulate signed volume in controlled ways. Shears preserve it. Swaps flip its sign. Scaling a row scales it. By the end of elimination, the matrix has been simplified to a triangular one, where the volume is just the product of the diagonal entries.</p>
 <p>So the determinant has a compression principle:</p>
 <blockquote class="blockquote">
 <p>Many different-looking matrices represent the same signed volume, and row reduction is allowed to move among them without losing the answer.</p>
@@ -411,16 +411,16 @@ c &amp; d
 <p>It is tempting to say that the determinant is easy because subtraction allows cancellation, while the permanent is hard because all permutation signs are positive. That is close, but it needs sharpening.</p>
 <p>Subtraction alone is not magic. The magic is that the determinant’s cancellations are structured. They are exactly the cancellations required by geometry:</p>
 <ul>
-<li>If two columns agree, the answer must be zero.</li>
+<li>If two columns agree, the determinant must be zero.</li>
 <li>If one column is a sum of two columns, the volume splits linearly.</li>
-<li>If one column is sheared by adding another column, the volume is unchanged.</li>
+<li>If one column is changed by adding a multiple of another, the volume is unchanged.</li>
 <li>If two columns swap places, the orientation reverses.</li>
 </ul>
 <p>These rules are so rigid that they determine the determinant. More importantly, they let an algorithm take shortcuts. Gaussian elimination can kill entries one at a time because it knows which operations preserve signed volume and which operations change it in simple ways.</p>
-<p>The permanent does not behave like volume. Adding one row to another does not preserve the number of matchings. Swapping columns does not introduce an orientation sign. Two equal columns do not make the answer vanish. The permanent is not an invariant of a shape being sheared through space. It is a count of discrete choices, and counts are stubborn. If there are a million possible matchings, the permanent is trying to account for a million possible matchings.</p>
+<p>The permanent does not behave like volume. In the matching interpretation, adding one row to another does not preserve the number of matchings. Swapping columns does not introduce an orientation sign. Two equal columns do not make the answer vanish. The permanent is not an invariant of a shape being sheared through space. In its <span class="math inline">\(0\)</span>-<span class="math inline">\(1\)</span> form, it is a count of discrete choices, and counts are stubborn. If there are a million possible matchings, the permanent is trying to account for a million possible matchings.</p>
 <p>This is why the naive formula is misleading in opposite directions.</p>
 <p>For the determinant, the <span class="math inline">\(n!\)</span>-term formula looks hard, but the object has hidden geometry that lets us compress the computation.</p>
-<p>For the permanent, the <span class="math inline">\(n!\)</span>-term formula looks similar, but the object is genuinely asking a counting question with no comparable general compression known. Valiant’s theorem says this is not an accident of our imagination: even for <span class="math inline">\(0\)</span>-<span class="math inline">\(1\)</span> matrices, exact permanent computation captures the difficulty of #P counting problems <span class="citation" data-cites="valiant1979permanent"><a href="#ref-valiant1979permanent" role="doc-biblioref">[1]</a></span>.</p>
+<p>For the permanent, the <span class="math inline">\(n!\)</span>-term formula looks similar, but the object is genuinely asking a counting question with no comparable general compression known. Valiant’s theorem says this is not an accident of our imagination: even for <span class="math inline">\(0\)</span>-<span class="math inline">\(1\)</span> matrices, exact permanent computation captures the difficulty of <span class="math inline">\(\#P\)</span> counting problems <span class="citation" data-cites="valiant1979permanent"><a href="#ref-valiant1979permanent" role="doc-biblioref">[1]</a></span>.</p>
 </section>
 <section id="a-small-warning-about-slogans" class="level2">
 <h2 class="anchored" data-anchor-id="a-small-warning-about-slogans">A small warning about slogans</h2>
@@ -446,7 +446,7 @@ c &amp; d
 <section id="what-to-remember" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
 <p>The determinant and the permanent are built from the same permutation products. The determinant weights each product by the sign of the permutation; the permanent gives every product a plus sign.</p>
-<p>That small formal difference changes the meaning completely. The determinant is signed volume, so its terms cancel in exactly the ways geometry demands. Those cancellations make row reduction possible and let us compute it quickly. The permanent is a counting function. For a <span class="math inline">\(0\)</span>-<span class="math inline">\(1\)</span> matrix, it counts perfect matchings in a bipartite graph. It has no orientation to exploit, no general Gaussian-elimination shortcut, and exact computation is #P-complete.</p>
+<p>That small formal difference changes the meaning completely. The determinant is signed volume, so its terms cancel in exactly the ways geometry demands. Those cancellations make row reduction possible and let us compute it quickly. The permanent is a counting function. For a <span class="math inline">\(0\)</span>-<span class="math inline">\(1\)</span> matrix, it counts perfect matchings in a bipartite graph. It has no orientation to exploit, no general Gaussian-elimination shortcut, and exact computation is <span class="math inline">\(\#P\)</span>-complete.</p>
 <p>So the minus sign in the determinant is not a nuisance. It is the reason the determinant is a geometric object rather than just an enormous sum.</p>
 </section>
 <section id="how-to-cite" class="level2">
@@ -463,7 +463,7 @@ c &amp; d
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
 <div id="ref-valiant1979permanent" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. G. Valiant, <span>“The complexity of computing the permanent,”</span> <em>Theoretical Computer Science</em>, vol. 8, no. 2, pp. 189–201, 1979.</div>
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. G. Valiant, <span>“The complexity of computing the permanent,”</span> <em>Theoretical Computer Science</em>, vol. 8, no. 2, pp. 189–201, 1979, doi: <a href="https://doi.org/10.1016/0304-3975(79)90044-6">10.1016/0304-3975(79)90044-6</a>.</div>
 </div>
 <div id="ref-stanley2012" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[2] </div><div class="csl-right-inline">R. P. Stanley, <em>Enumerative combinatorics, volume 1</em>, 2nd ed. in Cambridge studies in advanced mathematics. Cambridge University Press, 2012.</div>
@@ -974,7 +974,7 @@ c &amp; d
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>elimination finds it quickly, even for enormous matrices. The permanent, in</span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>general, is one of the canonical hard counting problems. For $0$-$1$ matrices it</span>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>counts perfect matchings in a bipartite graph, and Valiant proved that computing</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>it exactly is #P-complete <span class="co">[</span><span class="ot">@valiant1979permanent</span><span class="co">]</span>.</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>it exactly is $<span class="sc">\#</span>P$-complete <span class="co">[</span><span class="ot">@valiant1979permanent</span><span class="co">]</span>.</span>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>So the question is not just "what is the difference?" The question is: how can a</span>
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>minus sign carry that much power?</span>
@@ -1080,205 +1080,207 @@ c &amp; d
 <span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>because you have sheared the shape without changing its base-height content.</span>
 <span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>Swap two columns, and the orientation flips, so the sign changes.</span>
 <span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>These three habits are what make Gaussian elimination possible. Row operations</span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>do not merely manipulate entries; they manipulate volume in controlled ways.</span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>Shears preserve it. Swaps flip its sign. Scaling a row scales it. By the end of</span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>elimination, the matrix has been simplified to a triangular one, where the</span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>volume is just the product of the diagonal entries.</span>
-<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>So the determinant has a compression principle:</span>
-<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Many different-looking matrices represent the same signed volume, and row</span></span>
-<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; reduction is allowed to move among them without losing the answer.</span></span>
-<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>That is the algorithmic miracle. The determinant can forget enormous amounts of</span>
-<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>detail because signed volume is an invariant. It does not need to remember every</span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>assignment separately.</span>
-<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>The permanent has no such mercy.</span>
-<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="fu">## What the permanent refuses to forget</span></span>
-<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>Take a $0$-$1$ matrix and read it as the adjacency matrix of a bipartite graph.</span>
-<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>Rows are workers, columns are jobs, and $a_{ij}=1$ means worker $i$ is allowed to</span>
-<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>take job $j$.</span>
-<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>For any permutation $\sigma$, the product</span>
-<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>\prod_{i=1}^n a_{i,\sigma(i)}</span>
-<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>is $1$ exactly when every chosen assignment is allowed, and $0$ otherwise.</span>
-<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>Therefore @eq-permanent counts the number of perfect matchings in the graph:</span>
-<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>\operatorname{per}(A)</span>
-<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>=</span>
-<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a><span class="sc">\#\{</span>\text{perfect matchings of the bipartite graph}<span class="sc">\}</span>.</span>
-<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>This is the permanent's natural habitat. It counts how many global arrangements</span>
-<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>survive local restrictions. That is why it appears in enumerative combinatorics</span>
-<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">@stanley2012</span><span class="co">]</span>.</span>
-<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>Now compare what happens when two columns are equal.</span>
-<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>For the determinant, equal columns force collapse. Geometrically, two basis</span>
-<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>directions have landed on the same direction, so the volume is zero. Algebraically,</span>
-<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>the terms in @eq-determinant pair off: swapping those two equal columns leaves</span>
-<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>the product unchanged but reverses the sign. Every positive term meets an equal</span>
-<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>negative term and disappears.</span>
-<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>For the permanent, equal columns do not cancel. They reinforce. If two jobs have</span>
-<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>identical compatibility patterns, the permanent sees two genuinely different</span>
-<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>assignments. Worker 1 taking job A while worker 2 takes job B is not the same as</span>
-<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>worker 1 taking job B while worker 2 takes job A, even if the columns look</span>
-<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>identical. The permanent says: count both.</span>
-<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>This is the heart of the matter.</span>
-<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>The determinant turns symmetry into cancellation. The permanent turns symmetry</span>
-<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>into multiplicity.</span>
-<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a><span class="fu">## The all-ones matrix</span></span>
-<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>Here is the cleanest place to feel the difference. Let $J_n$ be the $n \times n$</span>
-<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>matrix whose entries are all $1$.</span>
-<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>Every worker can do every job. How many perfect assignments are there?</span>
-<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>There are $n!$, one for each permutation, so</span>
-<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>\operatorname{per}(J_n) = n!.</span>
-<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>The permanent sees the full combinatorial abundance.</span>
-<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>But the determinant sees something else:</span>
-<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>\det(J_n) = 0</span>
-<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>\qquad \text{for } n\ge 2.</span>
-<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>All columns are identical. As vectors, they span only a line. The $n$-dimensional</span>
-<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>volume has collapsed completely. The determinant does not care that there are</span>
-<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>many assignments; it cares that the transformed coordinate directions do not</span>
-<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>enclose any volume.</span>
-<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a>This example is almost unfairly revealing. The same matrix is either maximally</span>
-<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>rich or completely degenerate, depending on the question.</span>
-<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>The permanent asks, "How many ways can the choices be matched?"</span>
-<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>The determinant asks, "How much oriented space do these columns enclose?"</span>
-<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>Those are not two versions of the same question. They only wear the same</span>
-<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>notation.</span>
-<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why the sign makes computation easier</span></span>
-<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>It is tempting to say that the determinant is easy because subtraction allows</span>
-<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>cancellation, while the permanent is hard because all permutation signs are</span>
-<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>positive. That is close, but it needs sharpening.</span>
-<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>Subtraction alone is not magic. The magic is that the determinant's cancellations</span>
-<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>are structured. They are exactly the cancellations required by geometry:</span>
-<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If two columns agree, the answer must be zero.</span>
-<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If one column is a sum of two columns, the volume splits linearly.</span>
-<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If one column is sheared by adding another column, the volume is unchanged.</span>
-<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If two columns swap places, the orientation reverses.</span>
-<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>These rules are so rigid that they determine the determinant. More importantly,</span>
-<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>they let an algorithm take shortcuts. Gaussian elimination can kill entries one</span>
-<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>at a time because it knows which operations preserve signed volume and which</span>
-<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>operations change it in simple ways.</span>
-<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>The permanent does not behave like volume. Adding one row to another does not</span>
-<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>preserve the number of matchings. Swapping columns does not introduce an</span>
-<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>orientation sign. Two equal columns do not make the answer vanish. The permanent</span>
-<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>is not an invariant of a shape being sheared through space. It is a count of</span>
-<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>discrete choices, and counts are stubborn. If there are a million possible</span>
-<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>matchings, the permanent is trying to account for a million possible matchings.</span>
-<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>This is why the naive formula is misleading in opposite directions.</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>These three habits are what make Gaussian elimination possible. The same rules</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>hold row-by-row as well as column-by-column, so row operations do not merely</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>manipulate entries; they manipulate signed volume in controlled ways. Shears</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>preserve it. Swaps flip its sign. Scaling a row scales it. By the end of</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>elimination, the matrix has been simplified to a triangular one, where the</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>volume is just the product of the diagonal entries.</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>So the determinant has a compression principle:</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Many different-looking matrices represent the same signed volume, and row</span></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; reduction is allowed to move among them without losing the answer.</span></span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>That is the algorithmic miracle. The determinant can forget enormous amounts of</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>detail because signed volume is an invariant. It does not need to remember every</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>assignment separately.</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>The permanent has no such mercy.</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="fu">## What the permanent refuses to forget</span></span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>Take a $0$-$1$ matrix and read it as the adjacency matrix of a bipartite graph.</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>Rows are workers, columns are jobs, and $a_{ij}=1$ means worker $i$ is allowed to</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>take job $j$.</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>For any permutation $\sigma$, the product</span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>\prod_{i=1}^n a_{i,\sigma(i)}</span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>is $1$ exactly when every chosen assignment is allowed, and $0$ otherwise.</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>Therefore @eq-permanent counts the number of perfect matchings in the graph:</span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>\operatorname{per}(A)</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a><span class="sc">\#\{</span>\text{perfect matchings of the bipartite graph}<span class="sc">\}</span>.</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>This is the permanent's natural habitat. It counts how many global arrangements</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>survive local restrictions. That is why it appears in enumerative combinatorics</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">@stanley2012</span><span class="co">]</span>.</span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>Now compare what happens when two columns are equal.</span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>For the determinant, equal columns force collapse. Geometrically, two basis</span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>directions have landed on the same direction, so the volume is zero. Algebraically,</span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>the terms in @eq-determinant pair off: swapping those two equal columns leaves</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>the product unchanged but reverses the sign. Every positive term meets an equal</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>negative term and disappears.</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>For the permanent, equal columns do not cancel. They reinforce. If two jobs have</span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>identical compatibility patterns, the permanent sees two genuinely different</span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>assignments. Worker 1 taking job A while worker 2 takes job B is not the same as</span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>worker 1 taking job B while worker 2 takes job A, even if the columns look</span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>identical. The permanent says: count both.</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>This is the heart of the matter.</span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>The determinant turns symmetry into cancellation. The permanent turns symmetry</span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>into multiplicity.</span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a><span class="fu">## The all-ones matrix</span></span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>Here is the cleanest place to feel the difference. Let $J_n$ be the $n \times n$</span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>matrix whose entries are all $1$.</span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>Every worker can do every job. How many perfect assignments are there?</span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>There are $n!$, one for each permutation, so</span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>\operatorname{per}(J_n) = n!.</span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>The permanent sees the full combinatorial abundance.</span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>But the determinant sees something else:</span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>\det(J_n) = 0</span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>\qquad \text{for } n\ge 2.</span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>All columns are identical. As vectors, they span only a line. The $n$-dimensional</span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>volume has collapsed completely. The determinant does not care that there are</span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>many assignments; it cares that the transformed coordinate directions do not</span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>enclose any volume.</span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>This example is almost unfairly revealing. The same matrix is either maximally</span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a>rich or completely degenerate, depending on the question.</span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>The permanent asks, "How many ways can the choices be matched?"</span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>The determinant asks, "How much oriented space do these columns enclose?"</span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>Those are not two versions of the same question. They only wear the same</span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>notation.</span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why the sign makes computation easier</span></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>It is tempting to say that the determinant is easy because subtraction allows</span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>cancellation, while the permanent is hard because all permutation signs are</span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a>positive. That is close, but it needs sharpening.</span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>Subtraction alone is not magic. The magic is that the determinant's cancellations</span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>are structured. They are exactly the cancellations required by geometry:</span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If two columns agree, the determinant must be zero.</span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If one column is a sum of two columns, the volume splits linearly.</span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If one column is changed by adding a multiple of another, the volume is unchanged.</span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If two columns swap places, the orientation reverses.</span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>These rules are so rigid that they determine the determinant. More importantly,</span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>they let an algorithm take shortcuts. Gaussian elimination can kill entries one</span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>at a time because it knows which operations preserve signed volume and which</span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>operations change it in simple ways.</span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>The permanent does not behave like volume. In the matching interpretation,</span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>adding one row to another does not preserve the number of matchings. Swapping</span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>columns does not introduce an orientation sign. Two equal columns do not make</span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>the answer vanish. The permanent is not an invariant of a shape being sheared</span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>through space. In its $0$-$1$ form, it is a count of discrete choices, and counts</span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>are stubborn. If there are a million possible matchings, the permanent is trying</span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>to account for a million possible matchings.</span>
 <span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>For the determinant, the $n!$-term formula looks hard, but the object has hidden</span>
-<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a>geometry that lets us compress the computation.</span>
-<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>For the permanent, the $n!$-term formula looks similar, but the object is</span>
-<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>genuinely asking a counting question with no comparable general compression</span>
-<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>known. Valiant's theorem says this is not an accident of our imagination: even</span>
-<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>for $0$-$1$ matrices, exact permanent computation captures the difficulty of</span>
-<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>#P counting problems <span class="co">[</span><span class="ot">@valiant1979permanent</span><span class="co">]</span>.</span>
-<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a><span class="fu">## A small warning about slogans</span></span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>This is why the naive formula is misleading in opposite directions.</span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>For the determinant, the $n!$-term formula looks hard, but the object has hidden</span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>geometry that lets us compress the computation.</span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>For the permanent, the $n!$-term formula looks similar, but the object is</span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>genuinely asking a counting question with no comparable general compression</span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>known. Valiant's theorem says this is not an accident of our imagination: even</span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>for $0$-$1$ matrices, exact permanent computation captures the difficulty of</span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a>$<span class="sc">\#</span>P$ counting problems <span class="co">[</span><span class="ot">@valiant1979permanent</span><span class="co">]</span>.</span>
 <span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a>"The permanent is hard because it has no minus signs" is a useful first</span>
-<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a>sentence, but it is not the whole explanation.</span>
-<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a>There are special families where permanent-like counts become tractable. Planar</span>
-<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a>matching problems, for example, can sometimes be smuggled back into a</span>
-<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a>determinant or Pfaffian after choosing signs with great care; the dimer-counting</span>
-<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a>story behind domino tilings is one beautiful example. We already touched that</span>
-<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a>world in the domino post.</span>
-<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a>The deeper slogan is this:</span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a><span class="fu">## A small warning about slogans</span></span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a>"The permanent is hard because it has no minus signs" is a useful first</span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a>sentence, but it is not the whole explanation.</span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a>There are special families where permanent-like counts become tractable. Planar</span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a>matching problems, for example, can sometimes be smuggled back into a</span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a>determinant or Pfaffian after choosing signs with great care; the dimer-counting</span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a>story behind domino tilings is one beautiful example. We already touched that</span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a>world in the domino post.</span>
 <span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Signs are useful when they encode structure.</span></span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>The deeper slogan is this:</span>
 <span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>In the determinant, permutation signs encode orientation. That orientation gives</span>
-<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>the determinant its geometric meaning, its cancellation laws, and its fast</span>
-<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>algorithms. In the permanent, replacing every permutation sign by $+$ destroys</span>
-<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>that orientation. What remains is not a bad determinant. It is a different</span>
-<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>creature: a pure count of compatible global choices.</span>
-<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why this belongs in linear algebra</span></span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Signs are useful when they encode structure.</span></span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>In the determinant, permutation signs encode orientation. That orientation gives</span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>the determinant its geometric meaning, its cancellation laws, and its fast</span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>algorithms. In the permanent, replacing every permutation sign by $+$ destroys</span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a>that orientation. What remains is not a bad determinant. It is a different</span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>creature: a pure count of compatible global choices.</span>
 <span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a>At first, the permanent sounds like combinatorics and the determinant sounds like</span>
-<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a>linear algebra. That is true, but too neat.</span>
-<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>The determinant sits at a crossing point. It is a polynomial in the matrix</span>
-<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>entries, a volume measurement, a test for invertibility, and a signed sum over</span>
-<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>permutations. Linear algebra usually teaches the volume and invertibility</span>
-<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>stories. Combinatorics notices the sum over permutations. Algorithms notice the</span>
-<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>gap between the two formulas.</span>
-<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a>The permanent forces all three perspectives into the same room. It asks:</span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why this belongs in linear algebra</span></span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>At first, the permanent sounds like combinatorics and the determinant sounds like</span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>linear algebra. That is true, but too neat.</span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>The determinant sits at a crossing point. It is a polynomial in the matrix</span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>entries, a volume measurement, a test for invertibility, and a signed sum over</span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>permutations. Linear algebra usually teaches the volume and invertibility</span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a>stories. Combinatorics notices the sum over permutations. Algorithms notice the</span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a>gap between the two formulas.</span>
 <span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; What part of the determinant's power came from the products, and what part came</span></span>
-<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; from the signs?</span></span>
-<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a>The answer is bracing. The products alone give you assignments. The signs give</span>
-<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>you orientation. Orientation gives you cancellation. Cancellation gives you a</span>
-<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>geometry. Geometry gives you fast computation.</span>
-<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>Remove the signs, and you do not get a simpler determinant. You get the permanent:</span>
-<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a>an object that remembers every compatible arrangement and refuses to let opposite</span>
-<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>terms annihilate each other.</span>
-<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to remember</span></span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a>The permanent forces all three perspectives into the same room. It asks:</span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; What part of the determinant's power came from the products, and what part came</span></span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; from the signs?</span></span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>The answer is bracing. The products alone give you assignments. The signs give</span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a>you orientation. Orientation gives you cancellation. Cancellation gives you a</span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>geometry. Geometry gives you fast computation.</span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>Remove the signs, and you do not get a simpler determinant. You get the permanent:</span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>an object that remembers every compatible arrangement and refuses to let opposite</span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a>terms annihilate each other.</span>
 <span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>The determinant and the permanent are built from the same permutation products.</span>
-<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>The determinant weights each product by the sign of the permutation; the</span>
-<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>permanent gives every product a plus sign.</span>
-<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>That small formal difference changes the meaning completely. The determinant is</span>
-<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>signed volume, so its terms cancel in exactly the ways geometry demands. Those</span>
-<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>cancellations make row reduction possible and let us compute it quickly. The</span>
-<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>permanent is a counting function. For a $0$-$1$ matrix, it counts perfect</span>
-<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>matchings in a bipartite graph. It has no orientation to exploit, no general</span>
-<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>Gaussian-elimination shortcut, and exact computation is #P-complete.</span>
-<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>So the minus sign in the determinant is not a nuisance. It is the reason the</span>
-<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a>determinant is a geometric object rather than just an enormous sum.</span>
-<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to remember</span></span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>The determinant and the permanent are built from the same permutation products.</span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>The determinant weights each product by the sign of the permutation; the</span>
+<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>permanent gives every product a plus sign.</span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>That small formal difference changes the meaning completely. The determinant is</span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>signed volume, so its terms cancel in exactly the ways geometry demands. Those</span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>cancellations make row reduction possible and let us compute it quickly. The</span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>permanent is a counting function. For a $0$-$1$ matrix, it counts perfect</span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>matchings in a bipartite graph. It has no orientation to exploit, no general</span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>Gaussian-elimination shortcut, and exact computation is $<span class="sc">\#</span>P$-complete.</span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a>So the minus sign in the determinant is not a nuisance. It is the reason the</span>
+<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a>determinant is a geometric object rather than just an enormous sum.</span>
 <span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *Permanent vs. Determinant*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/permanent-vs-determinant/`</span><span class="at">.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *Permanent vs. Determinant*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/permanent-vs-determinant/`</span><span class="at">.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
