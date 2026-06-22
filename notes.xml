@@ -10,7 +10,148 @@
 <atom:link href="https://terryfxh.github.io/math-notes/notes.xml" rel="self" type="application/rss+xml"/>
 <description>Self-contained notes in pure and applied mathematics, derived from first principles with runnable code where it helps.</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Mon, 22 Jun 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 23 Jun 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Matrix Exponentials: When a Matrix Becomes Motion</title>
+  <link>https://terryfxh.github.io/math-notes/posts/matrix-exponentials-when-a-matrix-becomes-motion/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p>“Philosophy is written in this grand book, the universe … It is written in the language of mathematics, and its characters are triangles, circles, and other geometric figures.”</p>
+<p><span class="attribution">— Galileo Galilei, <em>Il Saggiatore (The Assayer)</em></span></p>
+</div>
+<p>You already know one exponential so well that it has probably stopped looking strange: <img src="https://latex.codecogs.com/png.latex?%0Ax(t)=e%5E%7Brt%7Dx_0.%0A"> If <img src="https://latex.codecogs.com/png.latex?r"> is positive, the quantity grows. If <img src="https://latex.codecogs.com/png.latex?r"> is negative, it decays. If <img src="https://latex.codecogs.com/png.latex?r"> is the interest rate on a bank account, <img src="https://latex.codecogs.com/png.latex?e%5E%7Brt%7D"> is continuous compounding. If it is the rate constant in a chemical reaction, <img src="https://latex.codecogs.com/png.latex?e%5E%7Brt%7D"> is the smooth fading of a concentration. One number <img src="https://latex.codecogs.com/png.latex?r"> gives a rule for how strongly the present pushes itself into the future.</p>
+<p>Now replace that number by a matrix: <img src="https://latex.codecogs.com/png.latex?%0Ax(t)=e%5E%7BAt%7Dx_0.%0A"> At first this looks like notation getting too ambitious. What could it mean for a matrix to sit in the exponent of <img src="https://latex.codecogs.com/png.latex?e">? Is this just exponentiating each entry? Is it a trick for people who like formal power series?</p>
+<p>No.&nbsp;The matrix exponential is much more concrete than that. It is the answer to one question:</p>
+<blockquote class="blockquote">
+<p>If a matrix tells every point which way to start moving, what is the position of the whole space after time <img src="https://latex.codecogs.com/png.latex?t">?</p>
+</blockquote>
+<p>That is the picture to keep in mind. A matrix <img src="https://latex.codecogs.com/png.latex?A"> is not only a transformation. In this story it is an <strong>infinitesimal instruction field</strong>. At every point <img src="https://latex.codecogs.com/png.latex?x">, the vector <img src="https://latex.codecogs.com/png.latex?Ax"> tells that point its current velocity. The matrix exponential <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D"> is the finite motion produced by obeying those velocity instructions for <img src="https://latex.codecogs.com/png.latex?t"> seconds.</p>
+<p>The scalar exponential says “grow at a rate proportional to yourself.” The matrix exponential says “move at a velocity given by a linear transformation of your current position.” That single upgrade is why <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D"> shows up in differential equations, rotations, heat flow, networks, Markov chains, control systems, and quantum mechanics.</p>
+<section id="the-scalar-story-seen-correctly" class="level2">
+<h2 class="anchored" data-anchor-id="the-scalar-story-seen-correctly">The scalar story, seen correctly</h2>
+<p>Start with the differential equation <img src="https://latex.codecogs.com/png.latex?%0Ax'(t)=r%20x(t),%20%5Cqquad%20x(0)=x_0.%0A"> This is the cleanest possible dynamical law: the rate of change is proportional to the current amount. Its solution is <img src="https://latex.codecogs.com/png.latex?%0Ax(t)=e%5E%7Brt%7Dx_0.%0A"></p>
+<p>There is a way to read this that is much more useful than “we solved an ODE.” The number <img src="https://latex.codecogs.com/png.latex?r"> is an <strong>instantaneous multiplier</strong>. Over a tiny time step <img src="https://latex.codecogs.com/png.latex?%5CDelta%20t">, the value approximately changes by <img src="https://latex.codecogs.com/png.latex?%0Ax%20%5Clongmapsto%20x%20+%20r%20x%5C,%5CDelta%20t%20=%20(1+r%5CDelta%20t)x.%0A"> So if we split the time interval <img src="https://latex.codecogs.com/png.latex?t"> into <img src="https://latex.codecogs.com/png.latex?n"> tiny pieces, each of length <img src="https://latex.codecogs.com/png.latex?t/n">, we expect <img src="https://latex.codecogs.com/png.latex?%0Ax(t)%5Capprox%20%5Cleft(1+%5Cfrac%7Brt%7D%7Bn%7D%5Cright)%5En%20x_0.%0A"> Let the time steps become infinitely fine: <img src="https://latex.codecogs.com/png.latex?%0A%5Clim_%7Bn%5Cto%5Cinfty%7D%5Cleft(1+%5Cfrac%7Brt%7D%7Bn%7D%5Cright)%5En%20x_0=e%5E%7Brt%7Dx_0.%0A"></p>
+<p>That limit is the heart of the exponential. It is not merely a function with a nice derivative. It is what happens when you compound infinitely many tiny “change in proportion to where you are” instructions.</p>
+<p>Now make the same sentence vector-valued.</p>
+</section>
+<section id="a-matrix-as-an-infinitesimal-motion" class="level2">
+<h2 class="anchored" data-anchor-id="a-matrix-as-an-infinitesimal-motion">A matrix as an infinitesimal motion</h2>
+<p>Let <img src="https://latex.codecogs.com/png.latex?x(t)"> be a vector, and let <img src="https://latex.codecogs.com/png.latex?A"> be a square matrix. The linear differential equation <span id="eq-linear-system"><img src="https://latex.codecogs.com/png.latex?%0Ax'(t)=Ax(t),%20%5Cqquad%20x(0)=x_0%0A%5Ctag%7B1%7D"></span> means:</p>
+<blockquote class="blockquote">
+<p>At the current point <img src="https://latex.codecogs.com/png.latex?x">, the velocity is <img src="https://latex.codecogs.com/png.latex?Ax">.</p>
+</blockquote>
+<p>In the plane, <img src="https://latex.codecogs.com/png.latex?A"> assigns a little velocity arrow to every point. Points do not all move with the same velocity. A point twice as far in a direction has twice the velocity contribution from that direction, because the rule is linear.</p>
+<p>For a tiny time step <img src="https://latex.codecogs.com/png.latex?%5CDelta%20t">, equation Equation&nbsp;1 says <img src="https://latex.codecogs.com/png.latex?%0Ax(t+%5CDelta%20t)%5Capprox%20x(t)+%5CDelta%20t%5C,Ax(t)=(I+%5CDelta%20t%5C,A)x(t).%0A"> So one tiny step is almost the linear transformation <img src="https://latex.codecogs.com/png.latex?I+%5CDelta%20t%5C,A">: do almost nothing, plus a small shove prescribed by <img src="https://latex.codecogs.com/png.latex?A">.</p>
+<p>Repeat this <img src="https://latex.codecogs.com/png.latex?n"> times over total time <img src="https://latex.codecogs.com/png.latex?t">: <img src="https://latex.codecogs.com/png.latex?%0Ax(t)%5Capprox%20%5Cleft(I+%5Cfrac%7BtA%7D%7Bn%7D%5Cright)%5En%20x_0.%0A"> Then take the limit: <span id="eq-compounding"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7B%5C,e%5E%7BAt%7D=%5Clim_%7Bn%5Cto%5Cinfty%7D%5Cleft(I+%5Cfrac%7BtA%7D%7Bn%7D%5Cright)%5En%5C,%7D%0A%5Ctag%7B2%7D"></span> and therefore <img src="https://latex.codecogs.com/png.latex?%0Ax(t)=e%5E%7BAt%7Dx_0.%0A"></p>
+<p>This is the most physical definition of the matrix exponential. It says:</p>
+<blockquote class="blockquote">
+<p><img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D"> is the result of compounding infinitely many infinitesimal linear nudges.</p>
+</blockquote>
+<p>The usual power series gives the same object: <span id="eq-series"><img src="https://latex.codecogs.com/png.latex?%0Ae%5E%7BAt%7D%0A=I+tA+%5Cfrac%7Bt%5E2A%5E2%7D%7B2!%7D+%5Cfrac%7Bt%5E3A%5E3%7D%7B3!%7D+%5Ccdots.%0A%5Ctag%7B3%7D"></span> This formula is not entrywise exponentiation. It is matrix multiplication repeated inside a series. The square matrix condition matters because the powers <img src="https://latex.codecogs.com/png.latex?A%5E2,A%5E3,%5Cldots"> have to make sense. A nonsquare matrix maps between different spaces; it cannot be fed back into itself in this way without extra structure.</p>
+<p>There is a beautiful interpretation hiding in Equation&nbsp;3. The term <img src="https://latex.codecogs.com/png.latex?A"> records direct influence. The term <img src="https://latex.codecogs.com/png.latex?A%5E2"> records influence after two handoffs. The term <img src="https://latex.codecogs.com/png.latex?A%5E3"> records influence after three handoffs. The exponential adds influence paths of every possible length, weighted by the time factor <img src="https://latex.codecogs.com/png.latex?t%5Ek/k!">. If <img src="https://latex.codecogs.com/png.latex?A"> is a network of rates, <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D"> is not just one step through the network. It is the sum of all possible continuous-time journeys through it.</p>
+<p>That is the first mental picture worth keeping: <strong>a matrix exponential is infinitesimal motion accumulated into finite motion.</strong></p>
+</section>
+<section id="why-it-solves-the-differential-equation" class="level2">
+<h2 class="anchored" data-anchor-id="why-it-solves-the-differential-equation">Why it solves the differential equation</h2>
+<p>The formal reason is mercifully short. Differentiate the series term by term: <img src="https://latex.codecogs.com/png.latex?%0A%5Cfrac%7Bd%7D%7Bdt%7De%5E%7BAt%7D%0A=A+%5Cfrac%7B2tA%5E2%7D%7B2!%7D+%5Cfrac%7B3t%5E2A%5E3%7D%7B3!%7D+%5Ccdots%0A=A%5Cleft(I+tA+%5Cfrac%7Bt%5E2A%5E2%7D%7B2!%7D+%5Ccdots%5Cright)%0A=A%20e%5E%7BAt%7D.%0A"> Also <img src="https://latex.codecogs.com/png.latex?e%5E%7BA%5Ccdot%200%7D=I">, because every positive power of <img src="https://latex.codecogs.com/png.latex?0A"> vanishes. Therefore <img src="https://latex.codecogs.com/png.latex?%0Ax(t)=e%5E%7BAt%7Dx_0%0A"> satisfies <img src="https://latex.codecogs.com/png.latex?%0Ax'(t)=A%20e%5E%7BAt%7Dx_0=A%20x(t),%0A%5Cqquad%0Ax(0)=Ix_0=x_0.%0A"></p>
+<p>So <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D"> is the <strong>state transition matrix</strong> for the system <img src="https://latex.codecogs.com/png.latex?x'=Ax">. Feed it the starting state, and it returns the state after time <img src="https://latex.codecogs.com/png.latex?t">.</p>
+<p>That phrase “transition matrix” is worth taking literally. The matrix <img src="https://latex.codecogs.com/png.latex?A"> gives the instantaneous rule. The matrix <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D"> gives the actual transition after waiting.</p>
+</section>
+<section id="if-the-matrix-is-diagonal-nothing-mixes" class="level2">
+<h2 class="anchored" data-anchor-id="if-the-matrix-is-diagonal-nothing-mixes">If the matrix is diagonal, nothing mixes</h2>
+<p>Suppose <img src="https://latex.codecogs.com/png.latex?%0AA=%0A%5Cbegin%7Bpmatrix%7D%0A%5Clambda_1%20&amp;%200%5C%5C%0A0%20&amp;%20%5Clambda_2%0A%5Cend%7Bpmatrix%7D.%0A"> Then <img src="https://latex.codecogs.com/png.latex?%0Ae%5E%7BAt%7D=%0A%5Cbegin%7Bpmatrix%7D%0Ae%5E%7B%5Clambda_1%20t%7D%20&amp;%200%5C%5C%0A0%20&amp;%20e%5E%7B%5Clambda_2%20t%7D%0A%5Cend%7Bpmatrix%7D.%0A"> No mystery is left. The first coordinate grows or decays at rate <img src="https://latex.codecogs.com/png.latex?%5Clambda_1">, and the second coordinate grows or decays at rate <img src="https://latex.codecogs.com/png.latex?%5Clambda_2">. The two axes do not talk to each other.</p>
+<p>This is the scalar story twice.</p>
+<p>More generally, if <img src="https://latex.codecogs.com/png.latex?A"> has an eigenbasis, so that <img src="https://latex.codecogs.com/png.latex?%0AA=PDP%5E%7B-1%7D,%0A"> then <span id="eq-diagonalization"><img src="https://latex.codecogs.com/png.latex?%0Ae%5E%7BAt%7D=P%20e%5E%7BDt%7DP%5E%7B-1%7D.%0A%5Ctag%7B4%7D"></span> Read Equation&nbsp;4 as a three-step movie:</p>
+<ol type="1">
+<li>Translate the vector into the eigenvector coordinate system with <img src="https://latex.codecogs.com/png.latex?P%5E%7B-1%7D">.</li>
+<li>Let each eigen-direction grow, decay, or oscillate independently by <img src="https://latex.codecogs.com/png.latex?e%5E%7B%5Clambda_i%20t%7D">.</li>
+<li>Translate back with <img src="https://latex.codecogs.com/png.latex?P">.</li>
+</ol>
+<p>This is why eigenvectors are not just a computation trick. They are the coordinate system in which a continuous linear motion stops mixing its story. Each eigenvalue becomes an exponent. If the eigenvalue has negative real part, that component fades. If it has positive real part, that component grows. If it has imaginary part, then over complex coordinates, or on the corresponding real two-dimensional invariant plane, the motion oscillates.</p>
+<p>The matrix exponential is where eigenvalues become visible as dynamics.</p>
+</section>
+<section id="rotation-from-an-infinitesimal-turn" class="level2">
+<h2 class="anchored" data-anchor-id="rotation-from-an-infinitesimal-turn">Rotation from an infinitesimal turn</h2>
+<p>Here is the example that makes the notation earn its keep. Consider <img src="https://latex.codecogs.com/png.latex?%0AJ=%0A%5Cbegin%7Bpmatrix%7D%0A0%20&amp;%20-1%5C%5C%0A1%20&amp;%200%0A%5Cend%7Bpmatrix%7D.%0A"> Multiplying by <img src="https://latex.codecogs.com/png.latex?J"> rotates a vector by <img src="https://latex.codecogs.com/png.latex?90%5E%5Ccirc"> counterclockwise. So the differential equation <img src="https://latex.codecogs.com/png.latex?%0Ax'(t)=Jx(t)%0A"> says:</p>
+<blockquote class="blockquote">
+<p>Your velocity is always perpendicular to your current position.</p>
+</blockquote>
+<p>What path has that property? A circle. If your velocity always points sideways relative to the radius vector, you do not fly outward or inward. You go around.</p>
+<p>Now compute the exponential. Since <img src="https://latex.codecogs.com/png.latex?%0AJ%5E2=-I,%5Cqquad%20J%5E3=-J,%5Cqquad%20J%5E4=I,%0A"> the power series splits into even and odd powers: <img src="https://latex.codecogs.com/png.latex?%0Ae%5E%7BtJ%7D%0A=%5Cleft(1-%5Cfrac%7Bt%5E2%7D%7B2!%7D+%5Cfrac%7Bt%5E4%7D%7B4!%7D-%5Ccdots%5Cright)I%0A+%5Cleft(t-%5Cfrac%7Bt%5E3%7D%7B3!%7D+%5Cfrac%7Bt%5E5%7D%7B5!%7D-%5Ccdots%5Cright)J.%0A"> Those two parenthesized series are <img src="https://latex.codecogs.com/png.latex?%5Ccos%20t"> and <img src="https://latex.codecogs.com/png.latex?%5Csin%20t">, so <span id="eq-rotation"><img src="https://latex.codecogs.com/png.latex?%0Ae%5E%7BtJ%7D=%5Ccos%20t%5C,I+%5Csin%20t%5C,J%0A=%0A%5Cbegin%7Bpmatrix%7D%0A%5Ccos%20t%20&amp;%20-%5Csin%20t%5C%5C%0A%5Csin%20t%20&amp;%20%5Ccos%20t%0A%5Cend%7Bpmatrix%7D.%0A%5Ctag%7B5%7D"></span></p>
+<p>The matrix exponential has turned an infinitesimal rotation generator into an ordinary finite rotation. The matrix <img src="https://latex.codecogs.com/png.latex?J"> says “turn sideways right now.” The matrix <img src="https://latex.codecogs.com/png.latex?e%5E%7BtJ%7D"> says “after obeying that instruction for <img src="https://latex.codecogs.com/png.latex?t"> units of time, you have rotated by angle <img src="https://latex.codecogs.com/png.latex?t">.”</p>
+<p>This is the second mental picture worth keeping: <strong>some matrices are not best understood as one-time transformations, but as generators of motion.</strong> The exponential is how the generator becomes the motion.</p>
+</section>
+<section id="heat-between-two-rooms" class="level2">
+<h2 class="anchored" data-anchor-id="heat-between-two-rooms">Heat between two rooms</h2>
+<p>Now take a less elegant and more physical system: two rooms exchanging heat through a wall. Let <img src="https://latex.codecogs.com/png.latex?x_1(t)"> and <img src="https://latex.codecogs.com/png.latex?x_2(t)"> be their temperatures, measured relative to any fixed baseline. Suppose the rooms exchange heat with each other at rate <img src="https://latex.codecogs.com/png.latex?k">, with no outside heat source or sink. A simple model is <span id="eq-two-room"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bpmatrix%7D%0Ax_1'%5C%5C%0Ax_2'%0A%5Cend%7Bpmatrix%7D%0A=%0A%5Cbegin%7Bpmatrix%7D%0A-k%20&amp;%20k%5C%5C%0Ak%20&amp;%20-k%0A%5Cend%7Bpmatrix%7D%0A%5Cbegin%7Bpmatrix%7D%0Ax_1%5C%5C%0Ax_2%0A%5Cend%7Bpmatrix%7D.%0A%5Ctag%7B6%7D"></span></p>
+<p>The diagonal entries <img src="https://latex.codecogs.com/png.latex?-k"> are the self-terms: a hotter room tends to cool relative to the other. The off-diagonal entries <img src="https://latex.codecogs.com/png.latex?k"> are the coupling terms: the other room feeds heat into it. The columns and rows are not decoration; they are little pipes of influence.</p>
+<p>Call the matrix in Equation&nbsp;6 <img src="https://latex.codecogs.com/png.latex?A">. Two directions matter: <img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bpmatrix%7D1%5C%5C1%5Cend%7Bpmatrix%7D,%0A%5Cqquad%0A%5Cbegin%7Bpmatrix%7D1%5C%5C-1%5Cend%7Bpmatrix%7D.%0A"> The first direction means “both rooms have the same temperature.” Applying <img src="https://latex.codecogs.com/png.latex?A"> to it gives zero: <img src="https://latex.codecogs.com/png.latex?%0AA%5Cbegin%7Bpmatrix%7D1%5C%5C1%5Cend%7Bpmatrix%7D=0.%0A"> No temperature difference means no heat flow. This component stays fixed.</p>
+<p>The second direction means “one room is hot by the same amount the other is cold.” Applying <img src="https://latex.codecogs.com/png.latex?A"> gives <img src="https://latex.codecogs.com/png.latex?%0AA%5Cbegin%7Bpmatrix%7D1%5C%5C-1%5Cend%7Bpmatrix%7D%0A=-2k%5Cbegin%7Bpmatrix%7D1%5C%5C-1%5Cend%7Bpmatrix%7D.%0A"> This component decays at rate <img src="https://latex.codecogs.com/png.latex?2k">.</p>
+<p>So if the starting temperatures are <img src="https://latex.codecogs.com/png.latex?x_1(0)=a"> and <img src="https://latex.codecogs.com/png.latex?x_2(0)=b">, the exponential gives <span id="eq-two-room-solution"><img src="https://latex.codecogs.com/png.latex?%0Ax_1(t)=%5Cfrac%7Ba+b%7D%7B2%7D+%5Cfrac%7Ba-b%7D%7B2%7De%5E%7B-2kt%7D,%0A%5Cqquad%0Ax_2(t)=%5Cfrac%7Ba+b%7D%7B2%7D-%5Cfrac%7Ba-b%7D%7B2%7De%5E%7B-2kt%7D.%0A%5Ctag%7B7%7D"></span></p>
+<p>The average temperature stays. The difference dies. That is the entire physical story, and it dropped out because <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D"> lets the eigenvectors speak in time.</p>
+<p>This example also gives a good way to read off-diagonal entries. They are not “messy non-diagonal terms.” They are coupling. They are the places where one coordinate starts influencing another.</p>
+</section>
+<section id="volume-trace-and-why-flows-do-not-suddenly-collapse" class="level2">
+<h2 class="anchored" data-anchor-id="volume-trace-and-why-flows-do-not-suddenly-collapse">Volume, trace, and why flows do not suddenly collapse</h2>
+<p>For a real square matrix, there is a compact fact that deserves more visual attention than it usually gets: <span id="eq-det-trace"><img src="https://latex.codecogs.com/png.latex?%0A%5Cdet(e%5E%7BAt%7D)=e%5E%7Bt%5C,%5Coperatorname%7Btr%7D(A)%7D.%0A%5Ctag%7B8%7D"></span></p>
+<p>The left side is the volume-scaling factor of the finite motion <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D">. The right side says that the trace of <img src="https://latex.codecogs.com/png.latex?A"> is the <strong>instantaneous rate of volume growth</strong>.</p>
+<p>This is easy to believe for a diagonal matrix. If <img src="https://latex.codecogs.com/png.latex?%0AA=%5Coperatorname%7Bdiag%7D(%5Clambda_1,%5Cldots,%5Clambda_n),%0A"> then <img src="https://latex.codecogs.com/png.latex?%0Ae%5E%7BAt%7D=%5Coperatorname%7Bdiag%7D(e%5E%7B%5Clambda_1t%7D,%5Cldots,e%5E%7B%5Clambda_nt%7D),%0A"> and the volume scale is <img src="https://latex.codecogs.com/png.latex?%0Ae%5E%7B%5Clambda_1t%7D%5Ccdots%20e%5E%7B%5Clambda_nt%7D%0A=e%5E%7Bt(%5Clambda_1+%5Ccdots+%5Clambda_n)%7D%0A=e%5E%7Bt%5C,%5Coperatorname%7Btr%7D(A)%7D.%0A"> The general case is the same truth written without a diagonal coordinate system.</p>
+<p>There are two lovely consequences.</p>
+<p>First, if <img src="https://latex.codecogs.com/png.latex?%5Coperatorname%7Btr%7D(A)%3C0">, volumes shrink exponentially. If <img src="https://latex.codecogs.com/png.latex?%5Coperatorname%7Btr%7D(A)%3E0">, volumes expand exponentially. If <img src="https://latex.codecogs.com/png.latex?%5Coperatorname%7Btr%7D(A)=0">, the flow preserves volume. Rotation has trace zero, and indeed a rotation does not change area.</p>
+<p>Second, <img src="https://latex.codecogs.com/png.latex?e%5E%7Bt%5C,%5Coperatorname%7Btr%7D(A)%7D"> is never zero. So <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D"> is always invertible, with inverse <img src="https://latex.codecogs.com/png.latex?%0A(e%5E%7BAt%7D)%5E%7B-1%7D=e%5E%7B-At%7D.%0A"> A continuous linear flow can squeeze space very hard, but it cannot flatten a plane into a line in finite time. It cannot suddenly lose a dimension. Collapse belongs to projections and singular transformations, not to finite-time exponentials of matrices.</p>
+<p>That is a quiet but important distinction. A matrix can crush space. A matrix exponential is the motion produced by a matrix acting as a velocity law, and that motion always remains reversible for finite time.</p>
+</section>
+<section id="the-trap-matrices-do-not-commute" class="level2">
+<h2 class="anchored" data-anchor-id="the-trap-matrices-do-not-commute">The trap: matrices do not commute</h2>
+<p>It is tempting to carry every scalar exponential identity into matrix land: <img src="https://latex.codecogs.com/png.latex?%0Ae%5E%7Ba+b%7D=e%5Ea%20e%5Eb.%0A"> For matrices, this is generally false: <img src="https://latex.codecogs.com/png.latex?%0Ae%5E%7BA+B%7D%5Cne%20e%5EA%20e%5EB.%0A"></p>
+<p>The reason is the oldest reason in linear algebra: order matters. A shear followed by a rotation is usually not the same as a rotation followed by a shear. Since matrix multiplication remembers order, exponentials of matrices must remember it too.</p>
+<p>There is one clean exception. If <img src="https://latex.codecogs.com/png.latex?%0AAB=BA,%0A"> then <img src="https://latex.codecogs.com/png.latex?%0Ae%5E%7BA+B%7D=e%5EA%20e%5EB.%0A"> Commuting matrices behave enough like numbers for the familiar law to return.</p>
+<p>This warning becomes especially important when the matrix itself changes with time. If <img src="https://latex.codecogs.com/png.latex?%0Ax'(t)=A(t)x(t),%0A"> you might hope the solution is simply <img src="https://latex.codecogs.com/png.latex?%0A%5Cexp%5Cleft(%5Cint_0%5Et%20A(s)%5C,ds%5Cright)x_0.%0A"> That is only safe when the matrices <img src="https://latex.codecogs.com/png.latex?A(s)"> commute with each other at different times. Otherwise, “what happened first” changes the answer. The true solution has to remember time ordering.</p>
+<p>The moral is not that matrix exponentials are fragile. The moral is that they are honest. They know that geometry has order.</p>
+</section>
+<section id="where-eat-appears" class="level2">
+<h2 class="anchored" data-anchor-id="where-eat-appears">Where <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D"> appears</h2>
+<p>Once you recognize <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D"> as “the finite motion generated by the linear rule <img src="https://latex.codecogs.com/png.latex?A">,” its applications stop looking like separate tricks.</p>
+<p>In <strong>linear differential equations</strong>, it is the fundamental solution of <img src="https://latex.codecogs.com/png.latex?x'=Ax">. The scalar solution <img src="https://latex.codecogs.com/png.latex?e%5E%7Brt%7D"> was only the one-dimensional case.</p>
+<p>In <strong>control theory</strong>, a system with input <img src="https://latex.codecogs.com/png.latex?%0Ax'(t)=Ax(t)+Bu(t)%0A"> has solution <img src="https://latex.codecogs.com/png.latex?%0Ax(t)=e%5E%7BAt%7Dx_0+%5Cint_0%5Et%20e%5E%7BA(t-s)%7DBu(s)%5C,ds.%0A"> The first term is what the system does on its own. The integral adds the effect of every past input, transported forward by the same transition matrix.</p>
+<p>In <strong>continuous-time Markov chains</strong>, the generator matrix <img src="https://latex.codecogs.com/png.latex?Q"> contains jump rates between states. Under the column-vector convention, its off-diagonal entries are nonnegative and each column sums to zero. If <img src="https://latex.codecogs.com/png.latex?p(t)"> is the probability vector, then <img src="https://latex.codecogs.com/png.latex?%0Ap'(t)=Qp(t),%0A%5Cqquad%0Ap(t)=e%5E%7BtQ%7Dp(0).%0A"> The exponential turns instantaneous jump rates into finite-time transition probabilities.</p>
+<p>In <strong>diffusion and network flow</strong>, matrices like graph Laplacians move quantity from a node to its neighbors. The exponential <img src="https://latex.codecogs.com/png.latex?e%5E%7BtA%7D"> describes how heat, mass, or information spreads after time <img src="https://latex.codecogs.com/png.latex?t">. The powers <img src="https://latex.codecogs.com/png.latex?A%5Ek"> in the series are the algebraic shadows of paths through the network.</p>
+<p>In <strong>quantum mechanics</strong>, Schrödinger’s equation has the form <img src="https://latex.codecogs.com/png.latex?%0Ai%5Chbar%5C,%5Cpsi'(t)=H%5Cpsi(t),%0A"> so <img src="https://latex.codecogs.com/png.latex?%0A%5Cpsi(t)=e%5E%7B-itH/%5Chbar%7D%5Cpsi(0).%0A"> When <img src="https://latex.codecogs.com/png.latex?H"> is Hermitian, this exponential is unitary, which means the evolution preserves total probability. Again, the exponential turns an infinitesimal law into finite motion.</p>
+<p>Even numerical computation fits the same theme. In practice, large matrix exponentials are not usually computed by naively summing Equation&nbsp;3 term by term. Algorithms exploit scaling, squaring, Krylov subspaces, diagonalization when available, or the action <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7Dv"> directly. The object is defined by the series, but the most efficient way to use it depends on the geometry and size of the problem.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>The matrix exponential is not a decorative analogy with the scalar exponential. It is the finite flow generated by the linear velocity law <img src="https://latex.codecogs.com/png.latex?%0Ax'=Ax.%0A"> The matrix <img src="https://latex.codecogs.com/png.latex?A"> tells each point how to start moving. The matrix <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D"> tells where every point lands after time <img src="https://latex.codecogs.com/png.latex?t">.</p>
+<p>When <img src="https://latex.codecogs.com/png.latex?A"> has an eigenbasis, those eigenvectors are the directions in which the motion becomes simple: each one grows, decays, or oscillates according to <img src="https://latex.codecogs.com/png.latex?e%5E%7B%5Clambda%20t%7D">. If <img src="https://latex.codecogs.com/png.latex?A"> couples coordinates, the powers <img src="https://latex.codecogs.com/png.latex?A%5E2,A%5E3,%5Cldots"> encode longer chains of influence. If <img src="https://latex.codecogs.com/png.latex?A"> generates rotation, its exponential is a rotation matrix. If <img src="https://latex.codecogs.com/png.latex?A"> generates diffusion, its exponential spreads heat. If <img src="https://latex.codecogs.com/png.latex?A"> generates a Markov chain, its exponential gives transition probabilities.</p>
+<p>So the slogan is:</p>
+<blockquote class="blockquote">
+<p>A matrix is an instantaneous rule. Its exponential is that rule lived through time.</p>
+</blockquote>
+<p>That is why <img src="https://latex.codecogs.com/png.latex?e%5E%7BAt%7D"> belongs next to the determinant, eigenvectors, and change of basis in the mental toolbox of linear algebra. It is where matrices stop being static transformations and start becoming dynamics.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Matrix Exponentials: When a Matrix Becomes Motion</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/matrix-exponentials-when-a-matrix-becomes-motion/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+</section>
+
+ ]]></description>
+  <category>pure</category>
+  <category>applied</category>
+  <category>linear-algebra</category>
+  <category>differential-equations</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/matrix-exponentials-when-a-matrix-becomes-motion/</guid>
+  <pubDate>Tue, 23 Jun 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Permanent vs. Determinant</title>
   <link>https://terryfxh.github.io/math-notes/posts/permanent-vs-determinant/</link>
@@ -8319,198 +8460,6 @@ font-style: inherit;">"</span>)</span></code></pre></div></div>
   <category>meta</category>
   <guid>https://terryfxh.github.io/math-notes/posts/welcome/</guid>
   <pubDate>Tue, 02 Jun 2026 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>The Spectral Theorem for Symmetric Matrices</title>
-  <link>https://terryfxh.github.io/math-notes/posts/spectral-theorem/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="epigraph">
-<p><em>“Mathematics is the art of giving the same name to different things.”</em></p>
-<p><span class="attribution">— Henri Poincaré</span></p>
-</div>
-<p>Here is a claim that sounds almost too clean to be true. Take any real symmetric matrix, no matter how tangled its entries look, and there is always a way to turn your head so that the transformation it describes does nothing fancy at all. It just stretches space along a set of perpendicular axes, each by its own amount. No shearing, no twisting, no mixing of directions. That is the whole content of the spectral theorem, and the rest of this post is about why space has no choice but to behave this way.</p>
-<section id="first-the-picture" class="level2">
-<h2 class="anchored" data-anchor-id="first-the-picture">First, the picture</h2>
-<p>Picture a linear map in two dimensions. In general it can do unpleasant things: it can rotate, it can shear a square into a slanted parallelogram, it can stretch more in one diagonal direction than another. A generic matrix really does mix your coordinate axes together.</p>
-<p>Symmetry is the condition that quietly forbids all of that mixing, once you look from the right angle. The promise of the theorem is that for a symmetric matrix you can always find a fresh set of axes, still perfectly perpendicular to one another, in which the map becomes a pure diagonal stretch. Finding those special axes is the whole game, and they are exactly the eigenvectors.</p>
-</section>
-<section id="setting-it-up" class="level2">
-<h2 class="anchored" data-anchor-id="setting-it-up">Setting it up</h2>
-<p>Let <img src="https://latex.codecogs.com/png.latex?A%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bn%5Ctimes%20n%7D"> be <strong>symmetric</strong>, meaning <img src="https://latex.codecogs.com/png.latex?A%5E%5Ctop%20=%20A">. Write the standard inner product as <img src="https://latex.codecogs.com/png.latex?%5Clangle%20x,%20y%5Crangle%20=%20x%5E%5Ctop%20y">. The single fact that powers everything below is that symmetry lets you slide <img src="https://latex.codecogs.com/png.latex?A"> from one side of an inner product to the other:</p>
-<p><span id="eq-selfadjoint"><img src="https://latex.codecogs.com/png.latex?%0A%5Clangle%20Ax,%20y%5Crangle%20=%20%5Clangle%20x,%20Ay%5Crangle%20%5Cqquad%20%5Ctext%7Bfor%20all%20%7D%20x,y%20%5Cin%20%5Cmathbb%7BR%7D%5En.%0A%5Ctag%7B1%7D"></span></p>
-<p>This is worth a moment. It says <img src="https://latex.codecogs.com/png.latex?A"> treats both slots of the inner product identically, a property called self-adjointness. Everything that follows is really Equation&nbsp;1 wearing different costumes.</p>
-</section>
-<section id="the-theorem" class="level2">
-<h2 class="anchored" data-anchor-id="the-theorem">The theorem</h2>
-<div id="thm-spectral" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 1 (Spectral Theorem)</strong></span> If <img src="https://latex.codecogs.com/png.latex?A%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bn%5Ctimes%20n%7D"> is symmetric, then there exist an orthogonal matrix <img src="https://latex.codecogs.com/png.latex?Q"> (so <img src="https://latex.codecogs.com/png.latex?Q%5E%5Ctop%20Q%20=%20I">) and a real diagonal matrix <img src="https://latex.codecogs.com/png.latex?%5CLambda%20=%20%5Coperatorname%7Bdiag%7D(%5Clambda_1,%5Cdots,%5Clambda_n)"> such that <span id="eq-decomp"><img src="https://latex.codecogs.com/png.latex?%0AA%20=%20Q%20%5CLambda%20Q%5E%5Ctop%20.%0A%5Ctag%7B2%7D"></span> Equivalently, <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5En"> has an orthonormal basis of eigenvectors of <img src="https://latex.codecogs.com/png.latex?A">, and every eigenvalue is real.</p>
-</div>
-<p>Read Equation&nbsp;2 from right to left and it tells the same story as the picture. The matrix <img src="https://latex.codecogs.com/png.latex?Q%5E%5Ctop"> rotates you into the special axes, <img src="https://latex.codecogs.com/png.latex?%5CLambda"> does the honest diagonal stretching, and <img src="https://latex.codecogs.com/png.latex?Q"> rotates you back. We reach it through two small observations.</p>
-</section>
-<section id="two-small-facts" class="level2">
-<h2 class="anchored" data-anchor-id="two-small-facts">Two small facts</h2>
-<div id="lem-real" class="theorem lemma">
-<p><span class="theorem-title"><strong>Lemma 1 (Eigenvalues are real)</strong></span> Every eigenvalue of a real symmetric <img src="https://latex.codecogs.com/png.latex?A"> is real.</p>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>Let <img src="https://latex.codecogs.com/png.latex?Ax%20=%20%5Clambda%20x"> with <img src="https://latex.codecogs.com/png.latex?x%20%5Cneq%200">, where for the moment we allow <img src="https://latex.codecogs.com/png.latex?%5Clambda"> and <img src="https://latex.codecogs.com/png.latex?x"> to be complex. Write <img src="https://latex.codecogs.com/png.latex?x%5E%7B*%7D"> for the conjugate transpose, so <img src="https://latex.codecogs.com/png.latex?%5Clangle%20x,%20x%5Crangle%20=%20x%5E%7B*%7Dx%20=%20%5C%7Cx%5C%7C%5E2%20%3E%200">. Because <img src="https://latex.codecogs.com/png.latex?A"> has real entries and <img src="https://latex.codecogs.com/png.latex?A%5E%5Ctop%20=%20A">, it is Hermitian: <img src="https://latex.codecogs.com/png.latex?A%5E%7B*%7D%20=%20A">. Now follow a single quantity, <img src="https://latex.codecogs.com/png.latex?x%5E%7B*%7DAx">, down two different paths: <img src="https://latex.codecogs.com/png.latex?%0A%5Clambda%5C,%20%5Clangle%20x,%20x%5Crangle%20=%20x%5E%7B*%7D%20A%20x%20=%20x%5E%7B*%7D%20A%5E%7B*%7D%20x%20=%20(Ax)%5E%7B*%7D%20x%20=%20%5Cbar%5Clambda%5C,%20%5Clangle%20x,%20x%5Crangle%20.%0A"> The first equality uses <img src="https://latex.codecogs.com/png.latex?Ax%20=%20%5Clambda%20x">; the middle uses <img src="https://latex.codecogs.com/png.latex?A%5E%7B*%7D=A">; the last uses <img src="https://latex.codecogs.com/png.latex?Ax%20=%20%5Clambda%20x"> again, now inside the conjugated slot. Since <img src="https://latex.codecogs.com/png.latex?%5Clangle%20x,%20x%5Crangle%20%3E%200"> we may cancel it, leaving <img src="https://latex.codecogs.com/png.latex?%5Clambda%20=%20%5Cbar%5Clambda">. A number equal to its own conjugate is real. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
-</div>
-<div id="lem-orthogonal" class="theorem lemma">
-<p><span class="theorem-title"><strong>Lemma 2 (Eigenvectors for distinct eigenvalues are orthogonal)</strong></span> If <img src="https://latex.codecogs.com/png.latex?Ax%20=%20%5Clambda%20x"> and <img src="https://latex.codecogs.com/png.latex?Ay%20=%20%5Cmu%20y"> with <img src="https://latex.codecogs.com/png.latex?%5Clambda%20%5Cneq%20%5Cmu">, then <img src="https://latex.codecogs.com/png.latex?%5Clangle%20x,%20y%5Crangle%20=%200">.</p>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>Slide <img src="https://latex.codecogs.com/png.latex?A"> across the inner product using Equation&nbsp;1: <img src="https://latex.codecogs.com/png.latex?%0A%5Clambda%20%5Clangle%20x,%20y%5Crangle%20=%20%5Clangle%20Ax,%20y%5Crangle%20=%20%5Clangle%20x,%20Ay%5Crangle%20=%20%5Cmu%20%5Clangle%20x,%20y%5Crangle%20.%0A"> Therefore <img src="https://latex.codecogs.com/png.latex?(%5Clambda%20-%20%5Cmu)%5Clangle%20x,%20y%5Crangle%20=%200">, and since <img src="https://latex.codecogs.com/png.latex?%5Clambda%20%5Cneq%20%5Cmu"> the only way out is <img src="https://latex.codecogs.com/png.latex?%5Clangle%20x,%20y%5Crangle%20=%200">. The special axes are automatically perpendicular, exactly as the picture demanded. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
-</div>
-</section>
-<section id="putting-it-together" class="level2">
-<h2 class="anchored" data-anchor-id="putting-it-together">Putting it together</h2>
-<p>We now assemble the theorem. The argument is an induction on the dimension <img src="https://latex.codecogs.com/png.latex?n">, and each step leans on the two facts above.</p>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>The base case <img src="https://latex.codecogs.com/png.latex?n%20=%201"> is immediate, since a <img src="https://latex.codecogs.com/png.latex?1%5Ctimes%201"> matrix is already diagonal. For the inductive step, Lemma&nbsp;1 hands us a genuine real eigenvalue <img src="https://latex.codecogs.com/png.latex?%5Clambda_1"> with a unit eigenvector <img src="https://latex.codecogs.com/png.latex?q_1">. Consider its orthogonal complement <img src="https://latex.codecogs.com/png.latex?q_1%5E%7B%5Cperp%7D">, the hyperplane of everything perpendicular to <img src="https://latex.codecogs.com/png.latex?q_1">. Identity Equation&nbsp;1 shows this hyperplane is <img src="https://latex.codecogs.com/png.latex?A">-invariant: if <img src="https://latex.codecogs.com/png.latex?v%20%5Cperp%20q_1"> then <img src="https://latex.codecogs.com/png.latex?Av%20%5Cperp%20q_1"> as well, so <img src="https://latex.codecogs.com/png.latex?A"> never pushes you off the hyperplane. Restricted there, <img src="https://latex.codecogs.com/png.latex?A"> is again symmetric but acts on a space of dimension <img src="https://latex.codecogs.com/png.latex?n-1">, so the inductive hypothesis supplies an orthonormal eigenbasis of that smaller space. Adjoining <img src="https://latex.codecogs.com/png.latex?q_1"> completes it to an orthonormal eigenbasis of all of <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5En">. Lining those vectors up as the columns of <img src="https://latex.codecogs.com/png.latex?Q"> gives exactly Equation&nbsp;2. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
-</div>
-<p>For a complete and careful treatment, including the version for self-adjoint operators on infinite-dimensional Hilbert spaces, see <span class="citation" data-cites="rudin1991functional">[1]</span>. For the numerical side of the story, <span class="citation" data-cites="trefethen1997numerical">[2]</span> is the classic reference.</p>
-</section>
-<section id="a-numerical-check" class="level2">
-<h2 class="anchored" data-anchor-id="a-numerical-check">A numerical check</h2>
-<p>A proof tells you a decomposition must exist; it is a different kind of satisfying to watch it appear. Let us build a random symmetric matrix, ask the computer for its eigenvalues and eigenvectors, and confirm that Equation&nbsp;2 holds right down to floating-point roundoff.</p>
-<div id="cf6d7cc3" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> np</span>
-<span id="cb1-2"></span>
-<span id="cb1-3">rng <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.random.default_rng(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span>
-<span id="cb1-4">n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">6</span></span>
-<span id="cb1-5">M <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> rng.standard_normal((n, n))</span>
-<span id="cb1-6">A <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> (M <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> M.T) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>                      <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># force symmetry</span></span>
-<span id="cb1-7"></span>
-<span id="cb1-8">eigvals, Q <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.linalg.eigh(A)         <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># eigh is built for symmetric matrices</span></span>
-<span id="cb1-9">Lambda <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.diag(eigvals)</span>
-<span id="cb1-10"></span>
-<span id="cb1-11">reconstruction_error <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.linalg.norm(A <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> Q <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> Lambda <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> Q.T)</span>
-<span id="cb1-12">orthogonality_error  <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.linalg.norm(Q.T <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> Q <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> np.eye(n))</span>
-<span id="cb1-13"></span>
-<span id="cb1-14"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"eigenvalues (all real): </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">round</span>(eigvals, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">4</span>)<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span>
-<span id="cb1-15"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"|A - Q L Q^T| = </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>reconstruction_error<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span>
-<span id="cb1-16"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"|Q^T Q - I|   = </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>orthogonality_error<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>eigenvalues (all real): [-2.0037 -0.988   0.2761  0.4913  1.5001  1.8151]
-|A - Q L Q^T| = 1.62e-15
-|Q^T Q - I|   = 1.39e-15</code></pre>
-</div>
-</div>
-<p>Both residuals sit around <img src="https://latex.codecogs.com/png.latex?10%5E%7B-15%7D">, which is as close to zero as double-precision arithmetic ever gets. The eigenvalues come back real, the eigenvectors come back orthonormal, and the stretch-and-rotate story holds up.</p>
-</section>
-<section id="what-to-remember" class="level2">
-<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
-<p>If you keep only three things from this note, keep these. Symmetry is really self-adjointness, the identity Equation&nbsp;1, and that one fact is the engine of the entire proof. From it follow real eigenvalues (Lemma&nbsp;1) and perpendicular eigenvectors (Lemma&nbsp;2), which together build the orthonormal frame the theorem promises. And in practice, when you actually compute, reach for a symmetry-aware routine like <code>eigh</code> rather than the general <code>eig</code>; it is faster and it guarantees the real, orthogonal answer the mathematics says you deserve.</p>
-</section>
-<section id="how-to-cite" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
-<blockquote class="blockquote">
-<p>Terry (2026). <em>The Spectral Theorem for Symmetric Matrices</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/spectral-theorem/</code>.</p>
-</blockquote>
-
-
-<!-- -->
-
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
-<div id="ref-rudin1991functional" class="csl-entry">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">W. Rudin, <em>Functional analysis</em>, 2nd ed. in International series in pure and applied mathematics. McGraw-Hill, 1991.</div>
-</div>
-<div id="ref-trefethen1997numerical" class="csl-entry">
-<div class="csl-left-margin">[2] </div><div class="csl-right-inline">L. N. Trefethen and D. Bau, <em>Numerical linear algebra</em>. SIAM, 1997.</div>
-</div>
-</div></section></div> ]]></description>
-  <category>pure</category>
-  <category>applied</category>
-  <category>linear-algebra</category>
-  <guid>https://terryfxh.github.io/math-notes/posts/spectral-theorem/</guid>
-  <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
