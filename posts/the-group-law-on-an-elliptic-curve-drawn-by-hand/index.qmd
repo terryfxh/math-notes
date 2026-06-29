@@ -1,0 +1,478 @@
+---
+title: "The Group Law on an Elliptic Curve, Drawn by Hand"
+description: "A full intuition-first route from the chord-and-tangent group law to ECC, ECDH, signatures, and practical production parameter choices."
+date: 2026-06-29
+categories: [pure, applied, algebraic-geometry, number-theory, cryptography, computer-science]
+bibliography: ../../references.bib
+draft: false
+---
+
+::: {.epigraph}
+*"Philosophy is written in this grand book, the universe ... It is written in the language of mathematics, and its characters are triangles, circles, and other geometric figures."*
+
+[-- Galileo Galilei, *Il Saggiatore*]{.attribution}
+:::
+
+The first time you meet an elliptic curve, the name is almost actively unhelpful. It is not an ellipse. It is not even especially curved in the way a circle is curved. It is a cubic equation pretending to be a drawing.
+
+Here is the version I want you to hold in your head:
+$$
+E: y^2 = x^3 + Ax + B.
+$$ {#eq-curve}
+For now work over the real numbers, and assume the curve is smooth, meaning
+$$
+4A^3 + 27B^2 \ne 0.
+$$ {#eq-discriminant}
+That condition is the small print that prevents the curve from pinching into a cusp or crossing itself.
+
+The surprise is that the points on this curve can be added. Not approximately. Not metaphorically. Added, as an abelian group. The rule is so visual that it feels at first like a drawing trick: take two points, draw a line, find the third intersection, and flip it.
+
+That is the whole machine. Everything else in this post is bookkeeping to explain why the machine is honest.
+
+## First, draw the addition
+
+Take two points $P$ and $Q$ on the curve. Draw the straight line through them. A line and a cubic curve usually meet in three points, so after $P$ and $Q$ there is one more point. Call it $R$.
+
+Now reflect $R$ across the $x$-axis. The reflected point is, by definition,
+$$
+P + Q.
+$$
+
+That sounds like a magician naming the rabbit after pulling it from the hat. But pause on the picture. We are not choosing a third point freely. The line is forced by $P$ and $Q$; the cubic supplies the missing intersection; the reflection is the only extra convention.
+
+Here is a concrete curve where the drawing can be done by hand:
+$$
+y^2 = x^3 - x + 1.
+$$ {#eq-toy-curve}
+The points $P=(0,1)$ and $Q=(1,1)$ both lie on it. The line through them is the horizontal line $y=1$. Substitute $y=1$ into @eq-toy-curve:
+$$
+1 = x^3 - x + 1
+\quad\Longleftrightarrow\quad
+x^3 - x = 0
+\quad\Longleftrightarrow\quad
+x(x-1)(x+1)=0.
+$$
+The three intersections have $x=-1,0,1$. Two of them were $P$ and $Q$. The third is $R=(-1,1)$, so
+$$
+P+Q=(-1,-1).
+$$
+
+No formula found that point. The picture did.
+
+```{python}
+#| fig-cap: "On y^2 = x^3 - x + 1, the line through P=(0,1) and Q=(1,1) meets the curve again at R=(-1,1). Reflecting R gives P+Q=(-1,-1)."
+import numpy as np
+import matplotlib.pyplot as plt
+
+def rhs(x):
+    return x**3 - x + 1
+
+x = np.linspace(-1.45, 1.75, 500)
+y2 = rhs(x)
+mask = y2 >= 0
+
+fig, ax = plt.subplots(figsize=(6, 4.2))
+ax.plot(x[mask], np.sqrt(y2[mask]), color="#244C5A", lw=2)
+ax.plot(x[mask], -np.sqrt(y2[mask]), color="#244C5A", lw=2)
+ax.axhline(1, color="#A85D32", lw=1.8, linestyle="--")
+
+points = {
+    "P": (0, 1),
+    "Q": (1, 1),
+    "R": (-1, 1),
+    "P+Q": (-1, -1),
+}
+for label, (px, py) in points.items():
+    ax.scatter(px, py, s=45, color="#A85D32")
+    ax.annotate(label, (px, py), xytext=(7, 7), textcoords="offset points")
+
+ax.set_aspect("equal", adjustable="box")
+ax.set_xlim(-1.45, 1.75)
+ax.set_ylim(-1.6, 2.2)
+ax.set_xlabel("$x$")
+ax.set_ylabel("$y$")
+ax.set_title("$y^2 = x^3 - x + 1$")
+ax.grid(alpha=0.25)
+plt.show()
+```
+
+The picture is the writing highlight of the whole post: addition appears as a consequence of incidence. Arithmetic is hiding in the fact that a straight line cannot quite escape a cubic.
+
+## Why a cubic gives a third point
+
+Let us say the algebra out loud, because this is where the rule stops being a doodle.
+
+A non-vertical line has equation
+$$
+y = mx + c.
+$$
+Substitute this into @eq-curve:
+$$
+(mx+c)^2 = x^3 + Ax + B.
+$$
+After moving everything to one side, this is a cubic equation in $x$.
+
+A cubic has three roots when counted with multiplicity and over an algebraic closure. Geometrically: a line meets a projective cubic in three points, with tangency counted twice. This is the mild form of Bezout's theorem sitting underneath the drawing [@hulek2003; @silverman2015rational].
+
+So if the line already goes through $P$ and $Q$, the third intersection is not an artistic choice. It is the remaining root of a cubic equation.
+
+There are two special cases, and neither is an exception.
+
+If $P=Q$, the secant line has collapsed into a tangent line. The tangent counts as meeting the curve twice at $P$, so there is still a third intersection. Reflect it, and you get $2P$.
+
+If the line is vertical, it goes through $P=(x,y)$ and its mirror $-P=(x,-y)$. The third point is not finite. It is the point at infinity, which we call $O$.
+
+That last sentence is the part that usually feels suspicious, so let us slow down.
+
+## Why infinity has to be there
+
+The curve @eq-curve is easier to manage if we add one extra point:
+$$
+O = \text{the point at infinity}.
+$$
+In projective coordinates, the short Weierstrass curve has exactly one such point, written $[0:1:0]$.
+
+This is not decorative. It repairs the three-intersections rule.
+
+A vertical line through $P$ and $-P$ has already used up two finite intersections. The third intersection is $O$. With that convention, the chord rule says
+$$
+P + (-P) = O.
+$$
+So $O$ behaves exactly like zero should behave: it is what you get when you add a point to its inverse.
+
+This is the same kind of move the blog keeps returning to. Residues became coordinates in the Chinese Remainder Theorem. Configuration spaces made rectangles visible. Here, one extra point at infinity makes a broken geometric rule whole.
+
+Once $O$ is admitted, every line meets the cubic three times, and the addition rule has somewhere to send every case.
+
+## The group law
+
+Now we can state the result cleanly.
+
+::: {#thm-elliptic-group}
+
+## Elliptic Curve Group Law
+
+Let $K$ be a field of characteristic not $2$ or $3$, and let
+$$
+E: y^2 = x^3 + Ax + B
+$$
+with $4A^3 + 27B^2 \ne 0$. Add the point at infinity $O$. The chord-and-tangent rule makes $E(K)$ into an abelian group with identity $O$.
+
+:::
+
+Most of the group axioms are visible.
+
+The identity is $O$. A finite point $P=(x,y)$ has inverse $-P=(x,-y)$. Commutativity is built in: the line through $P$ and $Q$ is the same line through $Q$ and $P$.
+
+Associativity is the hard axiom:
+$$
+(P+Q)+R = P+(Q+R).
+$$
+Do not let anyone wave this away as "obvious from the picture." It is true, but it is not locally visible in one chord. Standard proofs use projective geometry, divisors, or explicit algebraic verification; Silverman and Tate give a friendly path into this theorem [@silverman2015rational].
+
+That honesty matters. The picture discovers the rule. The theorem proves that the rule can carry arithmetic.
+
+## The formulas are the shadow of the picture
+
+The drawing is primary, but computation needs coordinates.
+
+For distinct non-inverse points $P=(x_1,y_1)$ and $Q=(x_2,y_2)$, the slope is
+$$
+\lambda = \frac{y_2-y_1}{x_2-x_1}.
+$$
+Then
+$$
+x_3 = \lambda^2 - x_1 - x_2,\qquad
+y_3 = \lambda(x_1-x_3)-y_1,
+$$
+and $P+Q=(x_3,y_3)$.
+
+For doubling, the secant slope becomes the tangent slope:
+$$
+\lambda = \frac{3x_1^2 + A}{2y_1}.
+$$
+The same formulas for $x_3$ and $y_3$ then give $2P$.
+
+These formulas are not a second definition. They are the chord-and-tangent picture written in coordinates.
+
+## Move the picture onto a finite clock
+
+Now replace real numbers by residues modulo a prime $p>3$. The same equation becomes
+$$
+E(\mathbb{F}_p): y^2 \equiv x^3 + Ax + B \pmod p.
+$$
+The points are now a finite set. There is no smooth curve to draw, only scattered dots on a modular grid.
+
+But the algebraic rule survives. Division means modular inverse. Reflection means replacing $y$ by $-y \bmod p$. The same formulas still define addition as long as
+$$
+4A^3 + 27B^2 \not\equiv 0 \pmod p.
+$$
+
+This is where the earlier discrete-log post re-enters. Pick a point $P$ and keep adding it to itself:
+$$
+P,\;2P,\;3P,\;\ldots,\;nP.
+$$
+Going forward is fast by double-and-add. Given $P$ and $nP$, recovering $n$ is the elliptic-curve discrete logarithm problem.
+
+We have changed the clock. In the old post, the clock was the multiplicative group modulo a prime. Here the clock is a finite set of points on a cubic. The same asymmetry returns: forward is a stroll, backward is a search.
+
+Koblitz and Miller independently proposed using this arithmetic for public-key cryptography in the 1980s [@koblitz1987ecc; @miller1986ecc]. The security claim is still a hardness assumption, not a theorem. That distinction is part of the honesty of the subject.
+
+## A tiny finite-field check
+
+Here is the smallest useful version of the arithmetic. No finite-field class. No protocol library. Just tuples and the group law.
+
+Work on
+$$
+E: y^2 = x^3 + 2x + 3 \pmod {97}.
+$$
+The point $G=(91,58)$ lies on the curve. It has order $50$, so adding it to itself eventually walks through a small cyclic subgroup and returns to $O$.
+
+Do not read security into these numbers. The prime is tiny, the curve is arbitrary, and an attacker could exhaust the whole group by hand. The point is only to see the same law running on a finite clock.
+
+```{python}
+p = 97
+A = 2
+B = 3
+O = None
+
+def on_curve(P):
+    if P is O:
+        return True
+    x, y = P
+    return (y*y - (x*x*x + A*x + B)) % p == 0
+
+def neg(P):
+    if P is O:
+        return O
+    x, y = P
+    return (x, (-y) % p)
+
+def add(P, Q):
+    if P is O:
+        return Q
+    if Q is O:
+        return P
+
+    x1, y1 = P
+    x2, y2 = Q
+
+    if x1 == x2 and (y1 + y2) % p == 0:
+        return O
+
+    if P == Q:
+        lam = (3*x1*x1 + A) * pow(2*y1, -1, p) % p
+    else:
+        lam = (y2 - y1) * pow(x2 - x1, -1, p) % p
+
+    x3 = (lam*lam - x1 - x2) % p
+    y3 = (lam*(x1 - x3) - y1) % p
+    return (x3, y3)
+
+def mul(n, P):
+    result = O
+    addend = P
+    while n:
+        if n & 1:
+            result = add(result, addend)
+        addend = add(addend, addend)
+        n >>= 1
+    return result
+
+G = (91, 58)
+assert on_curve(G)
+assert add(G, O) == G
+assert add(G, neg(G)) is O
+assert mul(50, G) is O
+
+for n in range(1, 9):
+    print(f"{n}G = {mul(n, G)}")
+```
+
+And because associativity is the dangerous axiom, let the machine check it on this toy curve.
+
+```{python}
+points = [O]
+for x in range(p):
+    for y in range(p):
+        P = (x, y)
+        if on_curve(P):
+            points.append(P)
+
+for P in points[:20]:
+    for Q in points[:20]:
+        for R in points[:20]:
+            assert add(add(P, Q), R) == add(P, add(Q, R))
+
+print(f"{len(points)} points on the curve, including O")
+print("associativity checked on the first 20 points in each slot")
+```
+
+This is the skeleton ECC needs:
+$$
+kG.
+$$
+Given $k$ and $G$, computing $kG$ is fast. Given $G$ and $kG$, recovering $k$ is the elliptic-curve discrete logarithm problem.
+
+## What ECC actually does
+
+Elliptic-curve cryptography is not "encrypting with an elliptic curve." That phrase hides the useful division of labor.
+
+ECC gives you compact public-key operations. It is normally used for two jobs:
+
+- key agreement, where two parties derive a shared secret;
+- signatures, where one party proves that a message came from a private scalar.
+
+For encryption, the usual pattern is hybrid. Use elliptic-curve key agreement to derive symmetric keys, then use authenticated encryption for the data. The curve does not replace the symmetric cipher. It gives the symmetric cipher a fresh key.
+
+That is why the group law matters. The public operation is scalar multiplication:
+$$
+kG = \underbrace{G + G + \cdots + G}_{k\text{ times}}.
+$$
+The private object is the scalar $k$. The public object is the point $kG$.
+
+The analogy with ordinary Diffie-Hellman is exact in shape. Replace modular exponentiation $g^a$ with scalar multiplication $aG$. The hard reversal changes name, but the asymmetry is the same.
+
+## ECDH: a shared point without sending the secret
+
+Suppose Alice chooses a private scalar $a$ and Bob chooses a private scalar $b$.
+
+Alice publishes
+$$
+A = aG.
+$$
+Bob publishes
+$$
+B = bG.
+$$
+
+Alice can compute
+$$
+aB = a(bG) = abG.
+$$
+Bob can compute
+$$
+bA = b(aG) = abG.
+$$
+They arrive at the same point without sending either private scalar.
+
+Here it is on the toy curve. Again: this is a teaching model, not a protocol.
+
+```{python}
+alice_secret = 17
+bob_secret = 29
+
+alice_public = mul(alice_secret, G)
+bob_public = mul(bob_secret, G)
+
+alice_shared = mul(alice_secret, bob_public)
+bob_shared = mul(bob_secret, alice_public)
+
+assert alice_shared == bob_shared
+print(f"Alice public key: {alice_public}")
+print(f"Bob public key:   {bob_public}")
+print(f"Shared point:     {alice_shared}")
+```
+
+Real ECDH has more ceremony. You validate or decode public keys according to the curve and protocol. You feed the shared value into a KDF. You bind the transcript, identities, and algorithm choices. You never treat a raw curve coordinate as the final encryption key.
+
+The equation $abG$ is the heart. The protocol is the body that keeps the heart alive under attack.
+
+## Signatures: proving possession of the scalar
+
+Signatures use the same private-scalar idea, but the goal changes.
+
+For key agreement, the scalar helps two parties derive a secret. For signatures, the scalar lets one party produce a public proof tied to a message.
+
+ECDSA and EdDSA are the two names you will see most often. Both live on elliptic-curve groups. Both publish a public key derived from a private scalar. Both verify a short signature using public arithmetic.
+
+The practical difference is not just notation.
+
+ECDSA is widely deployed and appears in standards, certificates, and hardware. It is also famously unforgiving about nonce generation. Reuse or bias the per-message nonce, and the private key can leak.
+
+EdDSA, especially Ed25519, was designed to make the common case harder to misuse. It uses Edwards curves and deterministic signing as specified in RFC 8032 [@rfc8032]. That does not make all implementations safe, but it removes one historic foot-gun.
+
+This is the right mental split:
+
+- ECDH/X25519 answers "can we agree on a secret?"
+- ECDSA/EdDSA answers "did the holder of this private key sign this message?"
+
+The group law is shared. The protocol purpose is different.
+
+## Production parameters: what I would choose in 2026
+
+Production cryptography is not the place to be original. Do not invent curves. Do not choose a random point. Do not ship the formulas from this post. Use vetted protocol libraries and standard domain parameters.
+
+As of June 29, 2026, my default choices would be:
+
+X25519 and X448 are the Montgomery-curve choices specified for modern key exchange in RFC 7748 [@rfc7748]. They are the reason many contemporary APIs expose "X25519" rather than asking you to select raw Weierstrass parameters.
+
+| Need | Default choice | When to choose something else |
+|---|---:|---|
+| Modern key agreement | X25519 | Use X448 when your ecosystem requires a larger classical margin. Use NIST P-256/P-384 when compliance or protocol compatibility requires it. |
+| Modern signatures | Ed25519 | Use Ed448 for a larger margin. Use ECDSA with P-256/P-384 when certificates, FIPS profiles, or legacy integrations require it. |
+| Broad TLS compatibility | X25519 and secp256r1 | Let the TLS stack negotiate from its supported groups. TLS 1.3 names X25519 and NIST curves among its supported groups [@rfc8446]. |
+| FIPS-oriented deployments | P-256, P-384, or P-521 with approved algorithms | Follow FIPS 186-5 and NIST SP 800-186 rather than a blog table [@nist_fips186_5; @nist_sp800_186]. |
+
+The rough security-level map is:
+
+| Classical security target | Typical ECC family |
+|---:|---|
+| about 128-bit | X25519, Ed25519, P-256 |
+| about 192-bit | P-384 |
+| about 224-bit | X448, Ed448 |
+| about 256-bit | P-521 |
+
+These rows are not interchangeable promises. They are engineering landmarks. Real security also depends on implementation quality, side-channel resistance, randomness, key validation, protocol binding, and update discipline.
+
+If you only remember one production rule, remember this:
+
+> Choose the curve through the protocol, not around it.
+
+For TLS, SSH, age, Signal-style protocols, JWT libraries, certificates, hardware modules, and cloud KMS products, the protocol and platform usually narrow the correct answer. The best parameter choice is often the boring one that your audited stack already implements correctly.
+
+## The checks that matter in real systems
+
+A production ECC review should ask questions that do not appear in the pretty group-law picture.
+
+Is scalar multiplication constant-time with respect to secret scalars? Are private scalars generated by a real CSPRNG or derived exactly as the standard says? Are ECDSA nonces deterministic or generated without bias? Are public keys validated or decoded under the curve's rules?
+
+Does ECDH feed a KDF with the right context, including transcript and algorithm identifiers? Does the protocol authenticate the peer, or is it only giving you an unauthenticated shared secret? Are signatures domain-separated so the same key cannot be tricked across protocols?
+
+Are keys rotated and stored in hardware or a managed KMS when the threat model requires it? Is the dependency receiving security updates? Is the migration story clear if the ecosystem moves from classical ECC to hybrid post-quantum key establishment?
+
+The last question is no longer theoretical planning. ECC is not quantum-safe. NIST standardized ML-KEM in FIPS 203 for post-quantum key encapsulation [@nist_fips203]. For long-term confidentiality, prefer standards-track hybrid or post-quantum options when your protocol stack supports them.
+
+That does not make ECC obsolete overnight. It means ECC should be treated as part of a living cryptographic system, not as a timeless charm.
+
+## How the whole machine fits together
+
+The path from the drawing to production is long, but it is not mysterious.
+
+Start with a cubic. Add the point at infinity. Use chords and tangents to define addition. Move the arithmetic to a finite field. Pick a standard base point on a standard curve. Keep the scalar private. Publish the scalar multiple.
+
+For ECDH, two scalar multiplications meet at the same point:
+$$
+a(bG)=b(aG).
+$$
+For signatures, the private scalar produces a proof that public arithmetic can verify.
+
+The writing highlight is that the same geometric sentence keeps surviving translation:
+
+> A line meets a cubic one more time than you already accounted for.
+
+On paper, that gives a reflected third point. In a finite field, it gives a group operation. In cryptography, repeated addition gives a one-way public-key primitive.
+
+## What to remember
+
+An elliptic curve becomes arithmetic because a line and a cubic conspire to produce a third point. Reflect that point, add one point at infinity, and the drawing becomes an abelian group.
+
+Over finite fields, the same rule turns scattered modular points into a finite group. Repeated addition is fast; reversing it is the elliptic-curve discrete logarithm problem.
+
+ECC uses that asymmetry for key agreement and signatures. In production, the right answer is not a clever curve from scratch. It is a standard curve, a vetted library, a protocol-level KDF or signature scheme, and a clear migration plan for the post-quantum era.
+
+Geometry has become a one-way door. Engineering decides whether the door is actually locked.
+
+## How to cite
+
+> Terry (2026). *The Group Law on an Elliptic Curve, Drawn by Hand*. Retrieved from `https://terryfxh.github.io/math-notes/posts/the-group-law-on-an-elliptic-curve-drawn-by-hand/`.
