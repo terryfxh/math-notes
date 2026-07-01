@@ -1,0 +1,91 @@
+---
+title: "AI in Mathematics: Proof Is Getting Cheap"
+description: "AI's progress on Olympiad mathematics is real, but its deeper consequence is a shift from producing answers to judging questions, definitions, and explanations."
+date: 2026-07-01
+categories: [meta, learning]
+bibliography: ../../references.bib
+draft: false
+---
+
+AI reaching gold-medal performance on International Mathematical Olympiad problems is an important result. Google DeepMind reported in 2025 that an advanced version of Gemini with Deep Think solved five of the six IMO problems and reached gold-medal standard [@deepmind2025imo]. That deserves attention. It should not, however, be treated as a clean measurement of general intelligence.
+
+The IMO is a difficult benchmark, but it is still a benchmark. The problems are precisely stated. The scoring rules are clear. The answers can be checked. This makes the setting unusually favorable for systems that can search, test, and refine candidate solutions at scale. Success there shows real progress in mathematical problem solving. It does not show that AI has acquired the full range of judgment, taste, intuition, and conceptual invention that human mathematics requires.
+
+The more accurate conclusion is narrower and more useful: AI's mathematical ability is highly uneven. It is already strong in parts of mathematics that are formal, searchable, and verifiable. It remains less reliable when progress depends on choosing the right question, creating the right definition, or recognizing which of many technically valid directions is worth developing.
+
+That distinction matters. It prevents two mistakes at once. The first mistake is to dismiss AI as merely pattern matching because it sometimes fails in ways that look naive. The second is to treat every new benchmark result as evidence that the entire structure of human mathematical work has already been automated. Neither position is precise enough.
+
+## Two kinds of mathematical progress
+
+It helps to separate two kinds of mathematical progress.
+
+The first kind is connection. A researcher notices that two distant areas share a hidden structure. A question in number theory begins to resemble a question in physics. A combinatorial object starts behaving like a linear-algebraic one. This is not shallow association; at its best it is a genuine mathematical insight. But it is an insight that benefits from breadth. A system that can read more, remember more, and test more analogies may be very good at producing such connections.
+
+AI has a natural advantage here. It can search across more material than any individual mathematician. It can try analogies that a human might reject too early. It can run many lines of attack in parallel. For this mode of progress, AI may become a powerful discovery engine.
+
+The second kind of progress is theory-building. The proof of Fermat's Last Theorem was not a single trick. Wiles's proof depended on a large theoretical landscape involving elliptic curves, modular forms, Galois representations, and deformation theory [@wiles1995modular; @taylorwiles1995hecke]. This kind of progress does not merely answer a question. It changes the language in which later questions can be asked.
+
+That is the harder threshold. If AI mainly helps connect existing fields, it will change mathematical work substantially. If AI can independently build new theoretical structures, the implications are much larger. It would mean that AI can reconstruct problem spaces rather than only operate inside them. That ability would matter far beyond mathematics, because many forms of high-value knowledge work depend on the same skill: defining the right abstraction before solving the visible problem.
+
+## Proof is easier to reward than judgment
+
+The next important milestone is therefore not simply whether AI can prove more theorems. It is whether AI can propose good conjectures and create useful definitions.
+
+Proof has a major advantage as a training target: it gives feedback. In a formal system such as Lean, a proposed proof step can be checked as correct or incorrect. Mathlib, Lean's mathematical library, turns a growing body of formalized mathematics into an environment where proof attempts can be tested mechanically [@mathlib2020]. Programming has a similar structure. Code can be executed. Tests can be run. Failures can often be traced to a specific line or assumption.
+
+These environments are unusually good for AI. They are repeatable, isolated, and cheap to reset. A failed proof attempt can be discarded. A broken program can be rerun. A model can try many variations without damaging the outside world.
+
+Most important work is not like this. A poor business decision cannot be reset in a clean container. A flawed educational intervention affects real students. A bad medical or managerial judgment may leave consequences that are delayed, ambiguous, and hard to attribute. AI progresses fastest where the world supplies a short, reliable feedback loop. Mathematics and programming are unusually rich in such loops.
+
+This does not make mathematical progress less impressive. It makes the source of the progress clearer.
+
+## The hard part is not generating concepts
+
+Conjectures and definitions are different from proofs. Their value is often not visible immediately. A definition may look artificial at the moment it is introduced, yet later become the natural language of a field. Galois theory is a familiar example: its importance became clearer over time as the theory organized algebra and later connected to many other areas of mathematics [@edwards1984galois].
+
+This creates a difficult evaluation problem. If an AI system generates one thousand new definitions, the central question is not whether those definitions are syntactically valid. Many will be. The central question is which definitions compress real structure. Which ones make important theorems easier to state? Which ones reveal invariants that were previously hidden? Which ones are worth teaching to another human being?
+
+That is not just a problem of search. It is a problem of taste under uncertainty. Mathematicians do not preserve every true statement. They preserve statements that organize understanding. They do not keep every possible definition. They keep definitions that make future thought cheaper.
+
+This is why "AI can prove the theorem" and "AI can advance mathematics" are not the same claim. The first concerns correctness. The second concerns importance.
+
+## Why writing is a useful comparison
+
+The same distinction helps explain why AI can produce strong code and formal arguments while often producing mediocre prose.
+
+Mathematics and programming are modular. A function can be correct if its interface and behavior are correct. A lemma can be useful if its assumptions and conclusion are precise. Local correctness can be built into a larger structure.
+
+Writing is less modular. Every word is part of the final object. A good essay is not merely a sequence of true statements. It must control what the reader knows, expects, doubts, and misunderstands at each stage. The unit of success is not only the sentence, but the reader's changing state of mind.
+
+AI can generate fluent text. Fluency is useful, but it is not the same as judgment. Good writing requires decisions about emphasis, omission, pacing, and context. It requires knowing when a technically accurate sentence is still the wrong sentence because it arrives too early, explains too much, or fails to answer the reader's actual confusion.
+
+This is close to the problem of mathematical concept creation. In both cases, producing candidates is easier than judging which candidates deserve attention.
+
+## What becomes scarce
+
+If AI keeps improving, human knowledge work will not disappear all at once. Its center of value will move.
+
+When proofs are expensive, producing a proof is the obvious bottleneck. When proofs become cheaper, the bottleneck shifts. The scarce work becomes deciding which problems matter, which results should be trusted, which proofs should be compressed into human concepts, and which definitions should become part of the shared language.
+
+Mathematicians may spend less time producing every line of every proof by hand. They may spend more time selecting, interpreting, simplifying, and teaching machine-generated work. That is not a trivial role. A long formal proof that no one can understand is not yet human knowledge in the strongest sense. It becomes human knowledge when it is compressed into ideas that can be checked, remembered, reused, and taught.
+
+The same applies to education. AI may become an excellent explanation engine, but education is not only explanation. Students need feedback, trust, discipline, and social reinforcement. A teacher does not merely transmit information. A teacher helps a student see why a subject is worth sustained effort and why the student is capable of entering it.
+
+This is not sentimentality. It is an account of where the feedback loop lives. Learning is partly cognitive and partly social. A model can answer a question. A teacher can help form the person who keeps asking better questions.
+
+## What to remember
+
+AI's progress in mathematics is real, but it should be read carefully. It is strongest where problems are formal, feedback is immediate, and failure is cheap. The deeper challenge is not only proving existing theorems. It is forming good conjectures, creating useful concepts, and judging which results deserve human attention.
+
+As answers become cheaper, judgment becomes more valuable. The important questions will be:
+
+- Which problems are worth asking?
+- Which concepts are worth preserving?
+- Which proofs are worth understanding?
+- Which knowledge is worth passing on?
+
+The AI mathematics era is not only a technical shift. It is a shift in the value of intellectual work. Machines will produce more answers. Humans will have to become more serious about deciding what those answers mean.
+
+## How to cite
+
+> Terry (2026). *AI in Mathematics: Proof Is Getting Cheap*. Retrieved from `https://terryfxh.github.io/math-notes/posts/ai-in-mathematics-proof-is-getting-cheap/`.

@@ -14,7 +14,7 @@ The table below is regenerated from `posts/*/index.qmd` by `python tools/blog.py
 Do not edit it by hand — edits between the AUTO markers are overwritten.
 
 <!-- AUTO:STATUS:START -->
-_Last updated 2026-06-19 — 18 published posts._
+_Last updated 2026-07-01 — 23 published posts._
 
 | Date | Slug | Title | Categories |
 |---|---|---|---|
@@ -36,6 +36,11 @@ _Last updated 2026-06-19 — 18 published posts._
 | 2026-06-14 | `why-laplace-transforms-are-so-useful` | Why Laplace Transforms Are So Useful | applied, pure, differential-equations |
 | 2026-06-18 | `convolution-the-arithmetic-of-overlap` | Convolution: The Mathematics of Overlap and Echo | pure, applied, probability, computer-science, algorithms, analysis |
 | 2026-06-19 | `at-least-one-side-of-one-sheep` | At Least One Side of One Sheep | meta, philosophy, learning |
+| 2026-06-19 | `the-essence-of-linear-algebra` | The Essence of Linear Algebra | pure, applied, linear-algebra |
+| 2026-06-22 | `permanent-vs-determinant` | Permanent vs. Determinant | pure, applied, combinatorics, computer-science, algorithms, linear-algebra |
+| 2026-06-23 | `matrix-exponentials-when-a-matrix-becomes-motion` | Matrix Exponentials: When a Matrix Becomes Motion | pure, applied, linear-algebra, differential-equations |
+| 2026-06-29 | `the-group-law-on-an-elliptic-curve-drawn-by-hand` | The Group Law on an Elliptic Curve, Drawn by Hand | pure, applied, algebraic-geometry, number-theory, cryptography, computer-science |
+| 2026-07-01 | `ai-in-mathematics-proof-is-getting-cheap` | AI in Mathematics: Proof Is Getting Cheap | meta, learning |
 <!-- AUTO:STATUS:END -->
 
 ---
@@ -46,6 +51,11 @@ One entry is appended automatically the first time `tools/worklog.py` sees a pub
 post (run via `python tools/blog.py worklog`). Newest on top.
 
 <!-- AUTO:LOG:START -->
+- **2026-07-01** — published `ai-in-mathematics-proof-is-getting-cheap`: AI in Mathematics: Proof Is Getting Cheap (meta, learning)
+- **2026-06-29** — published `the-group-law-on-an-elliptic-curve-drawn-by-hand`: The Group Law on an Elliptic Curve, Drawn by Hand (pure, applied, algebraic-geometry, number-theory, cryptography, computer-science)
+- **2026-06-23** — published `matrix-exponentials-when-a-matrix-becomes-motion`: Matrix Exponentials: When a Matrix Becomes Motion (pure, applied, linear-algebra, differential-equations)
+- **2026-06-22** — published `permanent-vs-determinant`: Permanent vs. Determinant (pure, applied, combinatorics, computer-science, algorithms, linear-algebra)
+- **2026-06-19** — published `the-essence-of-linear-algebra`: The Essence of Linear Algebra (pure, applied, linear-algebra)
 - **2026-06-19** — published `at-least-one-side-of-one-sheep`: At Least One Side of One Sheep (meta, philosophy, learning)
 - **2026-06-18** — published `convolution-the-arithmetic-of-overlap`: Convolution: The Mathematics of Overlap and Echo (pure, applied, probability, computer-science, algorithms, analysis)
 - **2026-06-14** — published `why-laplace-transforms-are-so-useful`: Why Laplace Transforms Are So Useful (applied, pure, differential-equations)
