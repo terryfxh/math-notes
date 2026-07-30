@@ -10,7 +10,1234 @@
 <atom:link href="https://terryfxh.github.io/math-notes/notes.xml" rel="self" type="application/rss+xml"/>
 <description>Self-contained notes in pure and applied mathematics, derived from first principles with runnable code where it helps.</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Wed, 01 Jul 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 29 Jul 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Inverse Laplace Transform and the Fourier Boundary</title>
+  <link>https://terryfxh.github.io/math-notes/posts/inverse-laplace-transform-and-the-fourier-boundary/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p><em>“Invert, always invert.”</em></p>
+<p><span class="attribution">— attributed to Carl Gustav Jacob Jacobi</span></p>
+</div>
+<p>In <a href="../why-laplace-transforms-are-so-useful/">the previous Laplace-transform post</a>, partial fractions made inversion look almost embarrassingly easy. A pole at <img src="https://latex.codecogs.com/png.latex?s=a"> became <img src="https://latex.codecogs.com/png.latex?e%5E%7Bat%7D">. A double pole became <img src="https://latex.codecogs.com/png.latex?t%20e%5E%7Bat%7D">. Break a rational function into enough pieces, read the table backwards, and the original motion returns.</p>
+<p>That method is useful, but it leaves the real question untouched. Why is there an inverse at all? A general transform need not be rational. It may have infinitely many poles, a branch point, or no decomposition that belongs on an exam formula sheet. If the transform has compressed an entire function of time into the complex <img src="https://latex.codecogs.com/png.latex?s">-plane, where is the instruction for putting every instant back?</p>
+<p>The answer is hidden in one substitution:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0As=c+i%5Comega.%0A"></p>
+<p>Fix the real part <img src="https://latex.codecogs.com/png.latex?c">, move vertically by changing <img src="https://latex.codecogs.com/png.latex?%5Comega">, and the Laplace transform becomes an ordinary Fourier transform of an exponentially damped signal. Fourier inversion then rebuilds that damped signal. Multiplying by <img src="https://latex.codecogs.com/png.latex?e%5E%7Bct%7D"> removes the damping. The resulting contour integral is the inverse Laplace transform.</p>
+<p>That is the whole mechanism. The contour is not an exotic ornament added by complex analysis. It is a Fourier inversion line standing upright.</p>
+<section id="one-vertical-line-read-sideways" class="level2">
+<h2 class="anchored" data-anchor-id="one-vertical-line-read-sideways">One vertical line, read sideways</h2>
+<p>We use the one-sided Laplace transform</p>
+<p><span id="eq-laplace"><img src="https://latex.codecogs.com/png.latex?%0AF(s)=%5Cmathcal%20L%5C%7Bf%5C%7D(s)%0A%20%20%20%20=%5Cint_0%5E%5Cinfty%20e%5E%7B-st%7Df(t)%5C,dt.%0A%5Ctag%7B1%7D"></span></p>
+<p>Write <img src="https://latex.codecogs.com/png.latex?s=c+i%5Comega">. Then</p>
+<p><span id="eq-fourier-slice"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0AF(c+i%5Comega)%0A&amp;=%5Cint_0%5E%5Cinfty%20e%5E%7B-(c+i%5Comega)t%7Df(t)%5C,dt%5C%5C%0A&amp;=%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%0A%20%20%20%5Cunderbrace%7BH(t)e%5E%7B-ct%7Df(t)%7D_%7Bg_c(t)%7D%0A%20%20%20e%5E%7B-i%5Comega%20t%7D%5C,dt,%0A%5Cend%7Baligned%7D%0A%5Ctag%7B2%7D"></span></p>
+<p>where <img src="https://latex.codecogs.com/png.latex?H(t)"> is the Heaviside function: zero for <img src="https://latex.codecogs.com/png.latex?t%3C0"> and one for <img src="https://latex.codecogs.com/png.latex?t%3E0">. With the convention</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cwidehat%20g(%5Comega)=%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7Dg(t)e%5E%7B-i%5Comega%20t%7D%5C,dt,%0A"></p>
+<p>Equation&nbsp;2 says simply</p>
+<p><span id="eq-key"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7BF(c+i%5Comega)=%5Cwidehat%7Bg_c%7D(%5Comega)%7D,%0A%5Cqquad%0Ag_c(t)=H(t)e%5E%7B-ct%7Df(t).%0A%5Ctag%7B3%7D"></span></p>
+<p>This identity changes the picture of the <img src="https://latex.codecogs.com/png.latex?s">-plane. A vertical line is not merely a set of complex inputs. It is a complete frequency scan of one particular signal. Move the line to the right and you apply stronger damping before taking the scan. Move it to the left and you remove damping, until eventually the integral may stop converging.</p>
+<p>So the two coordinates of <img src="https://latex.codecogs.com/png.latex?s"> have separate jobs. The real coordinate <img src="https://latex.codecogs.com/png.latex?c"> decides how aggressively the future is suppressed. The imaginary coordinate <img src="https://latex.codecogs.com/png.latex?%5Comega"> asks which oscillations remain after that suppression.</p>
+</section>
+<section id="why-the-damping-is-there" class="level2">
+<h2 class="anchored" data-anchor-id="why-the-damping-is-there">Why the damping is there</h2>
+<p>Suppose <img src="https://latex.codecogs.com/png.latex?f"> is piecewise continuous and of <strong>exponential order</strong> <img src="https://latex.codecogs.com/png.latex?%5Calpha">: there is a constant <img src="https://latex.codecogs.com/png.latex?M"> such that</p>
+<p><span id="eq-exp-order"><img src="https://latex.codecogs.com/png.latex?%0A%7Cf(t)%7C%5Cleq%20M%20e%5E%7B%5Calpha%20t%7D%0A%5Cqquad%20(t%5Cgeq%200).%0A%5Ctag%7B4%7D"></span></p>
+<p>If <img src="https://latex.codecogs.com/png.latex?c%3E%5Calpha">, then</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%7Cg_c(t)%7C%0A%5Cleq%20M%20e%5E%7B-(c-%5Calpha)t%7D,%0A"></p>
+<p>and the right-hand side is integrable on <img src="https://latex.codecogs.com/png.latex?%5B0,%5Cinfty)">. The damping has bought us an <img src="https://latex.codecogs.com/png.latex?L%5E1"> function, precisely the setting in which the Fourier transform in Equation&nbsp;3 is an honest integral. It also shows why the Laplace transform is analytic in the half-plane <img src="https://latex.codecogs.com/png.latex?%5Coperatorname%7BRe%7Ds%3E%5Calpha"> <span class="citation" data-cites="dlmf114laplace">[1]</span>.</p>
+<p>The number <img src="https://latex.codecogs.com/png.latex?%5Calpha"> need not be the sharp boundary. The smallest real number beyond which the transform converges is called the <strong>abscissa of convergence</strong>. What matters for inversion is that we choose a vertical line inside the region of convergence. For the elementary functions used in differential equations, this usually means placing the line to the right of every pole. The more general statement is better: place it where the defining transform actually exists.</p>
+<p>This is the first boundary that must not be blurred. A formula for <img src="https://latex.codecogs.com/png.latex?F(s)"> may possess an analytic continuation far beyond the half-plane where Equation&nbsp;1 converges. That continuation is valuable, especially for locating poles, but it is not automatically a valid Fourier slice. The vertical line used for the basic inversion argument must begin in the region of convergence.</p>
+</section>
+<section id="fourier-inversion-turns-the-line-into-time" class="level2">
+<h2 class="anchored" data-anchor-id="fourier-inversion-turns-the-line-into-time">Fourier inversion turns the line into time</h2>
+<p>Fourier inversion says, under standard regularity hypotheses, that a function can be reconstructed from its frequency data:</p>
+<p><span id="eq-fourier-inversion"><img src="https://latex.codecogs.com/png.latex?%0Ag_c(t)%0A=%5Clim_%7BT%5Cto%5Cinfty%7D%5Cfrac%7B1%7D%7B2%5Cpi%7D%0A%20%20%5Cint_%7B-T%7D%5E%7BT%7D%5Cwidehat%7Bg_c%7D(%5Comega)e%5E%7Bi%5Comega%20t%7D%5C,d%5Comega.%0A%5Ctag%7B5%7D"></span></p>
+<p>For example, this pointwise formula holds when <img src="https://latex.codecogs.com/png.latex?g_c"> is sufficiently smooth and integrable; at a jump it returns the midpoint of the two one-sided limits. There are broader <img src="https://latex.codecogs.com/png.latex?L%5E2"> and distributional versions, but the mechanism is the same <span class="citation" data-cites="steinshakarchi2003fourier">[2]</span>.</p>
+<p>Substitute Equation&nbsp;3 into Equation&nbsp;5. For <img src="https://latex.codecogs.com/png.latex?t%3E0">, <img src="https://latex.codecogs.com/png.latex?g_c(t)=e%5E%7B-ct%7Df(t)">, so</p>
+<p><span id="eq-vertical-fourier"><img src="https://latex.codecogs.com/png.latex?%0Af(t)%0A=%5Clim_%7BT%5Cto%5Cinfty%7D%5Cfrac%7Be%5E%7Bct%7D%7D%7B2%5Cpi%7D%0A%20%20%5Cint_%7B-T%7D%5E%7BT%7DF(c+i%5Comega)e%5E%7Bi%5Comega%20t%7D%5C,d%5Comega.%0A%5Ctag%7B6%7D"></span></p>
+<p>Now put <img src="https://latex.codecogs.com/png.latex?s=c+i%5Comega">, so <img src="https://latex.codecogs.com/png.latex?ds=i%5C,d%5Comega"> and <img src="https://latex.codecogs.com/png.latex?e%5E%7Bct%7De%5E%7Bi%5Comega%20t%7D=e%5E%7Bst%7D">. The horizontal frequency integral becomes a vertical contour integral:</p>
+<p><span id="eq-bromwich"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7B%0Af(t)%0A=%5Cfrac%7B1%7D%7B2%5Cpi%20i%7D%0A%5Clim_%7BT%5Cto%5Cinfty%7D%0A%5Cint_%7Bc-iT%7D%5E%7Bc+iT%7De%5E%7Bst%7DF(s)%5C,ds%0A%7D.%0A%5Ctag%7B7%7D"></span></p>
+<p>This is the <strong>Bromwich inversion formula</strong>. Under one convenient classical set of conditions, <img src="https://latex.codecogs.com/png.latex?f"> is continuous, <img src="https://latex.codecogs.com/png.latex?f'"> is piecewise continuous, <img src="https://latex.codecogs.com/png.latex?f"> satisfies Equation&nbsp;4, and <img src="https://latex.codecogs.com/png.latex?c%3E%5Calpha"> <span class="citation" data-cites="dlmf114laplace">[1]</span>.</p>
+<p>The symbols can make Equation&nbsp;7 look like a new machine. It is the machine we already had:</p>
+<ol type="1">
+<li>multiply <img src="https://latex.codecogs.com/png.latex?f(t)"> by <img src="https://latex.codecogs.com/png.latex?e%5E%7B-ct%7D"> so the future becomes integrable;</li>
+<li>take its Fourier transform along the line <img src="https://latex.codecogs.com/png.latex?c+i%5Comega">;</li>
+<li>perform Fourier synthesis;</li>
+<li>multiply by <img src="https://latex.codecogs.com/png.latex?e%5E%7Bct%7D"> to undo the damping.</li>
+</ol>
+<p>Laplace inversion is Fourier inversion with a movable exponential safety margin.</p>
+</section>
+<section id="why-the-choice-of-line-does-not-change-the-answer" class="level2">
+<h2 class="anchored" data-anchor-id="why-the-choice-of-line-does-not-change-the-answer">Why the choice of line does not change the answer</h2>
+<p>If both <img src="https://latex.codecogs.com/png.latex?c_1"> and <img src="https://latex.codecogs.com/png.latex?c_2"> lie in the region of convergence, Equation&nbsp;6 reconstructs <img src="https://latex.codecogs.com/png.latex?f"> from either line. The Fourier argument already proves that the answer is independent of <img src="https://latex.codecogs.com/png.latex?c">.</p>
+<p>Complex analysis gives the geometric version. Consider the two vertical lines as opposite sides of a large rectangle. If <img src="https://latex.codecogs.com/png.latex?F"> is analytic in the strip between them and the integrals over the horizontal sides vanish as the rectangle grows, Cauchy’s theorem lets us slide one line into the other without changing the integral. The contour is flexible inside an analytic region.</p>
+<p>It is not allowed to slide through a singularity. Crossing a pole changes the contour integral by its residue. Crossing a branch cut changes it by an integral of the jump across the cut. The singularities are therefore not defects in inversion. They are exactly the places where contour motion picks up pieces of the time-domain answer.</p>
+</section>
+<section id="a-pole-becomes-an-exponential" class="level2">
+<h2 class="anchored" data-anchor-id="a-pole-becomes-an-exponential">A pole becomes an exponential</h2>
+<p>Take the smallest possible example,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AF(s)=%5Cfrac%7B1%7D%7Bs-a%7D,%0A%5Cqquad%20c%3E%5Coperatorname%7BRe%7Da.%0A"></p>
+<p>For <img src="https://latex.codecogs.com/png.latex?t%3E0">, the factor <img src="https://latex.codecogs.com/png.latex?e%5E%7Bst%7D"> decays as the contour is pushed far into the left half-plane. Closing the Bromwich line to the left traps the pole at <img src="https://latex.codecogs.com/png.latex?s=a">. The residue theorem gives</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0A%5Cmathcal%20L%5E%7B-1%7D%5Cleft%5C%7B%5Cfrac%7B1%7D%7Bs-a%7D%5Cright%5C%7D(t)%0A&amp;=%5Coperatorname*%7BRes%7D_%7Bs=a%7D%5Cfrac%7Be%5E%7Bst%7D%7D%7Bs-a%7D%5C%5C%0A&amp;=e%5E%7Bat%7D.%0A%5Cend%7Baligned%7D%0A"></p>
+<p>The familiar table entry has emerged from the contour. No guess was involved.</p>
+<p>If the pole has order <img src="https://latex.codecogs.com/png.latex?m">, then</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Coperatorname*%7BRes%7D_%7Bs=a%7D%5Cfrac%7Be%5E%7Bst%7D%7D%7B(s-a)%5Em%7D%0A=%5Cfrac%7B1%7D%7B(m-1)!%7D%0A%5Cleft.%5Cfrac%7Bd%5E%7Bm-1%7D%7D%7Bds%5E%7Bm-1%7D%7De%5E%7Bst%7D%5Cright%7C_%7Bs=a%7D%0A=%5Cfrac%7Bt%5E%7Bm-1%7D%7D%7B(m-1)!%7De%5E%7Bat%7D.%0A"></p>
+<p>Hence</p>
+<p><span id="eq-repeated-pole"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7B%0A%5Cmathcal%20L%5E%7B-1%7D%5Cleft%5C%7B%5Cfrac%7B1%7D%7B(s-a)%5Em%7D%5Cright%5C%7D(t)%0A=%5Cfrac%7Bt%5E%7Bm-1%7D%7D%7B(m-1)!%7De%5E%7Bat%7D%0A%7D.%0A%5Ctag%7B8%7D"></span></p>
+<p>This is the general reason repeated poles create powers of <img src="https://latex.codecogs.com/png.latex?t">. The <img src="https://latex.codecogs.com/png.latex?t%5Csin(%5Comega%20t)"> term in undamped resonance was not an isolated transform-table curiosity. It was the time-domain signature of a double pole.</p>
+<p>For a rational <img src="https://latex.codecogs.com/png.latex?F">, closing the contour often reduces Equation&nbsp;7 to a finite sum of residues. Partial fractions are the algebraic shadow of that residue calculation.</p>
+</section>
+<section id="a-branch-cut-becomes-a-continuum" class="level2">
+<h2 class="anchored" data-anchor-id="a-branch-cut-becomes-a-continuum">A branch cut becomes a continuum</h2>
+<p>Poles are not the whole story. Consider</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AF(s)=%5Cfrac%7B1%7D%7B%5Csqrt%7Bs%7D%7D,%0A"></p>
+<p>with the principal square root and a branch cut along the negative real axis. There is no finite list of poles to read. Still, the inverse is immediate from the Gamma integral:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cint_0%5E%5Cinfty%20e%5E%7B-st%7D%5Cfrac%7B1%7D%7B%5Csqrt%7B%5Cpi%20t%7D%7D%5C,dt%0A=%5Cfrac%7B1%7D%7B%5Csqrt%7Bs%7D%7D,%0A%5Cqquad%20%5Coperatorname%7BRe%7Ds%3E0.%0A"></p>
+<p>Therefore</p>
+<p><span id="eq-branch-pair"><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathcal%20L%5E%7B-1%7D%5Cleft%5C%7B%5Cfrac%7B1%7D%7B%5Csqrt%7Bs%7D%7D%5Cright%5C%7D(t)%0A=%5Cfrac%7B1%7D%7B%5Csqrt%7B%5Cpi%20t%7D%7D.%0A%5Ctag%7B9%7D"></span></p>
+<p>If the Bromwich contour is pushed left, it cannot pass cleanly through the branch cut. It must wrap around the two sides of the negative real axis. The values of <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7Bs%7D"> differ by a sign there, so their jump contributes an integral rather than a residue. In fact,</p>
+<p><span id="eq-continuum"><img src="https://latex.codecogs.com/png.latex?%0A%5Cfrac%7B1%7D%7B%5Csqrt%7B%5Cpi%20t%7D%7D%0A=%5Cfrac%7B1%7D%7B%5Cpi%7D%5Cint_0%5E%5Cinfty%20r%5E%7B-1/2%7De%5E%7B-rt%7D%5C,dr.%0A%5Ctag%7B10%7D"></span></p>
+<p>Read Equation&nbsp;10 as a spectrum. A pole contributes one exponential mode. A branch cut contributes a continuous family of modes <img src="https://latex.codecogs.com/png.latex?e%5E%7B-rt%7D">, weighted here by <img src="https://latex.codecogs.com/png.latex?r%5E%7B-1/2%7D/%5Cpi">. Discrete singularities produce discrete exponentials; a cut can produce a continuum.</p>
+<p>This answers the question that partial fractions could not. Inversion does not require the answer to be a finite sum of exponentials. The contour knows how to collect both isolated modes and continuous ones.</p>
+</section>
+<section id="the-fourier-boundary" class="level2">
+<h2 class="anchored" data-anchor-id="the-fourier-boundary">The Fourier boundary</h2>
+<p>Now move the vertical line towards the imaginary axis. If the causal extension <img src="https://latex.codecogs.com/png.latex?Hf"> is integrable, dominated convergence gives</p>
+<p><span id="eq-boundary"><img src="https://latex.codecogs.com/png.latex?%0A%5Clim_%7Bc%5Cdownarrow%200%7DF(c+i%5Comega)%0A=%5Cint_0%5E%5Cinfty%20f(t)e%5E%7B-i%5Comega%20t%7D%5C,dt%0A=%5Cwidehat%7BHf%7D(%5Comega).%0A%5Ctag%7B11%7D"></span></p>
+<p>In this case the Fourier transform is literally the boundary value of the Laplace transform from the right half-plane. The Laplace transform is not a separate species. It is a family of Fourier transforms indexed by the damping <img src="https://latex.codecogs.com/png.latex?c">, with the undamped Fourier transform sitting at the boundary when that boundary exists.</p>
+<p>The final clause matters. A bounded oscillation such as <img src="https://latex.codecogs.com/png.latex?%5Ccos(%5COmega%20t)"> does not belong to <img src="https://latex.codecogs.com/png.latex?L%5E1(0,%5Cinfty)">. Its Laplace transform</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AF(s)=%5Cfrac%7Bs%7D%7Bs%5E2+%5COmega%5E2%7D%0A"></p>
+<p>exists for <img src="https://latex.codecogs.com/png.latex?%5Coperatorname%7BRe%7Ds%3E0">, but the improper integral does not converge pointwise on the imaginary axis. For <img src="https://latex.codecogs.com/png.latex?c%3E0">,</p>
+<p><span id="eq-damped-cosine"><img src="https://latex.codecogs.com/png.latex?%0AF(c+i%5Comega)%0A=%5Cfrac12%5Cleft(%0A%5Cfrac%7B1%7D%7Bc+i(%5Comega-%5COmega)%7D%0A+%5Cfrac%7B1%7D%7Bc+i(%5Comega+%5COmega)%7D%0A%5Cright).%0A%5Ctag%7B12%7D"></span></p>
+<p>The real part consists of two Lorentzian peaks:</p>
+<p><span id="eq-lorentzians"><img src="https://latex.codecogs.com/png.latex?%0A%5Coperatorname%7BRe%7DF(c+i%5Comega)%0A=%5Cfrac%7Bc%7D%7B2%7D%0A%5Cleft%5B%0A%5Cfrac%7B1%7D%7Bc%5E2+(%5Comega-%5COmega)%5E2%7D%0A+%0A%5Cfrac%7B1%7D%7Bc%5E2+(%5Comega+%5COmega)%5E2%7D%0A%5Cright%5D.%0A%5Ctag%7B13%7D"></span></p>
+<div id="cell-fig-fourier-boundary" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb1-3"></span>
+<span id="cb1-4">Omega <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3.0</span></span>
+<span id="cb1-5">omega <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linspace(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2400</span>)</span>
+<span id="cb1-6"></span>
+<span id="cb1-7">fig, ax <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> plt.subplots(figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3.5</span>))</span>
+<span id="cb1-8"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> c <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> (<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.3</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>):</span>
+<span id="cb1-9">    F <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (c <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">1j</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> omega) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> ((c <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">1j</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> omega) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> Omega<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb1-10">    lorentzian <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> c <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (</span>
+<span id="cb1-11">        <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (c<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (omega <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> Omega)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb1-12">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (c<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (omega <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> Omega)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb1-13">    )</span>
+<span id="cb1-14">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.allclose(F.real, lorentzian, atol<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-12</span>)</span>
+<span id="cb1-15">    ax.plot(omega, F.real, label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fr"</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">c=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>c<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb1-16"></span>
+<span id="cb1-17">ax.axvline(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>Omega, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.7"</span>, ls<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--"</span>, lw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>)</span>
+<span id="cb1-18">ax.axvline(Omega, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.7"</span>, ls<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--"</span>, lw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>)</span>
+<span id="cb1-19">ax.set_xlabel(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"frequency </span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">omega</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb1-20">ax.set_ylabel(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">operatorname{Re}F</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">c</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">i</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">omega</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb1-21">ax.set_title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Damping turns spectral lines into finite peaks"</span>)</span>
+<span id="cb1-22">ax.legend()</span>
+<span id="cb1-23">plt.tight_layout()</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div id="fig-fourier-boundary" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fourier-boundary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://terryfxh.github.io/math-notes/posts/inverse-laplace-transform-and-the-fourier-boundary/index_files/figure-html/fig-fourier-boundary-output-1.png" width="662" height="326" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fourier-boundary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The real part of the Laplace transform of a causal cosine on three vertical lines. As the damping c decreases, the two Lorentzian peaks narrow around the frequencies ±Ω. Their limiting meaning is distributional, not pointwise.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As <img src="https://latex.codecogs.com/png.latex?c%5Cdownarrow0">, those peaks become Dirac delta distributions. More precisely,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cfrac%7B1%7D%7Bc+ix%7D%0A%5Clongrightarrow%0A%5Cpi%5Cdelta(x)-i%5C,%5Coperatorname%7Bpv%7D%5Cfrac%7B1%7D%7Bx%7D%0A"></p>
+<p>in the sense of distributions. Therefore the boundary value of Equation&nbsp;12 contains delta masses at <img src="https://latex.codecogs.com/png.latex?%5Comega=%5Cpm%5COmega"> together with principal-value terms. The latter appear because the one-sided transform sees the cosine being switched on at <img src="https://latex.codecogs.com/png.latex?t=0">. A two-sided cosine has only the two delta frequencies; a causal cosine also remembers the switching boundary.</p>
+<p>So “Laplace becomes Fourier on the imaginary axis” is true in two different senses:</p>
+<ul>
+<li>as an ordinary limit when <img src="https://latex.codecogs.com/png.latex?Hf%5Cin%20L%5E1(%5Cmathbb%20R)">;</li>
+<li>as a boundary value of distributions for persistent signals such as constants and sinusoids.</li>
+</ul>
+<p>Saying which sense is intended is part of the mathematics.</p>
+</section>
+<section id="the-initial-condition-was-a-boundary-impulse" class="level2">
+<h2 class="anchored" data-anchor-id="the-initial-condition-was-a-boundary-impulse">The initial condition was a boundary impulse</h2>
+<p>The previous article derived</p>
+<p><span id="eq-derivative-rule"><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathcal%20L%5C%7Bf'%5C%7D(s)=sF(s)-f(0+)%0A%5Ctag%7B14%7D"></span></p>
+<p>by integration by parts. The Fourier boundary picture gives a deeper explanation of the extra term.</p>
+<p>Assume here that <img src="https://latex.codecogs.com/png.latex?f"> is differentiable for <img src="https://latex.codecogs.com/png.latex?t%3E0"> and has a right limit at the origin. Extend it causally:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cwidetilde%20f(t)=H(t)f(t).%0A"></p>
+<p>In the language of distributions, differentiating across the switch at <img src="https://latex.codecogs.com/png.latex?t=0"> produces an impulse:</p>
+<p><span id="eq-causal-derivative"><img src="https://latex.codecogs.com/png.latex?%0A%5Cwidetilde%20f'%0A=Hf'+f(0+)%5Cdelta_0.%0A%5Ctag%7B15%7D"></span></p>
+<p>For a bilateral transform, differentiation multiplies by <img src="https://latex.codecogs.com/png.latex?s">. Thus</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AsF(s)%0A=%5Cmathcal%20L%5C%7Bf'%5C%7D(s)+f(0+),%0A"></p>
+<p>which rearranges to Equation&nbsp;14.</p>
+<p>The initial value is not an awkward correction attached to an otherwise elegant rule. It is the mass of the jump created when the signal is declared to be zero before time begins. The one-sided Laplace transform carries initial conditions because causality itself creates a boundary term.</p>
+</section>
+<section id="what-inversion-can-and-cannot-recover" class="level2">
+<h2 class="anchored" data-anchor-id="what-inversion-can-and-cannot-recover">What inversion can and cannot recover</h2>
+<p>There are four qualifications worth carrying with the formula.</p>
+<p>First, a transform integral cannot detect a change at one isolated time. Inversion recovers functions up to equality almost everywhere unless extra regularity fixes a preferred representative.</p>
+<p>Second, at a jump, symmetric Fourier or Bromwich inversion usually returns the midpoint</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cfrac%7Bf(t%5E-)+f(t%5E+)%7D%7B2%7D.%0A"></p>
+<p>This is not a failure. The transform cannot decide which value to assign at the jump because either choice changes only one point.</p>
+<p>Third, the line <img src="https://latex.codecogs.com/png.latex?c=0"> is not automatically available. It is available as an ordinary Fourier line only when the undamped causal signal has enough integrability. Otherwise the boundary may exist only distributionally, or may require a different interpretation.</p>
+<p>Fourth, exact inversion and numerical inversion are different problems. Formula Equation&nbsp;7 is unique and exact under its hypotheses, but reconstructing <img src="https://latex.codecogs.com/png.latex?f"> from noisy or incomplete values of <img src="https://latex.codecogs.com/png.latex?F"> can be ill-conditioned. Analytic continuation amplifies small errors. A beautiful inverse formula does not promise a numerically forgiving algorithm.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>The inverse Laplace transform is not a table read backwards. Choose <img src="https://latex.codecogs.com/png.latex?c"> inside the region of convergence. Along the line <img src="https://latex.codecogs.com/png.latex?s=c+i%5Comega">, the transform is the Fourier transform of the damped causal signal <img src="https://latex.codecogs.com/png.latex?H(t)e%5E%7B-ct%7Df(t)">. Fourier inversion reconstructs that signal, and <img src="https://latex.codecogs.com/png.latex?e%5E%7Bct%7D"> removes the damping. Written vertically, this is the Bromwich integral.</p>
+<p>Poles then become exponentials, repeated poles acquire powers of <img src="https://latex.codecogs.com/png.latex?t">, and branch cuts become continuous mixtures of modes. As the contour approaches the imaginary axis, Laplace data becomes Fourier data when an ordinary boundary exists, and distributional Fourier data when it does not.</p>
+<p>The line, the contour, and the boundary are three views of one operation.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Inverse Laplace Transform and the Fourier Boundary</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/inverse-laplace-transform-and-the-fourier-boundary/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
+<div id="ref-dlmf114laplace" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">NIST Digital Library of Mathematical Functions, <span>“Section 1.14(iii): Laplace transform.”</span> National Institute of Standards and Technology. Accessed: Jul. 29, 2026. [Online]. Available: <a href="https://dlmf.nist.gov/1.14.iii">https://dlmf.nist.gov/1.14.iii</a></div>
+</div>
+<div id="ref-steinshakarchi2003fourier" class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">E. M. Stein and R. Shakarchi, <em>Fourier analysis: An introduction</em>, vol. 1. in Princeton lectures in analysis, vol. 1. Princeton University Press, 2003.</div>
+</div>
+</div></section></div> ]]></description>
+  <category>pure</category>
+  <category>applied</category>
+  <category>analysis</category>
+  <category>differential-equations</category>
+  <category>fourier-analysis</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/inverse-laplace-transform-and-the-fourier-boundary/</guid>
+  <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Quaternion Rotations: The Sandwich and the Double Cover</title>
+  <link>https://terryfxh.github.io/math-notes/posts/quaternion-rotations-the-sandwich-and-the-double-cover/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p><em>“Symmetry, as wide or as narrow as you may define its meaning, is one idea by which man through the ages has tried to comprehend and create order, beauty, and perfection.”</em></p>
+<p><span class="attribution">— Hermann Weyl, <em>Symmetry</em> (1952)</span></p>
+</div>
+<p>The <a href="../quaternions/">first quaternion article</a> ended with an unfinished piece of machinery. Multiplying a quaternion <img src="https://latex.codecogs.com/png.latex?x"> on the left by a unit quaternion <img src="https://latex.codecogs.com/png.latex?q"> gives a beautiful rotation of four-dimensional space. It preserves length and turns two perpendicular planes through equal angles.</p>
+<p>There is one problem. A three-dimensional vector is represented by a <strong>pure imaginary quaternion</strong></p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathbf%20v=v_x%20i+v_y%20j+v_z%20k.%0A"></p>
+<p>Left multiplication alone usually creates a real part. It tilts the vector out of the three-dimensional room we meant to rotate. The operation is geometrically rigid, but it is the wrong rigid motion.</p>
+<p>The repair is the famous sandwich</p>
+<p><span id="eq-sandwich"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7B%5Cmathbf%20v%5Clongmapsto%20q%5Cmathbf%20v%20q%5E%7B-1%7D%7D.%0A%5Ctag%7B1%7D"></span></p>
+<p>The inverse on the right cancels the unwanted tilt through the fourth dimension while reinforcing the rotation inside the vector subspace. This article will make that sentence exact. We will derive the axis-angle formula from the multiplication law, prove that every rotation has exactly two unit-quaternion names, and see why a <img src="https://latex.codecogs.com/png.latex?2%5Cpi"> turn closes downstairs in physical space but not upstairs on the quaternion sphere.</p>
+<section id="the-two-ingredients" class="level2">
+<h2 class="anchored" data-anchor-id="the-two-ingredients">The two ingredients</h2>
+<p>Write a quaternion as</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Aq=w+%5Cmathbf%20r,%0A"></p>
+<p>where <img src="https://latex.codecogs.com/png.latex?w%5Cin%5Cmathbb%20R"> and <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%20r%5Cin%5Cmathbb%20R%5E3">. Its conjugate and norm are</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Coverline%20q=w-%5Cmathbf%20r,%0A%5Cqquad%0A%7Cq%7C%5E2=q%5Coverline%20q=%5Coverline%20q%20q=w%5E2+%7C%5Cmathbf%20r%7C%5E2.%0A"></p>
+<p>For <img src="https://latex.codecogs.com/png.latex?q%5Cneq0">,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Aq%5E%7B-1%7D=%5Cfrac%7B%5Coverline%20q%7D%7B%7Cq%7C%5E2%7D.%0A"></p>
+<p>We shall use unit quaternions, so <img src="https://latex.codecogs.com/png.latex?%7Cq%7C=1"> and <img src="https://latex.codecogs.com/png.latex?q%5E%7B-1%7D=%5Coverline%20q">.</p>
+<p>The second ingredient is the product of pure vectors:</p>
+<p><span id="eq-vector-product"><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathbf%20a%5Cmathbf%20b%0A=-%5Cmathbf%20a%5Ccdot%5Cmathbf%20b+%5Cmathbf%20a%5Ctimes%5Cmathbf%20b.%0A%5Ctag%7B2%7D"></span></p>
+<p>The scalar part remembers the angle through the dot product. The vector part remembers orientation through the cross product. One noncommutative product carries both.</p>
+</section>
+<section id="why-the-sandwich-stays-in-three-dimensions" class="level2">
+<h2 class="anchored" data-anchor-id="why-the-sandwich-stays-in-three-dimensions">Why the sandwich stays in three dimensions</h2>
+<p>Before calculating the angle, we should prove that Equation&nbsp;1 returns a vector at all. A quaternion <img src="https://latex.codecogs.com/png.latex?x"> is pure imaginary exactly when</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Coverline%20x=-x.%0A"></p>
+<p>Let <img src="https://latex.codecogs.com/png.latex?q"> be unit and set <img src="https://latex.codecogs.com/png.latex?x=q%5Cmathbf%20vq%5E%7B-1%7D">. Quaternion conjugation reverses products, so</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0A%5Coverline%20x%0A&amp;=%5Coverline%7Bq%5E%7B-1%7D%7D%5C,%5Coverline%7B%5Cmathbf%20v%7D%5C,%5Coverline%20q%5C%5C%0A&amp;=q(-%5Cmathbf%20v)q%5E%7B-1%7D%5C%5C%0A&amp;=-x.%0A%5Cend%7Baligned%7D%0A"></p>
+<p>Therefore <img src="https://latex.codecogs.com/png.latex?x"> is pure imaginary. The two sides of the sandwich have kept the vector inside <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%20R%5E3">.</p>
+<p>Length is preserved as well:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%7Cq%5Cmathbf%20vq%5E%7B-1%7D%7C%0A=%7Cq%7C%5C,%7C%5Cmathbf%20v%7C%5C,%7Cq%5E%7B-1%7D%7C%0A=%7C%5Cmathbf%20v%7C.%0A"></p>
+<p>Thus Equation&nbsp;1 restricts to an orthogonal transformation of the vector subspace. As <img src="https://latex.codecogs.com/png.latex?q"> varies continuously from <img src="https://latex.codecogs.com/png.latex?1">, this transformation varies continuously from the identity, so its determinant is <img src="https://latex.codecogs.com/png.latex?+1">. It is a rotation, not a reflection.</p>
+<p>We already know what it preserves. Now we need to see exactly how it moves.</p>
+</section>
+<section id="the-half-angle-enters" class="level2">
+<h2 class="anchored" data-anchor-id="the-half-angle-enters">The half-angle enters</h2>
+<p>Choose a unit vector <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%20u"> as the desired rotation axis. Every quaternion in the complex plane spanned by <img src="https://latex.codecogs.com/png.latex?1"> and <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%20u"> has the form</p>
+<p><span id="eq-q-half"><img src="https://latex.codecogs.com/png.latex?%0Aq=%5Ccos%20h+%5Cmathbf%20u%5Csin%20h,%0A%5Cqquad%0Aq%5E%7B-1%7D=%5Ccos%20h-%5Cmathbf%20u%5Csin%20h.%0A%5Ctag%7B3%7D"></span></p>
+<p>For the moment, call the quaternion angle <img src="https://latex.codecogs.com/png.latex?h">. We will discover the physical angle rather than insert it by convention.</p>
+<p>Set <img src="https://latex.codecogs.com/png.latex?a=%5Ccos%20h"> and <img src="https://latex.codecogs.com/png.latex?b=%5Csin%20h">. Expanding the sandwich gives</p>
+<p><span id="eq-sandwich-expand"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0Aq%5Cmathbf%20vq%5E%7B-1%7D%0A&amp;=(a+b%5Cmathbf%20u)%5Cmathbf%20v(a-b%5Cmathbf%20u)%5C%5C%0A&amp;=a%5E2%5Cmathbf%20v%0A%20%20+ab(%5Cmathbf%20u%5Cmathbf%20v-%5Cmathbf%20v%5Cmathbf%20u)%0A%20%20-b%5E2%5Cmathbf%20u%5Cmathbf%20v%5Cmathbf%20u.%0A%5Cend%7Baligned%7D%0A%5Ctag%7B4%7D"></span></p>
+<p>The vector product Equation&nbsp;2 gives two useful identities:</p>
+<p><span id="eq-commutator"><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathbf%20u%5Cmathbf%20v-%5Cmathbf%20v%5Cmathbf%20u%0A=2%5C,%5Cmathbf%20u%5Ctimes%5Cmathbf%20v%0A%5Ctag%7B5%7D"></span></p>
+<p>and, because <img src="https://latex.codecogs.com/png.latex?%7C%5Cmathbf%20u%7C=1">,</p>
+<p><span id="eq-uvu"><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathbf%20u%5Cmathbf%20v%5Cmathbf%20u%0A=%5Cmathbf%20v-2(%5Cmathbf%20u%5Ccdot%5Cmathbf%20v)%5Cmathbf%20u.%0A%5Ctag%7B6%7D"></span></p>
+<p>Substitute them into Equation&nbsp;4:</p>
+<p><span id="eq-angle-doubled"><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0Aq%5Cmathbf%20vq%5E%7B-1%7D%0A&amp;=(a%5E2-b%5E2)%5Cmathbf%20v%0A%20%20+2b%5E2(%5Cmathbf%20u%5Ccdot%5Cmathbf%20v)%5Cmathbf%20u%0A%20%20+2ab%5C,%5Cmathbf%20u%5Ctimes%5Cmathbf%20v%5C%5C%0A&amp;=%5Ccos(2h)%5Cmathbf%20v%0A%20%20+%5Cbigl(1-%5Ccos(2h)%5Cbigr)%0A%20%20%20%20%20(%5Cmathbf%20u%5Ccdot%5Cmathbf%20v)%5Cmathbf%20u%0A%20%20+%5Csin(2h)%5C,%5Cmathbf%20u%5Ctimes%5Cmathbf%20v.%0A%5Cend%7Baligned%7D%0A%5Ctag%7B7%7D"></span></p>
+<p>This is Rodrigues’ rotation formula with angle <img src="https://latex.codecogs.com/png.latex?2h">. Therefore, to rotate physical space through an angle <img src="https://latex.codecogs.com/png.latex?%5Ctheta">, the unit quaternion must be</p>
+<p><span id="eq-axis-angle-quaternion"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7B%0Aq=%5Ccos%5Cfrac%7B%5Ctheta%7D%7B2%7D%0A+%5Cmathbf%20u%5Csin%5Cfrac%7B%5Ctheta%7D%7B2%7D%0A%7D.%0A%5Ctag%7B8%7D"></span></p>
+<p>The half-angle is not an arbitrary encoding trick. It is forced by the sandwich. The left action and the inverse right action each contribute a turn of <img src="https://latex.codecogs.com/png.latex?h">, so the physical vector turns through <img src="https://latex.codecogs.com/png.latex?2h">.</p>
+<p>Replacing <img src="https://latex.codecogs.com/png.latex?2h"> by <img src="https://latex.codecogs.com/png.latex?%5Ctheta"> in Equation&nbsp;7 gives the final formula:</p>
+<p><span id="eq-rodrigues"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7B%0Aq%5Cmathbf%20vq%5E%7B-1%7D%0A=%5Ccos%5Ctheta%5C,%5Cmathbf%20v%0A+(1-%5Ccos%5Ctheta)(%5Cmathbf%20u%5Ccdot%5Cmathbf%20v)%5Cmathbf%20u%0A+%5Csin%5Ctheta%5C,%5Cmathbf%20u%5Ctimes%5Cmathbf%20v%0A%7D.%0A%5Ctag%7B9%7D"></span></p>
+<p>Now the geometry is visible term by term. The component parallel to <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%20u"> stays fixed. The perpendicular component turns through <img src="https://latex.codecogs.com/png.latex?%5Ctheta">. The cross product chooses the right-handed direction.</p>
+</section>
+<section id="a-quarter-turn-you-can-multiply-by-hand" class="level2">
+<h2 class="anchored" data-anchor-id="a-quarter-turn-you-can-multiply-by-hand">A quarter-turn you can multiply by hand</h2>
+<p>Rotate the vector <img src="https://latex.codecogs.com/png.latex?i"> through <img src="https://latex.codecogs.com/png.latex?90%5E%5Ccirc"> about the <img src="https://latex.codecogs.com/png.latex?k">-axis. Equation Equation&nbsp;8 gives</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Aq=%5Ccos%5Cfrac%7B%5Cpi%7D%7B4%7D+k%5Csin%5Cfrac%7B%5Cpi%7D%7B4%7D%0A=%5Cfrac%7B1+k%7D%7B%5Csqrt2%7D,%0A%5Cqquad%0Aq%5E%7B-1%7D=%5Cfrac%7B1-k%7D%7B%5Csqrt2%7D.%0A"></p>
+<p>Then</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0Aqiq%5E%7B-1%7D%0A&amp;=%5Cfrac12(1+k)i(1-k)%5C%5C%0A&amp;=%5Cfrac12(i+j)(1-k)%5C%5C%0A&amp;=%5Cfrac12(i+j-ik-jk)%5C%5C%0A&amp;=%5Cfrac12(i+j+j-i)%5C%5C%0A&amp;=j.%0A%5Cend%7Baligned%7D%0A"></p>
+<p>The sandwich sends the <img src="https://latex.codecogs.com/png.latex?x">-axis to the <img src="https://latex.codecogs.com/png.latex?y">-axis, exactly as a right-handed quarter-turn about <img src="https://latex.codecogs.com/png.latex?k"> should.</p>
+<p>Notice how much sign information this small example checks. We used <img src="https://latex.codecogs.com/png.latex?q%5Cmathbf%20vq%5E%7B-1%7D">, not <img src="https://latex.codecogs.com/png.latex?q%5E%7B-1%7D%5Cmathbf%20vq">; the axis term had <img src="https://latex.codecogs.com/png.latex?+%5Csin(%5Ctheta/2)">, not a minus sign; and the quaternion basis obeyed <img src="https://latex.codecogs.com/png.latex?ki=j">, <img src="https://latex.codecogs.com/png.latex?ik=-j">. Reversing any one of those conventions reverses the rotation.</p>
+</section>
+<section id="from-the-sandwich-to-a-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="from-the-sandwich-to-a-matrix">From the sandwich to a matrix</h2>
+<p>Let</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Aq=w+xi+yj+zk,%0A%5Cqquad%0Aw%5E2+x%5E2+y%5E2+z%5E2=1.%0A"></p>
+<p>Applying Equation&nbsp;1 to the basis vectors <img src="https://latex.codecogs.com/png.latex?i,j,k"> gives the active, right-handed rotation matrix for column vectors:</p>
+<p><span id="eq-rotation-matrix"><img src="https://latex.codecogs.com/png.latex?%0AR(q)=%0A%5Cbegin%7Bpmatrix%7D%0A1-2(y%5E2+z%5E2)%20&amp;%202(xy-wz)%20&amp;%202(xz+wy)%5C%5C%0A2(xy+wz)%20&amp;%201-2(x%5E2+z%5E2)%20&amp;%202(yz-wx)%5C%5C%0A2(xz-wy)%20&amp;%202(yz+wx)%20&amp;%201-2(x%5E2+y%5E2)%0A%5Cend%7Bpmatrix%7D.%0A%5Ctag%7B10%7D"></span></p>
+<p>The convention in the previous sentence matters. Row vectors, passive coordinate changes, or the alternative sandwich <img src="https://latex.codecogs.com/png.latex?q%5E%7B-1%7D%5Cmathbf%20vq"> transpose this matrix or reverse the sign of the angle. Many apparent disagreements between software libraries are convention disagreements rather than algebra errors.</p>
+<p>Here is a numerical checksum. It compares the sandwich, Rodrigues’ formula, and Equation&nbsp;10 on a generic axis and vector.</p>
+<div id="quaternion-rotation-check" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> qmul(p, q):</span>
+<span id="cb1-4">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""Hamilton product for [scalar, x, y, z]."""</span></span>
+<span id="cb1-5">    p0, pv <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], p[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:]</span>
+<span id="cb1-6">    q0, qv <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> q[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], q[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:]</span>
+<span id="cb1-7">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> np.r_[p0 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> q0 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> pv <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> qv,</span>
+<span id="cb1-8">                 p0 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> qv <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> q0 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> pv <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> np.cross(pv, qv)]</span>
+<span id="cb1-9"></span>
+<span id="cb1-10"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> qconj(q):</span>
+<span id="cb1-11">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> np.r_[q[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>q[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:]]</span>
+<span id="cb1-12"></span>
+<span id="cb1-13"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> qrotate(q, v):</span>
+<span id="cb1-14">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> qmul(qmul(q, np.r_[<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, v]), qconj(q))[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:]</span>
+<span id="cb1-15"></span>
+<span id="cb1-16">axis <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3.0</span>])</span>
+<span id="cb1-17">axis <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/=</span> np.linalg.norm(axis)</span>
+<span id="cb1-18">theta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.1</span></span>
+<span id="cb1-19">v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.4</span>, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.3</span>])</span>
+<span id="cb1-20">q <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.r_[np.cos(theta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), axis <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> np.sin(theta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)]</span>
+<span id="cb1-21"></span>
+<span id="cb1-22">by_sandwich <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> qrotate(q, v)</span>
+<span id="cb1-23">by_rodrigues <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (</span>
+<span id="cb1-24">    np.cos(theta) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> v</span>
+<span id="cb1-25">    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> np.cos(theta)) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (axis <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> v) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> axis</span>
+<span id="cb1-26">    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> np.sin(theta) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> np.cross(axis, v)</span>
+<span id="cb1-27">)</span>
+<span id="cb1-28"></span>
+<span id="cb1-29">w, x, y, z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> q</span>
+<span id="cb1-30">R <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([</span>
+<span id="cb1-31">    [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> z<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z),     <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y)],</span>
+<span id="cb1-32">    [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z),     <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> z<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>x)],</span>
+<span id="cb1-33">    [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y),     <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>x),     <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y)],</span>
+<span id="cb1-34">])</span>
+<span id="cb1-35">by_matrix <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> R <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> v</span>
+<span id="cb1-36"></span>
+<span id="cb1-37"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.allclose(by_sandwich, by_rodrigues, atol<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-12</span>)</span>
+<span id="cb1-38"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.allclose(by_sandwich, by_matrix, atol<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-12</span>)</span>
+<span id="cb1-39"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.allclose(qrotate(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>q, v), by_sandwich, atol<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-12</span>)</span>
+<span id="cb1-40"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.allclose(R.T <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> R, np.eye(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>), atol<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-12</span>)</span>
+<span id="cb1-41"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.isclose(np.linalg.det(R), <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, atol<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-12</span>)</span>
+<span id="cb1-42"></span>
+<span id="cb1-43"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"maximum disagreement:"</span>,</span>
+<span id="cb1-44">      <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>(np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>(np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">abs</span>(by_sandwich <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> by_rodrigues)),</span>
+<span id="cb1-45">          np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>(np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">abs</span>(by_sandwich <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> by_matrix))))</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>maximum disagreement: 2.220446049250313e-16</code></pre>
+</div>
+</div>
+<p>The assertions test both the derivation and the implementation: all three descriptions agree, <img src="https://latex.codecogs.com/png.latex?R%5E%5Cmathsf%7BT%7DR=I">, and <img src="https://latex.codecogs.com/png.latex?%5Cdet%20R=1">.</p>
+</section>
+<section id="every-rotation-has-two-names" class="level2">
+<h2 class="anchored" data-anchor-id="every-rotation-has-two-names">Every rotation has two names</h2>
+<p>Let <img src="https://latex.codecogs.com/png.latex?S%5E3"> denote the group of unit quaternions and define</p>
+<p><span id="eq-cover-map"><img src="https://latex.codecogs.com/png.latex?%0A%5CPhi:S%5E3%5Clongrightarrow%20SO(3),%0A%5Cqquad%0A%5CPhi(q)(%5Cmathbf%20v)=q%5Cmathbf%20vq%5E%7B-1%7D.%0A%5Ctag%7B11%7D"></span></p>
+<p>Three short arguments reveal the whole structure.</p>
+<p><strong>First, <img src="https://latex.codecogs.com/png.latex?%5CPhi"> respects multiplication.</strong> For unit quaternions <img src="https://latex.codecogs.com/png.latex?p,q">,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0A%5CPhi(pq)(%5Cmathbf%20v)%0A&amp;=(pq)%5Cmathbf%20v(pq)%5E%7B-1%7D%5C%5C%0A&amp;=p(q%5Cmathbf%20vq%5E%7B-1%7D)p%5E%7B-1%7D%5C%5C%0A&amp;=%5CPhi(p)%5Cbigl(%5CPhi(q)(%5Cmathbf%20v)%5Cbigr).%0A%5Cend%7Baligned%7D%0A"></p>
+<p>Thus <img src="https://latex.codecogs.com/png.latex?%5CPhi(pq)=%5CPhi(p)%5Ccirc%5CPhi(q)">. Quaternion multiplication is composition of rotations.</p>
+<p><strong>Second, <img src="https://latex.codecogs.com/png.latex?%5CPhi"> is onto.</strong> Every element of <img src="https://latex.codecogs.com/png.latex?SO(3)"> is a rotation through some angle <img src="https://latex.codecogs.com/png.latex?%5Ctheta"> about some unit axis <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%20u">. Equation Equation&nbsp;8 constructs a unit quaternion that maps to it.</p>
+<p><strong>Third, the kernel contains exactly two points.</strong> If <img src="https://latex.codecogs.com/png.latex?%5CPhi(q)"> is the identity, then <img src="https://latex.codecogs.com/png.latex?q%5Cmathbf%20v=%5Cmathbf%20vq"> for every pure vector <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%20v">. A quaternion that commutes with both <img src="https://latex.codecogs.com/png.latex?i"> and <img src="https://latex.codecogs.com/png.latex?j"> must have zero <img src="https://latex.codecogs.com/png.latex?i,j,k"> components, so it is real. The only real unit quaternions are <img src="https://latex.codecogs.com/png.latex?1"> and <img src="https://latex.codecogs.com/png.latex?-1">. Hence</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cker%5CPhi=%5C%7B1,-1%5C%7D.%0A"></p>
+<p>It follows that</p>
+<p><span id="eq-quotient"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7B%0ASO(3)%5Ccong%20S%5E3/%5C%7Bq%5Csim%20-q%5C%7D%0A%7D%0A%5Ctag%7B12%7D"></span></p>
+<p>and every spatial rotation has exactly two unit-quaternion representatives, <img src="https://latex.codecogs.com/png.latex?q"> and <img src="https://latex.codecogs.com/png.latex?-q">. Directly,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A(-q)%5Cmathbf%20v(-q)%5E%7B-1%7D%0A=(-q)%5Cmathbf%20v(-q%5E%7B-1%7D)%0A=q%5Cmathbf%20vq%5E%7B-1%7D.%0A"></p>
+<p>This is the <strong>double cover</strong>. The unit quaternions form a group isomorphic to <img src="https://latex.codecogs.com/png.latex?SU(2)">, also called <img src="https://latex.codecogs.com/png.latex?%5Coperatorname%7BSpin%7D(3)">, and the map <img src="https://latex.codecogs.com/png.latex?SU(2)%5Cto%20SO(3)"> is two-to-one <span class="citation" data-cites="conway2003 baez2002octonions">[1], [2]</span>.</p>
+<p>Topologically, identifying antipodal points of <img src="https://latex.codecogs.com/png.latex?S%5E3"> produces real projective three-space:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0ASO(3)%5Ccong%20%5Cmathbb%7BRP%7D%5E3.%0A"></p>
+<p>Since <img src="https://latex.codecogs.com/png.latex?S%5E3"> is simply connected, <img src="https://latex.codecogs.com/png.latex?%5CPhi"> is the universal covering map of <img src="https://latex.codecogs.com/png.latex?SO(3)">.</p>
+</section>
+<section id="why-2pi-is-not-enough-upstairs" class="level2">
+<h2 class="anchored" data-anchor-id="why-2pi-is-not-enough-upstairs">Why <img src="https://latex.codecogs.com/png.latex?2%5Cpi"> is not enough upstairs</h2>
+<p>Fix an axis <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%20u"> and let the physical rotation angle increase continuously:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Aq(%5Ctheta)%0A=%5Ccos%5Cfrac%7B%5Ctheta%7D%7B2%7D%0A+%5Cmathbf%20u%5Csin%5Cfrac%7B%5Ctheta%7D%7B2%7D.%0A"></p>
+<p>At the three revealing angles,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Aq(0)=1,%5Cqquad%0Aq(2%5Cpi)=-1,%5Cqquad%0Aq(4%5Cpi)=1.%0A"></p>
+<p>After a <img src="https://latex.codecogs.com/png.latex?2%5Cpi"> turn, every ordinary vector has returned to its starting position because <img src="https://latex.codecogs.com/png.latex?q=-1"> and <img src="https://latex.codecogs.com/png.latex?q=1"> represent the same element of <img src="https://latex.codecogs.com/png.latex?SO(3)">. On the quaternion sphere, however, the lifted path has travelled only from one point to its antipode. It is not closed. A second <img src="https://latex.codecogs.com/png.latex?2%5Cpi"> turn completes the great circle and returns the quaternion to <img src="https://latex.codecogs.com/png.latex?1">.</p>
+<div id="cell-fig-double-cover" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb3-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb3-3"></span>
+<span id="cb3-4">theta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linspace(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> np.pi, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">800</span>)</span>
+<span id="cb3-5">scalar <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.cos(theta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span>)</span>
+<span id="cb3-6">axis_component <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.sin(theta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span>)</span>
+<span id="cb3-7"></span>
+<span id="cb3-8">fig, ax <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> plt.subplots(figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.8</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.8</span>))</span>
+<span id="cb3-9">mid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> theta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> np.pi</span>
+<span id="cb3-10">ax.plot(scalar[mid], axis_component[mid], lw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.2</span>,</span>
+<span id="cb3-11">        label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">0</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">leq</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\t</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">heta</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">leq2</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">pi</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb3-12">ax.plot(scalar[<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>mid], axis_component[<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>mid], lw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.2</span>,</span>
+<span id="cb3-13">        label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">2</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">pi</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">leq</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\t</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">heta</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">leq4</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">pi</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb3-14">ax.scatter([<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, zorder<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb3-15">ax.annotate(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">q</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">0</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">=q</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">4</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">pi</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">=1</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>, (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), xytext<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">105</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>),</span>
+<span id="cb3-16">            textcoords<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"offset points"</span>)</span>
+<span id="cb3-17">ax.annotate(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">q</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">2</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">pi</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">=-1</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>, (<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), xytext<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>),</span>
+<span id="cb3-18">            textcoords<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"offset points"</span>)</span>
+<span id="cb3-19">ax.axhline(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.8"</span>, lw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>)</span>
+<span id="cb3-20">ax.axvline(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"0.8"</span>, lw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>)</span>
+<span id="cb3-21">ax.set_aspect(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"equal"</span>)</span>
+<span id="cb3-22">ax.set_xlabel(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"scalar part"</span>)</span>
+<span id="cb3-23">ax.set_ylabel(<span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">r"</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$\m</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">athbf{u}</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> component"</span>)</span>
+<span id="cb3-24">ax.set_title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"A 4π journey on the quaternion circle"</span>)</span>
+<span id="cb3-25">ax.legend(loc<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"upper right"</span>, fontsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>)</span>
+<span id="cb3-26">plt.tight_layout()</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div id="fig-double-cover" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-double-cover-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://terryfxh.github.io/math-notes/posts/quaternion-rotations-the-sandwich-and-the-double-cover/index_files/figure-html/fig-double-cover-output-1.png" width="455" height="447" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-double-cover-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: A fixed-axis rotation lifted to the unit-quaternion circle. One physical turn carries q from 1 to its antipode −1; a second turn is needed to close the path on S³.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This is the topology behind the belt trick: a <img src="https://latex.codecogs.com/png.latex?2%5Cpi"> rotation loop in <img src="https://latex.codecogs.com/png.latex?SO(3)"> cannot be continuously shrunk to a point, while traversing it twice can. In group language,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cpi_1(SO(3))%5Ccong%5Cmathbb%20Z/2%5Cmathbb%20Z.%0A"></p>
+<p>It is also the mathematical doorway to spinors. A classical vector transforms through <img src="https://latex.codecogs.com/png.latex?SO(3)">, so it is unchanged after <img src="https://latex.codecogs.com/png.latex?2%5Cpi">. A spin-<img src="https://latex.codecogs.com/png.latex?%5Ctfrac12"> state transforms through a representation of <img src="https://latex.codecogs.com/png.latex?SU(2)">; the element <img src="https://latex.codecogs.com/png.latex?-1"> acts by a sign, so the state vector returns only after <img src="https://latex.codecogs.com/png.latex?4%5Cpi">. A global sign by itself is not observable, but relative phase can make the distinction measurable. The double cover supplies the geometry; quantum mechanics supplies the representation and its physical interpretation <span class="citation" data-cites="baez2002octonions">[2]</span>.</p>
+</section>
+<section id="the-sign-ambiguity-becomes-an-engineering-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-sign-ambiguity-becomes-an-engineering-problem">The sign ambiguity becomes an engineering problem</h2>
+<p>The equation <img src="https://latex.codecogs.com/png.latex?%5CPhi(q)=%5CPhi(-q)"> is elegant topology, and it creates a practical trap. Suppose a camera orientation is converted from a matrix to a quaternion at each animation frame. Either sign is algebraically valid. If the conversion chooses signs inconsistently, a smooth sequence of physical orientations can jump between antipodal points on <img src="https://latex.codecogs.com/png.latex?S%5E3">.</p>
+<p>That matters when interpolating. For unit quaternions <img src="https://latex.codecogs.com/png.latex?q_0,q_1">, spherical linear interpolation follows a great-circle arc:</p>
+<p><span id="eq-slerp"><img src="https://latex.codecogs.com/png.latex?%0A%5Coperatorname%7Bslerp%7D(q_0,q_1;t)%0A=%5Cfrac%7B%5Csin((1-t)%5COmega)%7D%7B%5Csin%5COmega%7Dq_0%0A+%5Cfrac%7B%5Csin(t%5COmega)%7D%7B%5Csin%5COmega%7Dq_1,%0A%5Cqquad%0A%5Ccos%5COmega=q_0%5Ccdot%20q_1.%0A%5Ctag%7B13%7D"></span></p>
+<p>There are two arcs between antipodal equivalence classes. If <img src="https://latex.codecogs.com/png.latex?q_0%5Ccdot%20q_1%3C0">, replacing <img src="https://latex.codecogs.com/png.latex?q_1"> by <img src="https://latex.codecogs.com/png.latex?-q_1"> makes the dot product positive and selects the shorter arc. This sign correction prevents an interpolator from taking an unnecessary long turn. When <img src="https://latex.codecogs.com/png.latex?%5COmega"> is close to zero, the quotient in Equation&nbsp;13 should be evaluated by its limit, usually implemented as normalised linear interpolation, to avoid division by a tiny <img src="https://latex.codecogs.com/png.latex?%5Csin%5COmega">. Shoemake’s quaternion interpolation made this geometry standard in computer animation <span class="citation" data-cites="shoemake1985rotation">[3]</span>.</p>
+<p>Three implementation rules follow:</p>
+<ol type="1">
+<li><strong>Normalise.</strong> The sandwich preserves length exactly only for a unit quaternion when <img src="https://latex.codecogs.com/png.latex?q%5E%7B-1%7D"> is implemented as the conjugate. Floating-point updates drift, so orientations should be renormalised.</li>
+<li><strong>State the convention.</strong> This article uses Hamilton multiplication, active rotations of column vectors, and <img src="https://latex.codecogs.com/png.latex?q%5Cmathbf%20vq%5E%7B-1%7D">. A library may use a different storage order or the inverse convention.</li>
+<li><strong>Choose signs continuously.</strong> When processing a sequence, flip a quaternion if its dot product with the previous one is negative. The physical orientation is unchanged, but the lifted path on <img src="https://latex.codecogs.com/png.latex?S%5E3"> becomes continuous.</li>
+</ol>
+<p>The double cover is therefore not a decorative theorem added after the rotation formula. It explains a bug that appears whenever rotations are interpolated.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>Left multiplication by a unit quaternion rotates four-dimensional quaternion space. The sandwich <img src="https://latex.codecogs.com/png.latex?q%5Cmathbf%20vq%5E%7B-1%7D"> pairs that left action with an inverse right action, preserving the pure-vector subspace. Expanding the product gives Rodrigues’ formula and forces the half-angle:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Aq=%5Ccos%5Cfrac%7B%5Ctheta%7D%7B2%7D%0A+%5Cmathbf%20u%5Csin%5Cfrac%7B%5Ctheta%7D%7B2%7D.%0A"></p>
+<p>The map <img src="https://latex.codecogs.com/png.latex?q%5Cmapsto(%5Cmathbf%20v%5Cmapsto%20q%5Cmathbf%20vq%5E%7B-1%7D)"> is a surjective homomorphism from <img src="https://latex.codecogs.com/png.latex?S%5E3"> to <img src="https://latex.codecogs.com/png.latex?SO(3)"> with kernel <img src="https://latex.codecogs.com/png.latex?%5C%7B%5Cpm1%5C%7D">. Consequently, <img src="https://latex.codecogs.com/png.latex?q"> and <img src="https://latex.codecogs.com/png.latex?-q"> name the same spatial rotation. One <img src="https://latex.codecogs.com/png.latex?2%5Cpi"> turn closes in <img src="https://latex.codecogs.com/png.latex?SO(3)"> but reaches the antipode in <img src="https://latex.codecogs.com/png.latex?S%5E3">; a <img src="https://latex.codecogs.com/png.latex?4%5Cpi"> turn closes upstairs as well.</p>
+<p>The sandwich explains how quaternions rotate. The double cover explains why the representation works so well, why half-angles appear, and why signs must be handled with care.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>Quaternion Rotations: The Sandwich and the Double Cover</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/quaternion-rotations-the-sandwich-and-the-double-cover/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
+<div id="ref-conway2003" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">J. H. Conway and D. A. Smith, <em>On quaternions and octonions: Their geometry, arithmetic, and symmetry</em>. A K Peters, 2003.</div>
+</div>
+<div id="ref-baez2002octonions" class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">J. C. Baez, <span>“The octonions,”</span> <em>Bulletin of the American Mathematical Society</em>, vol. 39, no. 2, pp. 145–205, 2002, doi: <a href="https://doi.org/10.1090/S0273-0979-01-00934-X">10.1090/S0273-0979-01-00934-X</a>.</div>
+</div>
+<div id="ref-shoemake1985rotation" class="csl-entry">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">K. Shoemake, <span>“Animating rotation with quaternion curves,”</span> <em>ACM SIGGRAPH Computer Graphics</em>, vol. 19, no. 3, pp. 245–254, 1985, doi: <a href="https://doi.org/10.1145/325165.325242">10.1145/325165.325242</a>.</div>
+</div>
+</div></section></div> ]]></description>
+  <category>pure</category>
+  <category>applied</category>
+  <category>algebra</category>
+  <category>geometry</category>
+  <category>computer-graphics</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/quaternion-rotations-the-sandwich-and-the-double-cover/</guid>
+  <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>AI in Mathematics: Proof Is Getting Cheap</title>
   <link>https://terryfxh.github.io/math-notes/posts/ai-in-mathematics-proof-is-getting-cheap/</link>
@@ -8579,379 +9806,6 @@ speedup: 2.8x   (results agree: True)</code></pre>
   <category>computer-science</category>
   <category>cryptography</category>
   <guid>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/</guid>
-  <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Gram–Schmidt: Straightening a Tangle of Vectors</title>
-  <link>https://terryfxh.github.io/math-notes/posts/gram-schmidt/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="epigraph">
-<p><em>“A mathematician, like a painter or a poet, is a maker of patterns.”</em></p>
-<p><span class="attribution">— G. H. Hardy, <em>A Mathematician’s Apology</em></span></p>
-</div>
-<p>Imagine a handful of vectors that all lean in roughly the same direction. They span some subspace, but they describe it badly: each one carries a little of every other one inside it, and it is hard to tell what is genuinely new about each. What we would love instead is a clean frame for that same subspace, a set of directions that are perfectly perpendicular and each of unit length, so that every vector in the space splits into independent, non-overlapping pieces. Gram–Schmidt is the simple, almost obvious procedure that builds exactly such a frame, one vector at a time. And once you see the picture, the QR decomposition falls out for free.</p>
-<section id="first-the-picture" class="level2">
-<h2 class="anchored" data-anchor-id="first-the-picture">First, the picture</h2>
-<p>Start with the very first vector and do nothing clever at all. Just keep its direction; call that your first axis. The honest work begins with the second vector.</p>
-<p>The second vector points partly along the first axis and partly away from it. The part along the first axis is redundant, since you already have that direction. So subtract it off. Concretely, cast a shadow of the second vector onto the first axis, the orthogonal projection, and remove that shadow. What survives points in a direction the first axis could never reach: it is perpendicular to the first by construction. That perpendicular remainder becomes your second axis.</p>
-<p>Now the pattern repeats. Bring in the third vector, look at the shadow it casts on the plane already spanned by your first two axes, subtract that shadow, and whatever remains sticks out perpendicular to both. Keep going. At every step you take the next raw vector, strip away everything your existing axes already explain, and keep only the genuinely new direction left over. Normalize each remainder to unit length and you have an orthonormal frame.</p>
-<p>That is the whole idea. Every formula below is just bookkeeping for “subtract the shadow.”</p>
-</section>
-<section id="writing-it-down" class="level2">
-<h2 class="anchored" data-anchor-id="writing-it-down">Writing it down</h2>
-<p>Let <img src="https://latex.codecogs.com/png.latex?v_1,%20%5Cdots,%20v_n%20%5Cin%20%5Cmathbb%7BR%7D%5Em"> be linearly independent, and write the inner product as <img src="https://latex.codecogs.com/png.latex?%5Clangle%20x,%20y%5Crangle%20=%20x%5E%5Ctop%20y">. The projection of a vector <img src="https://latex.codecogs.com/png.latex?v"> onto a unit vector <img src="https://latex.codecogs.com/png.latex?q"> is <img src="https://latex.codecogs.com/png.latex?%5Clangle%20q,%20v%5Crangle%5C,%20q">: the shadow’s length times the direction. Gram–Schmidt then reads</p>
-<p><span id="eq-gs"><img src="https://latex.codecogs.com/png.latex?%0Au_k%20=%20v_k%20-%20%5Csum_%7Bj=1%7D%5E%7Bk-1%7D%20%5Clangle%20q_j,%20v_k%5Crangle%5C,%20q_j,%0A%5Cqquad%0Aq_k%20=%20%5Cfrac%7Bu_k%7D%7B%5ClVert%20u_k%20%5CrVert%7D.%0A%5Ctag%7B1%7D"></span></p>
-<p>The sum is everything the earlier axes already account for; <img src="https://latex.codecogs.com/png.latex?u_k"> is the leftover that they cannot. We normalize it to get the next unit axis <img src="https://latex.codecogs.com/png.latex?q_k">.</p>
-</section>
-<section id="it-was-qr-all-along" class="level2">
-<h2 class="anchored" data-anchor-id="it-was-qr-all-along">It was QR all along</h2>
-<p>Look again at Equation&nbsp;1 and rearrange it to express the original vector in terms of the new frame:</p>
-<p><img src="https://latex.codecogs.com/png.latex?%0Av_k%20=%20%5ClVert%20u_k%20%5CrVert%5C,%20q_k%20+%20%5Csum_%7Bj=1%7D%5E%7Bk-1%7D%20%5Clangle%20q_j,%20v_k%5Crangle%5C,%20q_j%20.%0A"></p>
-<p>Read this as a recipe for rebuilding <img src="https://latex.codecogs.com/png.latex?v_k"> out of the <img src="https://latex.codecogs.com/png.latex?q">’s. The crucial detail is which <img src="https://latex.codecogs.com/png.latex?q">’s appear: only <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_k">, never any with a higher index. Each original vector lives entirely inside the axes built up to its own turn.</p>
-<p>Stack the vectors as columns of a matrix <img src="https://latex.codecogs.com/png.latex?A%20=%20%5B%5C,v_1%20%5Cmid%20%5Ccdots%20%5Cmid%20v_n%5C,%5D"> and the new axes as columns of <img src="https://latex.codecogs.com/png.latex?Q%20=%20%5B%5C,q_1%20%5Cmid%20%5Ccdots%20%5Cmid%20q_n%5C,%5D">. The coefficients above assemble into a matrix <img src="https://latex.codecogs.com/png.latex?R">, and because <img src="https://latex.codecogs.com/png.latex?v_k"> uses no axis past <img src="https://latex.codecogs.com/png.latex?q_k">, every entry of <img src="https://latex.codecogs.com/png.latex?R"> below the diagonal is zero. We have landed on</p>
-<p><span id="eq-qr"><img src="https://latex.codecogs.com/png.latex?%0AA%20=%20QR,%0A%5Ctag%7B2%7D"></span></p>
-<p>with <img src="https://latex.codecogs.com/png.latex?Q"> holding orthonormal columns and <img src="https://latex.codecogs.com/png.latex?R"> upper triangular, its diagonal entries <img src="https://latex.codecogs.com/png.latex?r_%7Bkk%7D%20=%20%5ClVert%20u_k%20%5CrVert"> all positive. The geometric act of straightening a tangle of vectors and the algebraic factorization Equation&nbsp;2 are the same thing seen from two sides.</p>
-</section>
-<section id="why-the-frame-is-genuinely-orthonormal" class="level2">
-<h2 class="anchored" data-anchor-id="why-the-frame-is-genuinely-orthonormal">Why the frame is genuinely orthonormal</h2>
-<p>It is worth checking that the picture delivers what it promises, rather than just feeling like it should.</p>
-<div id="thm-qr" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 1 (QR by Gram–Schmidt)</strong></span> If the columns of <img src="https://latex.codecogs.com/png.latex?A%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bm%20%5Ctimes%20n%7D"> are linearly independent, then Equation&nbsp;1 produces vectors <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_n"> that are orthonormal and satisfy <img src="https://latex.codecogs.com/png.latex?A%20=%20QR"> with <img src="https://latex.codecogs.com/png.latex?R"> upper triangular and <img src="https://latex.codecogs.com/png.latex?r_%7Bkk%7D%20%3E%200">.</p>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>We argue by induction on <img src="https://latex.codecogs.com/png.latex?k"> that <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_k"> are orthonormal and span the same subspace as <img src="https://latex.codecogs.com/png.latex?v_1,%20%5Cdots,%20v_k">.</p>
-<p>For <img src="https://latex.codecogs.com/png.latex?k%20=%201">, <img src="https://latex.codecogs.com/png.latex?q_1%20=%20v_1%20/%20%5ClVert%20v_1%20%5CrVert"> is a single unit vector spanning the same line as <img src="https://latex.codecogs.com/png.latex?v_1">, and <img src="https://latex.codecogs.com/png.latex?%5ClVert%20v_1%5CrVert%20%3E%200"> because the columns are independent.</p>
-<p>Assume the claim for <img src="https://latex.codecogs.com/png.latex?k-1">. Form <img src="https://latex.codecogs.com/png.latex?u_k"> as in Equation&nbsp;1. For any earlier index <img src="https://latex.codecogs.com/png.latex?i%20%3C%20k">, take the inner product with <img src="https://latex.codecogs.com/png.latex?q_i"> and use orthonormality of the previous axes, <img src="https://latex.codecogs.com/png.latex?%5Clangle%20q_i,%20q_j%5Crangle%20=%20%5Cdelta_%7Bij%7D">: <img src="https://latex.codecogs.com/png.latex?%0A%5Clangle%20q_i,%20u_k%5Crangle%20=%20%5Clangle%20q_i,%20v_k%5Crangle%20-%20%5Csum_%7Bj=1%7D%5E%7Bk-1%7D%20%5Clangle%20q_j,%20v_k%5Crangle%5C,%5Clangle%20q_i,%20q_j%5Crangle%20=%20%5Clangle%20q_i,%20v_k%5Crangle%20-%20%5Clangle%20q_i,%20v_k%5Crangle%20=%200%20.%0A"> So <img src="https://latex.codecogs.com/png.latex?u_k"> is perpendicular to every previous axis. It is also nonzero: if it vanished, Equation&nbsp;1 would write <img src="https://latex.codecogs.com/png.latex?v_k"> as a combination of <img src="https://latex.codecogs.com/png.latex?q_1,%20%5Cdots,%20q_%7Bk-1%7D">, hence of <img src="https://latex.codecogs.com/png.latex?v_1,%20%5Cdots,%20v_%7Bk-1%7D">, contradicting linear independence. Therefore <img src="https://latex.codecogs.com/png.latex?q_k%20=%20u_k%20/%20%5ClVert%20u_k%5CrVert"> is a unit vector orthogonal to all earlier ones, and since <img src="https://latex.codecogs.com/png.latex?u_k"> is <img src="https://latex.codecogs.com/png.latex?v_k"> plus a combination of the previous axes, the spans still agree. The induction closes. Collecting the coefficients into <img src="https://latex.codecogs.com/png.latex?R"> gives Equation&nbsp;2, and <img src="https://latex.codecogs.com/png.latex?r_%7Bkk%7D%20=%20%5ClVert%20u_k%5CrVert%20%3E%200">. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
-</div>
-</section>
-<section id="where-the-naive-version-breaks" class="level2">
-<h2 class="anchored" data-anchor-id="where-the-naive-version-breaks">Where the naive version breaks</h2>
-<p>Here the story takes a turn that pure mathematics alone would never warn you about. On paper, Equation&nbsp;1 is flawless. On a computer, the order in which you subtract the shadows turns out to matter enormously.</p>
-<p>There are two ways to organize the subtraction. <em>Classical</em> Gram–Schmidt computes every projection against the <strong>original</strong> vector <img src="https://latex.codecogs.com/png.latex?v_k"> and removes them together. <em>Modified</em> Gram–Schmidt removes each shadow one at a time, always projecting the <strong>running remainder</strong> that is left so far. Algebraically the two are identical. In floating-point arithmetic they are not, because the modified version always works with the most up-to-date, mostly-perpendicular remainder, and so it never lets rounding errors pile up unexamined.</p>
-<p>To see the gap, feed both versions a deliberately nasty matrix: the <img src="https://latex.codecogs.com/png.latex?8%20%5Ctimes%208"> Hilbert matrix, whose columns are so nearly parallel that its condition number runs into the billions.</p>
-<div id="1b695e0a" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> np</span>
-<span id="cb1-2"></span>
-<span id="cb1-3"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> gram_schmidt(A, modified):</span>
-<span id="cb1-4">    m, n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> A.shape</span>
-<span id="cb1-5">    Q <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.zeros((m, n))</span>
-<span id="cb1-6">    R <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.zeros((n, n))</span>
-<span id="cb1-7">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> k <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(n):</span>
-<span id="cb1-8">        v <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> A[:, k].copy()</span>
-<span id="cb1-9">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> j <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(k):</span>
-<span id="cb1-10">            <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># classical projects the original column; modified the running remainder</span></span>
-<span id="cb1-11">            R[j, k] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Q[:, j] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> (v <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> modified <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">else</span> A[:, k])</span>
-<span id="cb1-12">            v <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> v <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> R[j, k] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> Q[:, j]</span>
-<span id="cb1-13">        R[k, k] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.linalg.norm(v)</span>
-<span id="cb1-14">        Q[:, k] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> v <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> R[k, k]</span>
-<span id="cb1-15">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> Q, R</span>
-<span id="cb1-16"></span>
-<span id="cb1-17">n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">8</span></span>
-<span id="cb1-18">H <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.array([[<span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> (i <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> j <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>) <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> j <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(n)] <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(n)])</span>
-<span id="cb1-19"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"condition number of H: </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span>linalg<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span>cond(H)<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2e}</span><span class="ch" style="color: #20794D;
-background-color: null;
-font-style: inherit;">\n</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span>
-<span id="cb1-20"></span>
-<span id="cb1-21"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> name, modified <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> [(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"classical"</span>, <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span>), (<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"modified"</span>, <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>)]:</span>
-<span id="cb1-22">    Q, R <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> gram_schmidt(H, modified)</span>
-<span id="cb1-23">    orthogonality <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.linalg.norm(Q.T <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> Q <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> np.eye(n))</span>
-<span id="cb1-24">    reconstruction <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.linalg.norm(H <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> Q <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> R)</span>
-<span id="cb1-25">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>name<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:9s}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">:  |Q^T Q - I| = </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>orthogonality<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">    |H - QR| = </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>reconstruction<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span>
-<span id="cb1-26"></span>
-<span id="cb1-27">Qh, _ <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.linalg.qr(H)   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># numpy uses Householder reflections</span></span>
-<span id="cb1-28"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'numpy.qr'</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:9s}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">:  |Q^T Q - I| = </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span>linalg<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span>norm(Qh.T <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> Qh <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> np.eye(n))<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2e}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>condition number of H: 1.53e+10
-
-classical:  |Q^T Q - I| = 1.42e+00    |H - QR| = 9.71e-17
-modified :  |Q^T Q - I| = 3.62e-07    |H - QR| = 1.07e-16
-numpy.qr :  |Q^T Q - I| = 1.46e-15</code></pre>
-</div>
-</div>
-<p>Both methods rebuild <img src="https://latex.codecogs.com/png.latex?H"> from <img src="https://latex.codecogs.com/png.latex?Q"> and <img src="https://latex.codecogs.com/png.latex?R"> essentially perfectly, with <img src="https://latex.codecogs.com/png.latex?%5ClVert%20H%20-%20QR%5CrVert"> down at roundoff. That is not where the danger lives. Look instead at <img src="https://latex.codecogs.com/png.latex?%5ClVert%20Q%5E%5Ctop%20Q%20-%20I%5CrVert">, the honest test of whether the columns of <img src="https://latex.codecogs.com/png.latex?Q"> really are orthonormal. Classical Gram–Schmidt scores around <img src="https://latex.codecogs.com/png.latex?1">, meaning its “orthonormal” axes are nothing of the sort, they have collapsed back toward each other. The modified version holds the error near <img src="https://latex.codecogs.com/png.latex?10%5E%7B-7%7D">, and the Householder-based routine in NumPy reaches full machine precision around <img src="https://latex.codecogs.com/png.latex?10%5E%7B-15%7D">.</p>
-<p>The lesson is not that Gram–Schmidt is wrong. It is that a formula can be exactly true and still be the wrong thing to type, because finite-precision arithmetic has a geometry of its own. When you actually need a stable orthonormal frame, reach for modified Gram–Schmidt or, better still, a Householder QR like the one inside <code>numpy.linalg.qr</code>. A careful account of all this lives in <span class="citation" data-cites="trefethen1997numerical">[1]</span>.</p>
-</section>
-<section id="what-to-remember" class="level2">
-<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
-<p>The heart of Gram–Schmidt is a single move repeated: take the next vector, subtract the shadow your existing axes already explain, and keep the perpendicular remainder. That move, written out, is the factorization <img src="https://latex.codecogs.com/png.latex?A%20=%20QR">, with the orthonormal frame in <img src="https://latex.codecogs.com/png.latex?Q"> and the bookkeeping in an upper-triangular <img src="https://latex.codecogs.com/png.latex?R">. The proof that the frame is truly orthonormal is a short induction resting on one cancellation. And the moment you run it, a quieter truth appears: on a real machine the naive ordering can throw the orthogonality away entirely, so the version you compute should be the modified one, or Householder if you can afford it.</p>
-</section>
-<section id="how-to-cite" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
-<blockquote class="blockquote">
-<p>Terry (2026). <em>Gram–Schmidt: Straightening a Tangle of Vectors</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/gram-schmidt/</code>.</p>
-</blockquote>
-
-
-<!-- -->
-
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
-<div id="ref-trefethen1997numerical" class="csl-entry">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. N. Trefethen and D. Bau, <em>Numerical linear algebra</em>. SIAM, 1997.</div>
-</div>
-</div></section></div> ]]></description>
-  <category>pure</category>
-  <category>applied</category>
-  <category>linear-algebra</category>
-  <category>numerical-methods</category>
-  <guid>https://terryfxh.github.io/math-notes/posts/gram-schmidt/</guid>
-  <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Mathematics Is Not a Spectator Sport</title>
-  <link>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="epigraph">
-<p><em>“What I cannot create, I do not understand.”</em></p>
-<p><span class="attribution">— Richard Feynman, found on his blackboard, 1988</span></p>
-</div>
-<p>There is a particular pleasure in watching a beautiful explanation. You sit through a Feynman lecture, or a 3Blue1Brown animation, and somewhere near the end a warm click happens behind your eyes. The pieces fall together, the idea gleams, and you lean back feeling that you have understood. I want to argue that this feeling, satisfying as it is, deserves your suspicion. Most of what we call learning mathematics is spent in the audience, and mathematics is not a spectator sport.</p>
-<section id="the-illusion-of-understanding" class="level2">
-<h2 class="anchored" data-anchor-id="the-illusion-of-understanding">The illusion of understanding</h2>
-<p>The click is real, but it is usually borrowed. A great explainer has done something quietly enormous on your behalf: they have taken a tangled, stubborn idea and removed every snag, smoothed every transition, and handed you the result frictionless. What you feel as understanding is often just the pleasure of watching someone else chew. Call it the Feynman effect, with apologies to the man whose blackboard gives this essay its motto. You mistake the elegance of the finished path for the experience of having walked it.</p>
-<p>The cruel detail is that the friction was the lesson. A proof feels effortless to watch for exactly the reason it was hard to discover, and by sanding away the difficulty, the explainer also sands away the part where learning lives. This is why you can nod along to a derivation in the evening and find, the next morning, that you cannot reproduce a single line of it. You never owned it. You only visited.</p>
-<p>The remedy is older than any video, and it is unglamorous: reinvention. When you meet an elegant result, the most valuable thing you can do is press pause, pick up a pencil, and try to rebuild it yourself before reading another word. Struggle with the algebra. Get it wrong. Hit the wall the original author hit, and feel why their clever step was clever. The single greatest trap for a self-learner is skipping the computation because the argument seems to “follow.” Intuition does not take root in the eyes. It takes root in the hand, on paper, in the act of producing the thing rather than recognizing it.</p>
-<p>Take a small, almost insulting example. Nearly everyone has seen the proof that the square root of two is irrational, and nearly everyone, watching it, finds it obvious. Now close the page and rebuild it. Suppose it were a fraction in lowest terms, square both sides, notice that the numerator is forced to be even, and watch the contradiction bloom when the denominator is dragged into being even too. The first time you assemble that argument with your own hand, the phrase “in lowest terms” stops being a decoration at the start and becomes the hinge the entire proof swings on. You cannot feel that hinge from the audience. You can only feel it with the pencil.</p>
-<p>All of this used to be merely good advice. In the age of AI it has become the whole game. A model will now hand you a flawless derivation, correctly formatted, on demand, and it will do this faster than you can find your pencil. The temptation to outsource the struggle has never been stronger, and the cost of giving in has never been higher, because the machine can manufacture the answer but it cannot manufacture your understanding. What I cannot create, I do not understand. Now that creation has become optional, choosing to create anyway is what separates a person who learns from a person who merely collects.</p>
-</section>
-<section id="the-bottleneck-was-never-the-explanation" class="level2">
-<h2 class="anchored" data-anchor-id="the-bottleneck-was-never-the-explanation">The bottleneck was never the explanation</h2>
-<p>Here is a puzzle worth sitting with. We are living in the richest moment in the history of mathematical exposition. There are free, world-class, lovingly animated explanations of nearly every undergraduate idea, available to anyone with a phone. If the problem with mathematics education had really been a shortage of good explanations, the internet should have ended mathematical struggle a decade ago. It plainly has not. So the missing ingredient was never clarity.</p>
-<p>The missing ingredient is desire, and desire is a stubbornly human thing. The most powerful engine I know for actually learning is social. It is a friend arguing with you across a table until you both see it. It is a study group where being confused out loud is allowed. Above all, it is the moment a teacher you respect pulls you aside and says, quietly, that you have a real gift for this. That single sentence has launched more mathematicians than any textbook ever written. No perfectly tuned AI tutor, however patient, reproduces the gravitational pull of another person believing in you.</p>
-<p>Part of the reason is memory. An AI tutor answers your question at midnight with bottomless patience and then forgets you completely. It will never be disappointed that you quit, never be quietly proud that you did not, never raise your half-formed idea again three weeks later because it has been turning the idea over too. Learning is partly the act of becoming someone in the eyes of people whose opinion you have chosen to care about, and that gentle human pressure is doing far more of the work than we like to admit. It is not a feature a model can ship.</p>
-<p>It helps to remember what the word education actually means. It comes from <em>educere</em>, to lead out, to draw forth what is already latent in someone. Its opposite is the thing we usually do instead: pouring facts into a container. You cannot pour someone into caring. You can only draw it out, and that almost always happens through a relationship, not a transmission.</p>
-</section>
-<section id="stop-asking-what-it-is-for" class="level2">
-<h2 class="anchored" data-anchor-id="stop-asking-what-it-is-for">Stop asking what it is for</h2>
-<p>There is a tax we levy on mathematics that we levy on almost nothing else we love, and it is the question “what is this good for?” We ask it of eigenvalues and we never ask it of novels. Nobody finishes <em>Harry Potter</em> and demands to know the return on investment. We read it because we were curious about what happens, because the world it built was worth living in for an afternoon. Mathematics deserves the same permission, and it rewards the same posture.</p>
-<p>Approached as an art rather than a tool, a piece of mathematics reads like a story. It has characters, which are its objects and structures. It has tension, the gap between what you can see and what you can prove. And it has a climax, the moment two seemingly unrelated ideas collide and turn out to be the same idea wearing two costumes. Think of the first time you meet Euler’s identity, <img src="https://latex.codecogs.com/png.latex?e%5E%7Bi%5Cpi%7D%20+%201%20=%200">, and realize that five constants from five unrelated corners of mathematics were quietly relatives all along. Or the moment, which I have written about elsewhere on this blog, when a forbidding symmetric matrix turns out to be nothing more than a stretch along a set of perpendicular axes. These are not facts to be filed away for later. They are plot twists, and they land with the same jolt as the turn of a good novel. A good explanation of a theorem is closer to good storytelling than to good plumbing, and the people who fall in love with the subject are, almost without exception, the ones who were allowed to read it that way.</p>
-<p>The beautiful joke at the end of this argument is that the gloriously useless turns out to be useful anyway. G. H. Hardy prized number theory precisely because he believed it would never touch the grubby world, and it now stands guard over every password and bank transfer on Earth. The notion of a number as a coordinate, which Hermann Weyl once called an act of violence, runs the graphics on the screen in front of you. Chase the wonder and the utility arrives on its own, uninvited, often a century late. Chase only the utility and you usually get neither.</p>
-</section>
-<section id="intuition-before-the-axioms" class="level2">
-<h2 class="anchored" data-anchor-id="intuition-before-the-axioms">Intuition before the axioms</h2>
-<p>Open many a mathematics textbook and the first thing it does is hit you with a definition. An axiom, stated cold, in full generality, before you have any reason to want it. This is a strange way to teach a living idea. It is, as someone once put it, like handing a baby a dictionary and expecting it to learn to speak. The baby needs to babble, to point, to associate sounds with warm familiar things, long before any word has a definition.</p>
-<p>So resist the axiom-first order, and build the picture first. Before a vector is a list of numbers or an element of an abstract space, let it be an arrow in the plane with its tail at the origin, something you can stretch and turn and add by walking. Once that image is in your hands, the symbols arrive as descriptions of something you already understand, rather than as commandments to be memorized. The same move rescues almost everything that looks forbidding. A group, defined cold, is a set with an operation obeying four dry axioms; met first as a picture, it is simply the collection of ways you can pick up a triangle and set it back down so that it looks unchanged, the rotations and flips you can perform with your hands. A limit, defined cold, is a thicket of epsilons and deltas; met first, it is a chase, where you name how close you demand to get and the function promises it can stay at least that close from some point on. The axioms do not vanish, and you will still need their precision, but now they read as the careful transcript of something you have already felt in your body.</p>
-<p>The difference in feeling is everything. Concepts you have visualized feel like yours; you have a sense of ownership over them. Concepts handed down as definitions feel like furniture in someone else’s house. Abstraction is the genuine and necessary price we pay for generality, but intuition is the bridge that lets you afford it, and the bridge has to come first.</p>
-</section>
-<section id="read-the-book-backwards" class="level2">
-<h2 class="anchored" data-anchor-id="read-the-book-backwards">Read the book backwards</h2>
-<p>This suggests a final, slightly subversive habit: stop reading mathematics like a novel, dutifully from page one. Mathematical texts are not built to be consumed in order, and treating them that way is how curious people grind themselves into boredom.</p>
-<p>Try the opposite. Before you read a new chapter, flip to the exercises at its end. If the problems are a wall of unfamiliar words, the chapter is laying dry foundations, and you can read it quickly, knowing what it is for. But if you can understand what a problem is even asking, then you have found something precious: a question you want answered. Now go back and read the chapter as a hunt for that answer, and watch how differently the same paragraphs read when you are looking for something in them. Treat every theorem not as a verdict to accept but as a challenge thrown in your direction, a problem you attempt before you are allowed to peek at the solution. A proof you have wrestled with for ten minutes teaches more than ten proofs you have watched glide by.</p>
-</section>
-<section id="what-to-remember" class="level2">
-<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
-<p>The machines have made answers nearly free. A correct, polished, well-explained solution to almost any solved problem is now the cheapest thing in the world, available instantly and without effort. What remains scarce, and therefore precious, is understanding, and understanding has stubbornly refused to become a spectator activity. It is still earned the old way: by reinventing instead of replaying, by finding your own reasons to care, by reading mathematics as both a story and a hunt, and by seeing the picture before you trust the symbol. The point of learning mathematics was never merely to obtain the answer. The point was, and still is, to become the kind of mind that could have found it.</p>
-<p><em>Acknowledgment: this essay argues with the work of explainers I admire, Richard Feynman and Grant Sanderson’s <a href="https://www.3blue1brown.com/">3Blue1Brown</a> among them, and the vector picture above follows his</em> Essence of Linear Algebra. <em>The quarrel is a loving one.</em></p>
-</section>
-<section id="how-to-cite" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
-<blockquote class="blockquote">
-<p>Terry (2026). <em>Mathematics Is Not a Spectator Sport</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/</code>.</p>
-</blockquote>
-
-
-<!-- -->
-
-</section>
-
- ]]></description>
-  <category>meta</category>
-  <category>learning</category>
-  <guid>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/</guid>
   <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 </channel>

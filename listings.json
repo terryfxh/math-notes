@@ -2,6 +2,8 @@
   {
     "listing": "/notes.html",
     "items": [
+      "/posts/inverse-laplace-transform-and-the-fourier-boundary/index.html",
+      "/posts/quaternion-rotations-the-sandwich-and-the-double-cover/index.html",
       "/posts/ai-in-mathematics-proof-is-getting-cheap/index.html",
       "/posts/the-group-law-on-an-elliptic-curve-drawn-by-hand/index.html",
       "/posts/matrix-exponentials-when-a-matrix-becomes-motion/index.html",
