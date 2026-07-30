@@ -1,0 +1,438 @@
+---
+title: "Quaternion Rotations: The Sandwich and the Double Cover"
+description: "Why conjugating a vector by a unit quaternion produces Rodrigues' rotation formula, why the quaternion stores half the physical angle, and why every spatial rotation has exactly two quaternion names."
+date: 2026-07-29
+categories: [pure, applied, algebra, geometry, computer-graphics]
+bibliography: ../../references.bib
+draft: false
+---
+
+::: {.epigraph}
+*"Symmetry, as wide or as narrow as you may define its meaning, is one idea by which man through the ages has tried to comprehend and create order, beauty, and perfection."*
+
+[— Hermann Weyl, *Symmetry* (1952)]{.attribution}
+:::
+
+The [first quaternion article](../quaternions/) ended with an unfinished piece of machinery. Multiplying a quaternion $x$ on the left by a unit quaternion $q$ gives a beautiful rotation of four-dimensional space. It preserves length and turns two perpendicular planes through equal angles.
+
+There is one problem. A three-dimensional vector is represented by a **pure imaginary quaternion**
+
+$$
+\mathbf v=v_x i+v_y j+v_z k.
+$$
+
+Left multiplication alone usually creates a real part. It tilts the vector out of the three-dimensional room we meant to rotate. The operation is geometrically rigid, but it is the wrong rigid motion.
+
+The repair is the famous sandwich
+
+$$
+\boxed{\mathbf v\longmapsto q\mathbf v q^{-1}}.
+$$ {#eq-sandwich}
+
+The inverse on the right cancels the unwanted tilt through the fourth dimension while reinforcing the rotation inside the vector subspace. This article will make that sentence exact. We will derive the axis-angle formula from the multiplication law, prove that every rotation has exactly two unit-quaternion names, and see why a $2\pi$ turn closes downstairs in physical space but not upstairs on the quaternion sphere.
+
+## The two ingredients
+
+Write a quaternion as
+
+$$
+q=w+\mathbf r,
+$$
+
+where $w\in\mathbb R$ and $\mathbf r\in\mathbb R^3$. Its conjugate and norm are
+
+$$
+\overline q=w-\mathbf r,
+\qquad
+|q|^2=q\overline q=\overline q q=w^2+|\mathbf r|^2.
+$$
+
+For $q\neq0$,
+
+$$
+q^{-1}=\frac{\overline q}{|q|^2}.
+$$
+
+We shall use unit quaternions, so $|q|=1$ and $q^{-1}=\overline q$.
+
+The second ingredient is the product of pure vectors:
+
+$$
+\mathbf a\mathbf b
+=-\mathbf a\cdot\mathbf b+\mathbf a\times\mathbf b.
+$$ {#eq-vector-product}
+
+The scalar part remembers the angle through the dot product. The vector part remembers orientation through the cross product. One noncommutative product carries both.
+
+## Why the sandwich stays in three dimensions
+
+Before calculating the angle, we should prove that @eq-sandwich returns a vector at all. A quaternion $x$ is pure imaginary exactly when
+
+$$
+\overline x=-x.
+$$
+
+Let $q$ be unit and set $x=q\mathbf vq^{-1}$. Quaternion conjugation reverses products, so
+
+$$
+\begin{aligned}
+\overline x
+&=\overline{q^{-1}}\,\overline{\mathbf v}\,\overline q\\
+&=q(-\mathbf v)q^{-1}\\
+&=-x.
+\end{aligned}
+$$
+
+Therefore $x$ is pure imaginary. The two sides of the sandwich have kept the vector inside $\mathbb R^3$.
+
+Length is preserved as well:
+
+$$
+|q\mathbf vq^{-1}|
+=|q|\,|\mathbf v|\,|q^{-1}|
+=|\mathbf v|.
+$$
+
+Thus @eq-sandwich restricts to an orthogonal transformation of the vector subspace. As $q$ varies continuously from $1$, this transformation varies continuously from the identity, so its determinant is $+1$. It is a rotation, not a reflection.
+
+We already know what it preserves. Now we need to see exactly how it moves.
+
+## The half-angle enters
+
+Choose a unit vector $\mathbf u$ as the desired rotation axis. Every quaternion in the complex plane spanned by $1$ and $\mathbf u$ has the form
+
+$$
+q=\cos h+\mathbf u\sin h,
+\qquad
+q^{-1}=\cos h-\mathbf u\sin h.
+$$ {#eq-q-half}
+
+For the moment, call the quaternion angle $h$. We will discover the physical angle rather than insert it by convention.
+
+Set $a=\cos h$ and $b=\sin h$. Expanding the sandwich gives
+
+$$
+\begin{aligned}
+q\mathbf vq^{-1}
+&=(a+b\mathbf u)\mathbf v(a-b\mathbf u)\\
+&=a^2\mathbf v
+  +ab(\mathbf u\mathbf v-\mathbf v\mathbf u)
+  -b^2\mathbf u\mathbf v\mathbf u.
+\end{aligned}
+$$ {#eq-sandwich-expand}
+
+The vector product @eq-vector-product gives two useful identities:
+
+$$
+\mathbf u\mathbf v-\mathbf v\mathbf u
+=2\,\mathbf u\times\mathbf v
+$$ {#eq-commutator}
+
+and, because $|\mathbf u|=1$,
+
+$$
+\mathbf u\mathbf v\mathbf u
+=\mathbf v-2(\mathbf u\cdot\mathbf v)\mathbf u.
+$$ {#eq-uvu}
+
+Substitute them into @eq-sandwich-expand:
+
+$$
+\begin{aligned}
+q\mathbf vq^{-1}
+&=(a^2-b^2)\mathbf v
+  +2b^2(\mathbf u\cdot\mathbf v)\mathbf u
+  +2ab\,\mathbf u\times\mathbf v\\
+&=\cos(2h)\mathbf v
+  +\bigl(1-\cos(2h)\bigr)
+     (\mathbf u\cdot\mathbf v)\mathbf u
+  +\sin(2h)\,\mathbf u\times\mathbf v.
+\end{aligned}
+$$ {#eq-angle-doubled}
+
+This is Rodrigues' rotation formula with angle $2h$. Therefore, to rotate physical space through an angle $\theta$, the unit quaternion must be
+
+$$
+\boxed{
+q=\cos\frac{\theta}{2}
+ +\mathbf u\sin\frac{\theta}{2}
+}.
+$$ {#eq-axis-angle-quaternion}
+
+The half-angle is not an arbitrary encoding trick. It is forced by the sandwich. The left action and the inverse right action each contribute a turn of $h$, so the physical vector turns through $2h$.
+
+Replacing $2h$ by $\theta$ in @eq-angle-doubled gives the final formula:
+
+$$
+\boxed{
+q\mathbf vq^{-1}
+=\cos\theta\,\mathbf v
+ +(1-\cos\theta)(\mathbf u\cdot\mathbf v)\mathbf u
+ +\sin\theta\,\mathbf u\times\mathbf v
+}.
+$$ {#eq-rodrigues}
+
+Now the geometry is visible term by term. The component parallel to $\mathbf u$ stays fixed. The perpendicular component turns through $\theta$. The cross product chooses the right-handed direction.
+
+## A quarter-turn you can multiply by hand
+
+Rotate the vector $i$ through $90^\circ$ about the $k$-axis. Equation @eq-axis-angle-quaternion gives
+
+$$
+q=\cos\frac{\pi}{4}+k\sin\frac{\pi}{4}
+=\frac{1+k}{\sqrt2},
+\qquad
+q^{-1}=\frac{1-k}{\sqrt2}.
+$$
+
+Then
+
+$$
+\begin{aligned}
+qiq^{-1}
+&=\frac12(1+k)i(1-k)\\
+&=\frac12(i+j)(1-k)\\
+&=\frac12(i+j-ik-jk)\\
+&=\frac12(i+j+j-i)\\
+&=j.
+\end{aligned}
+$$
+
+The sandwich sends the $x$-axis to the $y$-axis, exactly as a right-handed quarter-turn about $k$ should.
+
+Notice how much sign information this small example checks. We used $q\mathbf vq^{-1}$, not $q^{-1}\mathbf vq$; the axis term had $+\sin(\theta/2)$, not a minus sign; and the quaternion basis obeyed $ki=j$, $ik=-j$. Reversing any one of those conventions reverses the rotation.
+
+## From the sandwich to a matrix
+
+Let
+
+$$
+q=w+xi+yj+zk,
+\qquad
+w^2+x^2+y^2+z^2=1.
+$$
+
+Applying @eq-sandwich to the basis vectors $i,j,k$ gives the active, right-handed rotation matrix for column vectors:
+
+$$
+R(q)=
+\begin{pmatrix}
+1-2(y^2+z^2) & 2(xy-wz) & 2(xz+wy)\\
+2(xy+wz) & 1-2(x^2+z^2) & 2(yz-wx)\\
+2(xz-wy) & 2(yz+wx) & 1-2(x^2+y^2)
+\end{pmatrix}.
+$$ {#eq-rotation-matrix}
+
+The convention in the previous sentence matters. Row vectors, passive coordinate changes, or the alternative sandwich $q^{-1}\mathbf vq$ transpose this matrix or reverse the sign of the angle. Many apparent disagreements between software libraries are convention disagreements rather than algebra errors.
+
+Here is a numerical checksum. It compares the sandwich, Rodrigues' formula, and @eq-rotation-matrix on a generic axis and vector.
+
+```{python}
+#| label: quaternion-rotation-check
+import numpy as np
+
+def qmul(p, q):
+    """Hamilton product for [scalar, x, y, z]."""
+    p0, pv = p[0], p[1:]
+    q0, qv = q[0], q[1:]
+    return np.r_[p0 * q0 - pv @ qv,
+                 p0 * qv + q0 * pv + np.cross(pv, qv)]
+
+def qconj(q):
+    return np.r_[q[0], -q[1:]]
+
+def qrotate(q, v):
+    return qmul(qmul(q, np.r_[0.0, v]), qconj(q))[1:]
+
+axis = np.array([1.0, -2.0, 3.0])
+axis /= np.linalg.norm(axis)
+theta = 1.1
+v = np.array([0.4, -0.7, 1.3])
+q = np.r_[np.cos(theta / 2), axis * np.sin(theta / 2)]
+
+by_sandwich = qrotate(q, v)
+by_rodrigues = (
+    np.cos(theta) * v
+    + (1 - np.cos(theta)) * (axis @ v) * axis
+    + np.sin(theta) * np.cross(axis, v)
+)
+
+w, x, y, z = q
+R = np.array([
+    [1 - 2*(y*y + z*z), 2*(x*y - w*z),     2*(x*z + w*y)],
+    [2*(x*y + w*z),     1 - 2*(x*x + z*z), 2*(y*z - w*x)],
+    [2*(x*z - w*y),     2*(y*z + w*x),     1 - 2*(x*x + y*y)],
+])
+by_matrix = R @ v
+
+assert np.allclose(by_sandwich, by_rodrigues, atol=1e-12)
+assert np.allclose(by_sandwich, by_matrix, atol=1e-12)
+assert np.allclose(qrotate(-q, v), by_sandwich, atol=1e-12)
+assert np.allclose(R.T @ R, np.eye(3), atol=1e-12)
+assert np.isclose(np.linalg.det(R), 1.0, atol=1e-12)
+
+print("maximum disagreement:",
+      max(np.max(np.abs(by_sandwich - by_rodrigues)),
+          np.max(np.abs(by_sandwich - by_matrix))))
+```
+
+The assertions test both the derivation and the implementation: all three descriptions agree, $R^\mathsf{T}R=I$, and $\det R=1$.
+
+## Every rotation has two names
+
+Let $S^3$ denote the group of unit quaternions and define
+
+$$
+\Phi:S^3\longrightarrow SO(3),
+\qquad
+\Phi(q)(\mathbf v)=q\mathbf vq^{-1}.
+$$ {#eq-cover-map}
+
+Three short arguments reveal the whole structure.
+
+**First, $\Phi$ respects multiplication.** For unit quaternions $p,q$,
+
+$$
+\begin{aligned}
+\Phi(pq)(\mathbf v)
+&=(pq)\mathbf v(pq)^{-1}\\
+&=p(q\mathbf vq^{-1})p^{-1}\\
+&=\Phi(p)\bigl(\Phi(q)(\mathbf v)\bigr).
+\end{aligned}
+$$
+
+Thus $\Phi(pq)=\Phi(p)\circ\Phi(q)$. Quaternion multiplication is composition of rotations.
+
+**Second, $\Phi$ is onto.** Every element of $SO(3)$ is a rotation through some angle $\theta$ about some unit axis $\mathbf u$. Equation @eq-axis-angle-quaternion constructs a unit quaternion that maps to it.
+
+**Third, the kernel contains exactly two points.** If $\Phi(q)$ is the identity, then $q\mathbf v=\mathbf vq$ for every pure vector $\mathbf v$. A quaternion that commutes with both $i$ and $j$ must have zero $i,j,k$ components, so it is real. The only real unit quaternions are $1$ and $-1$. Hence
+
+$$
+\ker\Phi=\{1,-1\}.
+$$
+
+It follows that
+
+$$
+\boxed{
+SO(3)\cong S^3/\{q\sim -q\}
+}
+$$ {#eq-quotient}
+
+and every spatial rotation has exactly two unit-quaternion representatives, $q$ and $-q$. Directly,
+
+$$
+(-q)\mathbf v(-q)^{-1}
+=(-q)\mathbf v(-q^{-1})
+=q\mathbf vq^{-1}.
+$$
+
+This is the **double cover**. The unit quaternions form a group isomorphic to $SU(2)$, also called $\operatorname{Spin}(3)$, and the map $SU(2)\to SO(3)$ is two-to-one [@conway2003; @baez2002octonions].
+
+Topologically, identifying antipodal points of $S^3$ produces real projective three-space:
+
+$$
+SO(3)\cong \mathbb{RP}^3.
+$$
+
+Since $S^3$ is simply connected, $\Phi$ is the universal covering map of $SO(3)$.
+
+## Why $2\pi$ is not enough upstairs
+
+Fix an axis $\mathbf u$ and let the physical rotation angle increase continuously:
+
+$$
+q(\theta)
+=\cos\frac{\theta}{2}
+ +\mathbf u\sin\frac{\theta}{2}.
+$$
+
+At the three revealing angles,
+
+$$
+q(0)=1,\qquad
+q(2\pi)=-1,\qquad
+q(4\pi)=1.
+$$
+
+After a $2\pi$ turn, every ordinary vector has returned to its starting position because $q=-1$ and $q=1$ represent the same element of $SO(3)$. On the quaternion sphere, however, the lifted path has travelled only from one point to its antipode. It is not closed. A second $2\pi$ turn completes the great circle and returns the quaternion to $1$.
+
+```{python}
+#| label: fig-double-cover
+#| fig-cap: "A fixed-axis rotation lifted to the unit-quaternion circle. One physical turn carries q from 1 to its antipode −1; a second turn is needed to close the path on S³."
+import numpy as np
+import matplotlib.pyplot as plt
+
+theta = np.linspace(0.0, 4.0 * np.pi, 800)
+scalar = np.cos(theta / 2.0)
+axis_component = np.sin(theta / 2.0)
+
+fig, ax = plt.subplots(figsize=(4.8, 4.8))
+mid = theta <= 2.0 * np.pi
+ax.plot(scalar[mid], axis_component[mid], lw=2.2,
+        label=r"$0\leq\theta\leq2\pi$")
+ax.plot(scalar[~mid], axis_component[~mid], lw=2.2,
+        label=r"$2\pi\leq\theta\leq4\pi$")
+ax.scatter([1, -1], [0, 0], color="black", zorder=4)
+ax.annotate(r"$q(0)=q(4\pi)=1$", (1, 0), xytext=(-105, 12),
+            textcoords="offset points")
+ax.annotate(r"$q(2\pi)=-1$", (-1, 0), xytext=(10, 12),
+            textcoords="offset points")
+ax.axhline(0, color="0.8", lw=0.8)
+ax.axvline(0, color="0.8", lw=0.8)
+ax.set_aspect("equal")
+ax.set_xlabel("scalar part")
+ax.set_ylabel(r"$\mathbf{u}$ component")
+ax.set_title("A 4π journey on the quaternion circle")
+ax.legend(loc="upper right", fontsize=8)
+plt.tight_layout()
+```
+
+This is the topology behind the belt trick: a $2\pi$ rotation loop in $SO(3)$ cannot be continuously shrunk to a point, while traversing it twice can. In group language,
+
+$$
+\pi_1(SO(3))\cong\mathbb Z/2\mathbb Z.
+$$
+
+It is also the mathematical doorway to spinors. A classical vector transforms through $SO(3)$, so it is unchanged after $2\pi$. A spin-$\tfrac12$ state transforms through a representation of $SU(2)$; the element $-1$ acts by a sign, so the state vector returns only after $4\pi$. A global sign by itself is not observable, but relative phase can make the distinction measurable. The double cover supplies the geometry; quantum mechanics supplies the representation and its physical interpretation [@baez2002octonions].
+
+## The sign ambiguity becomes an engineering problem
+
+The equation $\Phi(q)=\Phi(-q)$ is elegant topology, and it creates a practical trap. Suppose a camera orientation is converted from a matrix to a quaternion at each animation frame. Either sign is algebraically valid. If the conversion chooses signs inconsistently, a smooth sequence of physical orientations can jump between antipodal points on $S^3$.
+
+That matters when interpolating. For unit quaternions $q_0,q_1$, spherical linear interpolation follows a great-circle arc:
+
+$$
+\operatorname{slerp}(q_0,q_1;t)
+=\frac{\sin((1-t)\Omega)}{\sin\Omega}q_0
+ +\frac{\sin(t\Omega)}{\sin\Omega}q_1,
+\qquad
+\cos\Omega=q_0\cdot q_1.
+$$ {#eq-slerp}
+
+There are two arcs between antipodal equivalence classes. If $q_0\cdot q_1<0$, replacing $q_1$ by $-q_1$ makes the dot product positive and selects the shorter arc. This sign correction prevents an interpolator from taking an unnecessary long turn. When $\Omega$ is close to zero, the quotient in @eq-slerp should be evaluated by its limit, usually implemented as normalised linear interpolation, to avoid division by a tiny $\sin\Omega$. Shoemake's quaternion interpolation made this geometry standard in computer animation [@shoemake1985rotation].
+
+Three implementation rules follow:
+
+1. **Normalise.** The sandwich preserves length exactly only for a unit quaternion when $q^{-1}$ is implemented as the conjugate. Floating-point updates drift, so orientations should be renormalised.
+2. **State the convention.** This article uses Hamilton multiplication, active rotations of column vectors, and $q\mathbf vq^{-1}$. A library may use a different storage order or the inverse convention.
+3. **Choose signs continuously.** When processing a sequence, flip a quaternion if its dot product with the previous one is negative. The physical orientation is unchanged, but the lifted path on $S^3$ becomes continuous.
+
+The double cover is therefore not a decorative theorem added after the rotation formula. It explains a bug that appears whenever rotations are interpolated.
+
+## What to remember
+
+Left multiplication by a unit quaternion rotates four-dimensional quaternion space. The sandwich $q\mathbf vq^{-1}$ pairs that left action with an inverse right action, preserving the pure-vector subspace. Expanding the product gives Rodrigues' formula and forces the half-angle:
+
+$$
+q=\cos\frac{\theta}{2}
+ +\mathbf u\sin\frac{\theta}{2}.
+$$
+
+The map $q\mapsto(\mathbf v\mapsto q\mathbf vq^{-1})$ is a surjective homomorphism from $S^3$ to $SO(3)$ with kernel $\{\pm1\}$. Consequently, $q$ and $-q$ name the same spatial rotation. One $2\pi$ turn closes in $SO(3)$ but reaches the antipode in $S^3$; a $4\pi$ turn closes upstairs as well.
+
+The sandwich explains how quaternions rotate. The double cover explains why the representation works so well, why half-angles appear, and why signs must be handled with care.
+
+## How to cite
+
+> Terry (2026). *Quaternion Rotations: The Sandwich and the Double Cover*. Retrieved from `https://terryfxh.github.io/math-notes/posts/quaternion-rotations-the-sandwich-and-the-double-cover/`.
