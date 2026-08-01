@@ -2,114 +2,118 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/why-laplace-transforms-are-so-useful/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.725Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.849Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/uniform-convergence/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.725Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.849Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/the-group-law-on-an-elliptic-curve-drawn-by-hand/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.725Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.849Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/spectral-theorem/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.848Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/quaternions/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.848Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/prime-spirals/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.848Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/on-learning-mathematics/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.848Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/miller-rabin/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
   </url>
   <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/inverse-laplace-transform-and-the-fourier-boundary/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/gram-schmidt/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/discrete-log/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/ai-in-mathematics-proof-is-getting-cheap/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.723Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/about.html</loc>
-    <lastmod>2026-07-30T03:06:31.721Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/notes.html</loc>
-    <lastmod>2026-07-30T03:06:31.723Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/at-least-one-side-of-one-sheep/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/convolution-the-arithmetic-of-overlap/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
-  </url>
-  <url>
-    <loc>https://terryfxh.github.io/math-notes/posts/domino-tilings/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <loc>https://terryfxh.github.io/math-notes/posts/markov-chains-when-probability-becomes-motion/index.html</loc>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/hidden-mechanics-of-math/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/domino-tilings/index.html</loc>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/convolution-the-arithmetic-of-overlap/index.html</loc>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/at-least-one-side-of-one-sheep/index.html</loc>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/notes.html</loc>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/about.html</loc>
+    <lastmod>2026-08-01T13:51:22.844Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/index.html</loc>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/ai-in-mathematics-proof-is-getting-cheap/index.html</loc>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/index.html</loc>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/discrete-log/index.html</loc>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/gram-schmidt/index.html</loc>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
+  </url>
+  <url>
+    <loc>https://terryfxh.github.io/math-notes/posts/inverse-laplace-transform-and-the-fourier-boundary/index.html</loc>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/matrix-exponentials-when-a-matrix-becomes-motion/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.847Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/nullstellensatz/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.848Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/permanent-vs-determinant/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.848Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/quaternion-rotations-the-sandwich-and-the-double-cover/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.848Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/reconstructing-calculus/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.848Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/the-essence-of-linear-algebra/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.724Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.849Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/the-inscribed-rectangle-problem/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.725Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.849Z</lastmod>
   </url>
   <url>
     <loc>https://terryfxh.github.io/math-notes/posts/welcome/index.html</loc>
-    <lastmod>2026-07-30T03:06:31.725Z</lastmod>
+    <lastmod>2026-08-01T13:51:22.849Z</lastmod>
   </url>
 </urlset>

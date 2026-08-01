@@ -10,7 +10,669 @@
 <atom:link href="https://terryfxh.github.io/math-notes/notes.xml" rel="self" type="application/rss+xml"/>
 <description>Self-contained notes in pure and applied mathematics, derived from first principles with runnable code where it helps.</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Wed, 29 Jul 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 01 Aug 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Markov Chains: When Probability Becomes Motion</title>
+  <link>https://terryfxh.github.io/math-notes/posts/markov-chains-when-probability-becomes-motion/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p>“The essence of mathematics lies precisely in its freedom.”</p>
+<p><span class="attribution">Georg Cantor, <em>Grundlagen einer allgemeinen Mannigfaltigkeitslehre</em>, §8</span></p>
+</div>
+<p>A commuter reaches a junction. If she is at station <img src="https://latex.codecogs.com/png.latex?A">, tomorrow she remains there with probability <img src="https://latex.codecogs.com/png.latex?0.8"> and travels to station <img src="https://latex.codecogs.com/png.latex?B"> with probability <img src="https://latex.codecogs.com/png.latex?0.2">. If she is at <img src="https://latex.codecogs.com/png.latex?B">, she returns to <img src="https://latex.codecogs.com/png.latex?A"> with probability <img src="https://latex.codecogs.com/png.latex?0.3"> and stays at <img src="https://latex.codecogs.com/png.latex?B"> with probability <img src="https://latex.codecogs.com/png.latex?0.7">.</p>
+<p>Tomorrow is random. So is the day after that. An individual journey may look erratic for as long as we watch it.</p>
+<p>And yet the <em>distribution</em> of many such journeys moves with no randomness at all.</p>
+<p>This is the small surprise at the centre of a Markov chain. A local rule says how one state randomly hands its probability to the next. Once we stop tracking one traveller and instead track all the probability mass, that random rule becomes matrix multiplication. One step becomes a stochastic matrix. Many steps become its powers. Long-term behaviour becomes a question about fixed vectors and eigenvalues.</p>
+<p>The point is not that probability disappears. It changes level. The sample path remains random; the distribution of the current state moves deterministically.</p>
+<section id="two-boxes-passing-probability-mass" class="level2">
+<h2 class="anchored" data-anchor-id="two-boxes-passing-probability-mass">Two boxes passing probability mass</h2>
+<p>Write the one-step rule as</p>
+<p><span id="eq-example-transition"><img src="https://latex.codecogs.com/png.latex?%0AP=%0A%5Cbegin%7Bpmatrix%7D%0A0.8%20&amp;%200.2%5C%5C%0A0.3%20&amp;%200.7%0A%5Cend%7Bpmatrix%7D.%0A%5Ctag%7B1%7D"></span></p>
+<p>The rows describe where probability leaves from, and the columns describe where it arrives. Thus <img src="https://latex.codecogs.com/png.latex?P_%7BAB%7D=0.2"> means that a traveller currently at <img src="https://latex.codecogs.com/png.latex?A"> moves to <img src="https://latex.codecogs.com/png.latex?B"> with probability <img src="https://latex.codecogs.com/png.latex?0.2">.</p>
+<p>This article uses <strong>row vectors</strong> for distributions. If</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ap_n=%5Cbegin%7Bpmatrix%7D%0A%5CPr(X_n=A)%20&amp;%20%5CPr(X_n=B)%0A%5Cend%7Bpmatrix%7D,%0A"></p>
+<p>then one step of probability flow is</p>
+<p><span id="eq-distribution-update"><img src="https://latex.codecogs.com/png.latex?%0Ap_%7Bn+1%7D=p_nP.%0A%5Ctag%7B2%7D"></span></p>
+<p>That convention is not universal. Some books use column vectors and write <img src="https://latex.codecogs.com/png.latex?p_%7Bn+1%7D=Pp_n"> instead. Both are correct when used consistently. Here the row convention makes each row of <img src="https://latex.codecogs.com/png.latex?P"> read naturally as a conditional distribution.</p>
+<p>Suppose every traveller begins at <img src="https://latex.codecogs.com/png.latex?A">, so <img src="https://latex.codecogs.com/png.latex?p_0=(1,0)">. After one step,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ap_1=(1,0)P=(0.8,0.2).%0A"></p>
+<p>After another step,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0Ap_2%0A&amp;=(0.8,0.2)P%5C%5C%0A&amp;=%5Cbigl(0.8%5Ccdot0.8+0.2%5Ccdot0.3,%0A%20%20%20%20%20%20%20%200.8%5Ccdot0.2+0.2%5Ccdot0.7%5Cbigr)%5C%5C%0A&amp;=(0.70,0.30).%0A%5Cend%7Baligned%7D%0A"></p>
+<p>The first coordinate contains two mutually exclusive routes to <img src="https://latex.codecogs.com/png.latex?A">: remain at <img src="https://latex.codecogs.com/png.latex?A"> twice, or move from <img src="https://latex.codecogs.com/png.latex?A"> to <img src="https://latex.codecogs.com/png.latex?B"> and then return. Matrix multiplication is doing the bookkeeping required by the law of total probability. It multiplies probabilities along a route and adds across alternative routes.</p>
+<p>This is the same structural move that appeared in <a href="../domino-tilings/"><em>Counting Domino Tilings: When Dynamic Programming Is a Matrix</em></a>. There, a matrix power counted compatible paths through boundary states. Here, a matrix power weighs paths through probabilistic states. The algebra is the same because both problems ask us to sum over every possible intermediate state.</p>
+</section>
+<section id="what-makes-the-chain-markov" class="level2">
+<h2 class="anchored" data-anchor-id="what-makes-the-chain-markov">What makes the chain Markov</h2>
+<p>Let <img src="https://latex.codecogs.com/png.latex?X_0,X_1,X_2,%5Cldots"> be random variables taking values in a finite state space <img src="https://latex.codecogs.com/png.latex?S">. The process is a <strong>time-homogeneous Markov chain</strong> if</p>
+<p><span id="eq-markov-property"><img src="https://latex.codecogs.com/png.latex?%0A%5CPr(X_%7Bn+1%7D=j%5Cmid%20X_n=i,X_%7Bn-1%7D=i_%7Bn-1%7D,%5Cldots,X_0=i_0)%0A=%5CPr(X_%7Bn+1%7D=j%5Cmid%20X_n=i)%0A=P_%7Bij%7D%0A%5Ctag%7B3%7D"></span></p>
+<p>whenever the conditional probability is defined. The first equality is the Markov property: once the present state is known, the earlier path supplies no additional information about the next state. The second equality is time homogeneity: the same transition rule <img src="https://latex.codecogs.com/png.latex?P"> is used at every step.</p>
+<p>This is a statement about a model, not a declaration that the real world has no memory. If yesterday’s weather affects tomorrow even after today’s weather is known, then today’s weather alone is an incomplete state. Sometimes the repair is to enlarge the state to include more history. Sometimes no manageable Markov model is adequate. The property must be justified by the chosen state description, not assumed because matrices are convenient.</p>
+<p>For each <img src="https://latex.codecogs.com/png.latex?i,j%5Cin%20S">, define</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AP_%7Bij%7D=%5CPr(X_%7Bn+1%7D=j%5Cmid%20X_n=i).%0A"></p>
+<p>Every entry is non-negative, and every row sums to one:</p>
+<p><span id="eq-row-stochastic"><img src="https://latex.codecogs.com/png.latex?%0AP_%7Bij%7D%5Cgeq0,%0A%5Cqquad%0A%5Csum_%7Bj%5Cin%20S%7DP_%7Bij%7D=1.%0A%5Ctag%7B4%7D"></span></p>
+<p>A matrix satisfying Equation&nbsp;4 is called <strong>row-stochastic</strong>. Each row is itself a probability distribution. More importantly, it turns every probability distribution into another one.</p>
+<p>To see this, let <img src="https://latex.codecogs.com/png.latex?p"> have non-negative entries summing to one. Then</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A(pP)_j=%5Csum_i%20p_iP_%7Bij%7D%5Cgeq0,%0A"></p>
+<p>and</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Csum_j(pP)_j%0A=%5Csum_j%5Csum_i%20p_iP_%7Bij%7D%0A=%5Csum_i%20p_i%5Csum_jP_%7Bij%7D%0A=%5Csum_i%20p_i%0A=1.%0A"></p>
+<p>So <img src="https://latex.codecogs.com/png.latex?P"> maps the probability simplex to itself. In two states, that simplex is only the line segment joining <img src="https://latex.codecogs.com/png.latex?(1,0)"> to <img src="https://latex.codecogs.com/png.latex?(0,1)">. In three states it is a triangle. In <img src="https://latex.codecogs.com/png.latex?m"> states it is an <img src="https://latex.codecogs.com/png.latex?(m-1)">-dimensional simplex. A Markov chain is a linear motion constrained to that geometric region.</p>
+</section>
+<section id="why-powers-of-the-matrix-mean-elapsed-time" class="level2">
+<h2 class="anchored" data-anchor-id="why-powers-of-the-matrix-mean-elapsed-time">Why powers of the matrix mean elapsed time</h2>
+<p>The entry <img src="https://latex.codecogs.com/png.latex?P_%7Bij%7D"> is a one-step probability. What is the probability of moving from <img src="https://latex.codecogs.com/png.latex?i"> to <img src="https://latex.codecogs.com/png.latex?j"> in two steps? We do not know the intermediate state, so we sum over it:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5CPr(X_2=j%5Cmid%20X_0=i)%0A=%5Csum_%7Bk%5Cin%20S%7D%0A%5CPr(X_2=j%5Cmid%20X_1=k,X_0=i)%0A%5CPr(X_1=k%5Cmid%20X_0=i).%0A"></p>
+<p>By the Markov property, the first conditional probability on the right is <img src="https://latex.codecogs.com/png.latex?P_%7Bkj%7D">, while the second is <img src="https://latex.codecogs.com/png.latex?P_%7Bik%7D">. Therefore</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5CPr(X_2=j%5Cmid%20X_0=i)%0A=%5Csum_kP_%7Bik%7DP_%7Bkj%7D%0A=(P%5E2)_%7Bij%7D.%0A"></p>
+<p>The same argument repeats. Suppose <img src="https://latex.codecogs.com/png.latex?(P%5En)_%7Bik%7D"> is the probability of moving from <img src="https://latex.codecogs.com/png.latex?i"> to <img src="https://latex.codecogs.com/png.latex?k"> in <img src="https://latex.codecogs.com/png.latex?n"> steps. Conditioning on the state at time <img src="https://latex.codecogs.com/png.latex?n"> gives</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5CPr(X_%7Bn+1%7D=j%5Cmid%20X_0=i)%0A=%5Csum_k(P%5En)_%7Bik%7DP_%7Bkj%7D%0A=(P%5E%7Bn+1%7D)_%7Bij%7D.%0A"></p>
+<p>By induction,</p>
+<p><span id="eq-n-step-transition"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7B%5CPr(X_n=j%5Cmid%20X_0=i)=(P%5En)_%7Bij%7D.%7D%0A%5Ctag%7B5%7D"></span></p>
+<p>Equivalently, <img src="https://latex.codecogs.com/png.latex?P%5E%7Bm+n%7D=P%5EmP%5En">, the discrete-time Chapman–Kolmogorov law. If an initial distribution is <img src="https://latex.codecogs.com/png.latex?p_0">, then summing over the unknown starting state gives</p>
+<p><span id="eq-distribution-power"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7Bp_n=p_0P%5En.%7D%0A%5Ctag%7B6%7D"></span></p>
+<p>The matrix <img src="https://latex.codecogs.com/png.latex?P"> contains the local rule. Its power <img src="https://latex.codecogs.com/png.latex?P%5En"> contains every possible <img src="https://latex.codecogs.com/png.latex?n">-step route. Time has become an exponent.</p>
+<p>That sentence should sound familiar. In <a href="../matrix-exponentials-when-a-matrix-becomes-motion/"><em>Matrix Exponentials: When a Matrix Becomes Motion</em></a>, <img src="https://latex.codecogs.com/png.latex?e%5E%7BtA%7D"> accumulates infinitesimal motion into continuous time. Here <img src="https://latex.codecogs.com/png.latex?P%5En"> accumulates one-step motion into discrete time. A later article will connect these pictures through continuous-time Markov chains; for now, the integer power is the whole clock.</p>
+</section>
+<section id="a-distribution-that-does-not-move" class="level2">
+<h2 class="anchored" data-anchor-id="a-distribution-that-does-not-move">A distribution that does not move</h2>
+<p>Continue iterating Equation&nbsp;1. The probability of being at <img src="https://latex.codecogs.com/png.latex?A"> drops from <img src="https://latex.codecogs.com/png.latex?1"> to <img src="https://latex.codecogs.com/png.latex?0.8">, then <img src="https://latex.codecogs.com/png.latex?0.70">, then <img src="https://latex.codecogs.com/png.latex?0.65">. The changes become smaller. What distribution, if any, would be unchanged by one more step?</p>
+<p>A probability row vector <img src="https://latex.codecogs.com/png.latex?%5Cpi"> is <strong>stationary</strong> if</p>
+<p><span id="eq-stationary-definition"><img src="https://latex.codecogs.com/png.latex?%0A%5Cpi%20P=%5Cpi.%0A%5Ctag%7B7%7D"></span></p>
+<p>For our two-state chain, write <img src="https://latex.codecogs.com/png.latex?%5Cpi=(a,1-a)">. The first coordinate of Equation&nbsp;7 gives</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Aa=0.8a+0.3(1-a).%0A"></p>
+<p>Hence <img src="https://latex.codecogs.com/png.latex?0.5a=0.3">, so</p>
+<p><span id="eq-example-stationary"><img src="https://latex.codecogs.com/png.latex?%0A%5Cpi=(0.6,0.4).%0A%5Ctag%7B8%7D"></span></p>
+<p>A common verbal trap is to call this an “equilibrium” and imagine that nothing is moving. In fact, probability is moving in both directions. At stationarity, the mass flowing from <img src="https://latex.codecogs.com/png.latex?A"> to <img src="https://latex.codecogs.com/png.latex?B"> is</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A0.6%5Ccdot0.2=0.12,%0A"></p>
+<p>while the mass flowing from <img src="https://latex.codecogs.com/png.latex?B"> to <img src="https://latex.codecogs.com/png.latex?A"> is</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A0.4%5Ccdot0.3=0.12.%0A"></p>
+<p>The flows balance. Stationary does not mean frozen; it means unchanged after all incoming and outgoing flows have been combined.</p>
+<p>There is also a precise linear-algebraic reading. Equation Equation&nbsp;7 says that <img src="https://latex.codecogs.com/png.latex?%5Cpi"> is a <strong>left eigenvector</strong> of <img src="https://latex.codecogs.com/png.latex?P"> with eigenvalue <img src="https://latex.codecogs.com/png.latex?1">, normalised so that its entries sum to one. The row sums of <img src="https://latex.codecogs.com/png.latex?P"> also imply <img src="https://latex.codecogs.com/png.latex?P%5Cmathbf%7B1%7D=%5Cmathbf%7B1%7D"> for the column vector of ones. Thus <img src="https://latex.codecogs.com/png.latex?1"> is always an eigenvalue of a finite stochastic matrix. Stationary distributions, which are non-negative normalised left eigenvectors, need not be unique without additional hypotheses.</p>
+</section>
+<section id="the-exact-motion-in-the-two-state-example" class="level2">
+<h2 class="anchored" data-anchor-id="the-exact-motion-in-the-two-state-example">The exact motion in the two-state example</h2>
+<p>The stationary vector tells us where the distribution might settle, but not whether it gets there. For this example we can answer completely.</p>
+<p>Subtract the stationary distribution from the current one. If <img src="https://latex.codecogs.com/png.latex?p_n=(x_n,1-x_n)">, then</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0Ax_%7Bn+1%7D%0A&amp;=0.8x_n+0.3(1-x_n)%5C%5C%0A&amp;=0.3+0.5x_n.%0A%5Cend%7Baligned%7D%0A"></p>
+<p>Since the stationary first coordinate <img src="https://latex.codecogs.com/png.latex?0.6"> satisfies <img src="https://latex.codecogs.com/png.latex?0.6=0.3+0.5(0.6)">, subtraction gives</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ax_%7Bn+1%7D-0.6=0.5(x_n-0.6).%0A"></p>
+<p>Starting from <img src="https://latex.codecogs.com/png.latex?x_0=1">, repeated substitution yields</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ax_n-0.6=0.4%5Cleft(%5Cfrac12%5Cright)%5En.%0A"></p>
+<p>Therefore</p>
+<p><span id="eq-exact-two-state"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7B%0Ap_n=(0.6,0.4)+(0.4,-0.4)%5Cleft(%5Cfrac12%5Cright)%5En.%0A%7D%0A%5Ctag%7B9%7D"></span></p>
+<p>The error does not merely tend to zero. It is halved at every step. The vector <img src="https://latex.codecogs.com/png.latex?(0.4,-0.4)"> describes a redistribution of mass whose total is zero, and the factor <img src="https://latex.codecogs.com/png.latex?1/2"> tells us how that imbalance contracts.</p>
+<p>This is the eigenvector picture from <a href="../the-essence-of-linear-algebra/"><em>The Essence of Linear Algebra</em></a> in a probabilistic setting. One direction, the stationary direction, survives with eigenvalue <img src="https://latex.codecogs.com/png.latex?1">. The other direction, which transfers mass between the two states without changing the total, shrinks with eigenvalue <img src="https://latex.codecogs.com/png.latex?1/2">. Matrix powers turn those eigenvalues into <img src="https://latex.codecogs.com/png.latex?1%5En"> and <img src="https://latex.codecogs.com/png.latex?(1/2)%5En">.</p>
+<p>There is a useful general bound hiding nearby. If <img src="https://latex.codecogs.com/png.latex?Pv=%5Clambda%20v"> for a non-zero complex column vector <img src="https://latex.codecogs.com/png.latex?v">, choose an index <img src="https://latex.codecogs.com/png.latex?i"> for which <img src="https://latex.codecogs.com/png.latex?%7Cv_i%7C=%5Cmax_j%7Cv_j%7C">. Then</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%7C%5Clambda%7C%5C,%7Cv_i%7C%0A=%7C(Pv)_i%7C%0A=%5Cleft%7C%5Csum_jP_%7Bij%7Dv_j%5Cright%7C%0A%5Cleq%5Csum_jP_%7Bij%7D%7Cv_j%7C%0A%5Cleq%20%7Cv_i%7C%5Csum_jP_%7Bij%7D%0A=%7Cv_i%7C.%0A"></p>
+<p>Since <img src="https://latex.codecogs.com/png.latex?%7Cv_i%7C%3E0">, every eigenvalue of a stochastic matrix satisfies</p>
+<p><span id="eq-eigenvalue-bound"><img src="https://latex.codecogs.com/png.latex?%0A%7C%5Clambda%7C%5Cleq1.%0A%5Ctag%7B10%7D"></span></p>
+<p>No eigenvalue lies outside the unit circle. But this bound alone does not say that every non-stationary mode shrinks. Other eigenvalues may also have modulus <img src="https://latex.codecogs.com/png.latex?1">. That is exactly where convergence can fail.</p>
+</section>
+<section id="every-two-state-chain-in-one-formula" class="level2">
+<h2 class="anchored" data-anchor-id="every-two-state-chain-in-one-formula">Every two-state chain in one formula</h2>
+<p>The numerical example is not a lucky choice. We can solve the whole family of two-state chains with the same piece of algebra. Write</p>
+<p><span id="eq-general-two-state"><img src="https://latex.codecogs.com/png.latex?%0AP=%0A%5Cbegin%7Bpmatrix%7D%0A1-a&amp;a%5C%5C%0Ab&amp;1-b%0A%5Cend%7Bpmatrix%7D,%0A%5Cqquad%200%5Cleq%20a,b%5Cleq1.%0A%5Ctag%7B11%7D"></span></p>
+<p>Here <img src="https://latex.codecogs.com/png.latex?a"> is the probability of leaving <img src="https://latex.codecogs.com/png.latex?A"> for <img src="https://latex.codecogs.com/png.latex?B">, while <img src="https://latex.codecogs.com/png.latex?b"> is the probability of returning. If <img src="https://latex.codecogs.com/png.latex?a+b%3E0">, solving <img src="https://latex.codecogs.com/png.latex?%5Cpi%20P=%5Cpi"> gives</p>
+<p><span id="eq-general-two-state-stationary"><img src="https://latex.codecogs.com/png.latex?%0A%5Cpi=%0A%5Cleft(%5Cfrac%7Bb%7D%7Ba+b%7D,%5Cfrac%7Ba%7D%7Ba+b%7D%5Cright).%0A%5Ctag%7B12%7D"></span></p>
+<p>Now let <img src="https://latex.codecogs.com/png.latex?p_n=(x_n,1-x_n)">. Its first coordinate evolves by</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ax_%7Bn+1%7D=(1-a)x_n+b(1-x_n)=b+(1-a-b)x_n.%0A"></p>
+<p>The stationary coordinate <img src="https://latex.codecogs.com/png.latex?b/(a+b)"> satisfies the same affine equation, so subtracting it gives</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ax_%7Bn+1%7D-%5Cfrac%7Bb%7D%7Ba+b%7D%0A=(1-a-b)%5Cleft(x_n-%5Cfrac%7Bb%7D%7Ba+b%7D%5Cright).%0A"></p>
+<p>Repeated application produces the exact law</p>
+<p><span id="eq-general-two-state-solution"><img src="https://latex.codecogs.com/png.latex?%0A%5Cboxed%7B%0Ap_n=%5Cpi+(1-a-b)%5En(p_0-%5Cpi).%0A%7D%0A%5Ctag%7B13%7D"></span></p>
+<p>Strictly speaking, Equation&nbsp;13 treats row vectors on the one-dimensional probability simplex: both <img src="https://latex.codecogs.com/png.latex?p_0-%5Cpi"> and its future versions have coordinates summing to zero. This is why a single scalar multiplier is enough. The two eigenvalues of <img src="https://latex.codecogs.com/png.latex?P"> are <img src="https://latex.codecogs.com/png.latex?1"> and <img src="https://latex.codecogs.com/png.latex?1-a-b">.</p>
+<p>The sign and magnitude of that second eigenvalue tell the entire story. If <img src="https://latex.codecogs.com/png.latex?0%3Ca+b%3C2">, then <img src="https://latex.codecogs.com/png.latex?%7C1-a-b%7C%3C1">, and the distribution converges to <img src="https://latex.codecogs.com/png.latex?%5Cpi">. When <img src="https://latex.codecogs.com/png.latex?a+b%3C1">, the error approaches zero without changing sign. When <img src="https://latex.codecogs.com/png.latex?a+b%3E1">, it alternates across stationarity while shrinking. The motion can wobble and still converge.</p>
+<p>The endpoints expose the failures. If <img src="https://latex.codecogs.com/png.latex?a=b=0">, then <img src="https://latex.codecogs.com/png.latex?P=I"> and the expression for <img src="https://latex.codecogs.com/png.latex?%5Cpi"> is undefined because there is no unique stationary distribution. If <img src="https://latex.codecogs.com/png.latex?a=b=1">, then <img src="https://latex.codecogs.com/png.latex?1-a-b=-1"> and the chain flips forever. These are not separate curiosities added after the theory. They are precisely the two places where the contracting factor stops contracting.</p>
+<p>There are also one-way cases. If <img src="https://latex.codecogs.com/png.latex?a=0"> and <img src="https://latex.codecogs.com/png.latex?b%3E0">, state <img src="https://latex.codecogs.com/png.latex?A"> is absorbing and every initial distribution converges to <img src="https://latex.codecogs.com/png.latex?(1,0)">. The chain converges even though it is not irreducible. This does not contradict the theorem below: irreducibility and aperiodicity are sufficient conditions for convergence to a common positive stationary law, not necessary conditions for every particular finite chain to have some limit.</p>
+</section>
+<section id="when-forgetting-is-actually-guaranteed" class="level2">
+<h2 class="anchored" data-anchor-id="when-forgetting-is-actually-guaranteed">When forgetting is actually guaranteed</h2>
+<p>Two structural obstructions matter.</p>
+<p>A finite chain is <strong>irreducible</strong> if every state can reach every other state in some number of steps. Formally, for all <img src="https://latex.codecogs.com/png.latex?i,j"> there exists <img src="https://latex.codecogs.com/png.latex?n%5Cgeq0"> with <img src="https://latex.codecogs.com/png.latex?(P%5En)_%7Bij%7D%3E0">.</p>
+<p>The <strong>period</strong> of a state <img src="https://latex.codecogs.com/png.latex?i"> is</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cgcd%5C%7Bn%5Cgeq1:(P%5En)_%7Bii%7D%3E0%5C%7D.%0A"></p>
+<p>An irreducible chain has the same period at every state. It is <strong>aperiodic</strong> if that common period is <img src="https://latex.codecogs.com/png.latex?1">.</p>
+<p>For finite chains, these conditions give the standard convergence theorem:</p>
+<div id="thm-finite-convergence" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Finite-state convergence theorem)</strong></span> Let <img src="https://latex.codecogs.com/png.latex?P"> be the transition matrix of a finite, irreducible, aperiodic Markov chain. Then there is a unique stationary distribution <img src="https://latex.codecogs.com/png.latex?%5Cpi">, every entry of <img src="https://latex.codecogs.com/png.latex?%5Cpi"> is positive, and for every initial distribution <img src="https://latex.codecogs.com/png.latex?p_0">,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ap_0P%5En%5Clongrightarrow%5Cpi%0A%5Cqquad%5Ctext%7Bas%20%7Dn%5Cto%5Cinfty.%0A"></p>
+</div>
+<p>This theorem is proved in standard treatments of finite Markov chains; see Corollary 1.17 and Theorem 4.9 of Levin and Peres <span class="citation" data-cites="levinperes2017markov">[1]</span>. The full proof requires more machinery than our two-state calculation, so it is important not to pretend that the example proves the theorem. What the example does reveal is its mechanism: one direction preserves total probability, while the remaining modes must decay if the chain is to forget its start.</p>
+<p>The next article devoted to mixing will make the word “converges” quantitative. It will also impose reversibility when using clean spectral-gap bounds. For now, the theorem above is qualitative and does <strong>not</strong> assume reversibility.</p>
+</section>
+<section id="two-small-chains-that-refuse-to-forget" class="level2">
+<h2 class="anchored" data-anchor-id="two-small-chains-that-refuse-to-forget">Two small chains that refuse to forget</h2>
+<p>The hypotheses are not decorative.</p>
+<p>First take</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AP=I=%0A%5Cbegin%7Bpmatrix%7D1&amp;0%5C%5C0&amp;1%5Cend%7Bpmatrix%7D.%0A"></p>
+<p>Every distribution satisfies <img src="https://latex.codecogs.com/png.latex?pP=p">, so every distribution is stationary. The chain is reducible: neither state can reach the other. It remembers its initial state perfectly. Existence of a stationary distribution therefore does not imply uniqueness or convergence to a common law.</p>
+<p>Now take the deterministic flip</p>
+<p><span id="eq-periodic-flip"><img src="https://latex.codecogs.com/png.latex?%0AP=%0A%5Cbegin%7Bpmatrix%7D0&amp;1%5C%5C1&amp;0%5Cend%7Bpmatrix%7D.%0A%5Ctag%7B14%7D"></span></p>
+<p>This chain is irreducible, and its unique stationary distribution is <img src="https://latex.codecogs.com/png.latex?(1/2,1/2)">. But starting from <img src="https://latex.codecogs.com/png.latex?(1,0)"> gives</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A(1,0)P%5E%7B2n%7D=(1,0),%0A%5Cqquad%0A(1,0)P%5E%7B2n+1%7D=(0,1).%0A"></p>
+<p>The distribution oscillates forever. The return times are all even, so the period is <img src="https://latex.codecogs.com/png.latex?2">. Algebraically, the non-stationary eigenvalue is <img src="https://latex.codecogs.com/png.latex?-1">: its modulus does not shrink, while its sign alternates. A unique stationary distribution is still not enough for pointwise convergence.</p>
+<p>These examples locate the two ways memory can survive. Reducibility traps mass in separate regions. Periodicity keeps mass moving on a rigid clock.</p>
+</section>
+<section id="let-the-computer-check-the-arithmetic" class="level2">
+<h2 class="anchored" data-anchor-id="let-the-computer-check-the-arithmetic">Let the computer check the arithmetic</h2>
+<p>The next code cell verifies the exact formula Equation&nbsp;9 against direct matrix powers. It also checks the stochastic constraints, stationarity, eigenvalues, and the periodic counterexample. These assertions are a checksum for the calculations; they do not replace the proofs.</p>
+<div id="cell-fig-markov-mass" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb1-3"></span>
+<span id="cb1-4">P <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([[<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>],</span>
+<span id="cb1-5">              [<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.3</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>]])</span>
+<span id="cb1-6">p0 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>])</span>
+<span id="cb1-7">pi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.4</span>])</span>
+<span id="cb1-8">steps <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.arange(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>)</span>
+<span id="cb1-9"></span>
+<span id="cb1-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Structural and analytic checks.</span></span>
+<span id="cb1-11"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">all</span>(P <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb1-12"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.allclose(P.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(axis<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>)</span>
+<span id="cb1-13"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.allclose(pi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> P, pi)</span>
+<span id="cb1-14"></span>
+<span id="cb1-15">exact <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([p0 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> np.linalg.matrix_power(P, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(n)) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> n <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> steps])</span>
+<span id="cb1-16">closed_form <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([</span>
+<span id="cb1-17">    pi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> np.array([<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.4</span>, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.4</span>]) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(n))</span>
+<span id="cb1-18">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> n <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> steps</span>
+<span id="cb1-19">])</span>
+<span id="cb1-20"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.allclose(exact, closed_form, atol<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-13</span>)</span>
+<span id="cb1-21"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.allclose(np.sort(np.linalg.eigvals(P)), np.array([<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>]))</span>
+<span id="cb1-22"></span>
+<span id="cb1-23"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># A second, stochastic calculation: simulate independent sample paths.</span></span>
+<span id="cb1-24">rng <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.random.default_rng(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20260731</span>)</span>
+<span id="cb1-25">n_paths <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">200_000</span></span>
+<span id="cb1-26">states <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.zeros(n_paths, dtype<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>)</span>
+<span id="cb1-27">empirical <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [np.bincount(states, minlength<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> n_paths]</span>
+<span id="cb1-28"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> steps[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:]:</span>
+<span id="cb1-29">    draws <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> rng.random(n_paths)</span>
+<span id="cb1-30">    states <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.where(</span>
+<span id="cb1-31">        states <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,</span>
+<span id="cb1-32">        (draws <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> P[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]).astype(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>),</span>
+<span id="cb1-33">        (draws <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> P[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]).astype(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>),</span>
+<span id="cb1-34">    )</span>
+<span id="cb1-35">    empirical.append(np.bincount(states, minlength<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> n_paths)</span>
+<span id="cb1-36">empirical <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.asarray(empirical)</span>
+<span id="cb1-37"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>(np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">abs</span>(empirical <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> exact)) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.005</span></span>
+<span id="cb1-38"></span>
+<span id="cb1-39"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># The irreducible periodic flip has a stationary law but does not converge.</span></span>
+<span id="cb1-40">flip <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([[<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>], [<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>]])</span>
+<span id="cb1-41">flip_law <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([p0 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> np.linalg.matrix_power(flip, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(n)) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> n <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> steps])</span>
+<span id="cb1-42"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.allclose(np.array([<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>]) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> flip, np.array([<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>]))</span>
+<span id="cb1-43"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.allclose(flip_law[::<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], np.tile([<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>], (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)))</span>
+<span id="cb1-44"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> np.allclose(flip_law[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>::<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], np.tile([<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>], (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)))</span>
+<span id="cb1-45"></span>
+<span id="cb1-46">fig, ax <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> plt.subplots(figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8.2</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.7</span>))</span>
+<span id="cb1-47">ax.plot(steps, exact[:, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"o-"</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#1565c0"</span>, label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Exact $</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">Pr(X_n=A)$"</span>)</span>
+<span id="cb1-48">ax.plot(steps, exact[:, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"s--"</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#c62828"</span>, label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Exact $</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">Pr(X_n=B)$"</span>)</span>
+<span id="cb1-49">ax.scatter(steps, empirical[:, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], marker<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"x"</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#64b5f6"</span>,</span>
+<span id="cb1-50">           label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Simulation: state $A$"</span>)</span>
+<span id="cb1-51">ax.scatter(steps, empirical[:, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], marker<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"+"</span>, color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#ef9a9a"</span>,</span>
+<span id="cb1-52">           label<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Simulation: state $B$"</span>)</span>
+<span id="cb1-53">ax.axhline(pi[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#1565c0"</span>, linestyle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--"</span>, alpha<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.55</span>)</span>
+<span id="cb1-54">ax.axhline(pi[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#c62828"</span>, linestyle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--"</span>, alpha<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.55</span>)</span>
+<span id="cb1-55">ax.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(xlabel<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Step $n$"</span>, ylabel<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Probability"</span>, ylim<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.03</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.03</span>))</span>
+<span id="cb1-56">ax.set_xticks(steps)</span>
+<span id="cb1-57">ax.grid(alpha<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>)</span>
+<span id="cb1-58">ax.legend(ncol<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, fontsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span>)</span>
+<span id="cb1-59">plt.show()</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-markov-mass" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-markov-mass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://terryfxh.github.io/math-notes/posts/markov-chains-when-probability-becomes-motion/index_files/figure-html/fig-markov-mass-output-1.png" width="679" height="408" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-markov-mass-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Exact probability mass in the two-state chain, with a fixed-seed Monte Carlo check.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The crosses in the figure are simulation estimates. They fluctuate because only finitely many paths were sampled. The solid lines come from matrix powers and are exact up to floating-point arithmetic. Increasing <code>n_paths</code> reduces sampling error but does not change the underlying distribution. For each plotted proportion, the standard error is at most <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B0.25/200%7B,%7D000%7D%5Capprox0.00112">, so the code’s <img src="https://latex.codecogs.com/png.latex?0.005"> checksum is deliberately conservative. Numerical round-off, Monte Carlo sampling error, and model error are three different things; this experiment contains the first two, while any application to real commuters would also contain the third.</p>
+</section>
+<section id="observables-move-through-the-same-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="observables-move-through-the-same-matrix">Observables move through the same matrix</h2>
+<p>Sometimes we do not need the whole distribution. Suppose a function <img src="https://latex.codecogs.com/png.latex?f:S%5Cto%5Cmathbb%7BR%7D"> assigns a value to each state. Treat its values as a column vector. Then</p>
+<p><span id="eq-observable-expectation"><img src="https://latex.codecogs.com/png.latex?%0A%5Cmathbb%7BE%7D%5Bf(X_n)%5D%0A=%5Csum_j%5CPr(X_n=j)f(j)%0A=p_n%20f%0A=p_0P%5En%20f.%0A%5Ctag%7B15%7D"></span></p>
+<p>The distribution moves forward by multiplying on the right. The observable can be moved backwards by applying <img src="https://latex.codecogs.com/png.latex?P"> to the column vector <img src="https://latex.codecogs.com/png.latex?f">:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A(Pf)(i)=%5Csum_jP_%7Bij%7Df(j)%0A=%5Cmathbb%7BE%7D%5Bf(X_%7Bn+1%7D)%5Cmid%20X_n=i%5D.%0A"></p>
+<p>These are two views of the same calculation. One pushes probability mass through the system; the other replaces each state’s value by its conditional next-step average. This duality becomes useful in random walks, dynamic programming, potential theory, and stochastic control.</p>
+<p>It also shows why choosing the state matters. The matrix does not discover the right variables for us. It only propagates the rule we encoded. If the state omits a relevant memory, if the transition probabilities change over time, or if they were estimated poorly, then <img src="https://latex.codecogs.com/png.latex?p_0P%5En"> may be calculated perfectly and still describe the wrong world.</p>
+</section>
+<section id="where-the-model-earns-its-keep" class="level2">
+<h2 class="anchored" data-anchor-id="where-the-model-earns-its-keep">Where the model earns its keep</h2>
+<p>Finite Markov chains appear in algorithms, card shuffling, Markov chain Monte Carlo, statistical physics, networks, and models of dynamical processes <span class="citation" data-cites="levinperes2017markov">[1]</span>. The shared mathematics is not “everything is random”. It is more specific: after choosing a state that contains the relevant present information, the one-step conditional law can be applied repeatedly.</p>
+<p>That repeated application lets us ask different kinds of questions:</p>
+<ol type="1">
+<li><strong>Prediction:</strong> what is the distribution after <img src="https://latex.codecogs.com/png.latex?n"> steps?</li>
+<li><strong>Long-run structure:</strong> is there a stationary distribution, and is it unique?</li>
+<li><strong>Forgetting:</strong> do different initial laws become close, and how quickly?</li>
+<li><strong>Accumulated quantities:</strong> what rewards, costs, or visits are expected along the path?</li>
+</ol>
+<p>This article has answered the first question and opened the second and third. It has not given a universal licence to replace dependence by a Markov chain. Nor has it shown that every chain converges. The finite-state convergence theorem needs irreducibility and aperiodicity; quantitative spectral statements will need their own assumptions. Infinite state spaces introduce further issues such as recurrence and positive recurrence.</p>
+<p>The matrix is powerful because it makes assumptions visible. Its rows declare exactly what the next step is allowed to remember.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>A Markov chain begins as a random rule for one state, but its distribution obeys a deterministic linear law:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ap_%7Bn+1%7D=p_nP,%0A%5Cqquad%0Ap_n=p_0P%5En.%0A"></p>
+<p>Matrix multiplication works because it multiplies probabilities along a route and sums over possible intermediate states. A stationary distribution is a normalised left eigenvector with eigenvalue <img src="https://latex.codecogs.com/png.latex?1">; it represents balanced flow, not an absence of motion.</p>
+<p>For the two-state example,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Ap_n=(0.6,0.4)+(0.4,-0.4)2%5E%7B-n%7D,%0A"></p>
+<p>so the initial imbalance is halved at each step. In general, finite, irreducible, aperiodic chains converge to a unique stationary distribution. Remove irreducibility and mass can remain trapped. Remove aperiodicity and it can oscillate forever.</p>
+<p>The individual path is random. The probability mass has a geometry, a linear motion, and sometimes a destination.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<p>Huang, T. (2026). “Markov Chains: When Probability Becomes Motion.” <em>Math Notes</em>. <a href="https://terryfxh.github.io/math-notes/posts/markov-chains-when-probability-becomes-motion/" class="uri">https://terryfxh.github.io/math-notes/posts/markov-chains-when-probability-becomes-motion/</a></p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0">
+<div id="ref-levinperes2017markov" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">D. A. Levin and Y. Peres, <em>Markov chains and mixing times</em>, 2nd ed., vol. 107. in MBK, vol. 107. American Mathematical Society, 2017. Available: <a href="https://pages.uoregon.edu/dlevin/MARKOV/mcmt2e.pdf">https://pages.uoregon.edu/dlevin/MARKOV/mcmt2e.pdf</a></div>
+</div>
+</div>
+
+
+<!-- -->
+
+</section>
+
+ ]]></description>
+  <category>applied</category>
+  <category>probability</category>
+  <category>linear-algebra</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/markov-chains-when-probability-becomes-motion/</guid>
+  <pubDate>Sat, 01 Aug 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Inverse Laplace Transform and the Fourier Boundary</title>
   <link>https://terryfxh.github.io/math-notes/posts/inverse-laplace-transform-and-the-fourier-boundary/</link>
@@ -9083,730 +9745,6 @@ first 16 hex digits of the shared key: da7bec3c0be19c84 ...</code></pre>
   <category>learning</category>
   <guid>https://terryfxh.github.io/math-notes/posts/on-learning-mathematics/</guid>
   <pubDate>Thu, 04 Jun 2026 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>The Chinese Remainder Theorem: Residues as Coordinates</title>
-  <link>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="epigraph">
-<p><em>“Mathematics is the queen of the sciences, and number theory is the queen of mathematics.”</em></p>
-<p><span class="attribution">— Carl Friedrich Gauss, as recorded by Sartorius von Waltershausen (1856)</span></p>
-</div>
-<p>Sometime around the fourth century, a Chinese text called the <em>Sunzi Suanjing</em> posed a small riddle:</p>
-<blockquote class="blockquote">
-<p><em>There are certain things whose number is unknown. Counted in threes, two are left over; counted in fives, three are left over; counted in sevens, two are left over. How many things are there?</em></p>
-</blockquote>
-<p>You can find the answer by patient trial, and the book does: twenty-three. What the book could not have known is that the little procedure hiding behind this puzzle would, more than a millennium later, sit quietly inside almost every secure connection your computer makes. The Chinese Remainder Theorem is the bridge between a counting game and the arithmetic of machines, and the reason is a single change of viewpoint: a remainder is not a leftover, it is a coordinate.</p>
-<section id="first-the-picture" class="level2">
-<h2 class="anchored" data-anchor-id="first-the-picture">First, the picture</h2>
-<p>Fix a few moduli that share no common factors, say <img src="https://latex.codecogs.com/png.latex?3">, <img src="https://latex.codecogs.com/png.latex?5">, and <img src="https://latex.codecogs.com/png.latex?7">. To each whole number attach the triple of remainders it leaves: the number <img src="https://latex.codecogs.com/png.latex?23"> becomes <img src="https://latex.codecogs.com/png.latex?(23%20%5Cbmod%203,%5C,%2023%20%5Cbmod%205,%5C,%2023%20%5Cbmod%207)%20=%20(2,%203,%202)">, exactly the riddle’s clues.</p>
-<p>Now think of that triple as an address. The first slot can take <img src="https://latex.codecogs.com/png.latex?3"> values, the second <img src="https://latex.codecogs.com/png.latex?5">, the third <img src="https://latex.codecogs.com/png.latex?7">, so there are <img src="https://latex.codecogs.com/png.latex?3%20%5Ctimes%205%20%5Ctimes%207%20=%20105"> possible addresses in all. And there are exactly <img src="https://latex.codecogs.com/png.latex?105"> numbers in the range <img src="https://latex.codecogs.com/png.latex?0"> through <img src="https://latex.codecogs.com/png.latex?104">. The theorem is the claim that these two sets match up perfectly: every number in that range has its own address, and every address belongs to exactly one number. No collisions, no gaps. The remainders behave like coordinates on a grid, and the integers from <img src="https://latex.codecogs.com/png.latex?0"> to <img src="https://latex.codecogs.com/png.latex?104"> are precisely the grid points.</p>
-<p>Once you see it this way, the riddle stops being a riddle. “Counted in threes leaves two, in fives leaves three, in sevens leaves two” is just the address <img src="https://latex.codecogs.com/png.latex?(2,3,2)">, and asking for the number is asking which grid point sits there. There is exactly one, and below <img src="https://latex.codecogs.com/png.latex?105"> it is <img src="https://latex.codecogs.com/png.latex?23">.</p>
-</section>
-<section id="the-theorem" class="level2">
-<h2 class="anchored" data-anchor-id="the-theorem">The theorem</h2>
-<p>Let <img src="https://latex.codecogs.com/png.latex?m_1,%20%5Cdots,%20m_k"> be <strong>pairwise coprime</strong> positive integers, meaning <img src="https://latex.codecogs.com/png.latex?%5Cgcd(m_i,%20m_j)%20=%201"> whenever <img src="https://latex.codecogs.com/png.latex?i%20%5Cneq%20j">, and write <img src="https://latex.codecogs.com/png.latex?M%20=%20m_1%20m_2%20%5Ccdots%20m_k">.</p>
-<div id="thm-crt" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 1 (Chinese Remainder Theorem)</strong></span> The map sending each residue class to its tuple of remainders, <img src="https://latex.codecogs.com/png.latex?%0A%5Cvarphi%20:%20%5Cmathbb%7BZ%7D/M%5Cmathbb%7BZ%7D%20%5Clongrightarrow%20%5Cmathbb%7BZ%7D/m_1%5Cmathbb%7BZ%7D%20%5Ctimes%20%5Ccdots%20%5Ctimes%20%5Cmathbb%7BZ%7D/m_k%5Cmathbb%7BZ%7D,%0A%5Cqquad%0A%5Cvarphi(n)%20=%20(n%20%5Cbmod%20m_1,%5C,%20%5Cdots,%5C,%20n%20%5Cbmod%20m_k),%0A"> is a bijection. It respects addition and multiplication, so it is in fact an isomorphism of rings.</p>
-</div>
-<div class="proof">
-<p><span class="proof-title"><em>Proof</em>. </span>Count first. The left side has <img src="https://latex.codecogs.com/png.latex?M"> elements, and the right side has <img src="https://latex.codecogs.com/png.latex?m_1%20m_2%20%5Ccdots%20m_k%20=%20M"> as well. A map between finite sets of equal size is a bijection as soon as it is injective, so injectivity is all we need.</p>
-<p>Suppose <img src="https://latex.codecogs.com/png.latex?%5Cvarphi(n)%20=%20%5Cvarphi(n')">. Then <img src="https://latex.codecogs.com/png.latex?n%20%5Cequiv%20n'%20%5Cpmod%7Bm_i%7D"> for every <img src="https://latex.codecogs.com/png.latex?i">, that is, each <img src="https://latex.codecogs.com/png.latex?m_i"> divides <img src="https://latex.codecogs.com/png.latex?n%20-%20n'">. Here the coprimality earns its keep: if pairwise coprime numbers each divide an integer, then so does their product. Hence <img src="https://latex.codecogs.com/png.latex?M%20%5Cmid%20(n%20-%20n')">, which means <img src="https://latex.codecogs.com/png.latex?n"> and <img src="https://latex.codecogs.com/png.latex?n'"> are the same class in <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BZ%7D/M%5Cmathbb%7BZ%7D">. So <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> is injective, therefore bijective. That it preserves <img src="https://latex.codecogs.com/png.latex?+"> and <img src="https://latex.codecogs.com/png.latex?%5Ctimes"> is immediate, since reducing a sum or product mod <img src="https://latex.codecogs.com/png.latex?m_i"> is the same as reducing first and combining afterward. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
-</div>
-<p>The proof says a unique number lives at each address, but it does not yet say how to find it. For that we invert the map by hand.</p>
-</section>
-<section id="reading-the-address-back" class="level2">
-<h2 class="anchored" data-anchor-id="reading-the-address-back">Reading the address back</h2>
-<p>Given a target address <img src="https://latex.codecogs.com/png.latex?(a_1,%20%5Cdots,%20a_k)">, we want the <img src="https://latex.codecogs.com/png.latex?n"> that sits there. The trick is to build <img src="https://latex.codecogs.com/png.latex?n"> out of pieces, one per coordinate, each of which lights up a single slot and stays dark in all the others.</p>
-<p>For each <img src="https://latex.codecogs.com/png.latex?i">, let <img src="https://latex.codecogs.com/png.latex?M_i%20=%20M%20/%20m_i">, the product of every modulus except <img src="https://latex.codecogs.com/png.latex?m_i">. By construction <img src="https://latex.codecogs.com/png.latex?m_j%20%5Cmid%20M_i"> for every <img src="https://latex.codecogs.com/png.latex?j%20%5Cneq%20i">, so <img src="https://latex.codecogs.com/png.latex?M_i"> already vanishes modulo all the other moduli. Modulo <img src="https://latex.codecogs.com/png.latex?m_i"> itself, <img src="https://latex.codecogs.com/png.latex?M_i"> is coprime to <img src="https://latex.codecogs.com/png.latex?m_i"> and so has an inverse <img src="https://latex.codecogs.com/png.latex?y_i">, meaning <img src="https://latex.codecogs.com/png.latex?M_i%20y_i%20%5Cequiv%201%20%5Cpmod%7Bm_i%7D">. Now set</p>
-<p><span id="eq-crt-formula"><img src="https://latex.codecogs.com/png.latex?%0An%20=%20%5Csum_%7Bi=1%7D%5E%7Bk%7D%20a_i%5C,%20M_i%5C,%20y_i%20%5Cpmod%7BM%7D.%0A%5Ctag%7B1%7D"></span></p>
-<p>Check it against any single modulus <img src="https://latex.codecogs.com/png.latex?m_j">. Every term with <img src="https://latex.codecogs.com/png.latex?i%20%5Cneq%20j"> carries the factor <img src="https://latex.codecogs.com/png.latex?M_i">, which is divisible by <img src="https://latex.codecogs.com/png.latex?m_j">, so it contributes nothing. The surviving term is <img src="https://latex.codecogs.com/png.latex?a_j%20M_j%20y_j%20%5Cequiv%20a_j%20%5Ccdot%201%20=%20a_j%20%5Cpmod%7Bm_j%7D">. The construction hits the target in every coordinate at once. Equation&nbsp;1 is the whole algorithm, and the code below is nothing more than this sum.</p>
-<div id="840eee9d" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> math <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> prod</span>
-<span id="cb1-2"></span>
-<span id="cb1-3"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> crt(residues, moduli):</span>
-<span id="cb1-4">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">"""Smallest non-negative n with n % moduli[i] == residues[i], for pairwise-coprime moduli."""</span></span>
-<span id="cb1-5">    M <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> prod(moduli)</span>
-<span id="cb1-6">    n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span></span>
-<span id="cb1-7">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> a_i, m_i <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">zip</span>(residues, moduli):</span>
-<span id="cb1-8">        M_i <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> M <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">//</span> m_i</span>
-<span id="cb1-9">        y_i <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">pow</span>(M_i, <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, m_i)      <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># modular inverse of M_i mod m_i</span></span>
-<span id="cb1-10">        n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> a_i <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> M_i <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> y_i</span>
-<span id="cb1-11">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> M</span>
-<span id="cb1-12"></span>
-<span id="cb1-13"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># The Sunzi Suanjing problem, fifteen centuries later</span></span>
-<span id="cb1-14">answer <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> crt([<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>], [<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">7</span>])</span>
-<span id="cb1-15"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"Sunzi's unknown number: </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>answer<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)          <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 23</span></span>
-<span id="cb1-16"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"solutions repeat every M = </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>prod([<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">7</span>])<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>) <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 105</span></span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Sunzi's unknown number: 23
-solutions repeat every M = 105</code></pre>
-</div>
-</div>
-</section>
-<section id="why-a-computer-cares" class="level2">
-<h2 class="anchored" data-anchor-id="why-a-computer-cares">Why a computer cares</h2>
-<p>So far this is elegant number theory. The reason it became infrastructure is that the isomorphism in Theorem&nbsp;1 does something a computer scientist dreams about: it turns one hard arithmetic problem into several small, independent ones.</p>
-<p>Because <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> respects <img src="https://latex.codecogs.com/png.latex?+"> and <img src="https://latex.codecogs.com/png.latex?%5Ctimes">, to add or multiply two numbers modulo <img src="https://latex.codecogs.com/png.latex?M"> you may add or multiply their coordinates <em>separately</em>, each in its own little world modulo <img src="https://latex.codecogs.com/png.latex?m_i">, and then read the answer back. The coordinates never talk to each other. There is no carrying between them. This is the idea behind a <strong>residue number system</strong>: store a huge integer as its remainders against a set of coprime moduli, and every multiplication becomes a handful of small multiplications that a machine can run side by side.</p>
-<div id="1a2dac0a" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> random</span>
-<span id="cb3-2"></span>
-<span id="cb3-3">moduli <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">101</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">103</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">107</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">109</span>]    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># pairwise coprime; M is their product</span></span>
-<span id="cb3-4">M <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> prod(moduli)</span>
-<span id="cb3-5">random.seed(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span>
-<span id="cb3-6">a, b <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> random.randrange(M), random.randrange(M)</span>
-<span id="cb3-7"></span>
-<span id="cb3-8"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># carry the numbers as coordinates, multiply slot by slot, then reconstruct</span></span>
-<span id="cb3-9">res_a <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [a <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> m <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> m <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> moduli]</span>
-<span id="cb3-10">res_b <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [b <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> m <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> m <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> moduli]</span>
-<span id="cb3-11">res_c <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [(x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> y) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> m <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> x, y, m <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">zip</span>(res_a, res_b, moduli)]</span>
-<span id="cb3-12"></span>
-<span id="cb3-13"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"componentwise product matches direct product:"</span>,</span>
-<span id="cb3-14">      crt(res_c, moduli) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> (a <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> b) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> M)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>componentwise product matches direct product: True</code></pre>
-</div>
-</div>
-<p>The most familiar place this shows up is RSA. Decrypting a message means computing <img src="https://latex.codecogs.com/png.latex?c%5E%7Bd%7D%20%5Cbmod%20N"> where <img src="https://latex.codecogs.com/png.latex?N%20=%20pq"> is a product of two large primes. That exponentiation is the expensive heartbeat of the whole scheme, and its cost grows faster than linearly in the size of the modulus. The Chinese Remainder Theorem offers a shortcut: instead of working modulo the giant <img src="https://latex.codecogs.com/png.latex?N">, work modulo <img src="https://latex.codecogs.com/png.latex?p"> and modulo <img src="https://latex.codecogs.com/png.latex?q"> separately, where every number is half the size, then glue the two results back together with Equation&nbsp;1. Two small exponentiations plus a recombination beat one large exponentiation, and in practice the speedup is roughly threefold. Every serious RSA implementation does exactly this <span class="citation" data-cites="rivest1978rsa">[1]</span>.</p>
-<div id="aaa219c4" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> time</span>
-<span id="cb5-2"></span>
-<span id="cb5-3"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> is_prime(n, k<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">20</span>):</span>
-<span id="cb5-4">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>: <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span></span>
-<span id="cb5-5">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> sp <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">7</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">11</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">13</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">17</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">19</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">23</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">29</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">31</span>,<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">37</span>):</span>
-<span id="cb5-6">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> sp <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>: <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> sp</span>
-<span id="cb5-7">    d, r <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span></span>
-<span id="cb5-8">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">while</span> d <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>: d <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">//=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span> r <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb5-9">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(k):</span>
-<span id="cb5-10">        x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">pow</span>(random.randrange(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>), d, n)</span>
-<span id="cb5-11">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> x <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>): <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">continue</span></span>
-<span id="cb5-12">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(r <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>):</span>
-<span id="cb5-13">            x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> n</span>
-<span id="cb5-14">            <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>: <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">break</span></span>
-<span id="cb5-15">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">else</span>: <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span></span>
-<span id="cb5-16">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span></span>
-<span id="cb5-17"></span>
-<span id="cb5-18"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> gen_prime(bits):</span>
-<span id="cb5-19">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">while</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span>:</span>
-<span id="cb5-20">        n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> random.getrandbits(bits) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|</span> (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;&lt;</span> (bits <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb5-21">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> is_prime(n): <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> n</span>
-<span id="cb5-22"></span>
-<span id="cb5-23">random.seed(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb5-24">p, q <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> gen_prime(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">512</span>), gen_prime(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">512</span>)</span>
-<span id="cb5-25">N, e <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> p <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> q, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">65537</span></span>
-<span id="cb5-26">d <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">pow</span>(e, <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, (p <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> (q <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>))</span>
-<span id="cb5-27">c <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">pow</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">987654321</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> N, e, N)</span>
-<span id="cb5-28"></span>
-<span id="cb5-29"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># straight decryption, modulo the full N</span></span>
-<span id="cb5-30">t0 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> time.perf_counter()</span>
-<span id="cb5-31"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span>): m_direct <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">pow</span>(c, d, N)</span>
-<span id="cb5-32">t1 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> time.perf_counter()</span>
-<span id="cb5-33"></span>
-<span id="cb5-34"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># CRT decryption: two half-size exponentiations, then recombine</span></span>
-<span id="cb5-35">dp, dq, q_inv <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> d <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> (p <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>), d <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> (q <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>), <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">pow</span>(q, <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, p)</span>
-<span id="cb5-36"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> decrypt_crt(c):</span>
-<span id="cb5-37">    mp, mq <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">pow</span>(c, dp, p), <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">pow</span>(c, dq, q)</span>
-<span id="cb5-38">    h <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> (q_inv <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> (mp <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> mq)) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> p</span>
-<span id="cb5-39">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> (mq <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> h <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> q) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> N</span>
-<span id="cb5-40"></span>
-<span id="cb5-41">t2 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> time.perf_counter()</span>
-<span id="cb5-42"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span>): m_crt <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> decrypt_crt(c)</span>
-<span id="cb5-43">t3 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> time.perf_counter()</span>
-<span id="cb5-44"></span>
-<span id="cb5-45"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"direct : </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>(t1 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> t0) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1000</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> ms"</span>)</span>
-<span id="cb5-46"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"CRT    : </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>(t3 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> t2) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1000</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> ms"</span>)</span>
-<span id="cb5-47"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"speedup: </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>(t1 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> t0) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> (t3 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> t2)<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.1f}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">x   (results agree: </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>m_direct <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> m_crt<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">)"</span>)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>direct : 2.03 ms
-CRT    : 0.72 ms
-speedup: 2.8x   (results agree: True)</code></pre>
-</div>
-</div>
-<p>The exact ratio depends on the machine, but the shape is always the same: splitting the modulus pays off, and it pays off for the reason the picture promised, because the two coordinates can be handled independently. The same decomposition powers fast big-integer multiplication through number-theoretic transforms over several primes, and it underlies threshold secret-sharing schemes where a secret is hidden in its residues and only enough of them together can reveal it. A fuller account of residue arithmetic lives in <span class="citation" data-cites="knuth1997seminumerical">[2]</span>.</p>
-</section>
-<section id="what-to-remember" class="level2">
-<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
-<p>The Chinese Remainder Theorem says that for pairwise coprime moduli, a number and its tuple of remainders carry exactly the same information: the map between them is a bijection, in fact a ring isomorphism. Read one way, that is a coordinate system for the integers, with each residue a coordinate and Equation&nbsp;1 the rule for reading an address back into a number. Read the other way, it is a license to break a single large computation into several small independent ones, which is why a riddle from the <em>Sunzi Suanjing</em> now lives inside RSA, residue number systems, and fast multiplication. A remainder, it turns out, was never a scrap left behind. It was a coordinate all along.</p>
-</section>
-<section id="how-to-cite" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
-<blockquote class="blockquote">
-<p>Terry (2026). <em>The Chinese Remainder Theorem: Residues as Coordinates</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/</code>.</p>
-</blockquote>
-
-
-<!-- -->
-
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
-<div id="ref-rivest1978rsa" class="csl-entry">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">R. L. Rivest, A. Shamir, and L. Adleman, <span>“A method for obtaining digital signatures and public-key cryptosystems,”</span> <em>Communications of the ACM</em>, vol. 21, no. 2, pp. 120–126, 1978.</div>
-</div>
-<div id="ref-knuth1997seminumerical" class="csl-entry">
-<div class="csl-left-margin">[2] </div><div class="csl-right-inline">D. E. Knuth, <em>The art of computer programming, vol. 2: Seminumerical algorithms</em>, 3rd ed. Addison-Wesley, 1997.</div>
-</div>
-</div></section></div> ]]></description>
-  <category>pure</category>
-  <category>applied</category>
-  <category>number-theory</category>
-  <category>computer-science</category>
-  <category>cryptography</category>
-  <guid>https://terryfxh.github.io/math-notes/posts/chinese-remainder-theorem/</guid>
-  <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
