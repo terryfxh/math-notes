@@ -1,0 +1,277 @@
+name: Validate pull request
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+# Candidate code is executed only in an isolated runner. The token is read-only,
+# is not persisted into the checkout, and no repository secrets are exposed.
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  execute-and-render:
+    name: Execute code and render Quarto
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CI: "true"
+      MPLBACKEND: Agg
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PIP_NO_INPUT: "1"
+      PYTHONHASHSEED: "0"
+
+    steps:
+      - name: Check out the reviewed commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Bind the run to the pull-request head
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+
+      - name: Enforce article-only change scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          import re
+          import subprocess
+          from pathlib import Path
+
+          base = os.environ["BASE_SHA"]
+          head = os.environ["HEAD_SHA"]
+          raw = subprocess.check_output(
+              ["git", "diff", "--name-status", "-z", base, head]
+          ).decode("utf-8")
+          fields = raw.split("\0")
+          if fields and fields[-1] == "":
+              fields.pop()
+
+          index_files = {"WORKLOG.md", "notes.qmd", "references.bib"}
+          workflow_file = ".github/workflows/validate-pr.yml"
+          new_slugs: set[str] = set()
+          changed: list[tuple[str, str]] = []
+          i = 0
+          while i < len(fields):
+              status = fields[i]
+              i += 1
+              if status.startswith(("R", "C")):
+                  raise SystemExit("Renames and copies are forbidden in article PRs")
+              path = fields[i]
+              i += 1
+              changed.append((status, path))
+
+              if path == workflow_file:
+                  if status != "A":
+                      raise SystemExit(
+                          "Article PRs may not modify the validation workflow"
+                      )
+                  continue
+              if path in index_files:
+                  if status != "M":
+                      raise SystemExit(f"Invalid index change: {status} {path}")
+                  continue
+              match = re.fullmatch(
+                  r"(?:posts|_freeze/posts)/([a-z0-9]+(?:-[a-z0-9]+)*)/(.+)",
+                  path,
+              )
+              if not match or status != "A":
+                  raise SystemExit(f"Out-of-scope change: {status} {path}")
+              new_slugs.add(match.group(1))
+
+          if len(new_slugs) != 1:
+              raise SystemExit(
+                  f"Expected exactly one newly added article; found {sorted(new_slugs)}"
+              )
+          slug = next(iter(new_slugs))
+          article = Path("posts") / slug / "index.qmd"
+          if not article.is_file():
+              raise SystemExit(f"Missing candidate article: {article}")
+          if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
+              raise SystemExit(f"Unsafe article slug: {slug!r}")
+          article_root = Path("posts") / slug
+          symlinks = [path for path in article_root.rglob("*") if path.is_symlink()]
+          if symlinks:
+              raise SystemExit(f"Symlinks are forbidden: {symlinks}")
+
+          print("Reviewed change scope:")
+          for status, path in changed:
+              print(f"  {status:>2}  {path}")
+          print(f"ARTICLE_SLUG={slug}")
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as env_file:
+              env_file.write(f"ARTICLE_SLUG={slug}\n")
+          PY
+
+      - name: Reject unsafe Python cells
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import ast
+          import os
+          import re
+          from pathlib import Path
+
+          article = Path("posts") / os.environ["ARTICLE_SLUG"] / "index.qmd"
+          text = article.read_text(encoding="utf-8")
+          cells = re.findall(r"```\{python\}\r?\n(.*?)\r?\n```", text, re.S)
+          allowed_imports = {
+              "collections", "decimal", "fractions", "functools", "itertools",
+              "math", "matplotlib", "numpy", "random", "statistics", "sympy",
+          }
+          forbidden_calls = {
+              "__import__", "compile", "eval", "exec", "input", "open",
+          }
+          forbidden_roots = {
+              "ctypes", "http", "multiprocessing", "os", "pathlib", "pickle",
+              "requests", "shutil", "socket", "subprocess", "urllib",
+          }
+
+          for cell_number, source in enumerate(cells, 1):
+              tree = ast.parse(source, filename=f"{article}#cell{cell_number}")
+              for node in ast.walk(tree):
+                  if isinstance(node, ast.Import):
+                      roots = {alias.name.split(".", 1)[0] for alias in node.names}
+                      bad = roots - allowed_imports
+                      if bad:
+                          raise SystemExit(
+                              f"Cell {cell_number}: forbidden import(s): {sorted(bad)}"
+                          )
+                  elif isinstance(node, ast.ImportFrom):
+                      root = (node.module or "").split(".", 1)[0]
+                      if node.level or root not in allowed_imports:
+                          raise SystemExit(
+                              f"Cell {cell_number}: forbidden import: {node.module!r}"
+                          )
+                  elif isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+                      if node.func.id in forbidden_calls:
+                          raise SystemExit(
+                              f"Cell {cell_number}: forbidden call: {node.func.id}"
+                          )
+                  elif isinstance(node, ast.Name) and node.id in forbidden_roots:
+                      raise SystemExit(
+                          f"Cell {cell_number}: forbidden module use: {node.id}"
+                      )
+          print(f"Static safety scan passed for {len(cells)} Python cell(s).")
+          PY
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2.2.0
+        with:
+          version: 1.9.38
+
+      - name: Install Python dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --only-binary=:all: -r requirements.txt
+          python -m pip check
+
+      - name: Verify Jupyter and execute all code cells
+        run: |
+          set -euo pipefail
+          quarto check jupyter
+          python tools/check.py
+
+      - name: Execute and render the candidate article
+        run: |
+          set -euo pipefail
+          rm -rf "_freeze/posts/$ARTICLE_SLUG" "_site/posts/$ARTICLE_SLUG"
+          quarto render "posts/$ARTICLE_SLUG/index.qmd" --execute --no-cache 2>&1 \
+            | tee /tmp/quarto-render.log
+          test -s "_site/posts/$ARTICLE_SLUG/index.html"
+          test -d "_freeze/posts/$ARTICLE_SLUG"
+
+      - name: Inspect the rendered page
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          import re
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          slug = os.environ["ARTICLE_SLUG"]
+          html_path = Path("_site") / "posts" / slug / "index.html"
+          source = html_path.read_text(encoding="utf-8")
+
+          class VisibleText(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.hidden = 0
+                  self.parts: list[str] = []
+
+              def handle_starttag(self, tag, attrs):
+                  if tag in {"code", "pre", "script", "style"}:
+                      self.hidden += 1
+
+              def handle_endtag(self, tag):
+                  if tag in {"code", "pre", "script", "style"} and self.hidden:
+                      self.hidden -= 1
+
+              def handle_data(self, data):
+                  if not self.hidden:
+                      self.parts.append(data)
+
+          parser = VisibleText()
+          parser.feed(source)
+          visible = " ".join(parser.parts)
+          unresolved = re.findall(r"(?:\?@|@(?:eq|fig|tbl|thm|lem|cor|def|prp)-)[\w-]+", visible)
+          if unresolved:
+              raise SystemExit(f"Unresolved cross-references: {sorted(set(unresolved))}")
+          visible_folded = visible.casefold()
+          required = [
+              "markov chains: when probability becomes motion",
+              "finite-state convergence theorem",
+              "markov chains and mixing times",
+              "exact probability mass in the two-state chain",
+          ]
+          missing = [item for item in required if item not in visible_folded]
+          if missing:
+              raise SystemExit(f"Rendered page is missing expected content: {missing}")
+          figures = list((html_path.parent / "index_files").rglob("*.png"))
+          if not figures:
+              raise SystemExit("No executed figure output was rendered")
+          log = Path("/tmp/quarto-render.log").read_text(encoding="utf-8")
+          bad_warning = re.search(
+              r"(?im)^warning:.*(?:unable to resolve|cross-reference|citation)", log
+          )
+          if bad_warning:
+              raise SystemExit(f"Quarto reported an unresolved item: {bad_warning.group(0)}")
+          (html_path.parent / "quarto-render.log").write_text(log, encoding="utf-8")
+          print(f"Rendered page verified: {html_path}")
+          print(f"Executed figure verified: {figures[0]}")
+          PY
+
+      - name: Upload validation evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: quarto-validation-${{ github.event.pull_request.head.sha }}
+          path: |
+            _site/posts/${{ env.ARTICLE_SLUG }}/
+            _freeze/posts/${{ env.ARTICLE_SLUG }}/
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Confirm tracked sources were not rewritten
+        run: |
+          set -euo pipefail
+          git diff --exit-code
