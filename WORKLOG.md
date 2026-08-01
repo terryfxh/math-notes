@@ -14,7 +14,7 @@ The table below is regenerated from `posts/*/index.qmd` by `python tools/blog.py
 Do not edit it by hand — edits between the AUTO markers are overwritten.
 
 <!-- AUTO:STATUS:START -->
-_Last updated 2026-07-29 — 25 published posts._
+_Last updated 2026-08-01 — 26 published posts._
 
 | Date | Slug | Title | Categories |
 |---|---|---|---|
@@ -43,6 +43,7 @@ _Last updated 2026-07-29 — 25 published posts._
 | 2026-07-01 | `ai-in-mathematics-proof-is-getting-cheap` | AI in Mathematics: Proof Is Getting Cheap | meta, learning |
 | 2026-07-29 | `inverse-laplace-transform-and-the-fourier-boundary` | Inverse Laplace Transform and the Fourier Boundary | pure, applied, analysis, differential-equations, fourier-analysis |
 | 2026-07-29 | `quaternion-rotations-the-sandwich-and-the-double-cover` | Quaternion Rotations: The Sandwich and the Double Cover | pure, applied, algebra, geometry, computer-graphics |
+| 2026-08-01 | `markov-chains-when-probability-becomes-motion` | Markov Chains: When Probability Becomes Motion | applied, probability, linear-algebra |
 <!-- AUTO:STATUS:END -->
 
 ---
@@ -53,6 +54,7 @@ One entry is appended automatically the first time `tools/worklog.py` sees a pub
 post (run via `python tools/blog.py worklog`). Newest on top.
 
 <!-- AUTO:LOG:START -->
+- **2026-08-01** — published `markov-chains-when-probability-becomes-motion`: Markov Chains: When Probability Becomes Motion (applied, probability, linear-algebra)
 - **2026-07-29** — published `quaternion-rotations-the-sandwich-and-the-double-cover`: Quaternion Rotations: The Sandwich and the Double Cover (pure, applied, algebra, geometry, computer-graphics)
 - **2026-07-29** — published `inverse-laplace-transform-and-the-fourier-boundary`: Inverse Laplace Transform and the Fourier Boundary (pure, applied, analysis, differential-equations, fourier-analysis)
 - **2026-07-01** — published `ai-in-mathematics-proof-is-getting-cheap`: AI in Mathematics: Proof Is Getting Cheap (meta, learning)
