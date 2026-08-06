@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-08-06">
+<meta name="description" content="Why the Möbius function from number theory and the alternating signs of inclusion–exclusion are the same inverse operation on two different partially ordered sets.">
+
+<title>One Möbius, Two Worlds: The Algebra Behind Inclusion–Exclusion – (Terry) Xihan Fang — Math Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-de63f62b328812d8e578a4d74e282472.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-76957a6dab0dbbd7cb48f94fcce8bdbb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="One Möbius, Two Worlds: The Algebra Behind Inclusion–Exclusion – (Terry) Xihan Fang — Math Notes">
+<meta property="og:description" content="Why the Möbius function from number theory and the alternating signs of inclusion–exclusion are the same inverse operation on two different partially ordered sets.">
+<meta property="og:site_name" content="(Terry) Xihan Fang — Math Notes">
+<meta name="twitter:title" content="One Möbius, Two Worlds: The Algebra Behind Inclusion–Exclusion – (Terry) Xihan Fang — Math Notes">
+<meta name="twitter:description" content="Why the Möbius function from number theory and the alternating signs of inclusion–exclusion are the same inverse operation on two different partially ordered sets.">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://terryfxh.github.io/math-notes/posts/one-mobius-two-worlds/">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">(Terry) Xihan Fang — Math Notes</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../notes.html"> 
+<span class="menu-text">Notes</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/terryfxh"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#four-objects-viewed-twice" id="toc-four-objects-viewed-twice" class="nav-link active" data-scroll-target="#four-objects-viewed-twice">Four objects, viewed twice</a></li>
+  <li><a href="#a-machine-that-sums-everything-below" id="toc-a-machine-that-sums-everything-below" class="nav-link" data-scroll-target="#a-machine-that-sums-everything-below">A machine that sums everything below</a></li>
+  <li><a href="#the-inverse-hidden-inside-the-order" id="toc-the-inverse-hidden-inside-the-order" class="nav-link" data-scroll-target="#the-inverse-hidden-inside-the-order">The inverse hidden inside the order</a></li>
+  <li><a href="#möbius-inversion" id="toc-möbius-inversion" class="nav-link" data-scroll-target="#möbius-inversion">Möbius inversion</a></li>
+  <li><a href="#the-number-theoretic-world" id="toc-the-number-theoretic-world" class="nav-link" data-scroll-target="#the-number-theoretic-world">The number-theoretic world</a></li>
+  <li><a href="#the-combinatorial-world" id="toc-the-combinatorial-world" class="nav-link" data-scroll-target="#the-combinatorial-world">The combinatorial world</a></li>
+  <li><a href="#the-same-multiplication-wearing-two-names" id="toc-the-same-multiplication-wearing-two-names" class="nav-link" data-scroll-target="#the-same-multiplication-wearing-two-names">The same multiplication wearing two names</a></li>
+  <li><a href="#where-the-easy-sign-pattern-stops" id="toc-where-the-easy-sign-pattern-stops" class="nav-link" data-scroll-target="#where-the-easy-sign-pattern-stops">Where the easy sign pattern stops</a></li>
+  <li><a href="#what-to-remember" id="toc-what-to-remember" class="nav-link" data-scroll-target="#what-to-remember">What to remember</a></li>
+  <li><a href="#how-to-cite" id="toc-how-to-cite" class="nav-link" data-scroll-target="#how-to-cite">How to cite</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">One Möbius, Two Worlds: The Algebra Behind Inclusion–Exclusion</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+  <div class="quarto-categories">
+    <div class="quarto-category">pure</div>
+    <div class="quarto-category">number-theory</div>
+    <div class="quarto-category">combinatorics</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Why the Möbius function from number theory and the alternating signs of inclusion–exclusion are the same inverse operation on two different partially ordered sets.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 6, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="epigraph">
+<p>“Mathematics is the art of giving the same name to different things.”</p>
+<p><span class="attribution">Henri Poincaré, <em>Science and Method</em>, “The Future of Mathematics”</span></p>
+</div>
+<p>Number theory has a small, sharp-edged function called the <strong>Möbius function</strong>:</p>
+<p><span class="math display">\[
+\mu(n)=
+\begin{cases}
+1, &amp; n=1,\\
+(-1)^r, &amp; n \text{ is a product of } r \text{ distinct primes},\\
+0, &amp; n \text{ is divisible by the square of a prime}.
+\end{cases}
+\]</span></p>
+<p>Thus</p>
+<p><span class="math display">\[
+\mu(1)=1,\quad \mu(2)=-1,\quad \mu(6)=1,\quad \mu(12)=0.
+\]</span></p>
+<p>Combinatorics has another familiar pattern. To count a union, we add the sizes of individual sets, subtract pairwise intersections, add triple intersections, and continue with alternating signs:</p>
+<p><span id="eq-inclusion-exclusion"><span class="math display">\[
+\left|\bigcup_{i=1}^{m} A_i\right|
+=
+\sum_{\varnothing\ne J\subseteq [m]}
+(-1)^{|J|+1}
+\left|\bigcap_{j\in J} A_j\right|.
+\tag{1}\]</span></span></p>
+<p>One formula talks about prime factors. The other talks about overlapping sets. They look as if they merely happen to share some plus and minus signs.</p>
+<p>They do not.</p>
+<p>Both solve the same problem: a quantity has been replaced by the sum of everything below it, and we want to recover the original quantity. The Möbius function is the device that removes those accumulated echoes. Number theory and inclusion–exclusion are two settings in which the device becomes especially concrete.</p>
+<p>The common structure is a partially ordered set. Once that structure is visible, two formulas become one theorem.</p>
+<section id="four-objects-viewed-twice" class="level2">
+<h2 class="anchored" data-anchor-id="four-objects-viewed-twice">Four objects, viewed twice</h2>
+<p>Begin with the divisors of <span class="math inline">\(6\)</span>:</p>
+<p><span class="math display">\[
+1,\quad 2,\quad 3,\quad 6.
+\]</span></p>
+<p>Order them by divisibility. The number <span class="math inline">\(1\)</span> lies below everything, <span class="math inline">\(2\)</span> and <span class="math inline">\(3\)</span> lie below <span class="math inline">\(6\)</span>, and neither <span class="math inline">\(2\)</span> nor <span class="math inline">\(3\)</span> lies below the other.</p>
+<p>Now take the subsets of a two-element set <span class="math inline">\(\{p,q\}\)</span>:</p>
+<p><span class="math display">\[
+\varnothing,\quad \{p\},\quad \{q\},\quad \{p,q\},
+\]</span></p>
+<p>ordered by inclusion. These four objects have exactly the same shape:</p>
+<p><span id="eq-four-object-dictionary"><span class="math display">\[
+1\longleftrightarrow\varnothing,
+\qquad
+2\longleftrightarrow\{p\},
+\qquad
+3\longleftrightarrow\{q\},
+\qquad
+6\longleftrightarrow\{p,q\}.
+\tag{2}\]</span></span></p>
+<p>Multiplying by a new prime and adding a new element play the same structural role. This is our first bridge between the two worlds.</p>
+<p>Put a value <span class="math inline">\(f(d)\)</span> at each divisor. Suppose that we can see only the cumulative value</p>
+<p><span id="eq-divisor-cumulative"><span class="math display">\[
+g(n)=\sum_{d\mid n} f(d).
+\tag{3}\]</span></span></p>
+<p>For the four divisors of <span class="math inline">\(6\)</span>, this says</p>
+<p><span class="math display">\[
+\begin{aligned}
+g(1)&amp;=f(1),\\
+g(2)&amp;=f(1)+f(2),\\
+g(3)&amp;=f(1)+f(3),\\
+g(6)&amp;=f(1)+f(2)+f(3)+f(6).
+\end{aligned}
+\]</span></p>
+<p>The last line has mixed together every value below <span class="math inline">\(6\)</span>. But the first three lines tell us how to unmix it:</p>
+<p><span id="eq-six-inversion"><span class="math display">\[
+f(6)=g(6)-g(2)-g(3)+g(1).
+\tag{4}\]</span></span></p>
+<p>The signs are <span class="math inline">\(+,-,-,+\)</span>. They are the same signs that appear when we correct for two overlapping sets. They are also</p>
+<p><span class="math display">\[
+\mu(6)=1,\qquad \mu(3)=-1,\qquad \mu(2)=-1,\qquad \mu(1)=1,
+\]</span></p>
+<p>written in the order required by the inversion. The coincidence is already complete in this tiny example. What remains is to identify the mechanism.</p>
+</section>
+<section id="a-machine-that-sums-everything-below" class="level2">
+<h2 class="anchored" data-anchor-id="a-machine-that-sums-everything-below">A machine that sums everything below</h2>
+<p>A <strong>partially ordered set</strong>, or <strong>poset</strong>, is a set <span class="math inline">\(P\)</span> with a relation <span class="math inline">\(\leq\)</span> that is reflexive, antisymmetric, and transitive. Subset inclusion and integer divisibility are both partial orders.</p>
+<p>For now, assume that <span class="math inline">\(P\)</span> is finite. If <span class="math inline">\(f\)</span> assigns a number to every element of <span class="math inline">\(P\)</span>, define its cumulative version by</p>
+<p><span id="eq-poset-cumulative"><span class="math display">\[
+g(x)=\sum_{y\leq x} f(y).
+\tag{5}\]</span></span></p>
+<p>This operation replaces the value at <span class="math inline">\(x\)</span> by the total of all values at or below <span class="math inline">\(x\)</span>. It forgets where each contribution originally came from.</p>
+<p>For the divisor poset <span class="math inline">\(1,2,3,6\)</span>, write the values as a column in that order. Then <a href="#eq-poset-cumulative" class="quarto-xref">Equation&nbsp;5</a> is ordinary matrix multiplication:</p>
+<p><span id="eq-zeta-matrix"><span class="math display">\[
+\begin{pmatrix}
+g(1)\\ g(2)\\ g(3)\\ g(6)
+\end{pmatrix}
+=
+\underbrace{
+\begin{pmatrix}
+1&amp;0&amp;0&amp;0\\
+1&amp;1&amp;0&amp;0\\
+1&amp;0&amp;1&amp;0\\
+1&amp;1&amp;1&amp;1
+\end{pmatrix}}_{Z}
+\begin{pmatrix}
+f(1)\\ f(2)\\ f(3)\\ f(6)
+\end{pmatrix}.
+\tag{6}\]</span></span></p>
+<p>The matrix <span class="math inline">\(Z\)</span> records the order relation: its entry in row <span class="math inline">\(x\)</span>, column <span class="math inline">\(y\)</span> is <span class="math inline">\(1\)</span> exactly when <span class="math inline">\(y\leq x\)</span>. With the elements arranged from lower to higher, it is triangular with <span class="math inline">\(1\)</span>s on the diagonal. It is therefore invertible, and</p>
+<p><span id="eq-mobius-matrix"><span class="math display">\[
+Z^{-1}=
+\begin{pmatrix}
+1&amp;0&amp;0&amp;0\\
+-1&amp;1&amp;0&amp;0\\
+-1&amp;0&amp;1&amp;0\\
+1&amp;-1&amp;-1&amp;1
+\end{pmatrix}.
+\tag{7}\]</span></span></p>
+<p>The last row of <span class="math inline">\(Z^{-1}\)</span> is precisely <a href="#eq-six-inversion" class="quarto-xref">Equation&nbsp;4</a>. In a finite poset, Möbius inversion is literally matrix inversion. The language of incidence algebras packages that observation so that it works without choosing an ordering of the elements. Indeed, every finite poset can be listed with lower elements first; its cumulative-sum matrix is then triangular with <span class="math inline">\(1\)</span>s on the diagonal, so the inverse always exists.</p>
+</section>
+<section id="the-inverse-hidden-inside-the-order" class="level2">
+<h2 class="anchored" data-anchor-id="the-inverse-hidden-inside-the-order">The inverse hidden inside the order</h2>
+<p>For comparable elements <span class="math inline">\(x\leq z\)</span>, consider functions <span class="math inline">\(\alpha(x,z)\)</span> defined on the intervals of <span class="math inline">\(P\)</span>. Their <strong>convolution</strong> is</p>
+<p><span id="eq-incidence-convolution"><span class="math display">\[
+(\alpha*\beta)(x,z)
+=
+\sum_{x\leq y\leq z}
+\alpha(x,y)\beta(y,z).
+\tag{8}\]</span></span></p>
+<p>This multiplication belongs to the <strong>incidence algebra</strong> of the poset. Two particular functions matter:</p>
+<p><span class="math display">\[
+\zeta(x,z)=1 \quad (x\leq z)
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\delta(x,z)=
+\begin{cases}
+1,&amp;x=z,\\
+0,&amp;x&lt;z.
+\end{cases}
+\]</span></p>
+<p>The zeta function <span class="math inline">\(\zeta\)</span> performs cumulative summation. The delta function <span class="math inline">\(\delta\)</span> is the identity for convolution. The <strong>Möbius function of the poset</strong> is defined as the inverse of <span class="math inline">\(\zeta\)</span>:</p>
+<p><span id="eq-mobius-inverse"><span class="math display">\[
+\mu_P*\zeta=\zeta*\mu_P=\delta.
+\tag{9}\]</span></span></p>
+<p>This one equation is the centre of the article. It says: first accumulate, then apply <span class="math inline">\(\mu_P\)</span>, and every contribution from a lower element cancels except the one that started at the point we are recovering.</p>
+<p>The inverse can be computed without inverting a matrix. From <span class="math inline">\((\mu_P*\zeta)(x,z)=0\)</span> when <span class="math inline">\(x&lt;z\)</span>, we get</p>
+<p><span id="eq-mobius-recursion"><span class="math display">\[
+\mu_P(x,x)=1,
+\qquad
+\mu_P(x,z)
+=-
+\sum_{x\leq y&lt;z}\mu_P(x,y).
+\tag{10}\]</span></span></p>
+<p>So every coefficient is forced by the interval below it. The Möbius function is not an arbitrary choice of signs. It is the unique cancellation rule encoded by the order itself. This incidence-algebra viewpoint was developed systematically by Gian-Carlo Rota and is now standard in enumerative combinatorics <span class="citation" data-cites="rota1964mobius stanley2012"><a href="#ref-rota1964mobius" role="doc-biblioref">[1]</a>, <a href="#ref-stanley2012" role="doc-biblioref">[2]</a></span>.</p>
+</section>
+<section id="möbius-inversion" class="level2">
+<h2 class="anchored" data-anchor-id="möbius-inversion">Möbius inversion</h2>
+<p>We can now state the common theorem.</p>
+<div id="thm-mobius-inversion" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 1 (Möbius inversion on a finite poset)</strong></span> Let <span class="math inline">\(P\)</span> be a finite poset, and let <span class="math inline">\(f,g:P\to\mathbb{C}\)</span>. If</p>
+<p><span class="math display">\[
+g(x)=\sum_{y\leq x} f(y),
+\]</span></p>
+<p>then</p>
+<p><span id="eq-poset-inversion"><span class="math display">\[
+f(x)=\sum_{y\leq x}\mu_P(y,x)g(y).
+\tag{11}\]</span></span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Substitute the definition of <span class="math inline">\(g\)</span> into the proposed inverse and reverse the two finite sums:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\sum_{y\leq x}\mu_P(y,x)g(y)
+&amp;=
+\sum_{y\leq x}\mu_P(y,x)
+\sum_{z\leq y}f(z)\\
+&amp;=
+\sum_{z\leq x}f(z)
+\sum_{z\leq y\leq x}\mu_P(y,x).
+\end{aligned}
+\]</span></p>
+<p>The inner sum is</p>
+<p><span class="math display">\[
+\sum_{z\leq y\leq x}\zeta(z,y)\mu_P(y,x)
+=(\zeta*\mu_P)(z,x)
+=\delta(z,x)
+\]</span></p>
+<p>by <a href="#eq-mobius-inverse" class="quarto-xref">Equation&nbsp;9</a>. Every term vanishes except the one with <span class="math inline">\(z=x\)</span>, leaving <span class="math inline">\(f(x)\)</span>.</p>
+</div>
+<p>The proof is short because the real work has already been placed in the right definition. Möbius inversion is simply the statement that <span class="math inline">\(\mu_P\)</span> undoes <span class="math inline">\(\zeta\)</span>.</p>
+<p>The finiteness assumption is doing genuine work: it makes every displayed sum finite and allows us to change the order of summation without an analytic argument. The theory extends to <strong>locally finite</strong> posets, in which every interval <span class="math inline">\([x,z]\)</span> is finite. For the lower-sum form in <a href="#eq-poset-cumulative" class="quarto-xref">Equation&nbsp;5</a>, we must additionally know that the relevant principal ideals are finite, or impose finite-support or convergence conditions. An arbitrary infinite sum is not licensed merely by writing the same symbols.</p>
+</section>
+<section id="the-number-theoretic-world" class="level2">
+<h2 class="anchored" data-anchor-id="the-number-theoretic-world">The number-theoretic world</h2>
+<p>Take the positive integers ordered by divisibility. Every interval</p>
+<p><span class="math display">\[
+[d,n]=\{k:d\mid k\text{ and }k\mid n\}
+\]</span></p>
+<p>is finite, so this is a locally finite poset. Dividing every element of the interval by <span class="math inline">\(d\)</span> identifies <span class="math inline">\([d,n]\)</span> with the divisors of <span class="math inline">\(n/d\)</span>. Its poset Möbius function is</p>
+<p><span id="eq-divisibility-mobius"><span class="math display">\[
+\mu_P(d,n)=\mu\!\left(\frac{n}{d}\right),
+\tag{12}\]</span></span></p>
+<p>where the <span class="math inline">\(\mu\)</span> on the right is the classical number-theoretic function.</p>
+<p>Why does the classical definition give the correct inverse? Its decisive identity is</p>
+<p><span id="eq-classical-delta"><span class="math display">\[
+\sum_{d\mid n}\mu(d)
+=
+\begin{cases}
+1,&amp;n=1,\\
+0,&amp;n&gt;1.
+\end{cases}
+\tag{13}\]</span></span></p>
+<p>If <span class="math inline">\(n&gt;1\)</span> has <span class="math inline">\(r\)</span> distinct prime divisors, only its square-free divisors contribute. Choosing such a divisor means choosing a subset of those <span class="math inline">\(r\)</span> primes, so</p>
+<p><span class="math display">\[
+\sum_{d\mid n}\mu(d)
+=
+\sum_{S\subseteq [r]}(-1)^{|S|}
+=(1-1)^r
+=0.
+\]</span></p>
+<p>Thus <a href="#eq-classical-delta" class="quarto-xref">Equation&nbsp;13</a> is exactly the inverse equation <a href="#eq-mobius-inverse" class="quarto-xref">Equation&nbsp;9</a> on the divisibility poset. The usual Möbius inversion formula follows from <a href="#thm-mobius-inversion" class="quarto-xref">Theorem&nbsp;1</a>:</p>
+<div id="cor-number-theoretic-inversion" class="corollary theorem">
+<p><span class="theorem-title"><strong>Corollary 1 (Number-theoretic Möbius inversion)</strong></span> For arithmetic functions <span class="math inline">\(F\)</span> and <span class="math inline">\(G\)</span>,</p>
+<p><span class="math display">\[
+G(n)=\sum_{d\mid n}F(d)
+\]</span></p>
+<p>for every positive integer <span class="math inline">\(n\)</span> if and only if</p>
+<p><span id="eq-number-theoretic-inversion"><span class="math display">\[
+F(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)G(d).
+\tag{14}\]</span></span></p>
+</div>
+<p>As a useful example, Euler’s totient function satisfies</p>
+<p><span class="math display">\[
+n=\sum_{d\mid n}\varphi(d).
+\]</span></p>
+<p>Applying <a href="#eq-number-theoretic-inversion" class="quarto-xref">Equation&nbsp;14</a> gives</p>
+<p><span id="eq-totient-product"><span class="math display">\[
+\begin{aligned}
+\varphi(n)
+&amp;=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)d\\
+&amp;=n\sum_{k\mid n}\frac{\mu(k)}{k}\\
+&amp;=n\prod_{p\mid n}\left(1-\frac1p\right).
+\end{aligned}
+\tag{15}\]</span></span></p>
+<p>The familiar product formula is therefore an inversion statement: the identity <span class="math inline">\(n=\sum_{d\mid n}\varphi(d)\)</span> contains the totient values in cumulative form, and <span class="math inline">\(\mu\)</span> separates them again. Standard number-theory treatments develop this arithmetic version in detail <span class="citation" data-cites="niven1991"><a href="#ref-niven1991" role="doc-biblioref">[3]</a></span>. It belongs naturally beside the coordinate view of congruences in the <a href="../chinese-remainder-theorem/">Chinese remainder theorem</a> and the visible patterns of primes in <a href="../prime-spirals/">Prime Spirals</a>.</p>
+</section>
+<section id="the-combinatorial-world" class="level2">
+<h2 class="anchored" data-anchor-id="the-combinatorial-world">The combinatorial world</h2>
+<p>Now let <span class="math inline">\(P\)</span> be the subsets of a finite set, ordered by inclusion. If <span class="math inline">\(S\subseteq
+T\)</span>, then the interval <span class="math inline">\([S,T]\)</span> consists of all sets obtained by choosing some of the elements in <span class="math inline">\(T\setminus S\)</span>. It is a Boolean lattice, and its Möbius function is</p>
+<p><span id="eq-boolean-mobius"><span class="math display">\[
+\mu_P(S,T)=(-1)^{|T\setminus S|}.
+\tag{16}\]</span></span></p>
+<p>To check the inverse equation, let <span class="math inline">\(r=|T\setminus S|\)</span>. Then</p>
+<p><span class="math display">\[
+\sum_{S\subseteq U\subseteq T}\mu_P(S,U)
+=
+\sum_{k=0}^{r}\binom{r}{k}(-1)^k
+=(1-1)^r.
+\]</span></p>
+<p>This equals <span class="math inline">\(1\)</span> if <span class="math inline">\(S=T\)</span> and <span class="math inline">\(0\)</span> otherwise, exactly as <a href="#eq-mobius-inverse" class="quarto-xref">Equation&nbsp;9</a> requires.</p>
+<p>The poset theorem now says that</p>
+<p><span id="eq-subset-inversion"><span class="math display">\[
+G(T)=\sum_{S\subseteq T}F(S)
+\quad\Longleftrightarrow\quad
+F(T)=\sum_{S\subseteq T}(-1)^{|T\setminus S|}G(S).
+\tag{17}\]</span></span></p>
+<p>These alternating signs are the algebra beneath inclusion–exclusion. To see the usual union formula directly, fix one object <span class="math inline">\(\omega\)</span> and suppose it belongs to exactly <span class="math inline">\(r\)</span> of the sets <span class="math inline">\(A_1,\ldots,A_m\)</span>. Its total coefficient on the right of <a href="#eq-inclusion-exclusion" class="quarto-xref">Equation&nbsp;1</a> is</p>
+<p><span class="math display">\[
+\sum_{k=1}^{r}(-1)^{k+1}\binom{r}{k}
+=1-(1-1)^r
+=1
+\]</span></p>
+<p>when <span class="math inline">\(r\geq1\)</span>, and <span class="math inline">\(0\)</span> when <span class="math inline">\(r=0\)</span>. Every object in the union is therefore counted once, while every object outside it is counted zero times. Summing these pointwise coefficients proves <a href="#eq-inclusion-exclusion" class="quarto-xref">Equation&nbsp;1</a>.</p>
+<p>The signs do not come from a clever correction invented specifically for overlapping sets. They are the entries of the inverse of cumulative summation on the subset lattice. This same lattice appears whenever a problem ranges over choices of features, constraints, edges, or matched pairs, which is one reason inversion repeatedly surfaces in combinatorics. It sits close to the counting questions in <a href="../permanent-vs-determinant/">Permanent vs.&nbsp;Determinant</a> and <a href="../domino-tilings/">Counting Domino Tilings</a>, even when the final algorithms look quite different.</p>
+</section>
+<section id="the-same-multiplication-wearing-two-names" class="level2">
+<h2 class="anchored" data-anchor-id="the-same-multiplication-wearing-two-names">The same multiplication wearing two names</h2>
+<p>There is an even tighter connection. On the divisibility poset, take incidence functions determined only by a ratio:</p>
+<p><span class="math display">\[
+A(m,n)=a\!\left(\frac{n}{m}\right),
+\qquad
+B(m,n)=b\!\left(\frac{n}{m}\right)
+\qquad (m\mid n).
+\]</span></p>
+<p>Their incidence-algebra convolution is</p>
+<p><span id="eq-dirichlet-from-incidence"><span class="math display">\[
+\begin{aligned}
+(A*B)(m,n)
+&amp;=\sum_{m\mid d\mid n}
+a\!\left(\frac{d}{m}\right)
+b\!\left(\frac{n}{d}\right)\\
+&amp;=\sum_{e\mid n/m}a(e)b\!\left(\frac{n/m}{e}\right).
+\end{aligned}
+\tag{18}\]</span></span></p>
+<p>The last expression is the <strong>Dirichlet convolution</strong> <span class="math inline">\((a*b)(n/m)\)</span> from number theory. So Dirichlet convolution is not merely analogous to incidence-algebra convolution. It is the ratio-dependent part of that convolution on the divisibility poset <span class="citation" data-cites="rota1964mobius"><a href="#ref-rota1964mobius" role="doc-biblioref">[1]</a></span>. The constant arithmetic function <span class="math inline">\(\mathbf{1}(n)=1\)</span> corresponds to <span class="math inline">\(\zeta\)</span>, and its Dirichlet inverse is the classical <span class="math inline">\(\mu\)</span>.</p>
+<p>This explains why the same inverse appears in both languages. The number-theory formula has not borrowed a combinatorial trick. Both are instances of one algebraic operation.</p>
+</section>
+<section id="where-the-easy-sign-pattern-stops" class="level2">
+<h2 class="anchored" data-anchor-id="where-the-easy-sign-pattern-stops">Where the easy sign pattern stops</h2>
+<p>It is tempting to leave with the rule</p>
+<blockquote class="blockquote">
+<p>Möbius coefficients alternate according to the number of levels between two elements.</p>
+</blockquote>
+<p>That rule is false for a general poset.</p>
+<p>Consider the three-element chain</p>
+<p><span class="math display">\[
+0&lt;1&lt;2.
+\]</span></p>
+<p>The recursion <a href="#eq-mobius-recursion" class="quarto-xref">Equation&nbsp;10</a> gives</p>
+<p><span class="math display">\[
+\mu_P(0,0)=1,
+\qquad
+\mu_P(0,1)=-1,
+\]</span></p>
+<p>but then</p>
+<p><span id="eq-chain-counterexample"><span class="math display">\[
+\mu_P(0,2)
+=-igl(\mu_P(0,0)+\mu_P(0,1)\bigr)
+=0,
+\tag{19}\]</span></span></p>
+<p>not <span class="math inline">\(+1\)</span>. The Boolean lattice has the clean sign <span class="math inline">\((-1)^{|T\setminus S|}\)</span> because every interval is a cube of independent binary choices. A chain has a different internal geometry, so it has different cancellation coefficients. Stanley’s treatment gives these examples directly from the recursion <span class="citation" data-cites="stanley2012"><a href="#ref-stanley2012" role="doc-biblioref">[2]</a></span>.</p>
+<p>The same geometry explains the zero caused by a repeated prime. The divisor interval <span class="math inline">\([1,4]\)</span> is the three-element chain <span class="math inline">\(1&lt;2&lt;4\)</span>, so <a href="#eq-chain-counterexample" class="quarto-xref">Equation&nbsp;19</a> gives <span class="math inline">\(\mu(4)=0\)</span>. More generally, the divisor poset of <span class="math inline">\(n=p_1^{a_1}\cdots p_r^{a_r}\)</span> is a product of chains, one for each exponent. The Möbius function factorises across a product of posets because both the zeta function and its convolution inverse factorise. Therefore a zero long-step coefficient in any one factor makes the product coefficient zero. Square-free numbers give only two-element chains and hence a subset lattice; an exponent <span class="math inline">\(a_i\geq2\)</span> introduces a longer chain and makes the corresponding long-step coefficient vanish. This is the order-theoretic reason that <span class="math inline">\(\mu(n)=0\)</span> when a prime square divides <span class="math inline">\(n\)</span>.</p>
+<p>There are two lessons here. First, <span class="math inline">\(\mu_P\)</span> is determined by the whole interval, not merely by its endpoints or their ranks. Second, the hypotheses still matter: without finite intervals and finite or suitably convergent sums, the elementary inversion theorem cannot simply be copied into an infinite setting.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>Möbius inversion reverses cumulative summation on an ordered structure.</p>
+<p>The zeta function <span class="math inline">\(\zeta\)</span> fills each point with contributions from everything below it. The Möbius function <span class="math inline">\(\mu_P\)</span> removes those contributions in exactly the combination forced by the order:</p>
+<p><span class="math display">\[
+\mu_P*\zeta=\zeta*\mu_P=\delta.
+\]</span></p>
+<p>On positive integers ordered by divisibility, this inverse becomes the familiar number-theoretic function <span class="math inline">\(\mu(n)\)</span>. On subsets ordered by inclusion, it becomes <span class="math inline">\((-1)^{|T\setminus S|}\)</span> and produces inclusion–exclusion. The formulas look different because the posets look different. The operation is the same.</p>
+<p>The alternating signs are therefore not the deepest fact. The deepest fact is that, under the finiteness conditions above, partial order turns accumulation into an invertible algebraic operation. Once we can see what lies below what, we can ask not only how to sum information, but how to recover it.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>One Möbius, Two Worlds: The Algebra Behind Inclusion–Exclusion</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/one-mobius-two-worlds/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-rota1964mobius" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">G.-C. Rota, <span>“On the foundations of combinatorial theory i. Theory of m<span>ö</span>bius functions,”</span> <em>Zeitschrift f<span class="nocase">ü</span>r Wahrscheinlichkeitstheorie und Verwandte Gebiete</em>, vol. 2, pp. 340–368, 1964, doi: <a href="https://doi.org/10.1007/BF00531932">10.1007/BF00531932</a>.</div>
+</div>
+<div id="ref-stanley2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">R. P. Stanley, <em>Enumerative combinatorics, volume 1</em>, 2nd ed. in Cambridge studies in advanced mathematics. Cambridge University Press, 2012.</div>
+</div>
+<div id="ref-niven1991" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">I. Niven, H. S. Zuckerman, and H. L. Montgomery, <em>An introduction to the theory of numbers</em>, 5th ed. John Wiley &amp; Sons, 1991.</div>
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/terryfxh\.github\.io\/math-notes");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "One Möbius, Two Worlds: The Algebra Behind Inclusion–Exclusion"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "Why the Möbius function from number theory and the alternating signs of inclusion–exclusion are the same inverse operation on two different partially ordered sets."</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-08-06</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [pure, number-theory, combinatorics]</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> ../../references.bib</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">canonical-url:</span><span class="co"> true</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="an">draft:</span><span class="co"> false</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>::: {.epigraph}</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>"Mathematics is the art of giving the same name to different things."</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Henri Poincaré, *Science and Method*, "The Future of Mathematics"</span><span class="co">]</span>{.attribution}</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>Number theory has a small, sharp-edged function called the **Möbius function**:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>\mu(n)=</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>\begin{cases}</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>1, &amp; n=1,<span class="sc">\\</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>(-1)^r, &amp; n \text{ is a product of } r \text{ distinct primes},<span class="sc">\\</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>0, &amp; n \text{ is divisible by the square of a prime}.</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>\end{cases}</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Thus</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>\mu(1)=1,\quad \mu(2)=-1,\quad \mu(6)=1,\quad \mu(12)=0.</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>Combinatorics has another familiar pattern. To count a union, we add the sizes</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>of individual sets, subtract pairwise intersections, add triple intersections,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>and continue with alternating signs:</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>\left|\bigcup_{i=1}^{m} A_i\right|</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>\sum_{\varnothing\ne J\subseteq <span class="co">[</span><span class="ot">m</span><span class="co">]</span>}</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>(-1)^{|J|+1}</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>\left|\bigcap_{j\in J} A_j\right|.</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>$$ {#eq-inclusion-exclusion}</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>One formula talks about prime factors. The other talks about overlapping sets.</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>They look as if they merely happen to share some plus and minus signs.</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>They do not.</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>Both solve the same problem: a quantity has been replaced by the sum of</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>everything below it, and we want to recover the original quantity. The Möbius</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>function is the device that removes those accumulated echoes. Number theory and</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>inclusion–exclusion are two settings in which the device becomes especially</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>concrete.</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>The common structure is a partially ordered set. Once that structure is</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>visible, two formulas become one theorem.</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="fu">## Four objects, viewed twice</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>Begin with the divisors of $6$:</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>1,\quad 2,\quad 3,\quad 6.</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>Order them by divisibility. The number $1$ lies below everything, $2$ and $3$</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>lie below $6$, and neither $2$ nor $3$ lies below the other.</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>Now take the subsets of a two-element set $<span class="sc">\{</span>p,q<span class="sc">\}</span>$:</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>\varnothing,\quad <span class="sc">\{</span>p<span class="sc">\}</span>,\quad <span class="sc">\{</span>q<span class="sc">\}</span>,\quad <span class="sc">\{</span>p,q<span class="sc">\}</span>,</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>ordered by inclusion. These four objects have exactly the same shape:</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>1\longleftrightarrow\varnothing,</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>\qquad</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>2\longleftrightarrow<span class="sc">\{</span>p<span class="sc">\}</span>,</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>\qquad</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>3\longleftrightarrow<span class="sc">\{</span>q<span class="sc">\}</span>,</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>\qquad</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>6\longleftrightarrow<span class="sc">\{</span>p,q<span class="sc">\}</span>.</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>$$ {#eq-four-object-dictionary}</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>Multiplying by a new prime and adding a new element play the same structural</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>role. This is our first bridge between the two worlds.</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>Put a value $f(d)$ at each divisor. Suppose that we can see only the cumulative</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>value</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>g(n)=\sum_{d\mid n} f(d).</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>$$ {#eq-divisor-cumulative}</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>For the four divisors of $6$, this says</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>g(1)&amp;=f(1),<span class="sc">\\</span></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>g(2)&amp;=f(1)+f(2),<span class="sc">\\</span></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>g(3)&amp;=f(1)+f(3),<span class="sc">\\</span></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>g(6)&amp;=f(1)+f(2)+f(3)+f(6).</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>The last line has mixed together every value below $6$. But the first three</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>lines tell us how to unmix it:</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>f(6)=g(6)-g(2)-g(3)+g(1).</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>$$ {#eq-six-inversion}</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>The signs are $+,-,-,+$. They are the same signs that appear when we correct</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>for two overlapping sets. They are also</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>\mu(6)=1,\qquad \mu(3)=-1,\qquad \mu(2)=-1,\qquad \mu(1)=1,</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>written in the order required by the inversion. The coincidence is already</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>complete in this tiny example. What remains is to identify the mechanism.</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="fu">## A machine that sums everything below</span></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>A **partially ordered set**, or **poset**, is a set $P$ with a relation $\leq$</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>that is reflexive, antisymmetric, and transitive. Subset inclusion and integer</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>divisibility are both partial orders.</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>For now, assume that $P$ is finite. If $f$ assigns a number to every element of</span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>$P$, define its cumulative version by</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>g(x)=\sum_{y\leq x} f(y).</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>$$ {#eq-poset-cumulative}</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>This operation replaces the value at $x$ by the total of all values at or below</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>$x$. It forgets where each contribution originally came from.</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>For the divisor poset $1,2,3,6$, write the values as a column in that order.</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>Then @eq-poset-cumulative is ordinary matrix multiplication:</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>g(1)<span class="sc">\\</span> g(2)<span class="sc">\\</span> g(3)<span class="sc">\\</span> g(6)</span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>\underbrace{</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>1&amp;0&amp;0&amp;0<span class="sc">\\</span></span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>1&amp;1&amp;0&amp;0<span class="sc">\\</span></span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>1&amp;0&amp;1&amp;0<span class="sc">\\</span></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>1&amp;1&amp;1&amp;1</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}}_{Z}</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>f(1)<span class="sc">\\</span> f(2)<span class="sc">\\</span> f(3)<span class="sc">\\</span> f(6)</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}.</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>$$ {#eq-zeta-matrix}</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>The matrix $Z$ records the order relation: its entry in row $x$, column $y$ is</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>$1$ exactly when $y\leq x$. With the elements arranged from lower to higher,</span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>it is triangular with $1$s on the diagonal. It is therefore invertible, and</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>Z^{-1}=</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>1&amp;0&amp;0&amp;0<span class="sc">\\</span></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>-1&amp;1&amp;0&amp;0<span class="sc">\\</span></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>-1&amp;0&amp;1&amp;0<span class="sc">\\</span></span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>1&amp;-1&amp;-1&amp;1</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}.</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>$$ {#eq-mobius-matrix}</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>The last row of $Z^{-1}$ is precisely @eq-six-inversion. In a finite poset,</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>Möbius inversion is literally matrix inversion. The language of incidence</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>algebras packages that observation so that it works without choosing an</span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>ordering of the elements. Indeed, every finite poset can be listed with lower</span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>elements first; its cumulative-sum matrix is then triangular with $1$s on the</span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>diagonal, so the inverse always exists.</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a><span class="fu">## The inverse hidden inside the order</span></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>For comparable elements $x\leq z$, consider functions $\alpha(x,z)$ defined on</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>the intervals of $P$. Their **convolution** is</span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>(\alpha*\beta)(x,z)</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>\sum_{x\leq y\leq z}</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>\alpha(x,y)\beta(y,z).</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>$$ {#eq-incidence-convolution}</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>This multiplication belongs to the **incidence algebra** of the poset. Two</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>particular functions matter:</span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>\zeta(x,z)=1 \quad (x\leq z)</span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>and</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>\delta(x,z)=</span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>\begin{cases}</span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>1,&amp;x=z,<span class="sc">\\</span></span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>0,&amp;x<span class="dt">&lt;</span><span class="kw">z.</span></span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">end</span><span class="er">{</span><span class="ot">cases</span><span class="er">}</span></span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a><span class="ot">The zeta function </span><span class="er">$\</span><span class="ot">zeta</span><span class="er">$</span><span class="ot"> performs cumulative summation. The delta function</span></span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a><span class="er">$\</span><span class="ot">delta</span><span class="er">$</span><span class="ot"> is the identity for convolution. The **Möbius function of the poset**</span></span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a><span class="ot">is defined as the inverse of </span><span class="er">$\</span><span class="ot">zeta</span><span class="er">$</span><span class="ot">:</span></span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">mu_P*</span><span class="er">\</span><span class="ot">zeta</span><span class="op">=</span><span class="st">\zeta*\mu_P</span><span class="er">=</span><span class="st">\delta.</span></span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span><span class="ot"> </span><span class="er">{</span><span class="ot">#eq-mobius-inverse</span><span class="er">}</span></span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a><span class="ot">This one equation is the centre of the article. It says: first accumulate</span><span class="er">,</span><span class="ot"> then</span></span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a><span class="ot">apply </span><span class="er">$\</span><span class="ot">mu_P</span><span class="er">$,</span><span class="ot"> and every contribution from a lower element cancels except the</span></span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a><span class="ot">one that started at the point we are recovering.</span></span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a><span class="ot">The inverse can be computed without inverting a matrix. From</span></span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a><span class="er">$</span><span class="ot">(</span><span class="er">\</span><span class="ot">mu_P*</span><span class="er">\</span><span class="ot">zeta)(x</span><span class="er">,</span><span class="ot">z)</span><span class="op">=</span><span class="st">0$</span><span class="ot"> when </span><span class="er">$</span><span class="ot">x</span><span class="er">&lt;</span><span class="ot">z</span><span class="er">$,</span><span class="ot"> we get</span></span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">mu_P(x</span><span class="er">,</span><span class="ot">x)</span><span class="op">=</span><span class="st">1,</span></span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">qquad</span></span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">mu_P(x</span><span class="er">,</span><span class="ot">z)</span></span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a><span class="op">=</span><span class="st">-</span></span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">sum_</span><span class="er">{</span><span class="ot">x</span><span class="er">\</span><span class="ot">leq y</span><span class="er">&lt;</span><span class="ot">z</span><span class="er">}\</span><span class="ot">mu_P(x</span><span class="er">,</span><span class="ot">y).</span></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span><span class="ot"> </span><span class="er">{</span><span class="ot">#eq-mobius-recursion</span><span class="er">}</span></span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a><span class="ot">So every coefficient is forced by the interval below it. The Möbius function is</span></span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a><span class="ot">not an arbitrary choice of signs. It is the unique cancellation rule encoded by</span></span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a><span class="ot">the order itself. This incidence-algebra viewpoint was developed systematically</span></span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a><span class="ot">by Gian-Carlo Rota and is now standard in enumerative combinatorics</span></span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span><span class="er">@</span><span class="ot">rota1964mobius</span><span class="er">;</span><span class="ot"> </span><span class="er">@</span><span class="ot">stanley2012].</span></span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a><span class="ot">## Möbius inversion</span></span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a><span class="ot">We can now state the common theorem.</span></span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a><span class="ot">::: </span><span class="er">{</span><span class="ot">#thm-mobius-inversion </span><span class="er">.</span><span class="ot">theorem</span><span class="er">}</span></span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a><span class="ot">## Möbius inversion on a finite poset</span></span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a><span class="ot">Let </span><span class="er">$</span><span class="ot">P</span><span class="er">$</span><span class="ot"> be a finite poset</span><span class="er">,</span><span class="ot"> and let </span><span class="er">$</span><span class="ot">f</span><span class="er">,</span><span class="ot">g:P</span><span class="er">\</span><span class="ot">to</span><span class="er">\</span><span class="ot">mathbb</span><span class="er">{</span><span class="ot">C</span><span class="er">}$.</span><span class="ot"> If</span></span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a><span class="ot">g(x)</span><span class="op">=</span><span class="st">\sum_{y\leq</span><span class="ot"> x</span><span class="er">}</span><span class="ot"> f(y)</span><span class="er">,</span></span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a><span class="ot">then</span></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a><span class="ot">f(x)</span><span class="op">=</span><span class="st">\sum_{y\leq</span><span class="ot"> x</span><span class="er">}\</span><span class="ot">mu_P(y</span><span class="er">,</span><span class="ot">x)g(y).</span></span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span><span class="ot"> </span><span class="er">{</span><span class="ot">#eq-poset-inversion</span><span class="er">}</span></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a><span class="ot">:::</span></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a><span class="ot">::: </span><span class="er">{.</span><span class="ot">proof</span><span class="er">}</span></span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a><span class="ot">Substitute the definition of </span><span class="er">$</span><span class="ot">g</span><span class="er">$</span><span class="ot"> into the proposed inverse and reverse the two</span></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a><span class="ot">finite sums:</span></span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">begin</span><span class="er">{</span><span class="ot">aligned</span><span class="er">}</span></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">sum_</span><span class="er">{</span><span class="ot">y</span><span class="er">\</span><span class="ot">leq x</span><span class="er">}\</span><span class="ot">mu_P(y</span><span class="er">,</span><span class="ot">x)g(y)</span></span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a><span class="er">&amp;</span><span class="op">=</span></span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a><span class="st">\sum_{y\leq</span><span class="ot"> x</span><span class="er">}\</span><span class="ot">mu_P(y</span><span class="er">,</span><span class="ot">x)</span></span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">sum_</span><span class="er">{</span><span class="ot">z</span><span class="er">\</span><span class="ot">leq y</span><span class="er">}</span><span class="ot">f(z)</span><span class="er">\\</span></span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a><span class="er">&amp;</span><span class="op">=</span></span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a><span class="st">\sum_{z\leq</span><span class="ot"> x</span><span class="er">}</span><span class="ot">f(z)</span></span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">sum_</span><span class="er">{</span><span class="ot">z</span><span class="er">\</span><span class="ot">leq y</span><span class="er">\</span><span class="ot">leq x</span><span class="er">}\</span><span class="ot">mu_P(y</span><span class="er">,</span><span class="ot">x).</span></span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">end</span><span class="er">{</span><span class="ot">aligned</span><span class="er">}</span></span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a><span class="ot">The inner sum is</span></span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">sum_</span><span class="er">{</span><span class="ot">z</span><span class="er">\</span><span class="ot">leq y</span><span class="er">\</span><span class="ot">leq x</span><span class="er">}\</span><span class="ot">zeta(z</span><span class="er">,</span><span class="ot">y)</span><span class="er">\</span><span class="ot">mu_P(y</span><span class="er">,</span><span class="ot">x)</span></span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a><span class="op">=</span><span class="st">(\zeta*\mu_P)(z,x)</span></span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a><span class="op">=</span><span class="st">\delta(z,x)</span></span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a><span class="ot">by </span><span class="er">@</span><span class="ot">eq-mobius-inverse. Every term vanishes except the one with </span><span class="er">$</span><span class="ot">z</span><span class="op">=</span><span class="st">x$,</span><span class="ot"> leaving</span></span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a><span class="er">$</span><span class="ot">f(x)</span><span class="er">$.</span></span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a><span class="ot">:::</span></span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a><span class="ot">The proof is short because the real work has already been placed in the right</span></span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a><span class="ot">definition. Möbius inversion is simply the statement that </span><span class="er">$\</span><span class="ot">mu_P</span><span class="er">$</span><span class="ot"> undoes</span></span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a><span class="er">$\</span><span class="ot">zeta</span><span class="er">$.</span></span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a><span class="ot">The finiteness assumption is doing genuine work: it makes every displayed sum</span></span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a><span class="ot">finite and allows us to change the order of summation without an analytic</span></span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a><span class="ot">argument. The theory extends to **locally finite** posets</span><span class="er">,</span><span class="ot"> in which every</span></span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a><span class="ot">interval </span><span class="er">$</span><span class="ot">[x</span><span class="er">,</span><span class="ot">z]</span><span class="er">$</span><span class="ot"> is finite. For the lower-sum form in </span><span class="er">@</span><span class="ot">eq-poset-cumulative</span><span class="er">,</span><span class="ot"> we</span></span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a><span class="ot">must additionally know that the relevant principal ideals are finite</span><span class="er">,</span><span class="ot"> or impose</span></span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a><span class="ot">finite-support or convergence conditions. An arbitrary infinite sum is not</span></span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a><span class="ot">licensed merely by writing the same symbols.</span></span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a><span class="ot">## The number-theoretic world</span></span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a><span class="ot">Take the positive integers ordered by divisibility. Every interval</span></span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a><span class="ot">[d</span><span class="er">,</span><span class="ot">n]</span><span class="op">=</span><span class="st">\{k:d\mid</span><span class="ot"> k</span><span class="er">\</span><span class="ot">text</span><span class="er">{</span><span class="ot"> and </span><span class="er">}</span><span class="ot">k</span><span class="er">\</span><span class="ot">mid n</span><span class="er">\}</span></span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a><span class="ot">is finite</span><span class="er">,</span><span class="ot"> so this is a locally finite poset. Dividing every element of the</span></span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a><span class="ot">interval by </span><span class="er">$</span><span class="ot">d</span><span class="er">$</span><span class="ot"> identifies </span><span class="er">$</span><span class="ot">[d</span><span class="er">,</span><span class="ot">n]</span><span class="er">$</span><span class="ot"> with the divisors of </span><span class="er">$</span><span class="ot">n</span><span class="er">/</span><span class="ot">d</span><span class="er">$.</span><span class="ot"> Its poset Möbius</span></span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a><span class="ot">function is</span></span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">mu_P(d</span><span class="er">,</span><span class="ot">n)</span><span class="op">=</span><span class="st">\mu\!\left(\frac{n}{d}\right),</span></span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span><span class="ot"> </span><span class="er">{</span><span class="ot">#eq-divisibility-mobius</span><span class="er">}</span></span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a><span class="ot">where the </span><span class="er">$\</span><span class="ot">mu</span><span class="er">$</span><span class="ot"> on the right is the classical number-theoretic function.</span></span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a><span class="ot">Why does the classical definition give the correct inverse</span><span class="er">?</span><span class="ot"> Its decisive</span></span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a><span class="ot">identity is</span></span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a><span class="er">$$</span></span>
+<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a><span class="er">\</span><span class="ot">sum_</span><span class="er">{</span><span class="ot">d</span><span class="er">\</span><span class="ot">mid n</span><span class="er">}\</span><span class="ot">mu(d)</span></span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a><span class="op">=</span></span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a><span class="st">\begin{cases}</span></span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a><span class="er">1,&amp;</span><span class="ot">n</span><span class="op">=</span><span class="st">1,\\</span></span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a><span class="er">0,&amp;</span><span class="ot">n</span><span class="dt">&gt;</span>1.</span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>\end{cases}</span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>$$ {#eq-classical-delta}</span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>If $n&gt;1$ has $r$ distinct prime divisors, only its square-free divisors</span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a>contribute. Choosing such a divisor means choosing a subset of those $r$</span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>primes, so</span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a>\sum_{d\mid n}\mu(d)</span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>\sum_{S\subseteq <span class="co">[</span><span class="ot">r</span><span class="co">]</span>}(-1)^{|S|}</span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>=(1-1)^r</span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>=0.</span>
+<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>Thus @eq-classical-delta is exactly the inverse equation</span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>@eq-mobius-inverse on the divisibility poset. The usual Möbius inversion formula</span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>follows from @thm-mobius-inversion:</span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>::: {#cor-number-theoretic-inversion .corollary}</span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a><span class="fu">## Number-theoretic Möbius inversion</span></span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a>For arithmetic functions $F$ and $G$,</span>
+<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a>G(n)=\sum_{d\mid n}F(d)</span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a>for every positive integer $n$ if and only if</span>
+<span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a>F(n)=\sum_{d\mid n}\mu<span class="sc">\!</span>\left(\frac{n}{d}\right)G(d).</span>
+<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a>$$ {#eq-number-theoretic-inversion}</span>
+<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a>As a useful example, Euler's totient function satisfies</span>
+<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a>n=\sum_{d\mid n}\varphi(d).</span>
+<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-370"><a href="#cb1-370" aria-hidden="true" tabindex="-1"></a>Applying @eq-number-theoretic-inversion gives</span>
+<span id="cb1-371"><a href="#cb1-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-372"><a href="#cb1-372" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-373"><a href="#cb1-373" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-374"><a href="#cb1-374" aria-hidden="true" tabindex="-1"></a>\varphi(n)</span>
+<span id="cb1-375"><a href="#cb1-375" aria-hidden="true" tabindex="-1"></a>&amp;=\sum_{d\mid n}\mu<span class="sc">\!</span>\left(\frac{n}{d}\right)d<span class="sc">\\</span></span>
+<span id="cb1-376"><a href="#cb1-376" aria-hidden="true" tabindex="-1"></a>&amp;=n\sum_{k\mid n}\frac{\mu(k)}{k}<span class="sc">\\</span></span>
+<span id="cb1-377"><a href="#cb1-377" aria-hidden="true" tabindex="-1"></a>&amp;=n\prod_{p\mid n}\left(1-\frac1p\right).</span>
+<span id="cb1-378"><a href="#cb1-378" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-379"><a href="#cb1-379" aria-hidden="true" tabindex="-1"></a>$$ {#eq-totient-product}</span>
+<span id="cb1-380"><a href="#cb1-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-381"><a href="#cb1-381" aria-hidden="true" tabindex="-1"></a>The familiar product formula is therefore an inversion statement: the identity</span>
+<span id="cb1-382"><a href="#cb1-382" aria-hidden="true" tabindex="-1"></a>$n=\sum_{d\mid n}\varphi(d)$ contains the totient values in cumulative form,</span>
+<span id="cb1-383"><a href="#cb1-383" aria-hidden="true" tabindex="-1"></a>and $\mu$ separates them again. Standard number-theory treatments develop this</span>
+<span id="cb1-384"><a href="#cb1-384" aria-hidden="true" tabindex="-1"></a>arithmetic version in detail <span class="co">[</span><span class="ot">@niven1991</span><span class="co">]</span>. It belongs naturally beside the</span>
+<span id="cb1-385"><a href="#cb1-385" aria-hidden="true" tabindex="-1"></a>coordinate view of congruences in the <span class="co">[</span><span class="ot">Chinese remainder theorem</span><span class="co">](../chinese-remainder-theorem/)</span></span>
+<span id="cb1-386"><a href="#cb1-386" aria-hidden="true" tabindex="-1"></a>and the visible patterns of primes in <span class="co">[</span><span class="ot">Prime Spirals</span><span class="co">](../prime-spirals/)</span>.</span>
+<span id="cb1-387"><a href="#cb1-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-388"><a href="#cb1-388" aria-hidden="true" tabindex="-1"></a><span class="fu">## The combinatorial world</span></span>
+<span id="cb1-389"><a href="#cb1-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-390"><a href="#cb1-390" aria-hidden="true" tabindex="-1"></a>Now let $P$ be the subsets of a finite set, ordered by inclusion. If $S\subseteq</span>
+<span id="cb1-391"><a href="#cb1-391" aria-hidden="true" tabindex="-1"></a>T$, then the interval $<span class="co">[</span><span class="ot">S,T</span><span class="co">]</span>$ consists of all sets obtained by choosing some of</span>
+<span id="cb1-392"><a href="#cb1-392" aria-hidden="true" tabindex="-1"></a>the elements in $T\setminus S$. It is a Boolean lattice, and its Möbius function</span>
+<span id="cb1-393"><a href="#cb1-393" aria-hidden="true" tabindex="-1"></a>is</span>
+<span id="cb1-394"><a href="#cb1-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-395"><a href="#cb1-395" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-396"><a href="#cb1-396" aria-hidden="true" tabindex="-1"></a>\mu_P(S,T)=(-1)^{|T\setminus S|}.</span>
+<span id="cb1-397"><a href="#cb1-397" aria-hidden="true" tabindex="-1"></a>$$ {#eq-boolean-mobius}</span>
+<span id="cb1-398"><a href="#cb1-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-399"><a href="#cb1-399" aria-hidden="true" tabindex="-1"></a>To check the inverse equation, let $r=|T\setminus S|$. Then</span>
+<span id="cb1-400"><a href="#cb1-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-401"><a href="#cb1-401" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-402"><a href="#cb1-402" aria-hidden="true" tabindex="-1"></a>\sum_{S\subseteq U\subseteq T}\mu_P(S,U)</span>
+<span id="cb1-403"><a href="#cb1-403" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb1-404"><a href="#cb1-404" aria-hidden="true" tabindex="-1"></a>\sum_{k=0}^{r}\binom{r}{k}(-1)^k</span>
+<span id="cb1-405"><a href="#cb1-405" aria-hidden="true" tabindex="-1"></a>=(1-1)^r.</span>
+<span id="cb1-406"><a href="#cb1-406" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-407"><a href="#cb1-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-408"><a href="#cb1-408" aria-hidden="true" tabindex="-1"></a>This equals $1$ if $S=T$ and $0$ otherwise, exactly as</span>
+<span id="cb1-409"><a href="#cb1-409" aria-hidden="true" tabindex="-1"></a>@eq-mobius-inverse requires.</span>
+<span id="cb1-410"><a href="#cb1-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-411"><a href="#cb1-411" aria-hidden="true" tabindex="-1"></a>The poset theorem now says that</span>
+<span id="cb1-412"><a href="#cb1-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-413"><a href="#cb1-413" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-414"><a href="#cb1-414" aria-hidden="true" tabindex="-1"></a>G(T)=\sum_{S\subseteq T}F(S)</span>
+<span id="cb1-415"><a href="#cb1-415" aria-hidden="true" tabindex="-1"></a>\quad\Longleftrightarrow\quad</span>
+<span id="cb1-416"><a href="#cb1-416" aria-hidden="true" tabindex="-1"></a>F(T)=\sum_{S\subseteq T}(-1)^{|T\setminus S|}G(S).</span>
+<span id="cb1-417"><a href="#cb1-417" aria-hidden="true" tabindex="-1"></a>$$ {#eq-subset-inversion}</span>
+<span id="cb1-418"><a href="#cb1-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-419"><a href="#cb1-419" aria-hidden="true" tabindex="-1"></a>These alternating signs are the algebra beneath inclusion–exclusion. To see the</span>
+<span id="cb1-420"><a href="#cb1-420" aria-hidden="true" tabindex="-1"></a>usual union formula directly, fix one object $\omega$ and suppose it belongs to</span>
+<span id="cb1-421"><a href="#cb1-421" aria-hidden="true" tabindex="-1"></a>exactly $r$ of the sets $A_1,\ldots,A_m$. Its total coefficient on the right of</span>
+<span id="cb1-422"><a href="#cb1-422" aria-hidden="true" tabindex="-1"></a>@eq-inclusion-exclusion is</span>
+<span id="cb1-423"><a href="#cb1-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-424"><a href="#cb1-424" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-425"><a href="#cb1-425" aria-hidden="true" tabindex="-1"></a>\sum_{k=1}^{r}(-1)^{k+1}\binom{r}{k}</span>
+<span id="cb1-426"><a href="#cb1-426" aria-hidden="true" tabindex="-1"></a>=1-(1-1)^r</span>
+<span id="cb1-427"><a href="#cb1-427" aria-hidden="true" tabindex="-1"></a>=1</span>
+<span id="cb1-428"><a href="#cb1-428" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-429"><a href="#cb1-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-430"><a href="#cb1-430" aria-hidden="true" tabindex="-1"></a>when $r\geq1$, and $0$ when $r=0$. Every object in the union is therefore</span>
+<span id="cb1-431"><a href="#cb1-431" aria-hidden="true" tabindex="-1"></a>counted once, while every object outside it is counted zero times. Summing these</span>
+<span id="cb1-432"><a href="#cb1-432" aria-hidden="true" tabindex="-1"></a>pointwise coefficients proves @eq-inclusion-exclusion.</span>
+<span id="cb1-433"><a href="#cb1-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-434"><a href="#cb1-434" aria-hidden="true" tabindex="-1"></a>The signs do not come from a clever correction invented specifically for</span>
+<span id="cb1-435"><a href="#cb1-435" aria-hidden="true" tabindex="-1"></a>overlapping sets. They are the entries of the inverse of cumulative summation on</span>
+<span id="cb1-436"><a href="#cb1-436" aria-hidden="true" tabindex="-1"></a>the subset lattice. This same lattice appears whenever a problem ranges over</span>
+<span id="cb1-437"><a href="#cb1-437" aria-hidden="true" tabindex="-1"></a>choices of features, constraints, edges, or matched pairs, which is one reason</span>
+<span id="cb1-438"><a href="#cb1-438" aria-hidden="true" tabindex="-1"></a>inversion repeatedly surfaces in combinatorics. It sits close to the counting</span>
+<span id="cb1-439"><a href="#cb1-439" aria-hidden="true" tabindex="-1"></a>questions in <span class="co">[</span><span class="ot">Permanent vs. Determinant</span><span class="co">](../permanent-vs-determinant/)</span> and</span>
+<span id="cb1-440"><a href="#cb1-440" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Counting Domino Tilings</span><span class="co">](../domino-tilings/)</span>, even when the final algorithms</span>
+<span id="cb1-441"><a href="#cb1-441" aria-hidden="true" tabindex="-1"></a>look quite different.</span>
+<span id="cb1-442"><a href="#cb1-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-443"><a href="#cb1-443" aria-hidden="true" tabindex="-1"></a><span class="fu">## The same multiplication wearing two names</span></span>
+<span id="cb1-444"><a href="#cb1-444" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-445"><a href="#cb1-445" aria-hidden="true" tabindex="-1"></a>There is an even tighter connection. On the divisibility poset, take incidence</span>
+<span id="cb1-446"><a href="#cb1-446" aria-hidden="true" tabindex="-1"></a>functions determined only by a ratio:</span>
+<span id="cb1-447"><a href="#cb1-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-448"><a href="#cb1-448" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-449"><a href="#cb1-449" aria-hidden="true" tabindex="-1"></a>A(m,n)=a<span class="sc">\!</span>\left(\frac{n}{m}\right),</span>
+<span id="cb1-450"><a href="#cb1-450" aria-hidden="true" tabindex="-1"></a>\qquad</span>
+<span id="cb1-451"><a href="#cb1-451" aria-hidden="true" tabindex="-1"></a>B(m,n)=b<span class="sc">\!</span>\left(\frac{n}{m}\right)</span>
+<span id="cb1-452"><a href="#cb1-452" aria-hidden="true" tabindex="-1"></a>\qquad (m\mid n).</span>
+<span id="cb1-453"><a href="#cb1-453" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-454"><a href="#cb1-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-455"><a href="#cb1-455" aria-hidden="true" tabindex="-1"></a>Their incidence-algebra convolution is</span>
+<span id="cb1-456"><a href="#cb1-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-457"><a href="#cb1-457" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-458"><a href="#cb1-458" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-459"><a href="#cb1-459" aria-hidden="true" tabindex="-1"></a>(A*B)(m,n)</span>
+<span id="cb1-460"><a href="#cb1-460" aria-hidden="true" tabindex="-1"></a>&amp;=\sum_{m\mid d\mid n}</span>
+<span id="cb1-461"><a href="#cb1-461" aria-hidden="true" tabindex="-1"></a>a<span class="sc">\!</span>\left(\frac{d}{m}\right)</span>
+<span id="cb1-462"><a href="#cb1-462" aria-hidden="true" tabindex="-1"></a>b<span class="sc">\!</span>\left(\frac{n}{d}\right)<span class="sc">\\</span></span>
+<span id="cb1-463"><a href="#cb1-463" aria-hidden="true" tabindex="-1"></a>&amp;=\sum_{e\mid n/m}a(e)b<span class="sc">\!</span>\left(\frac{n/m}{e}\right).</span>
+<span id="cb1-464"><a href="#cb1-464" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-465"><a href="#cb1-465" aria-hidden="true" tabindex="-1"></a>$$ {#eq-dirichlet-from-incidence}</span>
+<span id="cb1-466"><a href="#cb1-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-467"><a href="#cb1-467" aria-hidden="true" tabindex="-1"></a>The last expression is the **Dirichlet convolution** $(a*b)(n/m)$ from number</span>
+<span id="cb1-468"><a href="#cb1-468" aria-hidden="true" tabindex="-1"></a>theory. So Dirichlet convolution is not merely analogous to incidence-algebra</span>
+<span id="cb1-469"><a href="#cb1-469" aria-hidden="true" tabindex="-1"></a>convolution. It is the ratio-dependent part of that convolution on the</span>
+<span id="cb1-470"><a href="#cb1-470" aria-hidden="true" tabindex="-1"></a>divisibility poset <span class="co">[</span><span class="ot">@rota1964mobius</span><span class="co">]</span>. The constant arithmetic function</span>
+<span id="cb1-471"><a href="#cb1-471" aria-hidden="true" tabindex="-1"></a>$\mathbf{1}(n)=1$ corresponds to $\zeta$, and its Dirichlet inverse is the</span>
+<span id="cb1-472"><a href="#cb1-472" aria-hidden="true" tabindex="-1"></a>classical $\mu$.</span>
+<span id="cb1-473"><a href="#cb1-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-474"><a href="#cb1-474" aria-hidden="true" tabindex="-1"></a>This explains why the same inverse appears in both languages. The number-theory</span>
+<span id="cb1-475"><a href="#cb1-475" aria-hidden="true" tabindex="-1"></a>formula has not borrowed a combinatorial trick. Both are instances of one</span>
+<span id="cb1-476"><a href="#cb1-476" aria-hidden="true" tabindex="-1"></a>algebraic operation.</span>
+<span id="cb1-477"><a href="#cb1-477" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-478"><a href="#cb1-478" aria-hidden="true" tabindex="-1"></a><span class="fu">## Where the easy sign pattern stops</span></span>
+<span id="cb1-479"><a href="#cb1-479" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-480"><a href="#cb1-480" aria-hidden="true" tabindex="-1"></a>It is tempting to leave with the rule</span>
+<span id="cb1-481"><a href="#cb1-481" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-482"><a href="#cb1-482" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Möbius coefficients alternate according to the number of levels between two</span></span>
+<span id="cb1-483"><a href="#cb1-483" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; elements.</span></span>
+<span id="cb1-484"><a href="#cb1-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-485"><a href="#cb1-485" aria-hidden="true" tabindex="-1"></a>That rule is false for a general poset.</span>
+<span id="cb1-486"><a href="#cb1-486" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-487"><a href="#cb1-487" aria-hidden="true" tabindex="-1"></a>Consider the three-element chain</span>
+<span id="cb1-488"><a href="#cb1-488" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-489"><a href="#cb1-489" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-490"><a href="#cb1-490" aria-hidden="true" tabindex="-1"></a>0&lt;1&lt;2.</span>
+<span id="cb1-491"><a href="#cb1-491" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-492"><a href="#cb1-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-493"><a href="#cb1-493" aria-hidden="true" tabindex="-1"></a>The recursion @eq-mobius-recursion gives</span>
+<span id="cb1-494"><a href="#cb1-494" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-495"><a href="#cb1-495" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-496"><a href="#cb1-496" aria-hidden="true" tabindex="-1"></a>\mu_P(0,0)=1,</span>
+<span id="cb1-497"><a href="#cb1-497" aria-hidden="true" tabindex="-1"></a>\qquad</span>
+<span id="cb1-498"><a href="#cb1-498" aria-hidden="true" tabindex="-1"></a>\mu_P(0,1)=-1,</span>
+<span id="cb1-499"><a href="#cb1-499" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-500"><a href="#cb1-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-501"><a href="#cb1-501" aria-hidden="true" tabindex="-1"></a>but then</span>
+<span id="cb1-502"><a href="#cb1-502" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-503"><a href="#cb1-503" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-504"><a href="#cb1-504" aria-hidden="true" tabindex="-1"></a>\mu_P(0,2)</span>
+<span id="cb1-505"><a href="#cb1-505" aria-hidden="true" tabindex="-1"></a>=-igl(\mu_P(0,0)+\mu_P(0,1)\bigr)</span>
+<span id="cb1-506"><a href="#cb1-506" aria-hidden="true" tabindex="-1"></a>=0,</span>
+<span id="cb1-507"><a href="#cb1-507" aria-hidden="true" tabindex="-1"></a>$$ {#eq-chain-counterexample}</span>
+<span id="cb1-508"><a href="#cb1-508" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-509"><a href="#cb1-509" aria-hidden="true" tabindex="-1"></a>not $+1$. The Boolean lattice has the clean sign</span>
+<span id="cb1-510"><a href="#cb1-510" aria-hidden="true" tabindex="-1"></a>$(-1)^{|T\setminus S|}$ because every interval is a cube of independent binary</span>
+<span id="cb1-511"><a href="#cb1-511" aria-hidden="true" tabindex="-1"></a>choices. A chain has a different internal geometry, so it has different</span>
+<span id="cb1-512"><a href="#cb1-512" aria-hidden="true" tabindex="-1"></a>cancellation coefficients. Stanley's treatment gives these examples directly</span>
+<span id="cb1-513"><a href="#cb1-513" aria-hidden="true" tabindex="-1"></a>from the recursion <span class="co">[</span><span class="ot">@stanley2012</span><span class="co">]</span>.</span>
+<span id="cb1-514"><a href="#cb1-514" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-515"><a href="#cb1-515" aria-hidden="true" tabindex="-1"></a>The same geometry explains the zero caused by a repeated prime. The divisor</span>
+<span id="cb1-516"><a href="#cb1-516" aria-hidden="true" tabindex="-1"></a>interval $<span class="co">[</span><span class="ot">1,4</span><span class="co">]</span>$ is the three-element chain $1&lt;2&lt;4$, so @eq-chain-counterexample</span>
+<span id="cb1-517"><a href="#cb1-517" aria-hidden="true" tabindex="-1"></a>gives $\mu(4)=0$. More generally, the divisor poset of</span>
+<span id="cb1-518"><a href="#cb1-518" aria-hidden="true" tabindex="-1"></a>$n=p_1^{a_1}\cdots p_r^{a_r}$ is a product of chains, one for each exponent.</span>
+<span id="cb1-519"><a href="#cb1-519" aria-hidden="true" tabindex="-1"></a>The Möbius function factorises across a product of posets because both the zeta</span>
+<span id="cb1-520"><a href="#cb1-520" aria-hidden="true" tabindex="-1"></a>function and its convolution inverse factorise. Therefore a zero long-step</span>
+<span id="cb1-521"><a href="#cb1-521" aria-hidden="true" tabindex="-1"></a>coefficient in any one factor makes the product coefficient zero.</span>
+<span id="cb1-522"><a href="#cb1-522" aria-hidden="true" tabindex="-1"></a>Square-free numbers give only two-element chains and hence a subset lattice;</span>
+<span id="cb1-523"><a href="#cb1-523" aria-hidden="true" tabindex="-1"></a>an exponent $a_i\geq2$ introduces a longer chain and makes the corresponding</span>
+<span id="cb1-524"><a href="#cb1-524" aria-hidden="true" tabindex="-1"></a>long-step coefficient vanish. This is the order-theoretic reason that</span>
+<span id="cb1-525"><a href="#cb1-525" aria-hidden="true" tabindex="-1"></a>$\mu(n)=0$ when a prime square divides $n$.</span>
+<span id="cb1-526"><a href="#cb1-526" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-527"><a href="#cb1-527" aria-hidden="true" tabindex="-1"></a>There are two lessons here. First, $\mu_P$ is determined by the whole interval,</span>
+<span id="cb1-528"><a href="#cb1-528" aria-hidden="true" tabindex="-1"></a>not merely by its endpoints or their ranks. Second, the hypotheses still</span>
+<span id="cb1-529"><a href="#cb1-529" aria-hidden="true" tabindex="-1"></a>matter: without finite intervals and finite or suitably convergent sums, the</span>
+<span id="cb1-530"><a href="#cb1-530" aria-hidden="true" tabindex="-1"></a>elementary inversion theorem cannot simply be copied into an infinite setting.</span>
+<span id="cb1-531"><a href="#cb1-531" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-532"><a href="#cb1-532" aria-hidden="true" tabindex="-1"></a><span class="fu">## What to remember</span></span>
+<span id="cb1-533"><a href="#cb1-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-534"><a href="#cb1-534" aria-hidden="true" tabindex="-1"></a>Möbius inversion reverses cumulative summation on an ordered structure.</span>
+<span id="cb1-535"><a href="#cb1-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-536"><a href="#cb1-536" aria-hidden="true" tabindex="-1"></a>The zeta function $\zeta$ fills each point with contributions from everything</span>
+<span id="cb1-537"><a href="#cb1-537" aria-hidden="true" tabindex="-1"></a>below it. The Möbius function $\mu_P$ removes those contributions in exactly the</span>
+<span id="cb1-538"><a href="#cb1-538" aria-hidden="true" tabindex="-1"></a>combination forced by the order:</span>
+<span id="cb1-539"><a href="#cb1-539" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-540"><a href="#cb1-540" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-541"><a href="#cb1-541" aria-hidden="true" tabindex="-1"></a>\mu_P*\zeta=\zeta*\mu_P=\delta.</span>
+<span id="cb1-542"><a href="#cb1-542" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-543"><a href="#cb1-543" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-544"><a href="#cb1-544" aria-hidden="true" tabindex="-1"></a>On positive integers ordered by divisibility, this inverse becomes the familiar</span>
+<span id="cb1-545"><a href="#cb1-545" aria-hidden="true" tabindex="-1"></a>number-theoretic function $\mu(n)$. On subsets ordered by inclusion, it becomes</span>
+<span id="cb1-546"><a href="#cb1-546" aria-hidden="true" tabindex="-1"></a>$(-1)^{|T\setminus S|}$ and produces inclusion–exclusion. The formulas look</span>
+<span id="cb1-547"><a href="#cb1-547" aria-hidden="true" tabindex="-1"></a>different because the posets look different. The operation is the same.</span>
+<span id="cb1-548"><a href="#cb1-548" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-549"><a href="#cb1-549" aria-hidden="true" tabindex="-1"></a>The alternating signs are therefore not the deepest fact. The deepest fact is</span>
+<span id="cb1-550"><a href="#cb1-550" aria-hidden="true" tabindex="-1"></a>that, under the finiteness conditions above, partial order turns accumulation</span>
+<span id="cb1-551"><a href="#cb1-551" aria-hidden="true" tabindex="-1"></a>into an invertible algebraic operation. Once we can see what lies below what, we</span>
+<span id="cb1-552"><a href="#cb1-552" aria-hidden="true" tabindex="-1"></a>can ask not only how to sum information, but how to recover it.</span>
+<span id="cb1-553"><a href="#cb1-553" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-554"><a href="#cb1-554" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to cite</span></span>
+<span id="cb1-555"><a href="#cb1-555" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-556"><a href="#cb1-556" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Terry (2026). *One Möbius, Two Worlds: The Algebra Behind Inclusion–Exclusion*. Retrieved from </span><span class="in">`https://terryfxh.github.io/math-notes/posts/one-mobius-two-worlds/`</span><span class="at">.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Terry Fang · All rights reserved · Reproduction or republication in any form requires attribution and the author’s prior permission.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/terryfxh/math-notes/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
