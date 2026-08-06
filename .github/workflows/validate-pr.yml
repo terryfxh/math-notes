@@ -4,9 +4,16 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
+    paths:
+      - "posts/**"
+      - "_freeze/posts/**"
+      - "references.bib"
+      - "notes.qmd"
+      - "WORKLOG.md"
+      - ".github/workflows/validate-pr.yml"
 
-# Candidate code is executed only in an isolated runner. The token is read-only,
-# is not persisted into the checkout, and no repository secrets are exposed.
+# Candidate code is accepted only from the repository owner's same-repository
+# branch. It receives no secrets, no persisted credentials, and a read-only token.
 permissions:
   contents: read
 
@@ -27,8 +34,19 @@ jobs:
       PYTHONHASHSEED: "0"
 
     steps:
+      - name: Reject untrusted pull requests
+        env:
+          HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          REPOSITORY: ${{ github.repository }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          test "$HEAD_REPOSITORY" = "$REPOSITORY"
+          test "$PR_AUTHOR" = "$REPOSITORY_OWNER"
+
       - name: Check out the reviewed commit
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
@@ -41,7 +59,7 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
 
-      - name: Enforce article-only change scope
+      - name: Enforce pull-request scope from the merge base
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
@@ -53,71 +71,293 @@ jobs:
           import subprocess
           from pathlib import Path
 
-          base = os.environ["BASE_SHA"]
-          head = os.environ["HEAD_SHA"]
+          base_sha = os.environ["BASE_SHA"]
+          head_sha = os.environ["HEAD_SHA"]
+          merge_base = subprocess.check_output(
+              ["git", "merge-base", base_sha, head_sha], text=True
+          ).strip()
           raw = subprocess.check_output(
-              ["git", "diff", "--name-status", "-z", base, head]
+              ["git", "diff", "--name-status", "--find-renames", "--find-copies", "-z", merge_base, head_sha]
           ).decode("utf-8")
           fields = raw.split("\0")
           if fields and fields[-1] == "":
               fields.pop()
 
-          index_files = {"WORKLOG.md", "notes.qmd", "references.bib"}
-          workflow_file = ".github/workflows/validate-pr.yml"
-          new_slugs: set[str] = set()
           changed: list[tuple[str, str]] = []
           i = 0
           while i < len(fields):
               status = fields[i]
               i += 1
               if status.startswith(("R", "C")):
-                  raise SystemExit("Renames and copies are forbidden in article PRs")
+                  raise SystemExit("Renames and copies are forbidden")
               path = fields[i]
               i += 1
               changed.append((status, path))
 
-              if path == workflow_file:
-                  if status != "A":
-                      raise SystemExit(
-                          "Article PRs may not modify the validation workflow"
-                      )
-                  continue
+          workflow = ".github/workflows/validate-pr.yml"
+          if changed == [("M", workflow)]:
+              with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
+                  output.write("INFRASTRUCTURE_MODE=true\nARTICLE_MODE=false\n")
+              print("Validated isolated workflow-infrastructure change.")
+              raise SystemExit(0)
+
+          if any(path == workflow for _, path in changed):
+              raise SystemExit("Article PRs may not modify the validation workflow")
+
+          index_files = {"WORKLOG.md", "notes.qmd", "references.bib"}
+          new_slugs: set[str] = set()
+          freeze_paths: list[str] = []
+          for status, path in changed:
               if path in index_files:
                   if status != "M":
                       raise SystemExit(f"Invalid index change: {status} {path}")
                   continue
               match = re.fullmatch(
-                  r"(?:posts|_freeze/posts)/([a-z0-9]+(?:-[a-z0-9]+)*)/(.+)",
+                  r"(posts|_freeze/posts)/([a-z0-9]+(?:-[a-z0-9]+)*)/(.+)",
                   path,
               )
               if not match or status != "A":
                   raise SystemExit(f"Out-of-scope change: {status} {path}")
-              new_slugs.add(match.group(1))
+              root, slug, relative = match.groups()
+              if relative.startswith("/") or ".." in Path(relative).parts:
+                  raise SystemExit(f"Unsafe path: {path}")
+              new_slugs.add(slug)
+              if root == "_freeze/posts":
+                  freeze_paths.append(path)
 
           if len(new_slugs) != 1:
               raise SystemExit(
-                  f"Expected exactly one newly added article; found {sorted(new_slugs)}"
+                  f"Expected exactly one new article; found {sorted(new_slugs)}"
               )
           slug = next(iter(new_slugs))
-          article = Path("posts") / slug / "index.qmd"
+          article_root = Path("posts") / slug
+          article = article_root / "index.qmd"
           if not article.is_file():
               raise SystemExit(f"Missing candidate article: {article}")
-          if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
-              raise SystemExit(f"Unsafe article slug: {slug!r}")
-          article_root = Path("posts") / slug
+
           symlinks = [path for path in article_root.rglob("*") if path.is_symlink()]
           if symlinks:
               raise SystemExit(f"Symlinks are forbidden: {symlinks}")
+          oversized = [
+              path for path in article_root.rglob("*")
+              if path.is_file() and path.stat().st_size > 2_000_000
+          ]
+          if oversized:
+              raise SystemExit(f"Unexpected large article resource: {oversized}")
 
+          source = article.read_text(encoding="utf-8")
+          python_cells = re.findall(r"```\{python\}\r?\n(.*?)\r?\n```", source, re.S)
+          if python_cells and not freeze_paths:
+              raise SystemExit("Executable articles must commit their Quarto freeze output")
+          if not python_cells and freeze_paths:
+              raise SystemExit("A non-executable article may not add a freeze cache")
+
+          subprocess.run(["git", "diff", "--check", merge_base, head_sha], check=True)
+          print(f"MERGE_BASE={merge_base}")
+          print(f"ARTICLE_SLUG={slug}")
+          print(f"ARTICLE_HAS_CODE={'true' if python_cells else 'false'}")
           print("Reviewed change scope:")
           for status, path in changed:
               print(f"  {status:>2}  {path}")
-          print(f"ARTICLE_SLUG={slug}")
-          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as env_file:
-              env_file.write(f"ARTICLE_SLUG={slug}\n")
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
+              output.write("INFRASTRUCTURE_MODE=false\nARTICLE_MODE=true\n")
+              output.write(f"MERGE_BASE={merge_base}\n")
+              output.write(f"ARTICLE_SLUG={slug}\n")
+              output.write(f"ARTICLE_HAS_CODE={'true' if python_cells else 'false'}\n")
           PY
 
-      - name: Reject unsafe Python cells
+      - name: Self-check validation infrastructure
+        if: env.INFRASTRUCTURE_MODE == 'true'
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          workflow = Path(".github/workflows/validate-pr.yml").read_text(encoding="utf-8")
+          forbidden = [
+              "pull_request" + "_target",
+              "secrets" + ".",
+              "markov chains" + ": when probability becomes motion",
+              "finite-state" + " convergence theorem",
+              "exact probability mass" + " in the two-state chain",
+          ]
+          found = [item for item in forbidden if item.casefold() in workflow.casefold()]
+          if found:
+              raise SystemExit(f"Unsafe or article-specific workflow content: {found}")
+          if not re.search(r"(?m)^permissions:\s*\n\s+contents: read\s*$", workflow):
+              raise SystemExit("Workflow permissions are not read-only")
+          uses = re.findall(r"(?m)^\s*uses:\s*([^\s#]+)", workflow)
+          unpinned = [item for item in uses if not re.fullmatch(r"[^@]+@[0-9a-f]{40}", item)]
+          if unpinned:
+              raise SystemExit(f"Actions must be pinned to full commit SHAs: {unpinned}")
+          print(f"Infrastructure self-check passed with {len(uses)} pinned actions.")
+          PY
+
+      - name: Set up Python
+        if: env.ARTICLE_MODE == 'true'
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+
+      - name: Set up Quarto
+        if: env.ARTICLE_MODE == 'true'
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2.2.0
+        with:
+          version: 1.9.38
+
+      - name: Install declared Python dependencies
+        if: env.ARTICLE_MODE == 'true'
+        run: |
+          set -euo pipefail
+          python -m pip install --only-binary=:all: -r requirements.txt
+          python -m pip check
+
+      - name: Validate metadata and minimal index changes
+        if: env.ARTICLE_MODE == 'true'
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import collections
+          import datetime as dt
+          import difflib
+          import html
+          import os
+          import re
+          import subprocess
+          from pathlib import Path
+
+          import yaml
+
+          slug = os.environ["ARTICLE_SLUG"]
+          merge_base = os.environ["MERGE_BASE"]
+          article = Path("posts") / slug / "index.qmd"
+          source = article.read_text(encoding="utf-8")
+          match = re.match(r"\A---\r?\n(.*?)\r?\n---\r?\n", source, re.S)
+          if not match:
+              raise SystemExit("Candidate article has no valid YAML front matter")
+          metadata = yaml.safe_load(match.group(1))
+          required = {"title", "description", "date", "categories", "draft"}
+          missing = required - set(metadata or {})
+          if missing:
+              raise SystemExit(f"Missing front-matter fields: {sorted(missing)}")
+          if metadata["draft"] is not False:
+              raise SystemExit("Published candidate must set draft: false")
+          title = str(metadata["title"]).strip()
+          description = str(metadata["description"]).strip()
+          categories = list(metadata["categories"])
+          if not title or not description or not (2 <= len(categories) <= 6):
+              raise SystemExit("Title, description, or category count is invalid")
+          if len(categories) != len(set(categories)):
+              raise SystemExit("Duplicate categories are forbidden")
+          date = metadata["date"]
+          if isinstance(date, dt.datetime):
+              date = date.date()
+          if not isinstance(date, dt.date):
+              date = dt.date.fromisoformat(str(date))
+          if date > dt.datetime.now(dt.timezone.utc).date():
+              raise SystemExit("Article date may not be in the future")
+
+          def git_text(path: str) -> str:
+              return subprocess.check_output(
+                  ["git", "show", f"{merge_base}:{path}"], text=True
+              )
+
+          base_refs = git_text("references.bib")
+          head_refs = Path("references.bib").read_text(encoding="utf-8")
+          if head_refs != base_refs:
+              if not head_refs.startswith(base_refs):
+                  raise SystemExit("references.bib may only receive appended entries")
+              appended = head_refs[len(base_refs):]
+              new_keys = re.findall(r"(?m)^@[A-Za-z]+\{([^,\s]+),", appended)
+              old_keys = set(re.findall(r"(?m)^@[A-Za-z]+\{([^,\s]+),", base_refs))
+              if not new_keys or len(new_keys) != len(set(new_keys)) or old_keys.intersection(new_keys):
+                  raise SystemExit("Appended bibliography entries are empty or duplicate existing keys")
+              cited = set(re.findall(r"(?<![\w@])@([A-Za-z0-9_:.+-]+)", source))
+              unused = set(new_keys) - cited
+              if unused:
+                  raise SystemExit(f"New bibliography entries are not cited: {sorted(unused)}")
+
+          base_notes = git_text("notes.qmd")
+          head_notes = Path("notes.qmd").read_text(encoding="utf-8")
+          row_pattern = re.compile(
+              rf'^\s*<a class="notes-row" href="posts/{re.escape(slug)}/">.*</a>\s*$',
+              re.M,
+          )
+          rows = row_pattern.findall(head_notes)
+          if len(rows) != 1:
+              raise SystemExit("notes.qmd must add exactly one curated row for the candidate")
+          row = rows[0]
+          if html.escape(title, quote=False) not in row:
+              raise SystemExit("The curated notes row does not use the candidate title")
+
+          def normalise_notes(text: str, remove_row: bool) -> str:
+              if remove_row:
+                  text = row_pattern.sub("", text, count=1)
+              text = re.sub(r'(notes-section__count">)\d+( notes)', r'\1#\2', text)
+              text = re.sub(r'(notes-catrail__n">)\d+(</span>)', r'\1#\2', text)
+              return text
+
+          if normalise_notes(head_notes, True) != normalise_notes(base_notes, False):
+              diff = "".join(difflib.unified_diff(
+                  normalise_notes(base_notes, False).splitlines(True),
+                  normalise_notes(head_notes, True).splitlines(True),
+                  fromfile="base/notes.qmd", tofile="candidate/notes.qmd",
+              ))
+              raise SystemExit(f"notes.qmd contains a non-minimal change:\n{diff[:4000]}")
+
+          all_posts = sorted(Path("posts").glob("*/index.qmd"))
+          category_counts: collections.Counter[str] = collections.Counter()
+          for post in all_posts:
+              text = post.read_text(encoding="utf-8")
+              front = re.match(r"\A---\r?\n(.*?)\r?\n---\r?\n", text, re.S)
+              if not front:
+                  raise SystemExit(f"Invalid post metadata: {post}")
+              meta = yaml.safe_load(front.group(1))
+              if meta.get("draft") is False:
+                  category_counts.update(meta.get("categories", []))
+          total = len(all_posts)
+          buttons = re.findall(
+              r'data-cat="([^"]*)"[^\n]*?notes-catrail__n">(\d+)</span>', head_notes
+          )
+          button_counts = {category: int(count) for category, count in buttons}
+          if button_counts.get("") != total:
+              raise SystemExit("All-notes count does not match the post tree")
+          missing_categories = set(categories) - set(button_counts)
+          if missing_categories:
+              raise SystemExit(
+                  f"Candidate categories require a separate index-infrastructure change: {sorted(missing_categories)}"
+              )
+          wrong_categories = {
+              category: (button_counts[category], category_counts[category])
+              for category in button_counts if category and button_counts[category] != category_counts[category]
+          }
+          if wrong_categories:
+              raise SystemExit(f"Incorrect category counts: {wrong_categories}")
+
+          for section_id, body in re.findall(
+              r'<details class="notes-section" id="([^"]+)">(.*?)</details>',
+              head_notes,
+              re.S,
+          ):
+              shown = re.search(r'notes-section__count">(\d+) notes', body)
+              actual = len(re.findall(r'href="posts/[^"/]+/"', body))
+              if not shown or int(shown.group(1)) != actual:
+                  raise SystemExit(f"Incorrect curated count for section {section_id}")
+
+          submitted_worklog = Path("WORKLOG.md").read_text(encoding="utf-8")
+          subprocess.run(["python", "tools/blog.py", "worklog"], check=True)
+          generated_worklog = Path("WORKLOG.md").read_text(encoding="utf-8")
+          if submitted_worklog != generated_worklog:
+              raise SystemExit("WORKLOG.md is not the exact metadata-derived update")
+
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
+              output.write(f"ARTICLE_TITLE={title}\n")
+          print(f"Metadata and minimal index changes verified for {title!r}.")
+          PY
+
+      - name: Reject unsafe Python cells as defence in depth
+        if: env.ARTICLE_MODE == 'true' && env.ARTICLE_HAS_CODE == 'true'
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -127,80 +367,66 @@ jobs:
           from pathlib import Path
 
           article = Path("posts") / os.environ["ARTICLE_SLUG"] / "index.qmd"
-          text = article.read_text(encoding="utf-8")
-          cells = re.findall(r"```\{python\}\r?\n(.*?)\r?\n```", text, re.S)
+          source = article.read_text(encoding="utf-8")
+          cells = re.findall(r"```\{python\}\r?\n(.*?)\r?\n```", source, re.S)
           allowed_imports = {
               "collections", "decimal", "fractions", "functools", "itertools",
               "math", "matplotlib", "numpy", "random", "statistics", "sympy",
           }
-          forbidden_calls = {
-              "__import__", "compile", "eval", "exec", "input", "open",
-          }
+          forbidden_calls = {"__import__", "compile", "eval", "exec", "input", "open"}
+          forbidden_names = {"__builtins__", "breakpoint", "globals", "locals", "vars"}
           forbidden_roots = {
               "ctypes", "http", "multiprocessing", "os", "pathlib", "pickle",
               "requests", "shutil", "socket", "subprocess", "urllib",
           }
 
-          for cell_number, source in enumerate(cells, 1):
-              tree = ast.parse(source, filename=f"{article}#cell{cell_number}")
+          for number, cell in enumerate(cells, 1):
+              tree = ast.parse(cell, filename=f"{article}#cell{number}")
               for node in ast.walk(tree):
                   if isinstance(node, ast.Import):
                       roots = {alias.name.split(".", 1)[0] for alias in node.names}
-                      bad = roots - allowed_imports
-                      if bad:
-                          raise SystemExit(
-                              f"Cell {cell_number}: forbidden import(s): {sorted(bad)}"
-                          )
+                      if roots - allowed_imports:
+                          raise SystemExit(f"Cell {number}: forbidden import {sorted(roots - allowed_imports)}")
                   elif isinstance(node, ast.ImportFrom):
                       root = (node.module or "").split(".", 1)[0]
                       if node.level or root not in allowed_imports:
-                          raise SystemExit(
-                              f"Cell {cell_number}: forbidden import: {node.module!r}"
-                          )
+                          raise SystemExit(f"Cell {number}: forbidden import {node.module!r}")
                   elif isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
                       if node.func.id in forbidden_calls:
-                          raise SystemExit(
-                              f"Cell {cell_number}: forbidden call: {node.func.id}"
-                          )
-                  elif isinstance(node, ast.Name) and node.id in forbidden_roots:
-                      raise SystemExit(
-                          f"Cell {cell_number}: forbidden module use: {node.id}"
-                      )
-          print(f"Static safety scan passed for {len(cells)} Python cell(s).")
+                          raise SystemExit(f"Cell {number}: forbidden call {node.func.id}")
+                  elif isinstance(node, ast.Name):
+                      if node.id in forbidden_names or node.id in forbidden_roots:
+                          raise SystemExit(f"Cell {number}: forbidden name {node.id}")
+          print(f"Static defence-in-depth scan passed for {len(cells)} cell(s).")
           PY
 
-      - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.11"
-
-      - name: Set up Quarto
-        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2.2.0
-        with:
-          version: 1.9.38
-
-      - name: Install Python dependencies
-        run: |
-          set -euo pipefail
-          python -m pip install --only-binary=:all: -r requirements.txt
-          python -m pip check
-
-      - name: Verify Jupyter and execute all code cells
+      - name: Verify Jupyter and execute repository checks
+        if: env.ARTICLE_MODE == 'true'
         run: |
           set -euo pipefail
           quarto check jupyter
           python tools/check.py
 
       - name: Execute and render the candidate article
+        if: env.ARTICLE_MODE == 'true'
         run: |
           set -euo pipefail
+          if [ "$ARTICLE_HAS_CODE" = "true" ]; then
+            cp -a "_freeze/posts/$ARTICLE_SLUG" /tmp/submitted-freeze
+          fi
           rm -rf "_freeze/posts/$ARTICLE_SLUG" "_site/posts/$ARTICLE_SLUG"
           quarto render "posts/$ARTICLE_SLUG/index.qmd" --execute --no-cache 2>&1 \
             | tee /tmp/quarto-render.log
           test -s "_site/posts/$ARTICLE_SLUG/index.html"
-          test -d "_freeze/posts/$ARTICLE_SLUG"
+          if [ "$ARTICLE_HAS_CODE" = "true" ]; then
+            test -d "_freeze/posts/$ARTICLE_SLUG"
+            diff -qr /tmp/submitted-freeze "_freeze/posts/$ARTICLE_SLUG"
+          else
+            test ! -e "_freeze/posts/$ARTICLE_SLUG"
+          fi
 
-      - name: Inspect the rendered page
+      - name: Inspect the rendered page generically
+        if: env.ARTICLE_MODE == 'true'
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -209,19 +435,33 @@ jobs:
           from html.parser import HTMLParser
           from pathlib import Path
 
-          slug = os.environ["ARTICLE_SLUG"]
-          html_path = Path("_site") / "posts" / slug / "index.html"
-          source = html_path.read_text(encoding="utf-8")
+          import yaml
 
-          class VisibleText(HTMLParser):
+          slug = os.environ["ARTICLE_SLUG"]
+          article = Path("posts") / slug / "index.qmd"
+          source_text = article.read_text(encoding="utf-8")
+          front = re.match(r"\A---\r?\n(.*?)\r?\n---\r?\n", source_text, re.S)
+          metadata = yaml.safe_load(front.group(1))
+          title = str(metadata["title"])
+          html_path = Path("_site") / "posts" / slug / "index.html"
+          rendered = html_path.read_text(encoding="utf-8")
+
+          class PageParser(HTMLParser):
               def __init__(self):
                   super().__init__()
                   self.hidden = 0
                   self.parts: list[str] = []
+                  self.images: list[str] = []
+                  self.canonicals: list[str] = []
 
               def handle_starttag(self, tag, attrs):
+                  attributes = dict(attrs)
                   if tag in {"code", "pre", "script", "style"}:
                       self.hidden += 1
+                  if tag == "img" and attributes.get("src"):
+                      self.images.append(attributes["src"])
+                  if tag == "link" and attributes.get("rel") == "canonical":
+                      self.canonicals.append(attributes.get("href", ""))
 
               def handle_endtag(self, tag):
                   if tag in {"code", "pre", "script", "style"} and self.hidden:
@@ -231,37 +471,40 @@ jobs:
                   if not self.hidden:
                       self.parts.append(data)
 
-          parser = VisibleText()
-          parser.feed(source)
+          parser = PageParser()
+          parser.feed(rendered)
           visible = " ".join(parser.parts)
+          folded = " ".join(visible.casefold().split())
+          required = [title.casefold(), "what to remember", "how to cite"]
+          missing = [item for item in required if item not in folded]
+          if missing:
+              raise SystemExit(f"Rendered page is missing required article content: {missing}")
           unresolved = re.findall(r"(?:\?@|@(?:eq|fig|tbl|thm|lem|cor|def|prp)-)[\w-]+", visible)
           if unresolved:
               raise SystemExit(f"Unresolved cross-references: {sorted(set(unresolved))}")
-          visible_folded = visible.casefold()
-          required = [
-              "markov chains: when probability becomes motion",
-              "finite-state convergence theorem",
-              "markov chains and mixing times",
-              "exact probability mass in the two-state chain",
-          ]
-          missing = [item for item in required if item not in visible_folded]
-          if missing:
-              raise SystemExit(f"Rendered page is missing expected content: {missing}")
-          figures = list((html_path.parent / "index_files").rglob("*.png"))
-          if not figures:
-              raise SystemExit("No executed figure output was rendered")
+
+          for src in parser.images:
+              if re.match(r"^(?:https?:|data:|/)", src):
+                  continue
+              image_path = (html_path.parent / src).resolve()
+              if not image_path.is_file() or image_path.stat().st_size == 0:
+                  raise SystemExit(f"Missing or empty rendered image: {src}")
+
+          expected_canonical = f"https://terryfxh.github.io/math-notes/posts/{slug}/"
+          if expected_canonical not in parser.canonicals:
+              raise SystemExit(f"Incorrect canonical URL: {parser.canonicals}")
           log = Path("/tmp/quarto-render.log").read_text(encoding="utf-8")
-          bad_warning = re.search(
-              r"(?im)^warning:.*(?:unable to resolve|cross-reference|citation)", log
+          warning = re.search(
+              r"(?im)^warning:.*(?:unable to resolve|cross-reference|citation|not found)", log
           )
-          if bad_warning:
-              raise SystemExit(f"Quarto reported an unresolved item: {bad_warning.group(0)}")
+          if warning:
+              raise SystemExit(f"Quarto reported an unresolved item: {warning.group(0)}")
           (html_path.parent / "quarto-render.log").write_text(log, encoding="utf-8")
-          print(f"Rendered page verified: {html_path}")
-          print(f"Executed figure verified: {figures[0]}")
+          print(f"Generic rendered-page inspection passed: {html_path}")
           PY
 
       - name: Upload validation evidence
+        if: env.ARTICLE_MODE == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: quarto-validation-${{ github.event.pull_request.head.sha }}
@@ -272,6 +515,7 @@ jobs:
           retention-days: 7
 
       - name: Confirm tracked sources were not rewritten
+        if: env.ARTICLE_MODE == 'true'
         run: |
           set -euo pipefail
           git diff --exit-code
