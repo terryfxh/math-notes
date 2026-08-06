@@ -281,7 +281,7 @@ jobs:
           base_notes = git_text("notes.qmd")
           head_notes = Path("notes.qmd").read_text(encoding="utf-8")
           row_pattern = re.compile(
-              rf'^\s*<a class="notes-row" href="posts/{re.escape(slug)}/">.*</a>\s*$',
+              rf'^[ \t]*<a class="notes-row" href="posts/{re.escape(slug)}/">[^\r\n]*</a>[ \t]*(?:\r?\n|$)',
               re.M,
           )
           rows = row_pattern.findall(head_notes)
