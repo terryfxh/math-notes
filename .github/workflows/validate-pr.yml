@@ -518,3 +518,4 @@ jobs:
         if: env.ARTICLE_MODE == 'true'
         run: |
           set -euo pipefail
+          git diff --exit-code
