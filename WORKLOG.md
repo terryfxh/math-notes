@@ -14,7 +14,7 @@ The table below is regenerated from `posts/*/index.qmd` by `python tools/blog.py
 Do not edit it by hand — edits between the AUTO markers are overwritten.
 
 <!-- AUTO:STATUS:START -->
-_Last updated 2026-08-06 — 27 published posts._
+_Last updated 2026-08-17 — 28 published posts._
 
 | Date | Slug | Title | Categories |
 |---|---|---|---|
@@ -45,6 +45,7 @@ _Last updated 2026-08-06 — 27 published posts._
 | 2026-07-29 | `quaternion-rotations-the-sandwich-and-the-double-cover` | Quaternion Rotations: The Sandwich and the Double Cover | pure, applied, algebra, geometry, computer-graphics |
 | 2026-08-01 | `markov-chains-when-probability-becomes-motion` | Markov Chains: When Probability Becomes Motion | applied, probability, linear-algebra |
 | 2026-08-06 | `one-mobius-two-worlds` | One Möbius, Two Worlds: The Algebra Behind Inclusion–Exclusion | pure, number-theory, combinatorics |
+| 2026-08-17 | `mixing-how-a-markov-chain-forgets` | Mixing: How a Markov Chain Forgets Its Beginning | applied, probability, linear-algebra |
 <!-- AUTO:STATUS:END -->
 
 ---
@@ -55,6 +56,7 @@ One entry is appended automatically the first time `tools/worklog.py` sees a pub
 post (run via `python tools/blog.py worklog`). Newest on top.
 
 <!-- AUTO:LOG:START -->
+- **2026-08-17** — published `mixing-how-a-markov-chain-forgets`: Mixing: How a Markov Chain Forgets Its Beginning (applied, probability, linear-algebra)
 - **2026-08-06** — published `one-mobius-two-worlds`: One Möbius, Two Worlds: The Algebra Behind Inclusion–Exclusion (pure, number-theory, combinatorics)
 - **2026-08-01** — published `markov-chains-when-probability-becomes-motion`: Markov Chains: When Probability Becomes Motion (applied, probability, linear-algebra)
 - **2026-07-29** — published `quaternion-rotations-the-sandwich-and-the-double-cover`: Quaternion Rotations: The Sandwich and the Double Cover (pure, applied, algebra, geometry, computer-graphics)
