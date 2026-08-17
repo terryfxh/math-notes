@@ -2,6 +2,7 @@
   {
     "listing": "/notes.html",
     "items": [
+      "/posts/mixing-how-a-markov-chain-forgets/index.html",
       "/posts/one-mobius-two-worlds/index.html",
       "/posts/markov-chains-when-probability-becomes-motion/index.html",
       "/posts/inverse-laplace-transform-and-the-fourier-boundary/index.html",
