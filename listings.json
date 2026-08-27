@@ -2,6 +2,7 @@
   {
     "listing": "/notes.html",
     "items": [
+      "/posts/on-being-stuck/index.html",
       "/posts/mixing-how-a-markov-chain-forgets/index.html",
       "/posts/one-mobius-two-worlds/index.html",
       "/posts/markov-chains-when-probability-becomes-motion/index.html",

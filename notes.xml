@@ -10,7 +10,184 @@
 <atom:link href="https://terryfxh.github.io/math-notes/notes.xml" rel="self" type="application/rss+xml"/>
 <description>Self-contained notes in pure and applied mathematics, derived from first principles with runnable code where it helps.</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Mon, 17 Aug 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 27 Aug 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>On Being Stuck</title>
+  <link>https://terryfxh.github.io/math-notes/posts/on-being-stuck/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="epigraph">
+<p><em>“My method to overcome a difficulty is to go around it.”</em></p>
+<p><span class="attribution">— George Pólya, <em>How to Solve It</em></span></p>
+</div>
+<p>The page has not changed for forty minutes. There are six lines of algebra, three arrows in the margin, and the words <em>try induction</em> underlined twice. You have expanded the same expression from both directions. You have started a contradiction and quietly abandoned it at the same sentence. You are still working, in the physical sense. The problem is no longer moving.</p>
+<p>This is the part of mathematics that polished solutions edit out. A proof presents one path after the path has been found. The person looking for it meets a thicket of paths, most of which stop, loop, or dissolve into calculations that answer a question nobody asked. From inside that thicket, persistence and repetition can feel identical.</p>
+<p>They are not. That distinction is the whole subject of this essay.</p>
+<p>My criterion is narrow: <strong>in this essay, being stuck counts as productive only when an attempt changes the state of the problem you return to</strong>. A failed attempt should leave a residue: a counterexample, a sharper condition, a missing lemma, a ruled-out route, or a new representation. If it leaves only fatigue, then time has passed but the search has not learned.</p>
+<p><a href="../hidden-mechanics-of-math/">Mathematics Is Not a Spectator Sport</a> argued that friction is part of learning. I will not make that argument again. This essay begins after we have accepted the friction and asks a more practical question: how should we inhabit it? It develops one thread left open in <a href="../on-learning-mathematics/">On Learning Mathematics</a>, the ability to stay steady when a problem refuses to budge. Staying steady, it turns out, is less about heroic patience than about giving the search a memory.</p>
+<section id="a-board-that-defeats-persistence" class="level2">
+<h2 class="anchored" data-anchor-id="a-board-that-defeats-persistence">A board that defeats persistence</h2>
+<p>Take an ordinary <img src="https://latex.codecogs.com/png.latex?8%5Ctimes%208"> chessboard and remove two opposite corner squares. Can the remaining <img src="https://latex.codecogs.com/png.latex?62"> squares be tiled by <img src="https://latex.codecogs.com/png.latex?31"> dominoes, each covering two squares that share an edge?</p>
+<p>The invitation is almost irresistible: start placing dominoes. The area count works, since <img src="https://latex.codecogs.com/png.latex?31%5Ccdot%202=62">. The damaged corners look local, so perhaps careful packing near them will repair the board. A few arrangements get surprisingly far. Each eventually jams.</p>
+<p>What has a jammed arrangement proved? Only that this arrangement did not work. Ten failed arrangements do not prove that the eleventh will fail. Even a million failures would not rule out an untested configuration. The evidence licenses a much smaller sentence than the one we want. That discipline, asking exactly what an observation permits us to claim, was the point of <a href="../at-least-one-side-of-one-sheep/">At Least One Side of One Sheep</a>. Here it tells us that unsuccessful construction is not yet an impossibility proof.</p>
+<p>The failure can still become useful if we interrogate it. Local placement keeps producing local dead ends. So ask a different question:</p>
+<blockquote class="blockquote">
+<p>What does every legal domino placement preserve, regardless of where the domino goes?</p>
+</blockquote>
+<p>Colour the board like a chessboard. Give square <img src="https://latex.codecogs.com/png.latex?(i,j)"> the colour black when <img src="https://latex.codecogs.com/png.latex?i+j"> is even and white when <img src="https://latex.codecogs.com/png.latex?i+j"> is odd. Horizontally or vertically adjacent squares have opposite parity, so every domino covers exactly one black square and one white square. After placing any <img src="https://latex.codecogs.com/png.latex?k"> non-overlapping dominoes, the numbers of covered black and white squares are therefore both <img src="https://latex.codecogs.com/png.latex?k">. Their difference is an invariant.</p>
+<p>The full board has <img src="https://latex.codecogs.com/png.latex?32"> squares of each colour. The opposite corners <img src="https://latex.codecogs.com/png.latex?(1,1)"> and <img src="https://latex.codecogs.com/png.latex?(8,8)"> are both black because their coordinate sums are even. Removing them leaves <img src="https://latex.codecogs.com/png.latex?30"> black squares and <img src="https://latex.codecogs.com/png.latex?32"> white squares. A tiling by <img src="https://latex.codecogs.com/png.latex?31"> dominoes would have to cover <img src="https://latex.codecogs.com/png.latex?31"> squares of each colour, which is impossible. Hence no tiling exists.</p>
+<p>The proof is one paragraph. The important move happened before the proof: the object changed. We stopped looking at <em>arrangements</em> and started looking at a <em>quantity shared by every arrangement</em>. In the language of the earlier <a href="../domino-tilings/">domino tilings note</a>, we did not make the configuration search faster. We found an invariant that collapsed the entire search at once.</p>
+<p>This is what a useful failed attempt can buy. The jammed placements did not prove impossibility. They revealed that placement was the wrong scale at which to ask the question. Their residue was a better question, and the better question demanded a different representation.</p>
+</section>
+<section id="give-the-search-a-ledger" class="level2">
+<h2 class="anchored" data-anchor-id="give-the-search-a-ledger">Give the search a ledger</h2>
+<p>Without a written record, an approach abandoned on Tuesday can return on Thursday wearing slightly different notation and feel new. A vague note such as <em>induction failed</em> does not help. It may even do damage, because it treats a large family of possible arguments as if one clumsy version had exhausted them all.</p>
+<p>A useful ledger entry has five parts:</p>
+<ol type="1">
+<li><strong>State.</strong> Write the exact claim, assumptions, and current representation.</li>
+<li><strong>Move.</strong> Record what you actually tried, precisely enough to recognise a repeat.</li>
+<li><strong>Obstruction.</strong> Mark the first point that could not be justified. Do not write only “didn’t work”.</li>
+<li><strong>Residue.</strong> State what the attempt established, exposed, or ruled out.</li>
+<li><strong>Next question.</strong> Ask for a move that uses the residue rather than discarding it.</li>
+</ol>
+<p>For the damaged board, the entry might read:</p>
+<div class="callout callout-style-default callout-note callout-titled" title="A failed attempt, converted into information">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>A failed attempt, converted into information
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>State:</strong> tile <img src="https://latex.codecogs.com/png.latex?62"> remaining squares by <img src="https://latex.codecogs.com/png.latex?31"> edge-adjacent dominoes.</p>
+<p><strong>Move:</strong> construct layouts by filling from the damaged corners inward.</p>
+<p><strong>Obstruction:</strong> several branches leave isolated squares, but each failure concerns only one branch.</p>
+<p><strong>Residue:</strong> local construction supplies no global certificate of impossibility.</p>
+<p><strong>Next question:</strong> what quantity does every domino preserve?</p>
+</div>
+</div>
+<p>The ledger is not a diary of suffering. It is a change log for the mathematical state. It may also change the emotional reading of a page of failed routes: the page no longer says only <em>I have achieved nothing</em>. It can instead say <em>these boundaries are now mapped</em>. The mathematical benefit is more exact: the record makes a silent return to a state already examined under the same assumptions visible.</p>
+<p>There is an important qualification. Repetition is sometimes necessary. You may return to induction after strengthening the statement, changing the induction variable, or discovering an auxiliary lemma. That is not the same state. The purpose of a ledger is not to ban old methods. It is to make the difference between an identical repeat and an informed return visible.</p>
+</section>
+<section id="a-toy-theorem-about-memory" class="level2">
+<h2 class="anchored" data-anchor-id="a-toy-theorem-about-memory">A toy theorem about memory</h2>
+<p>We can make the role of memory exact in a deliberately simplified model. Represent a problem-solving process by a directed graph <img src="https://latex.codecogs.com/png.latex?G=(V,E)">. A vertex is a state of understanding: a representation, a partial result, or a sharpened subproblem. An edge <img src="https://latex.codecogs.com/png.latex?v%5Cto%20w"> is a legitimate move that transforms one state into another. Let <img src="https://latex.codecogs.com/png.latex?s"> be the starting state and let <img src="https://latex.codecogs.com/png.latex?H%5Csubseteq%20V"> be the set of states containing a solution.</p>
+<p>Real mathematics does not arrive with this graph drawn. New concepts create new vertices, and we rarely know all the available moves. That limitation matters, and we will return to it. First isolate the one feature the model can prove.</p>
+<div id="prp-finite-search" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 1 (Search with memory on a finite graph)</strong></span> Let <img src="https://latex.codecogs.com/png.latex?G=(V,E)"> be a finite directed graph. Start from <img src="https://latex.codecogs.com/png.latex?s%5Cin%20V">. Maintain a frontier of discovered but unexpanded vertices and a visited set <img src="https://latex.codecogs.com/png.latex?R">. Initially the frontier contains <img src="https://latex.codecogs.com/png.latex?s"> and <img src="https://latex.codecogs.com/png.latex?R=%5C%7Bs%5C%7D">. Whenever a vertex <img src="https://latex.codecogs.com/png.latex?v"> is removed from the frontier, stop if <img src="https://latex.codecogs.com/png.latex?v%5Cin%20H">; otherwise add every out-neighbour not already in <img src="https://latex.codecogs.com/png.latex?R"> to both the frontier and <img src="https://latex.codecogs.com/png.latex?R">.</p>
+<p>Then the search halts after at most <img src="https://latex.codecogs.com/png.latex?%7CV%7C"> vertex expansions. It finds a vertex in <img src="https://latex.codecogs.com/png.latex?H"> if and only if some vertex of <img src="https://latex.codecogs.com/png.latex?H"> is reachable from <img src="https://latex.codecogs.com/png.latex?s">.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>A vertex is added to the frontier only when it is absent from <img src="https://latex.codecogs.com/png.latex?R">, and it is added to <img src="https://latex.codecogs.com/png.latex?R"> at the same moment. Hence no vertex can enter the frontier twice. At most <img src="https://latex.codecogs.com/png.latex?%7CV%7C"> vertices are therefore expanded, so the process halts.</p>
+<p>If the search finds a goal, that goal was reached by following edges from <img src="https://latex.codecogs.com/png.latex?s">, so it is reachable. Conversely, suppose a goal <img src="https://latex.codecogs.com/png.latex?h"> is reachable. Choose a path <img src="https://latex.codecogs.com/png.latex?%0As=v_0%5Cto%20v_1%5Cto%5Ccdots%5Cto%20v_m=h.%0A"> The starting vertex <img src="https://latex.codecogs.com/png.latex?v_0"> is discovered initially. If <img src="https://latex.codecogs.com/png.latex?v_i"> is discovered, then either a goal has already been found or <img src="https://latex.codecogs.com/png.latex?v_i"> is eventually expanded: only finitely many other vertices can be expanded first, and none can be expanded twice. At that expansion, <img src="https://latex.codecogs.com/png.latex?v_%7Bi+1%7D"> is either already discovered or is added. Induction along the path shows that the search either finds a goal earlier or eventually discovers and expands <img src="https://latex.codecogs.com/png.latex?h">. In both cases it finds a vertex in <img src="https://latex.codecogs.com/png.latex?H">. <img src="https://latex.codecogs.com/png.latex?%5Cqquad%5Cblacksquare"></p>
+</div>
+<p>Remove the visited set and even a reachable answer can be missed forever. Consider three states <img src="https://latex.codecogs.com/png.latex?s,a,g"> with edges <img src="https://latex.codecogs.com/png.latex?%0As%5Cto%20a,%5Cqquad%20a%5Cto%20s,%5Cqquad%20s%5Cto%20g.%0A"> A rule that always takes the first available edge walks <img src="https://latex.codecogs.com/png.latex?s,a,s,a,%5Cldots"> and never reaches the goal <img src="https://latex.codecogs.com/png.latex?g">. The obstacle is not the absence of a route. It is the absence of memory.</p>
+<p>Proposition&nbsp;1 does <strong>not</strong> prove that keeping notes will solve an open problem. Its assumptions fail spectacularly in creative work: the state space may be infinite, useful moves are not known in advance, and the right representation may not yet exist. The proposition establishes something smaller. Even in a world where a solution is reachable and all moves are available, forgetting visited states is enough to create permanent stuckness. A ledger removes that particular failure mode. It cannot promise discovery, but it can prevent some counterfeit motion.</p>
+</section>
+<section id="pólyas-questions-are-moves-not-commandments" class="level2">
+<h2 class="anchored" data-anchor-id="pólyas-questions-are-moves-not-commandments">Pólya’s questions are moves, not commandments</h2>
+<p>George Pólya organised problem solving into four broad phases: understand the problem, devise a plan, carry out the plan, and look back <span class="citation" data-cites="polya2004how">[1]</span>. Read as a checklist, the advice can sound almost empty. Of course one should devise a plan. The difficulty is devising one when none is visible.</p>
+<p>The substance lies in Pólya’s questions: can you solve a related problem, draw a figure, examine a special case, change the unknown, use only part of the condition, or work backwards? These are not recipes for obtaining an answer. They are operators on the current state. Each changes the representation, scale, assumptions, or target, which means each proposes an edge to a genuinely different vertex in our toy graph.</p>
+<p>The final phase, looking back, is often treated as a ceremony performed after success. It is equally valuable after failure. What did the method need that the hypotheses did not supply? Which condition went unused? Did a calculation produce a counterexample to a stronger claim? Can the broken proof be saved as a lemma with an extra assumption? Looking back is where an attempt is converted into a ledger entry.</p>
+<p>Alan Schoenfeld’s study of mathematical problem solving places this kind of monitoring and control beside mathematical resources and heuristic knowledge <span class="citation" data-cites="schoenfeld1985mathematical">[2]</span>. Knowing many techniques is not sufficient if one cannot notice that a technique is consuming time without producing information, decide when to switch, or allocate attention to the real bottleneck. In that sense, the crucial skill is not possessing more moves. It is governing the search among them.</p>
+<p>This gives us an operational distinction:</p>
+<ul>
+<li><strong>Productive struggle</strong> changes the ledger. It yields a fact, counterexample, reduced case, missing condition, new representation, or precise subproblem.</li>
+<li><strong>Rumination</strong> restores the same state and repeats the same move without a new test.</li>
+</ul>
+<p>These are definitions for this essay, not clinical diagnoses and not measurements of effort. A long calculation can be productive if it tests a sharp conjecture. A minute of staring can be productive if it reveals that the wrong quantity is being preserved. Duration is a poor proxy. The question is whether the state has changed.</p>
+</section>
+<section id="leave-the-problem-but-leave-it-prepared" class="level2">
+<h2 class="anchored" data-anchor-id="leave-the-problem-but-leave-it-prepared">Leave the problem, but leave it prepared</h2>
+<p>Sometimes the next good move is to stop working. This advice is easy to romanticise. Stories of ideas arriving in baths, dreams, and walks make incubation sound like a hidden mathematician who finishes proofs while the conscious mind is elsewhere. The evidence supports a more careful statement.</p>
+<p>Sio and Ormerod’s meta-analysis of experimental studies found a positive average incubation effect, but the size of the effect depended on the kind of problem, the amount of preparation, and what participants did during the break. Divergent-thinking tasks benefited more than linguistic and visual insight tasks, and cognitively demanding interruption tasks tended to reduce the benefit <span class="citation" data-cites="sio2009incubation">[3]</span>. The authors explicitly concluded that the useful conditions require care. Their studies were not a theorem about advanced mathematical research, and they do not justify the promise that every stubborn proof will yield after a walk.</p>
+<p>The modest lesson is still useful: a break can be part of the search, especially after the problem has been represented precisely. One plausible role is that distance weakens attachment to a dominant but unhelpful cue, making another association easier to retrieve. The meta-analysis does not establish a single universal mechanism, so this should remain an interpretation rather than a fact.</p>
+<p>Preparation matters. Before leaving, write three lines:</p>
+<ul>
+<li>the exact statement you are trying to prove or compute;</li>
+<li>the first unresolved obstruction in the current approach;</li>
+<li>one question whose answer would change the state.</li>
+</ul>
+<p>Then leave. On returning, read the problem statement before rereading pages of failed algebra. Try to produce a fresh representation from the prepared question: a diagram, a smaller instance, an invariant, a dual statement, a computational check, or a deliberately stronger or weaker claim. This protocol is a practical synthesis, not an empirically guaranteed treatment. Its purpose is to make the break preserve the problem while loosening the route.</p>
+<p>A break taken before any serious engagement has prepared nothing to incubate. A break taken after the same line has begun to loop may be exactly the act that stops persistence becoming repetition.</p>
+</section>
+<section id="a-practical-loop" class="level2">
+<h2 class="anchored" data-anchor-id="a-practical-loop">A practical loop</h2>
+<p>For a problem large enough to resist a first attack, the following loop keeps the standards visible.</p>
+<section id="fix-the-jurisdiction" class="level3">
+<h3 class="anchored" data-anchor-id="fix-the-jurisdiction">1. Fix the jurisdiction</h3>
+<p>Write the statement with its quantifiers and assumptions. Test boundary cases and small instances. Ask whether the claim might be false. A counterexample is not a failed proof; it is a complete solution to the question of whether the proposed universal statement survives.</p>
+</section>
+<section id="make-one-prediction" class="level3">
+<h3 class="anchored" data-anchor-id="make-one-prediction">2. Make one prediction</h3>
+<p>Before calculating, say what the method should reveal. For the damaged board, local placement was supposed to expose a viable tiling. For the colouring argument, the prediction was sharper: after <img src="https://latex.codecogs.com/png.latex?k"> dominoes, the covered colour counts must be <img src="https://latex.codecogs.com/png.latex?(k,k)">. A method that makes no falsifiable prediction is difficult to learn from.</p>
+</section>
+<section id="run-a-bounded-attempt" class="level3">
+<h3 class="anchored" data-anchor-id="run-a-bounded-attempt">3. Run a bounded attempt</h3>
+<p>Choose a move and decide what would count as progress or failure. The boundary may be mathematical rather than temporal: expand until a pattern stabilises, compute all cases up to <img src="https://latex.codecogs.com/png.latex?n=8">, or continue the proof until the first unsupported implication. Bounded attempts make an obstruction identifiable.</p>
+</section>
+<section id="harvest-the-residue" class="level3">
+<h3 class="anchored" data-anchor-id="harvest-the-residue">4. Harvest the residue</h3>
+<p>Write the ledger entry. Separate what was proved from what merely looked suggestive. Simulation can refute a universal claim by producing an exact counterexample, but repeated numerical agreement does not prove the general case. A failed derivation shows a gap in that derivation, not that the theorem is false.</p>
+</section>
+<section id="change-one-axis" class="level3">
+<h3 class="anchored" data-anchor-id="change-one-axis">5. Change one axis</h3>
+<p>Change the representation, scale, assumptions, or target. Draw instead of expand. Seek an invariant instead of a construction. Prove a special case. Strengthen the statement so induction has enough information. Weaken it to locate the first true boundary. One deliberate change is easier to evaluate than five simultaneous improvisations.</p>
+</section>
+<section id="decide-continue-incubate-learn-or-ask" class="level3">
+<h3 class="anchored" data-anchor-id="decide-continue-incubate-learn-or-ask">6. Decide: continue, incubate, learn, or ask</h3>
+<p>The ledger should determine the next action. Continue when the last attempt produced a live question. Step away when the state is precise but the available moves are looping. Learn a prerequisite when the obstruction is a missing definition or theorem. Ask for help when another viewpoint is now more valuable than another private repetition.</p>
+<p>Help can come from a person, a book, or a machine. The useful request is often not “solve this” but “which assumption have I not used?”, “what is the smallest counterexample to this stronger claim?”, or “give one hint that changes the representation”. Any returned claim still needs verification. The aim is to acquire a new edge, not to be teleported to a goal state with no map of how it was reached.</p>
+</section>
+</section>
+<section id="when-the-right-move-is-to-stop" class="level2">
+<h2 class="anchored" data-anchor-id="when-the-right-move-is-to-stop">When the right move is to stop</h2>
+<p>There is a dangerous romance around persistence. Some problems are stuck because the statement is false. Some require machinery the solver does not yet possess. Some are open. Some are simply not worth the opportunity cost today. A ledger is valuable partly because it can reveal these cases without turning them into judgments of character.</p>
+<p>Three warning signs matter.</p>
+<p>First, the obstruction never becomes more precise. If every entry says only <em>I don’t see it</em>, return to definitions, examples, and prerequisites. The problem may be too far above the present toolset to generate useful feedback.</p>
+<p>Second, the ledger records activity but no new residue. More algebra, more cases, and more diagrams are not automatically new states. Ask what each is testing. If there is no answer, stop the motion and reformulate.</p>
+<p>Third, the cost boundary has arrived. Mathematics is done under deadlines, attention limits, and competing commitments. Seeking a hint, reading a source, or setting a problem aside can be rational control of the search. Staying steady does not mean staying alone, and it does not mean staying forever.</p>
+<p>The finite graph model offers no guarantee here because real mathematical search is open-ended. That is the boundary we must keep. The ledger certifies neither talent nor eventual success. It provides something more modest and more dependable: a record that distinguishes an explored boundary from a forgotten loop.</p>
+</section>
+<section id="what-to-remember" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
+<p>Being stuck is not one condition. Sometimes it is the productive interval in which the representation is changing. Sometimes it is a cycle disguised as effort. The difference is visible in what each attempt leaves behind.</p>
+<p>Keep a ledger of the exact state, move, obstruction, residue, and next question. Use failure only for the conclusion it actually earns. Change representation when local search supplies no global information. Step away only after leaving the problem prepared, and treat incubation as a possibility with conditions, not a promise. Ask for help when the ledger says the missing ingredient is a viewpoint or prerequisite.</p>
+<p>Progress on a hard problem is not always a shorter distance to the final proof. Often it is a better map of the space in which a proof might live.</p>
+</section>
+<section id="how-to-cite" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
+<blockquote class="blockquote">
+<p>Terry (2026). <em>On Being Stuck</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/on-being-stuck/</code>.</p>
+</blockquote>
+
+
+<!-- -->
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
+<div id="ref-polya2004how" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">G. Pólya, <em>How to solve it: A new aspect of mathematical method</em>. Princeton University Press, 2004.</div>
+</div>
+<div id="ref-schoenfeld1985mathematical" class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">A. H. Schoenfeld, <em>Mathematical problem solving</em>. Academic Press, 1985.</div>
+</div>
+<div id="ref-sio2009incubation" class="csl-entry">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">U. N. Sio and T. C. Ormerod, <span>“Does incubation enhance problem solving? A meta-analytic review,”</span> <em>Psychological Bulletin</em>, vol. 135, no. 1, pp. 94–120, 2009, doi: <a href="https://doi.org/10.1037/a0014212">10.1037/a0014212</a>.</div>
+</div>
+</div></section></div> ]]></description>
+  <category>meta</category>
+  <category>learning</category>
+  <guid>https://terryfxh.github.io/math-notes/posts/on-being-stuck/</guid>
+  <pubDate>Thu, 27 Aug 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Mixing: How a Markov Chain Forgets Its Beginning</title>
   <link>https://terryfxh.github.io/math-notes/posts/mixing-how-a-markov-chain-forgets/</link>
@@ -9000,619 +9177,6 @@ Note
   <category>foundations</category>
   <guid>https://terryfxh.github.io/math-notes/posts/reconstructing-calculus/</guid>
   <pubDate>Sun, 07 Jun 2026 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Counting Domino Tilings: When Dynamic Programming Is a Matrix</title>
-  <link>https://terryfxh.github.io/math-notes/posts/domino-tilings/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="epigraph">
-<p><em>“A mathematician, like a painter or a poet, is a maker of patterns. If his patterns are more permanent than theirs, it is because they are made with ideas.”</em></p>
-<p><span class="attribution">— G. H. Hardy, <em>A Mathematician’s Apology</em> (1940)</span></p>
-</div>
-<p>Here is a question a child can pose and a computer scientist can lose an afternoon to. You have a board, <img src="https://latex.codecogs.com/png.latex?2"> squares tall and <img src="https://latex.codecogs.com/png.latex?n"> squares wide, and a pile of dominoes, each covering exactly two adjacent squares. In how many different ways can you tile the board completely, no gaps, no overlaps, no domino hanging off the edge? It sounds like a puzzle, and it is. What I want to show you is that the answer is secretly a piece of linear algebra, and that the bridge between “write a loop to count” and “raise a matrix to a power” is one of the most useful ideas a programmer can carry around. The counting problem, the matrix, and a generating function all turn out to be the same thing wearing different clothes.</p>
-<p>As always, let us not start with the hard board. Let us bring it down to the smallest case we can actually draw.</p>
-<section id="first-the-thinnest-board" class="level2">
-<h2 class="anchored" data-anchor-id="first-the-thinnest-board">First, the thinnest board</h2>
-<p>Take the board just <img src="https://latex.codecogs.com/png.latex?2"> tall and look at its leftmost column. A domino has to cover those two squares somehow, and there are only two ways it can happen. Either one vertical domino stands up and fills the whole column by itself, or two horizontal dominoes lie down, each poking one square into the <em>next</em> column.</p>
-<p>Stare at those two options, because the whole recurrence is hiding in them. If you drop in a vertical domino, you have sealed off the first column cleanly and what remains is a <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%20(n-1)"> board, untouched. If instead you lay the two horizontals, they consume the first column <em>and</em> the matching two squares of the second column, and what remains is a <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%20(n-2)"> board. Every tiling begins with exactly one of these two moves, and the two moves lead to two smaller boards of the very same kind.</p>
-<p>Let <img src="https://latex.codecogs.com/png.latex?f(n)"> be the number of tilings of the <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%20n"> board. The reasoning above says, in one line, <img src="https://latex.codecogs.com/png.latex?%0Af(n)%20=%20f(n-1)%20+%20f(n-2),%0A"> with the base cases <img src="https://latex.codecogs.com/png.latex?f(0)%20=%201"> (the empty board has one tiling, the empty one) and <img src="https://latex.codecogs.com/png.latex?f(1)%20=%201"> (a single standing domino). You might have already guessed what is coming. That is the Fibonacci recurrence, and our tiling counts are Fibonacci numbers marching by.</p>
-<div id="ad99b810" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> tilings_2xn(n):</span>
-<span id="cb1-2">    a, b <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>                      <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># a = f(k-1), b = f(k); start at f(0)=f(1)=1</span></span>
-<span id="cb1-3">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(n):</span>
-<span id="cb1-4">        a, b <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> b, a <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> b</span>
-<span id="cb1-5">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> a                         <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># after n steps, a holds f(n)</span></span>
-<span id="cb1-6"></span>
-<span id="cb1-7"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>([tilings_2xn(n) <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> n <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">11</span>)])   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 1, 1, 2, 3, 5, 8, 13, ...</span></span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</code></pre>
-</div>
-</div>
-<p>This little loop is a <em>dynamic program</em> in its purest form: a hard count broken into overlapping subproblems, each solved once and reused. It is fast and it is correct. But it hides the structure I promised you. To see that, we reframe the same step as a motion in space.</p>
-</section>
-<section id="the-reframe-one-step-of-dp-is-one-multiply-by-a-matrix" class="level2">
-<h2 class="anchored" data-anchor-id="the-reframe-one-step-of-dp-is-one-multiply-by-a-matrix">The reframe: one step of DP is one multiply by a matrix</h2>
-<p>Watch what the loop actually does each turn. It holds a little pair of numbers, the two most recent counts, and it slides that pair forward: the new pair is <img src="https://latex.codecogs.com/png.latex?(b,%5C%20a+b)"> built from the old pair <img src="https://latex.codecogs.com/png.latex?(a,%20b)">. A rule that turns one vector into another vector by a fixed linear recipe is exactly what a matrix <em>is</em>. Bundle the state into a column vector <img src="https://latex.codecogs.com/png.latex?%5Cleft(%5Cbegin%7Bsmallmatrix%7D%20f(k)%20%5C%5C%20f(k-1)%20%5Cend%7Bsmallmatrix%7D%5Cright)"> and the update becomes <img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Bpmatrix%7D%20f(k+1)%20%5C%5C%20f(k)%20%5Cend%7Bpmatrix%7D%0A=%0A%5Cbegin%7Bpmatrix%7D%201%20&amp;%201%20%5C%5C%201%20&amp;%200%20%5Cend%7Bpmatrix%7D%0A%5Cbegin%7Bpmatrix%7D%20f(k)%20%5C%5C%20f(k-1)%20%5Cend%7Bpmatrix%7D.%0A"> Call that matrix <img src="https://latex.codecogs.com/png.latex?M">. One turn of the loop is one multiplication by <img src="https://latex.codecogs.com/png.latex?M">. So running the loop <img src="https://latex.codecogs.com/png.latex?n"> times is multiplying by <img src="https://latex.codecogs.com/png.latex?M"> a total of <img src="https://latex.codecogs.com/png.latex?n"> times, which is to say <img src="https://latex.codecogs.com/png.latex?f(n)"> lives inside <img src="https://latex.codecogs.com/png.latex?M%5E%7Bn%7D">. The dynamic program was matrix exponentiation in disguise the whole time.</p>
-<div id="82bff970" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> np</span>
-<span id="cb3-2"></span>
-<span id="cb3-3">M <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.array([[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>],</span>
-<span id="cb3-4">              [<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>]], dtype<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">object</span>)        <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># object dtype -&gt; exact, unbounded integers</span></span>
-<span id="cb3-5"></span>
-<span id="cb3-6"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> matpow(A, k):</span>
-<span id="cb3-7">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">"""Fast exponentiation: A^k in about log2(k) matrix multiplications."""</span></span>
-<span id="cb3-8">    R <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.identity(<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(A), dtype<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">object</span>)</span>
-<span id="cb3-9">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">while</span> k:</span>
-<span id="cb3-10">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> k <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&amp;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>:</span>
-<span id="cb3-11">            R <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> R <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> A</span>
-<span id="cb3-12">        A <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> A <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">@</span> A</span>
-<span id="cb3-13">        k <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;&gt;=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb3-14">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> R</span>
-<span id="cb3-15"></span>
-<span id="cb3-16">n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span></span>
-<span id="cb3-17">fn <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> matpow(M, n)[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>]                      <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># f(n) sits in the top-left corner of M^n</span></span>
-<span id="cb3-18"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"2 x </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>n<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> board has </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>fn<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;"> tilings"</span>)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>2 x 50 board has 20365011074 tilings</code></pre>
-</div>
-</div>
-<p>This is not just a cute restatement. It buys something real. The loop takes <img src="https://latex.codecogs.com/png.latex?n"> steps to reach <img src="https://latex.codecogs.com/png.latex?f(n)">, but fast exponentiation reaches <img src="https://latex.codecogs.com/png.latex?M%5En"> in about <img src="https://latex.codecogs.com/png.latex?%5Clog_2%20n"> multiplications by repeated squaring, <img src="https://latex.codecogs.com/png.latex?M,%20M%5E2,%20M%5E4,%20M%5E8,%20%5Cdots">. For the Fibonacci numbers the difference is mild; for recurrences that come up in counting paths through large graphs it is the difference between feasible and hopeless. And there is a second prize, the one that makes a mathematician smile.</p>
-</section>
-<section id="what-the-matrix-knows-a-closed-form-falls-out" class="level2">
-<h2 class="anchored" data-anchor-id="what-the-matrix-knows-a-closed-form-falls-out">What the matrix knows: a closed form falls out</h2>
-<p>Once a recurrence is a matrix, its long-run behavior is governed by the matrix’s eigenvalues, the special numbers <img src="https://latex.codecogs.com/png.latex?%5Clambda"> for which <img src="https://latex.codecogs.com/png.latex?M"> merely <em>stretches</em> some direction by a factor of <img src="https://latex.codecogs.com/png.latex?%5Clambda"> instead of rotating it. For our <img src="https://latex.codecogs.com/png.latex?M"> they are the roots of <img src="https://latex.codecogs.com/png.latex?%5Clambda%5E2%20=%20%5Clambda%20+%201">, namely <img src="https://latex.codecogs.com/png.latex?%0A%5Cvarphi%20=%20%5Cfrac%7B1%20+%20%5Csqrt%7B5%7D%7D%7B2%7D%20%5Capprox%201.618,%20%5Cqquad%20%5Cpsi%20=%20%5Cfrac%7B1%20-%20%5Csqrt%7B5%7D%7D%7B2%7D%20%5Capprox%20-0.618.%0A"> The first is the golden ratio. Because <img src="https://latex.codecogs.com/png.latex?M"> stretches by <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> along one eigen-direction and by <img src="https://latex.codecogs.com/png.latex?%5Cpsi"> (a small number) along the other, after many steps the <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> direction completely dominates, and the counts grow like <img src="https://latex.codecogs.com/png.latex?%5Cvarphi%5E%7B%5C,n%7D">. Diagonalizing <img src="https://latex.codecogs.com/png.latex?M"> turns the recurrence into pure powers and hands back the exact formula, <img src="https://latex.codecogs.com/png.latex?%0Af(n)%20=%20%5Cfrac%7B%5Cvarphi%5E%7B%5C,n+1%7D%20-%20%5Cpsi%5E%7B%5C,n+1%7D%7D%7B%5Csqrt%7B5%7D%7D,%0A"> the Binet formula for Fibonacci. A problem about laying down little wooden tiles has produced the golden ratio with no prompting. Doesn’t that just feel beautiful?</p>
-<div id="6bdabd87" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">phi <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">**</span><span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.5</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span></span>
-<span id="cb5-2">psi <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">**</span><span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.5</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span></span>
-<span id="cb5-3">closed <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">round</span>((phi<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">**</span>(n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> psi<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">**</span>(n <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">**</span><span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.5</span>)</span>
-<span id="cb5-4"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"closed-form count agrees with the matrix power: </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>closed <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> fn<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span>
-<span id="cb5-5"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"each extra column multiplies the count by about phi = </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>phi<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.6f}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>closed-form count agrees with the matrix power: True
-each extra column multiplies the count by about phi = 1.618034</code></pre>
-</div>
-</div>
-<p>So three descriptions have collapsed into one. The dynamic program, the matrix power, and the golden-ratio formula are not three facts about <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%20n"> tilings; they are one fact, read off the recurrence in three different ways. Now is a great time to pause, because we are about to spend this idea on a board we cannot solve by a one-line recurrence.</p>
-</section>
-<section id="up-a-dimension-the-transfer-matrix" class="level2">
-<h2 class="anchored" data-anchor-id="up-a-dimension-the-transfer-matrix">Up a dimension: the transfer matrix</h2>
-<p>Make the board <img src="https://latex.codecogs.com/png.latex?m"> rows tall and <img src="https://latex.codecogs.com/png.latex?n"> columns wide. The trick that saved us at <img src="https://latex.codecogs.com/png.latex?m%20=%202">, peeling off one column at a time, still works, but the bookkeeping is richer. When we finish placing all the dominoes that belong to one column, some of them are horizontals that stick one square into the <em>next</em> column. The set of rows where the next column is already occupied, before we even get there, is the only thing the past leaves behind. That subset, a pattern of which of the <img src="https://latex.codecogs.com/png.latex?m"> rows are “poking through,” is the <strong>state</strong> of the boundary, and there are <img src="https://latex.codecogs.com/png.latex?2%5Em"> possible states.</p>
-<p>This is the move the project’s house style calls reframing with new constructs: we stop tracking the whole board and track only the thin boundary between done and not-done. Filling one column takes us from an incoming boundary state to an outgoing one, and crucially the number of ways to make that transition depends only on the two states, not on <img src="https://latex.codecogs.com/png.latex?n"> and not on how we got here. Collect those counts into a single <img src="https://latex.codecogs.com/png.latex?2%5Em%20%5Ctimes%202%5Em"> matrix <img src="https://latex.codecogs.com/png.latex?T">, the <strong>transfer matrix</strong>, whose entry <img src="https://latex.codecogs.com/png.latex?T_%7Bt,s%7D"> is the number of ways to fill a column that arrives in state <img src="https://latex.codecogs.com/png.latex?s"> and leaves in state <img src="https://latex.codecogs.com/png.latex?t">.</p>
-<div id="thm-transfer" class="theorem">
-<p><span class="theorem-title"><strong>Theorem 1 (Tilings as a matrix power)</strong></span> Let <img src="https://latex.codecogs.com/png.latex?T"> be the transfer matrix for boards <img src="https://latex.codecogs.com/png.latex?m"> rows tall, and let <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7B0%7D"> be the empty boundary state. Then the number of domino tilings of the <img src="https://latex.codecogs.com/png.latex?m%20%5Ctimes%20n"> board is <img src="https://latex.codecogs.com/png.latex?%0A%5Cbigl(T%5E%7B%5C,n%7D%5Cbigr)_%7B%5Cmathbf%7B0%7D,%5C,%5Cmathbf%7B0%7D%7D.%0A"></p>
-</div>
-<p>The reasoning is the same one twice over. Multiplying by <img src="https://latex.codecogs.com/png.latex?T"> once advances the boundary across one column and sums over every legal way to do it, exactly as a step of dynamic programming sums over every choice. Multiplying <img src="https://latex.codecogs.com/png.latex?n"> times threads the boundary across all <img src="https://latex.codecogs.com/png.latex?n"> columns. We start from the empty boundary, nothing poking into column one, and we demand the empty boundary at the end, nothing poking past column <img src="https://latex.codecogs.com/png.latex?n">, which is just the statement that the finished tiling stays inside the board. Reading <img src="https://latex.codecogs.com/png.latex?(T%5En)_%7B%5Cmathbf%200,%5Cmathbf%200%7D"> off the matrix power is reading the answer. This is the transfer-matrix method, and a careful treatment lives in <span class="citation" data-cites="stanley2012">[1]</span>.</p>
-<div id="adfe1f6a" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> build_transfer(m):</span>
-<span id="cb7-2">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">"""Transfer matrix for m-row boards: T[t][s] = ways to fill a column</span></span>
-<span id="cb7-3"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">    that enters in boundary state s and leaves in boundary state t."""</span></span>
-<span id="cb7-4">    size <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;&lt;</span> m</span>
-<span id="cb7-5">    T <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span> size <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(size)]</span>
-<span id="cb7-6">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> start <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(size):</span>
-<span id="cb7-7">        <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> fill(row, work, nxt):</span>
-<span id="cb7-8">            <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> row <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> m:                                   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># column complete</span></span>
-<span id="cb7-9">                T[nxt][start] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb7-10">                <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span></span>
-<span id="cb7-11">            <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> work <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&amp;</span> (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;&lt;</span> row):                          <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># already filled from the left</span></span>
-<span id="cb7-12">                fill(row <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, work, nxt)</span>
-<span id="cb7-13">                <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span></span>
-<span id="cb7-14">            <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> row <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;</span> m <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">and</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">not</span> (work <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&amp;</span> (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;&lt;</span> (row <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>))):   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># stand a vertical domino</span></span>
-<span id="cb7-15">                fill(row <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, work <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|</span> (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;&lt;</span> row) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|</span> (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;&lt;</span> (row <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)), nxt)</span>
-<span id="cb7-16">            fill(row <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>, work <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|</span> (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;&lt;</span> row), nxt <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|</span> (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;&lt;</span> row))  <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># lay a horizontal -&gt; next column</span></span>
-<span id="cb7-17">        fill(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, start, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span>
-<span id="cb7-18">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> T</span>
-<span id="cb7-19"></span>
-<span id="cb7-20"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> tilings(m, n):</span>
-<span id="cb7-21">    T <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.array(build_transfer(m), dtype<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">object</span>)</span>
-<span id="cb7-22">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> matpow(T, n)[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>]                              <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># empty boundary in, empty boundary out</span></span>
-<span id="cb7-23"></span>
-<span id="cb7-24"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"2 x 10 :"</span>, tilings(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">10</span>), <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"  (Fibonacci, as before)"</span>)</span>
-<span id="cb7-25"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"8 x 8  :"</span>, tilings(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">8</span>), <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"  (the classic chessboard count)"</span>)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>2 x 10 : 89   (Fibonacci, as before)
-8 x 8  : 12988816   (the classic chessboard count)</code></pre>
-</div>
-</div>
-<p>The <img src="https://latex.codecogs.com/png.latex?8%20%5Ctimes%208"> board, an ordinary chessboard, admits <img src="https://latex.codecogs.com/png.latex?12%7B,%7D988%7B,%7D816"> domino tilings, a number first extracted by hand from exactly this kind of structure. Our few lines reproduce it because they are doing the same thing the hand computation did: walking the boundary across the board one column at a time, and letting a matrix remember the rest.</p>
-</section>
-<section id="the-growth-rate-hiding-in-the-largest-eigenvalue" class="level2">
-<h2 class="anchored" data-anchor-id="the-growth-rate-hiding-in-the-largest-eigenvalue">The growth rate hiding in the largest eigenvalue</h2>
-<p>The eigenvalue story scales up too, and it ends somewhere lovely. Just as <img src="https://latex.codecogs.com/png.latex?%5Cvarphi"> governed the <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%20n"> growth, the largest eigenvalue <img src="https://latex.codecogs.com/png.latex?%5Clambda_%7B%5Cmax%7D"> of the transfer matrix sets the growth rate of the count as the board gets longer: adding one more column multiplies the number of tilings by roughly <img src="https://latex.codecogs.com/png.latex?%5Clambda_%7B%5Cmax%7D">. So <img src="https://latex.codecogs.com/png.latex?%5Clambda_%7B%5Cmax%7D"> is a kind of entropy per column, a measure of how many genuine new choices each column opens up.</p>
-<div id="bba4e5a4" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> m <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> [<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">8</span>]:</span>
-<span id="cb9-2">    Tf <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.array(build_transfer(m), dtype<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">float</span>)</span>
-<span id="cb9-3">    lam <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">max</span>(<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">abs</span>(np.linalg.eigvals(Tf)))                 <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># largest eigenvalue</span></span>
-<span id="cb9-4">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">f"m = </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>m<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">:  per-column growth </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>lam<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:6.4f}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">,   per-cell growth </span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">{</span>lam <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">**</span> (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> m)<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:.4f}</span><span class="ss" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"</span>)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>m = 2:  per-column growth 1.6180,   per-cell growth 1.2720
-m = 4:  per-column growth 2.8405,   per-cell growth 1.2982
-m = 6:  per-column growth 5.0489,   per-cell growth 1.3098
-m = 8:  per-column growth 9.0071,   per-cell growth 1.3162</code></pre>
-</div>
-</div>
-<p>Look down the last column of numbers. The growth <em>per cell</em>, <img src="https://latex.codecogs.com/png.latex?%5Clambda_%7B%5Cmax%7D%5E%7B1/m%7D">, is creeping toward a limit as the board gets taller: <img src="https://latex.codecogs.com/png.latex?1.272">, <img src="https://latex.codecogs.com/png.latex?1.298">, <img src="https://latex.codecogs.com/png.latex?1.310">, <img src="https://latex.codecogs.com/png.latex?1.316">, climbing slowly. That limit is real and it is famous. As <img src="https://latex.codecogs.com/png.latex?m%20%5Cto%20%5Cinfty"> the per-cell growth approaches <img src="https://latex.codecogs.com/png.latex?%0Ae%5E%7B%5C,G/%5Cpi%7D%20%5Capprox%201.338515,%0A"> where <img src="https://latex.codecogs.com/png.latex?G"> is Catalan’s constant, the value Kasteleyn and, independently, Temperley and Fisher pinned down in 1961 by a beautiful determinant formula for dimer counts on a lattice <span class="citation" data-cites="kasteleyn1961">[2]</span>. We will not climb all the way to that formula here. The point worth keeping is the chain of sight it sits at the end of: a child’s tiling puzzle became a dynamic program, the dynamic program became a matrix power, the matrix’s eigenvalues set the growth rate, and the limit of those growth rates is a clean constant built from <img src="https://latex.codecogs.com/png.latex?%5Cpi"> and Catalan’s number. This kind of pattern shows up all the time once you let yourself see a recurrence as a matrix.</p>
-</section>
-<section id="what-to-remember" class="level2">
-<h2 class="anchored" data-anchor-id="what-to-remember">What to remember</h2>
-<p>Counting domino tilings of a <img src="https://latex.codecogs.com/png.latex?2%20%5Ctimes%20n"> board gives a recurrence, <img src="https://latex.codecogs.com/png.latex?f(n)%20=%20f(n-1)%20+%20f(n-2)">, and that single line is enough to carry the whole lesson. Written as a loop it is dynamic programming; written as a vector update it is multiplication by a fixed matrix, so the count is an entry of <img src="https://latex.codecogs.com/png.latex?M%5En">; read through the matrix’s eigenvalues it is the golden ratio and a closed form. Widen the board to <img src="https://latex.codecogs.com/png.latex?m"> rows and nothing about the philosophy changes: the boundary between filled and unfilled becomes the state, the column-by-column update becomes a transfer matrix <img src="https://latex.codecogs.com/png.latex?T">, and the number of tilings is <img src="https://latex.codecogs.com/png.latex?(T%5En)_%7B%5Cmathbf%200,%5Cmathbf%200%7D">, with the largest eigenvalue of <img src="https://latex.codecogs.com/png.latex?T"> setting how fast the count grows. Dynamic programming, matrix powers, and the spectrum of a linear map are not neighbors that happen to help each other. On a problem like this they are the same idea, and once you have seen that once, you start seeing it everywhere.</p>
-</section>
-<section id="how-to-cite" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-cite">How to cite</h2>
-<blockquote class="blockquote">
-<p>Terry (2026). <em>Counting Domino Tilings: When Dynamic Programming Is a Matrix</em>. Retrieved from <code>https://terryfxh.github.io/math-notes/posts/domino-tilings/</code>.</p>
-</blockquote>
-
-
-<!-- -->
-
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0">
-<div id="ref-stanley2012" class="csl-entry">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">R. P. Stanley, <em>Enumerative combinatorics, volume 1</em>, 2nd ed. in Cambridge studies in advanced mathematics. Cambridge University Press, 2012.</div>
-</div>
-<div id="ref-kasteleyn1961" class="csl-entry">
-<div class="csl-left-margin">[2] </div><div class="csl-right-inline">P. W. Kasteleyn, <span>“The statistics of dimers on a lattice: I. The number of dimer arrangements on a quadratic lattice,”</span> <em>Physica</em>, vol. 27, no. 12, pp. 1209–1225, 1961.</div>
-</div>
-</div></section></div> ]]></description>
-  <category>pure</category>
-  <category>applied</category>
-  <category>combinatorics</category>
-  <category>computer-science</category>
-  <category>algorithms</category>
-  <guid>https://terryfxh.github.io/math-notes/posts/domino-tilings/</guid>
-  <pubDate>Sat, 06 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
