@@ -1,0 +1,198 @@
+---
+title: "On Being Stuck"
+description: "A practical and mathematical account of stuckness: how failed attempts become information, how a written ledger exposes circular search, and when stepping away can help."
+date: 2026-08-27
+categories: [meta, learning]
+bibliography: ../../references.bib
+canonical-url: true
+draft: false
+---
+
+::: {.epigraph}
+*"My method to overcome a difficulty is to go around it."*
+
+[— George Pólya, *How to Solve It*]{.attribution}
+:::
+
+The page has not changed for forty minutes. There are six lines of algebra, three arrows in the margin, and the words *try induction* underlined twice. You have expanded the same expression from both directions. You have started a contradiction and quietly abandoned it at the same sentence. You are still working, in the physical sense. The problem is no longer moving.
+
+This is the part of mathematics that polished solutions edit out. A proof presents one path after the path has been found. The person looking for it meets a thicket of paths, most of which stop, loop, or dissolve into calculations that answer a question nobody asked. From inside that thicket, persistence and repetition can feel identical.
+
+They are not. That distinction is the whole subject of this essay.
+
+My criterion is narrow: **in this essay, being stuck counts as productive only when an attempt changes the state of the problem you return to**. A failed attempt should leave a residue: a counterexample, a sharper condition, a missing lemma, a ruled-out route, or a new representation. If it leaves only fatigue, then time has passed but the search has not learned.
+
+[Mathematics Is Not a Spectator Sport](../hidden-mechanics-of-math/) argued that friction is part of learning. I will not make that argument again. This essay begins after we have accepted the friction and asks a more practical question: how should we inhabit it? It develops one thread left open in [On Learning Mathematics](../on-learning-mathematics/), the ability to stay steady when a problem refuses to budge. Staying steady, it turns out, is less about heroic patience than about giving the search a memory.
+
+## A board that defeats persistence
+
+Take an ordinary $8\times 8$ chessboard and remove two opposite corner squares. Can the remaining $62$ squares be tiled by $31$ dominoes, each covering two squares that share an edge?
+
+The invitation is almost irresistible: start placing dominoes. The area count works, since $31\cdot 2=62$. The damaged corners look local, so perhaps careful packing near them will repair the board. A few arrangements get surprisingly far. Each eventually jams.
+
+What has a jammed arrangement proved? Only that this arrangement did not work. Ten failed arrangements do not prove that the eleventh will fail. Even a million failures would not rule out an untested configuration. The evidence licenses a much smaller sentence than the one we want. That discipline, asking exactly what an observation permits us to claim, was the point of [At Least One Side of One Sheep](../at-least-one-side-of-one-sheep/). Here it tells us that unsuccessful construction is not yet an impossibility proof.
+
+The failure can still become useful if we interrogate it. Local placement keeps producing local dead ends. So ask a different question:
+
+> What does every legal domino placement preserve, regardless of where the domino goes?
+
+Colour the board like a chessboard. Give square $(i,j)$ the colour black when $i+j$ is even and white when $i+j$ is odd. Horizontally or vertically adjacent squares have opposite parity, so every domino covers exactly one black square and one white square. After placing any $k$ non-overlapping dominoes, the numbers of covered black and white squares are therefore both $k$. Their difference is an invariant.
+
+The full board has $32$ squares of each colour. The opposite corners $(1,1)$ and $(8,8)$ are both black because their coordinate sums are even. Removing them leaves $30$ black squares and $32$ white squares. A tiling by $31$ dominoes would have to cover $31$ squares of each colour, which is impossible. Hence no tiling exists.
+
+The proof is one paragraph. The important move happened before the proof: the object changed. We stopped looking at *arrangements* and started looking at a *quantity shared by every arrangement*. In the language of the earlier [domino tilings note](../domino-tilings/), we did not make the configuration search faster. We found an invariant that collapsed the entire search at once.
+
+This is what a useful failed attempt can buy. The jammed placements did not prove impossibility. They revealed that placement was the wrong scale at which to ask the question. Their residue was a better question, and the better question demanded a different representation.
+
+## Give the search a ledger
+
+Without a written record, an approach abandoned on Tuesday can return on Thursday wearing slightly different notation and feel new. A vague note such as *induction failed* does not help. It may even do damage, because it treats a large family of possible arguments as if one clumsy version had exhausted them all.
+
+A useful ledger entry has five parts:
+
+1. **State.** Write the exact claim, assumptions, and current representation.
+2. **Move.** Record what you actually tried, precisely enough to recognise a repeat.
+3. **Obstruction.** Mark the first point that could not be justified. Do not write only "didn't work".
+4. **Residue.** State what the attempt established, exposed, or ruled out.
+5. **Next question.** Ask for a move that uses the residue rather than discarding it.
+
+For the damaged board, the entry might read:
+
+::: {.callout-note title="A failed attempt, converted into information"}
+**State:** tile $62$ remaining squares by $31$ edge-adjacent dominoes.
+
+**Move:** construct layouts by filling from the damaged corners inward.
+
+**Obstruction:** several branches leave isolated squares, but each failure concerns only one branch.
+
+**Residue:** local construction supplies no global certificate of impossibility.
+
+**Next question:** what quantity does every domino preserve?
+:::
+
+The ledger is not a diary of suffering. It is a change log for the mathematical state. It may also change the emotional reading of a page of failed routes: the page no longer says only *I have achieved nothing*. It can instead say *these boundaries are now mapped*. The mathematical benefit is more exact: the record makes a silent return to a state already examined under the same assumptions visible.
+
+There is an important qualification. Repetition is sometimes necessary. You may return to induction after strengthening the statement, changing the induction variable, or discovering an auxiliary lemma. That is not the same state. The purpose of a ledger is not to ban old methods. It is to make the difference between an identical repeat and an informed return visible.
+
+## A toy theorem about memory
+
+We can make the role of memory exact in a deliberately simplified model. Represent a problem-solving process by a directed graph $G=(V,E)$. A vertex is a state of understanding: a representation, a partial result, or a sharpened subproblem. An edge $v\to w$ is a legitimate move that transforms one state into another. Let $s$ be the starting state and let $H\subseteq V$ be the set of states containing a solution.
+
+Real mathematics does not arrive with this graph drawn. New concepts create new vertices, and we rarely know all the available moves. That limitation matters, and we will return to it. First isolate the one feature the model can prove.
+
+::: {#prp-finite-search}
+## Search with memory on a finite graph
+
+Let $G=(V,E)$ be a finite directed graph. Start from $s\in V$. Maintain a frontier of discovered but unexpanded vertices and a visited set $R$. Initially the frontier contains $s$ and $R=\{s\}$. Whenever a vertex $v$ is removed from the frontier, stop if $v\in H$; otherwise add every out-neighbour not already in $R$ to both the frontier and $R$.
+
+Then the search halts after at most $|V|$ vertex expansions. It finds a vertex in $H$ if and only if some vertex of $H$ is reachable from $s$.
+:::
+
+::: {.proof}
+A vertex is added to the frontier only when it is absent from $R$, and it is added to $R$ at the same moment. Hence no vertex can enter the frontier twice. At most $|V|$ vertices are therefore expanded, so the process halts.
+
+If the search finds a goal, that goal was reached by following edges from $s$, so it is reachable. Conversely, suppose a goal $h$ is reachable. Choose a path
+$$
+s=v_0\to v_1\to\cdots\to v_m=h.
+$$
+The starting vertex $v_0$ is discovered initially. If $v_i$ is discovered, then either a goal has already been found or $v_i$ is eventually expanded: only finitely many other vertices can be expanded first, and none can be expanded twice. At that expansion, $v_{i+1}$ is either already discovered or is added. Induction along the path shows that the search either finds a goal earlier or eventually discovers and expands $h$. In both cases it finds a vertex in $H$. $\qquad\blacksquare$
+:::
+
+Remove the visited set and even a reachable answer can be missed forever. Consider three states $s,a,g$ with edges
+$$
+s\to a,\qquad a\to s,\qquad s\to g.
+$$
+A rule that always takes the first available edge walks $s,a,s,a,\ldots$ and never reaches the goal $g$. The obstacle is not the absence of a route. It is the absence of memory.
+
+@prp-finite-search does **not** prove that keeping notes will solve an open problem. Its assumptions fail spectacularly in creative work: the state space may be infinite, useful moves are not known in advance, and the right representation may not yet exist. The proposition establishes something smaller. Even in a world where a solution is reachable and all moves are available, forgetting visited states is enough to create permanent stuckness. A ledger removes that particular failure mode. It cannot promise discovery, but it can prevent some counterfeit motion.
+
+## Pólya's questions are moves, not commandments
+
+George Pólya organised problem solving into four broad phases: understand the problem, devise a plan, carry out the plan, and look back [@polya2004how]. Read as a checklist, the advice can sound almost empty. Of course one should devise a plan. The difficulty is devising one when none is visible.
+
+The substance lies in Pólya's questions: can you solve a related problem, draw a figure, examine a special case, change the unknown, use only part of the condition, or work backwards? These are not recipes for obtaining an answer. They are operators on the current state. Each changes the representation, scale, assumptions, or target, which means each proposes an edge to a genuinely different vertex in our toy graph.
+
+The final phase, looking back, is often treated as a ceremony performed after success. It is equally valuable after failure. What did the method need that the hypotheses did not supply? Which condition went unused? Did a calculation produce a counterexample to a stronger claim? Can the broken proof be saved as a lemma with an extra assumption? Looking back is where an attempt is converted into a ledger entry.
+
+Alan Schoenfeld's study of mathematical problem solving places this kind of monitoring and control beside mathematical resources and heuristic knowledge [@schoenfeld1985mathematical]. Knowing many techniques is not sufficient if one cannot notice that a technique is consuming time without producing information, decide when to switch, or allocate attention to the real bottleneck. In that sense, the crucial skill is not possessing more moves. It is governing the search among them.
+
+This gives us an operational distinction:
+
+- **Productive struggle** changes the ledger. It yields a fact, counterexample, reduced case, missing condition, new representation, or precise subproblem.
+- **Rumination** restores the same state and repeats the same move without a new test.
+
+These are definitions for this essay, not clinical diagnoses and not measurements of effort. A long calculation can be productive if it tests a sharp conjecture. A minute of staring can be productive if it reveals that the wrong quantity is being preserved. Duration is a poor proxy. The question is whether the state has changed.
+
+## Leave the problem, but leave it prepared
+
+Sometimes the next good move is to stop working. This advice is easy to romanticise. Stories of ideas arriving in baths, dreams, and walks make incubation sound like a hidden mathematician who finishes proofs while the conscious mind is elsewhere. The evidence supports a more careful statement.
+
+Sio and Ormerod's meta-analysis of experimental studies found a positive average incubation effect, but the size of the effect depended on the kind of problem, the amount of preparation, and what participants did during the break. Divergent-thinking tasks benefited more than linguistic and visual insight tasks, and cognitively demanding interruption tasks tended to reduce the benefit [@sio2009incubation]. The authors explicitly concluded that the useful conditions require care. Their studies were not a theorem about advanced mathematical research, and they do not justify the promise that every stubborn proof will yield after a walk.
+
+The modest lesson is still useful: a break can be part of the search, especially after the problem has been represented precisely. One plausible role is that distance weakens attachment to a dominant but unhelpful cue, making another association easier to retrieve. The meta-analysis does not establish a single universal mechanism, so this should remain an interpretation rather than a fact.
+
+Preparation matters. Before leaving, write three lines:
+
+- the exact statement you are trying to prove or compute;
+- the first unresolved obstruction in the current approach;
+- one question whose answer would change the state.
+
+Then leave. On returning, read the problem statement before rereading pages of failed algebra. Try to produce a fresh representation from the prepared question: a diagram, a smaller instance, an invariant, a dual statement, a computational check, or a deliberately stronger or weaker claim. This protocol is a practical synthesis, not an empirically guaranteed treatment. Its purpose is to make the break preserve the problem while loosening the route.
+
+A break taken before any serious engagement has prepared nothing to incubate. A break taken after the same line has begun to loop may be exactly the act that stops persistence becoming repetition.
+
+## A practical loop
+
+For a problem large enough to resist a first attack, the following loop keeps the standards visible.
+
+### 1. Fix the jurisdiction
+
+Write the statement with its quantifiers and assumptions. Test boundary cases and small instances. Ask whether the claim might be false. A counterexample is not a failed proof; it is a complete solution to the question of whether the proposed universal statement survives.
+
+### 2. Make one prediction
+
+Before calculating, say what the method should reveal. For the damaged board, local placement was supposed to expose a viable tiling. For the colouring argument, the prediction was sharper: after $k$ dominoes, the covered colour counts must be $(k,k)$. A method that makes no falsifiable prediction is difficult to learn from.
+
+### 3. Run a bounded attempt
+
+Choose a move and decide what would count as progress or failure. The boundary may be mathematical rather than temporal: expand until a pattern stabilises, compute all cases up to $n=8$, or continue the proof until the first unsupported implication. Bounded attempts make an obstruction identifiable.
+
+### 4. Harvest the residue
+
+Write the ledger entry. Separate what was proved from what merely looked suggestive. Simulation can refute a universal claim by producing an exact counterexample, but repeated numerical agreement does not prove the general case. A failed derivation shows a gap in that derivation, not that the theorem is false.
+
+### 5. Change one axis
+
+Change the representation, scale, assumptions, or target. Draw instead of expand. Seek an invariant instead of a construction. Prove a special case. Strengthen the statement so induction has enough information. Weaken it to locate the first true boundary. One deliberate change is easier to evaluate than five simultaneous improvisations.
+
+### 6. Decide: continue, incubate, learn, or ask
+
+The ledger should determine the next action. Continue when the last attempt produced a live question. Step away when the state is precise but the available moves are looping. Learn a prerequisite when the obstruction is a missing definition or theorem. Ask for help when another viewpoint is now more valuable than another private repetition.
+
+Help can come from a person, a book, or a machine. The useful request is often not "solve this" but "which assumption have I not used?", "what is the smallest counterexample to this stronger claim?", or "give one hint that changes the representation". Any returned claim still needs verification. The aim is to acquire a new edge, not to be teleported to a goal state with no map of how it was reached.
+
+## When the right move is to stop
+
+There is a dangerous romance around persistence. Some problems are stuck because the statement is false. Some require machinery the solver does not yet possess. Some are open. Some are simply not worth the opportunity cost today. A ledger is valuable partly because it can reveal these cases without turning them into judgments of character.
+
+Three warning signs matter.
+
+First, the obstruction never becomes more precise. If every entry says only *I don't see it*, return to definitions, examples, and prerequisites. The problem may be too far above the present toolset to generate useful feedback.
+
+Second, the ledger records activity but no new residue. More algebra, more cases, and more diagrams are not automatically new states. Ask what each is testing. If there is no answer, stop the motion and reformulate.
+
+Third, the cost boundary has arrived. Mathematics is done under deadlines, attention limits, and competing commitments. Seeking a hint, reading a source, or setting a problem aside can be rational control of the search. Staying steady does not mean staying alone, and it does not mean staying forever.
+
+The finite graph model offers no guarantee here because real mathematical search is open-ended. That is the boundary we must keep. The ledger certifies neither talent nor eventual success. It provides something more modest and more dependable: a record that distinguishes an explored boundary from a forgotten loop.
+
+## What to remember
+
+Being stuck is not one condition. Sometimes it is the productive interval in which the representation is changing. Sometimes it is a cycle disguised as effort. The difference is visible in what each attempt leaves behind.
+
+Keep a ledger of the exact state, move, obstruction, residue, and next question. Use failure only for the conclusion it actually earns. Change representation when local search supplies no global information. Step away only after leaving the problem prepared, and treat incubation as a possibility with conditions, not a promise. Ask for help when the ledger says the missing ingredient is a viewpoint or prerequisite.
+
+Progress on a hard problem is not always a shorter distance to the final proof. Often it is a better map of the space in which a proof might live.
+
+## How to cite
+
+> Terry (2026). *On Being Stuck*. Retrieved from `https://terryfxh.github.io/math-notes/posts/on-being-stuck/`.
